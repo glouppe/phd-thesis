@@ -14,6 +14,7 @@
 *.ind
 *.ist
 *.lof
+*.lol
 *.log
 *.lot
 *.maf
@@ -30,3 +31,5 @@
 *.vrb
 *.xdy
 *.tdo
+thesis.pdf
+classicthesis/*

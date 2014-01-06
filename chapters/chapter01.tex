@@ -1,0 +1,427 @@
+%************************************************
+\chapter{Introduction}\label{ch:introduction}
+%************************************************
+This bundle for \LaTeX\ has two goals:
+\begin{enumerate}
+    \item Provide students with an easy-to-use template for their
+    Master's
+    or PhD thesis. (Though it might also be used by other types of
+    authors
+    for reports, books, etc.)
+    \item Provide a classic, high-quality typographic style that is
+    inspired by \citeauthor{bringhurst:2002}'s ``\emph{The Elements of
+    Typographic Style}'' \citep{bringhurst:2002}.
+    \marginpar{\myTitle \myVersion}
+\end{enumerate}
+The bundle is configured to run with a \emph{full}
+MiK\TeX\ or \TeX Live\footnote{See the file \texttt{LISTOFFILES} for
+needed packages. Furthermore, \texttt{classicthesis}
+works with most other distributions and, thus, with most systems
+\LaTeX\ is available for.}
+installation right away and, therefore, it uses only freely available
+fonts. (Minion fans can easily adjust the style to their needs.)
+
+People interested only in the nice style and not the whole bundle can
+now use the style stand-alone via the file \texttt{classicthesis.sty}.
+This works now also with ``plain'' \LaTeX.
+
+As of version 3.0, \texttt{classicthesis} can also be easily used with
+\mLyX\footnote{\url{http://www.lyx.org}} thanks to Nicholas Mariette
+and Ivo Pletikosi\'c. The \mLyX\ version of this manual will contain
+more information on the details.
+
+This should enable anyone with a basic knowledge of \LaTeXe\ or \mLyX\ to
+produce beautiful documents without too much effort. In the end, this
+is my overall goal: more beautiful documents, especially theses, as I
+am tired of seeing so many ugly ones.
+
+The whole template and the used style is released under the
+\textsmaller{GNU} General Public License.
+
+If you like the style then I would appreciate a postcard:
+\begin{center}
+ André Miede \\
+ Detmolder Straße 32 \\
+ 31737 Rinteln \\
+ Germany
+\end{center}
+The postcards I received so far are available at:
+\begin{center}
+ \url{http://postcards.miede.de}
+\end{center}
+\marginpar{A well-balanced line width improves the legibility of
+the text. That's what typography is all about, right?}
+So far, many theses, some books, and several other publications have
+been typeset successfully with it. If you are interested in some
+typographic details behind it, enjoy Robert Bringhurst's wonderful book.
+% \citep{bringhurst:2002}.
+
+\paragraph{Important Note:} Some things of this style might look
+unusual at first glance, many people feel so in the beginning.
+However, all things are intentionally designed to be as they are,
+especially these:
+\begin{itemize}
+    \item No bold fonts are used. Italics or spaced small caps do the
+    job quite well.
+    \item The size of the text body is intentionally shaped like it
+    is. It supports both legibility and allows a reasonable amount of
+    information to be on a page. And, no: the lines are not too short.
+    \item The tables intentionally do not use vertical or double
+    rules. See the documentation for the \texttt{booktabs} package for
+    a nice discussion of this topic.\footnote{To be found online at \\
+    \url{http://www.ctan.org/tex-archive/macros/latex/contrib/booktabs/}.}
+    \item And last but not least, to provide the reader with a way
+    easier access to page numbers in the table of contents, the page
+    numbers are right behind the titles. Yes, they are \emph{not}
+    neatly aligned at the right side and they are \emph{not} connected
+    with dots that help the eye to bridge a distance that is not
+    necessary. If you are still not convinced: is your reader
+    interested in the page number or does she want to sum the numbers
+    up?
+\end{itemize}
+Therefore, please do not break the beauty of the style by changing
+these things unless you really know what you are doing! Please.
+
+
+\section{Organization}
+A very important factor for successful thesis writing is the
+organization of the material. This template suggests a structure as
+the following:
+\begin{itemize}
+    \marginpar{You can use these margins for summaries of the text
+    body\dots}
+    \item\texttt{Chapters/} is where all the ``real'' content goes in
+    separate files such as \texttt{Chapter01.tex} etc.
+ %  \item\texttt{Examples/} is where you store all listings and other
+ %  examples you want to use for your text.
+    \item\texttt{FrontBackMatter/} is where all the stuff goes that
+    surrounds the ``real'' content, such as the acknowledgments,
+    dedication, etc.
+    \item\texttt{gfx/} is where you put all the graphics you use in
+    the thesis. Maybe they should be organized into subfolders
+    depending on the chapter they are used in, if you have a lot of
+    graphics.
+    \item\texttt{Bibliography.bib}: the Bib\TeX\ database to organize
+    all the references you might want to cite.
+    \item\texttt{classicthesis.sty}: the style definition to get this
+    awesome look and feel. Does not only work with this thesis template
+    but also on its own (see folder \texttt{Examples}). Bonus: works
+    with both \LaTeX\ and \textsc{pdf}\LaTeX\dots and \mLyX.
+    \item\texttt{ClassicThesis.tcp} a \TeX nicCenter project file.
+    Great tool and it's free!
+    \item\texttt{ClassicThesis.tex}: the main file of your thesis
+    where all gets bundled together.
+    \item\texttt{classicthesis-config.tex}: a central place to load all
+    nifty packages that are used. In there, you can also activate
+    backrefs in order to have information in the bibliography about
+    where a source was cited in the text (\ie, the page number).
+
+    \emph{Make your changes and adjustments here.} This means that you
+    specify here the options you want to load \texttt{classicthesis.sty}
+    with. You also adjust the title of your thesis, your name, and all
+    similar information here. Refer to \autoref{sec:custom} for more
+    information.
+
+		This had to change as of version 3.0 in order to enable an easy
+		transition from the ``basic'' style to \mLyX.
+
+\end{itemize}
+In total, this should get you started in no time.
+
+
+\section{Style Options}\label{sec:options}
+There are a couple of options for \texttt{classicthesis.sty} that
+allow for a bit of freedom concerning the layout:
+\marginpar{\dots or your supervisor might use the margins for some
+    comments of her own while reading.}
+\begin{itemize}
+	\item General:
+		\begin{itemize}
+			\item\texttt{drafting}: prints the date and time at the bottom of
+    each page, so you always know which version you are dealing with.
+    Might come in handy not to give your Prof. that old draft.
+		\end{itemize}
+
+	\item Parts and Chapters:
+		\begin{itemize}
+			\item\texttt{parts}: if you use Part divisions for your document,
+    you should choose this option. (Cannot be used together with
+    \texttt{nochapters}.)
+
+			\item\texttt{nochapters}: allows to use the look-and-feel with
+    classes that do not use chapters, \eg, for articles. Automatically
+    turns off a couple of other options: \texttt{eulerchapternumbers},
+    \texttt{linedheaders}, \texttt{listsseparated}, and \texttt{parts}.
+
+	    \item\texttt{linedheaders}: changes the look of the chapter
+	    headings a bit by adding a horizontal line above the chapter
+	    title. The chapter number will also be moved to the top of the
+	    page, above the chapter title.
+
+		\end{itemize}
+
+  \item Typography:
+		\begin{itemize}
+				\item\texttt{eulerchapternumbers}: use figures from Hermann Zapf's
+    Euler math font for the chapter numbers. By default, old style
+    figures from the Palatino font are used.
+
+        \item\texttt{beramono}: loads Bera Mono as typewriter font.
+    (Default setting is using the standard CM typewriter font.)
+    \item\texttt{eulermath}: loads the awesome Euler fonts for math.
+    (Palatino is used as default font.)
+
+		    \item\texttt{pdfspacing}: makes use of pdftex' letter spacing
+		    capabilities via the \texttt{microtype} package.\footnote{Use
+		    \texttt{microtype}'s \texttt{DVIoutput} option to generate
+		    DVI with pdftex.} This fixes some serious issues regarding
+		    math formul\ae\ etc. (\eg, ``\ss'') in headers.
+
+		    \item\texttt{minionprospacing}: uses the internal \texttt{textssc}
+		    command of the \texttt{MinionPro} package for letter spacing. This
+		    automatically enables the \texttt{minionpro} option and overrides
+		    the \texttt{pdfspacing} option.
+
+		\end{itemize}
+
+	\item Table of Contents:
+		\begin{itemize}
+			 \item\texttt{tocaligned}: aligns the whole table of contents on
+		    the left side. Some people like that, some don't.
+
+		    \item\texttt{dottedtoc}: sets pagenumbers flushed right in the
+		    table of contents.
+
+			\item\texttt{manychapters}: if you need more than nine chapters for
+	    your document, you might not be happy with the spacing between the
+	    chapter number and the chapter title in the Table of Contents.
+	    This option allows for additional space in this context.
+	    However, it does not look as ``perfect'' if you use
+	    \verb|\parts| for structuring your document.
+
+		\end{itemize}
+
+	\item Floats:
+		\begin{itemize}
+    \item\texttt{listings}: loads the \texttt{listings} package (if not
+    already done) and configures the List of Listings accordingly.
+
+    \item\texttt{floatperchapter}: activates numbering per chapter for
+    all floats such as figures, tables, and listings (if used).
+
+	    \item\texttt{subfig}(\texttt{ure}): is passed to the \texttt{tocloft}
+	    package to enable compatibility with the \texttt{subfig}(\texttt{ure})
+	    package. Use this option if you want use classicthesis with the
+	    \texttt{subfig} package.
+
+%    \item\texttt{listsseparated}: will add extra space between table
+%    and figure entries of different chapters in the list of tables or
+%    figures, respectively. % Deprecated as of version 2.9.
+		\end{itemize}
+
+% 	\item\texttt{a5paper}: adjusts the page layout according to the
+%    global \texttt{a5paper} option (\emph{experimental} feature).
+%    \item\texttt{minionpro}: sets Robert Slimbach's Minion as the
+%    main font of the document. The textblock size is adjusted
+%    accordingly.
+
+   \end{itemize}
+The best way to figure these options out is to try the different
+possibilities and see, what you and your supervisor like best.
+
+In order to make things easier in general,
+\texttt{classicthesis-config.tex}
+contains some useful commands that might help you.
+
+
+\section{Customization}\label{sec:custom}
+%(As of v3.0, the Classic Thesis Style for \LaTeX{} and \mLyX{} share
+%the same two \texttt{.sty} files.)
+This section will give you some hints about how to adapt
+\texttt{classicthesis} to your needs.
+
+The file \texttt{classicthesis.sty}
+contains the core functionality of the style and in most cases will
+be left intact, whereas the file \texttt{classic\-thesis-config.tex}
+is used for some common user customizations.
+
+The first customization you are about to make is to alter the document
+title, author name, and other thesis details. In order to do this, replace
+the data in the following lines of \texttt{classicthesis-config.tex:}%
+\marginpar{Modifications in \texttt{classic\-thesis-config.tex}%
+}
+
+\begin{lstlisting}[frame=lt]
+% **************************************************
+% 2. Personal data and user ad-hoc commands
+% **************************************************
+\newcommand{\myTitle}{A Classic Thesis Style\xspace}
+\newcommand{\mySubtitle}{An Homage to...\xspace}
+\end{lstlisting}
+
+Further customization can be made in \texttt{classicthesis-config.tex}
+by choosing the options to \texttt{classicthesis.sty}
+(see~\autoref{sec:options}) in a line that looks like this:
+
+\begin{lstlisting}[frame=lt]
+\PassOptionsToPackage{eulerchapternumbers,drafting,listings,subfig,eulermath,parts}{classicthesis}
+\end{lstlisting}
+
+If you want to use backreferences from your citations to the pages
+they were cited on, change the following line from:
+\begin{lstlisting}[breaklines=false,frame=lt]
+\setboolean{enable-backrefs}{false} % true false
+\end{lstlisting}
+to
+\begin{lstlisting}[breaklines=false,frame=lt]
+\setboolean{enable-backrefs}{true} % true false
+\end{lstlisting}
+
+Many other customizations in \texttt{classicthesis-config.tex} are
+possible, but you should be careful making changes there, since some
+changes could cause errors.
+
+Finally, changes can be made in the file \texttt{classicthesis.sty},%
+\marginpar{Modifications in \texttt{classicthesis.sty}%
+} although this is mostly not designed for user customization. The
+main change that might be made here is the text-block size, for example,
+to get longer lines of text.
+
+
+\section{Issues}\label{sec:issues}
+This section will list some information about problems using
+\texttt{classic\-thesis} in general or using it with other packages.
+
+Beta versions of \texttt{classicthesis} can be found at the following
+Google code repository:
+\begin{center}
+	\url{http://code.google.com/p/classicthesis/}
+\end{center}
+There, you can also post serious bugs and problems you encounter.
+
+\subsection*{Compatibility with the \texttt{glossaries} Package}
+If you want to use the \texttt{glossaries} package, take care of loading it
+with the following options:
+\begin{verbatim}
+	\usepackage[style=long,nolist]{glossaries}
+\end{verbatim}
+Thanks to Sven Staehs for this information.
+
+
+\subsection*{Compatibility with the (Spanish) \texttt{babel} Package}
+Spanish languages need an extra option in order to work with this template:
+\begin{verbatim}
+	\usepackage[spanish,es-lcroman]{babel}
+\end{verbatim}
+Thanks to an unknown person for this information (via Google Code issue reporting).
+
+
+\paragraph{Further information for using \texttt{classicthesis} with Spanish (in addition to the above)}
+In the file \texttt{ClassicThesis.tex} activate the language:
+\begin{verbatim}
+	\selectlanguage{spanish}
+\end{verbatim}
+
+In order to get the bibliography style right, you can use the following:
+\begin{verbatim}
+	\bibliographystyle{babplain}
+\end{verbatim}
+
+For this, it is necessary to load the package:
+\begin{verbatim}
+	\usepackage[spanish,fixlanguage]{babelbib}
+	\selectbiblanguage{spanish}
+\end{verbatim}
+
+If there are issues changing \verb|\tablename|, \eg, using this:
+\begin{verbatim}
+	\renewcommand{\bibname}{Referencias}
+	\renewcommand{\tablename}{Tabla}
+\end{verbatim}
+
+This can be solved by passing \texttt{es-tabla} parameter to \texttt{babel}:
+\begin{verbatim}
+	\PassOptionsToPackage{es-tabla,spanish,es-lcroman,english}{babel}
+	\usepackage{babel}
+\end{verbatim}
+
+But it is also necessary set \texttt{spanish} in the \verb|\documentclass|.
+
+Thanks to Alvaro Jaramillo Duque for this information.
+
+
+\subsection*{Compatibility with the \texttt{pdfsync} Package}
+Using the \texttt{pdfsync} package leads to linebreaking problems with the \texttt{graffito} command.
+Thanks to Henrik Schumacher for this information.
+
+
+
+\section{Future Work}
+So far, this is a quite stable version that served a couple of people
+well during their thesis time. However, some things are still not as
+they should be. Proper documentation in the standard format is still
+missing. In the long run, the style should probably be published
+separately, with the template bundle being only an application of the
+style. Alas, there is no time for that at the moment\dots it could be
+a nice task for a small group of \LaTeX nicians.
+
+Please do not send me email with questions concerning \LaTeX\ or the
+template, as I do not have time for an answer. But if you have
+comments, suggestions, or improvements for the style or the template
+in general, do not hesitate to write them on that postcard of yours.
+
+
+\section{Beyond a Thesis}
+It is easy to use the layout of \texttt{classicthesis.sty} without the
+framework of this bundle. To make it even easier, this section offers
+some plug-and-play-examples.
+
+The \LaTeX -sources of these examples can be found in the folder
+with the name \texttt{Examples}. They have been tested with
+\texttt{latex} and \texttt{pdflatex} and are easy to compile. To
+assure you even a bit more, PDFs built from the sources can also
+be found in the folder.
+%(It might be necessary to adjust the path to
+%\texttt{classicthesis.sty} and \texttt{Bibliography.bib} within the
+%examples.)
+
+% \lstinputlisting[caption=An Article]%
+%     {Examples/classicthesis-article.tex}
+
+% \lstinputlisting[caption=A Book]%
+%     {Examples/classicthesis-book.tex}
+
+% \lstinputlisting[caption=A Curriculum Vit\ae]%
+%     {Examples/classicthesis-cv.tex}
+
+
+\section{License}
+\paragraph{GNU General Public License:} This program is free software;
+you can redistribute it and/or modify
+ it under the terms of the \textsmaller{GNU} General Public License as
+ published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but \emph{without any warranty}; without even the implied warranty of
+ \emph{merchantability} or \emph{fitness for a particular purpose}.
+ See the
+ \textsmaller{GNU} General Public License for more details.
+
+ You should have received a copy of the \textsmaller{GNU} General
+ Public License
+ along with this program; see the file \texttt{COPYING}.  If not,
+ write to
+ the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ Boston, \textsmaller{MA} 02111-1307, \textsmaller{USA}.
+
+%*****************************************
+%*****************************************
+%*****************************************
+%*****************************************
+%*****************************************
+
+
+
+

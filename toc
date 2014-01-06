@@ -142,9 +142,9 @@ Part III: Subsampling data
 ~~~
 
 
-8. References
+A. References
 -------------
 
 
-9. Notations
+B. Notations
 ------------

@@ -1,0 +1,104 @@
+%************************************************
+\chapter{Math Test Chapter}\label{ch:mathtest} % $\mathbb{ZNR}$
+%************************************************
+Ei choro aeterno antiopam mea, labitur bonorum pri no. His no decore
+nemore graecis. In eos meis nominavi, liber soluta vim cu. Sea commune
+suavitate interpretaris eu, vix eu libris efficiantur.
+
+\section{Some Formulas}
+Due to the statistical nature of ionisation energy loss, large
+fluctuations can occur in the amount of energy deposited by a particle
+traversing an absorber element\footnote{Examples taken from Walter
+Schmidt's great gallery: \\
+\url{http://home.vrweb.de/~was/mathfonts.html}}.  Continuous processes
+such as multiple
+scattering and energy loss play a relevant role in the longitudinal
+and lateral development of electromagnetic and hadronic
+showers, and in the case of sampling calorimeters the
+measured resolution can be significantly affected by such fluctuations
+in their active layers.  The description of ionisation fluctuations is
+characterised by the significance parameter $\kappa$, which is
+proportional to the ratio of mean energy loss to the maximum allowed
+energy transfer in a single collision with an atomic electron:
+\graffito{You might get unexpected results using math in chapter or
+section heads. Consider the \texttt{pdfspacing} option.}
+\begin{equation}
+\kappa =\frac{\xi}{E_{\textrm{max}}} %\mathbb{ZNR}
+\end{equation}
+$E_{\textrm{max}}$ is the maximum transferable energy in a single
+collision with an atomic electron.
+\[
+E_{\textrm{max}} =\frac{2 m_{\textrm{e}} \beta^2\gamma^2 }{1 +
+2\gamma m_{\textrm{e}}/m_{\textrm{x}} + \left ( m_{\textrm{e}}
+/m_{\textrm{x}}\right)^2}\ ,
+\]
+where $\gamma = E/m_{\textrm{x}}$, $E$ is energy and
+$m_{\textrm{x}}$ the mass of the incident particle,
+$\beta^2 = 1 - 1/\gamma^2$ and $m_{\textrm{e}}$ is the electron mass.
+$\xi$ comes from the Rutherford scattering cross section
+and is defined as:
+\begin{eqnarray*} \xi  = \frac{2\pi z^2 e^4 N_{\textrm{Av}} Z \rho
+\delta x}{m_{\textrm{e}} \beta^2 c^2 A} =  153.4 \frac{z^2}{\beta^2}
+\frac{Z}{A}
+  \rho \delta x \quad\textrm{keV},
+\end{eqnarray*}
+where
+
+\begin{tabular}{ll}
+$z$          & charge of the incident particle \\
+$N_{\textrm{Av}}$     & Avogadro's number \\
+$Z$          & atomic number of the material \\
+$A$          & atomic weight of the material \\
+$\rho$       & density \\
+$ \delta x$  & thickness of the material \\
+\end{tabular}
+
+$\kappa$ measures the contribution of the collisions with energy
+transfer close to $E_{\textrm{max}}$.  For a given absorber, $\kappa$
+tends
+towards large values if $\delta x$ is large and/or if $\beta$ is
+small.  Likewise, $\kappa$ tends towards zero if $\delta x $ is small
+and/or if $\beta$ approaches $1$.
+
+The value of $\kappa$ distinguishes two regimes which occur in the
+description of ionisation fluctuations:
+
+\begin{enumerate}
+\item A large number of collisions involving the loss of all or most
+  of the incident particle energy during the traversal of an absorber.
+
+  As the total energy transfer is composed of a multitude of small
+  energy losses, we can apply the central limit theorem and describe
+  the fluctuations by a Gaussian distribution.  This case is
+  applicable to non-relativistic particles and is described by the
+  inequality $\kappa > 10 $ (\ie, when the mean energy loss in the
+  absorber is greater than the maximum energy transfer in a single
+  collision).
+
+\item Particles traversing thin counters and incident electrons under
+  any conditions.
+
+  The relevant inequalities and distributions are $ 0.01 < \kappa < 10
+  $,
+  Vavilov distribution, and $\kappa < 0.01 $, Landau distribution.
+\end{enumerate}
+
+
+\section{Various Mathematical Examples}
+If $n > 2$, the identity
+\[
+  t[u_1,\dots,u_n] = t\bigl[t[u_1,\dots,u_{n_1}], t[u_2,\dots,u_n]
+  \bigr]
+\]
+defines $t[u_1,\dots,u_n]$ recursively, and it can be shown that the
+alternative definition
+\[
+  t[u_1,\dots,u_n] = t\bigl[t[u_1,u_2],\dots,t[u_{n-1},u_n]\bigr]
+\]
+gives the same result.  
+
+%*****************************************
+%*****************************************
+%*****************************************
+%*****************************************
+%*****************************************
