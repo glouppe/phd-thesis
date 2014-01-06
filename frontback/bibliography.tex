@@ -1,12 +1,9 @@
-%********************************************************************
-% Bibliography
-%*******************************************************
-% work-around to have small caps also here in the headline
+% Bibliography ================================================================
+
 \manualmark
-\markboth{\spacedlowsmallcaps{\bibname}}{\spacedlowsmallcaps{\bibname}} % work-around to have small caps also
-%\phantomsection
+\markboth{\spacedlowsmallcaps{\bibname}}{\spacedlowsmallcaps{\bibname}}
 \refstepcounter{dummy}
-\addtocontents{toc}{\protect\vspace{\beforebibskip}} % to have the bib a bit from the rest in the toc
+\addtocontents{toc}{\protect\vspace{\beforebibskip}}
 \addcontentsline{toc}{chapter}{\tocEntry{\bibname}}
 \bibliographystyle{plainnat}
 \label{app:bibliography}
