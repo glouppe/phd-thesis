@@ -1,0 +1,50 @@
+\documentclass[twoside,openright,titlepage,numbers=noenddot,headinclude,%
+               footinclude=true,cleardoublepage=empty,abstractoff,BCOR=5mm,%
+               paper=a4,fontsize=11pt,ngerman,american]{scrreprt}
+
+\input{classicthesis-config}
+
+\begin{document}
+\frenchspacing
+\raggedbottom
+\selectlanguage{american}
+\pagenumbering{roman}
+\pagestyle{plain}
+
+% Front pages =================================================================
+\include{frontback/titlepage}
+\cleardoublepage\include{frontback/abstract}
+\cleardoublepage\include{frontback/publications}
+\cleardoublepage\include{frontback/acknowledgments}
+\pagestyle{scrheadings}
+\cleardoublepage\include{frontback/toc}
+
+
+% Content =====================================================================
+\pagenumbering{arabic}
+
+\cleardoublepage
+\part{Some Kind of Manual}
+\include{chapters/chapter01}
+
+\cleardoublepage
+\ctparttext{You can put some informational part preamble text here.
+Illo principalmente su nos. Non message \emph{occidental} angloromanic
+da. Debitas effortio simplificate sia se, auxiliar summarios da que,
+se avantiate publicationes via. Pan in terra summarios, capital
+interlingua se que. Al via multo esser specimen, campo responder que
+da. Le usate medical addresses pro, europa origine sanctificate nos se.}
+\part{The Showcase}
+
+\include{chapters/chapter02}
+\include{chapters/chapter03}
+
+
+% Back pages ==================================================================
+\appendix
+\cleardoublepage
+\part{Appendix}
+
+\cleardoublepage\include{frontback/bibliography}
+
+\end{document}
