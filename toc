@@ -57,6 +57,8 @@ Part I: Growing random forests
         - Effet du critère sur les cuts
         - Sample weighting
 * Predicting
+    > Procedure
+    > Consistency
 
 
 3. Forests of decision trees
