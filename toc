@@ -28,8 +28,8 @@ ______________________________________________________________________________
 Part I: Growing random forests
 ==============================
 
-2. Machine Learning                                                       12/01
--------------------
+2. Background                                                             12/01
+-------------
 
 * (Introduction)
 * Machine learning
@@ -126,6 +126,8 @@ Part II: Interpreting random forests
 * Non-totally randomized trees (max_features > 1)
 * Binary trees
 * Illustration
+    - Paper
+    - Expériences de Olivier?
 
 
 7. Applications on real data                                              13/04
