@@ -16,11 +16,20 @@ ______________________________________________________________________________
                                     ~~~
 
 
+1. Introduction
+---------------
+
+* General introduction to ML
+* Goals and purposes of ML, examples of applications
+* Tree-based methods (introduction, atouts, etc)
+* Content of the thesis
+
+
 Part I: Growing random forests
 ==============================
 
-1. Background                                                             12/01
--------------
+2. Machine Learning                                                       12/01
+-------------------
 
 * (Introduction)
 * Machine learning
@@ -32,7 +41,7 @@ Part I: Growing random forests
 * Goals and purposes
 
 
-2. Classification and regression trees                                    02/02
+3. Classification and regression trees                                    02/02
 --------------------------------------
 
 * Tree structured estimators
@@ -62,7 +71,7 @@ Part I: Growing random forests
     > Consistency
 
 
-3. Forests of decision trees                                              16/02
+4. Forests of decision trees                                              16/02
 ----------------------------
 
 * Bias-variance tradeoff
@@ -82,7 +91,7 @@ Part I: Growing random forests
     > Multi-threading
 
 
-4. Complexity analysis                                                    02/03
+5. Complexity analysis                                                    02/03
 ----------------------
 
 * Overall complexity
@@ -104,7 +113,7 @@ Part II: Interpreting random forests
 
 (introduction)
 
-5. Variables importances (NIPS)                                           23/03
+6. Variables importances (NIPS)                                           23/03
 ------------------------
 
 * Motivation
@@ -119,7 +128,7 @@ Part II: Interpreting random forests
 * Illustration
 
 
-6. Applications on real data                                              13/04
+7. Applications on real data                                              13/04
 ----------------------------
 
 TODO
@@ -129,7 +138,7 @@ TODO
 Part III: Subsampling data
 ==========================
 
-7. Random patches (ECML paper)                                            27/04
+8. Random patches (ECML paper)                                            27/04
 -----------------
 
 * Motivation
