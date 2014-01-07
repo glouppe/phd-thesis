@@ -41,10 +41,11 @@ Part I: Growing random forests
 * Building estimators
     { API = fit, predict }
     - Describe popular algorithms (trees, knn, linear models)
-* Estimating accuracy
+* Estimating performance
     { API = score }
     - train/test accuracy => underfitting/overfitting
     - cv accuracy
+    - metrics
 
 
 3. Classification and regression trees                                    02/02
@@ -66,13 +67,20 @@ Part I: Growing random forests
         - Best splits
             + Greedy approximation of optimal trees
             + How to evaluate multiple candidate thresholds cheaply for
-              a given feature
+              a given feature (algorithm, f-ordered)
             + Sorting algorithms
+        - Approximately best splits
+            + Binning
+            + Subsampling
         - Weak learners (different from axis-aligned splits)
     > Impurity criteria
         - Efficient implementation for iterative evaluation
         - Effet du critère sur les cuts
+            End-cut preference
+            Normalisation par l'entropy (cf. Vincent, Louis)
+            Effet sur la structure des arbres générés
         - Sample weighting
+            Negative weights? (@ndawe)
 * Predicting
     > Procedure
     > Consistency
@@ -86,10 +94,7 @@ Part I: Growing random forests
     > Subsampling (with/without replacement)
     > Splitting nodes
         - Best splits (among max_features)
-        - Approximately best splits
-            + Binning
-            + Subsampling
-        - Random splits
+        - Random splits (random threshold, random index)
 * Shared computations
     > Splitters
         - (Independent splitters)
