@@ -21,6 +21,8 @@ ______________________________________________________________________________
 
 * General introduction to ML
 * Goals and purposes of ML, examples of applications
+    - Accuracy
+    - Interpretability (CART 1.3)
 * Tree-based methods (introduction, atouts, etc)
 * Content of the thesis
 
@@ -31,14 +33,18 @@ Part I: Growing random forests
 2. Background                                                             12/01
 -------------
 
-* (Introduction)
-* Machine learning
-    > Data
-    > Estimators
-        - Classifiers
-        - Regressors
-    > API
-* Goals and purposes
+* Learning from data
+    { API = array }
+    - Data => variables (types), notation, etc
+    - ML tasks, focus on supervised learning
+        - Classification regression
+* Building estimators
+    { API = fit, predict }
+    - Describe popular algorithms (trees, knn, linear models)
+* Estimating accuracy
+    { API = score }
+    - train/test accuracy => underfitting/overfitting
+    - cv accuracy
 
 
 3. Classification and regression trees                                    02/02
@@ -47,6 +53,7 @@ Part I: Growing random forests
 * Tree structured estimators
     > (Titanic classification problem)
     > Estimators as partitions
+        CART page 4
     > Data structures (arrays vs. object-oriented structures)
     > (Mention multi-output)
 * Growing decision trees
