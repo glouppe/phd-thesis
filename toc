@@ -51,6 +51,7 @@ Part I: Growing random forests
 3. Classification and regression trees                                    02/02
 --------------------------------------
 
+* Citer les premiers travaux
 * Tree structured estimators
     > (Titanic classification problem)
     > Estimators as partitions
