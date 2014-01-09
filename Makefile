@@ -1,4 +1,4 @@
-thesis.pdf: bibliography.bib thesis.tex chapters/*.tex frontback/*.tex 
+thesis.pdf: bibliography.bib thesis.tex classicthesis-config.tex chapters/*.tex frontback/*.tex 
 	pdflatex -shell-escape thesis
 	bibtex thesis
 	pdflatex -shell-escape thesis

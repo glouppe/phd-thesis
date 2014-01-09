@@ -4,6 +4,15 @@
 
 \input{classicthesis-config}
 
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+
+\newcommand{\todo}[1]{\textcolor{red}{\textit{[TODO] #1}}}
+
 \begin{document}
 \frenchspacing
 \raggedbottom
