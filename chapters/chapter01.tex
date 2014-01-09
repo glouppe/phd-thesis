@@ -1,6 +1,6 @@
 \chapter{Introduction}\label{ch:introduction}
 
-In various fields of science and technology, like in medicine, psychology,
+In various fields of science, technology and humanities, as in medicine,
 meteorology, finance or robotics to cite a few, experts aim at predicting a
 phenomenon based on past observations or measurements. For instance,
 meteorologists try to forecast the weather for the next days from the climatic
@@ -9,7 +9,7 @@ and information such as blood pressure, age or history for diagnosing the
 condition of incoming patients. Similarly, in chemistry, compounds are analyzed
 using mass spectrometry measurements in order to determine whether they contain
 a given type of molecules or atoms. In all of these cases, the goal is
-the prediction of a response variable based on a set of predictor
+the prediction of a response variable based on a set of observed predictor
 variables.
 
 For centuries, scientists have addressed these questions by deriving
@@ -44,26 +44,33 @@ learn from data without being explicitely programmed. According to
 respect to some class of tasks and performance measure if its performance at
 thoses tasks improves with data. In particular, machine learning provides
 algorithms that are able to solve classification or regression tasks, hence
-yielding now automated procedures for the prediction of a phenomenon based on
+bringing now automated procedures for the prediction of a phenomenon based on
 past observations. However, the goal of machine learning is not only to produce
 algorithms making accurate predictions, it is also to provide insights on the
 predictive structure of the data~\citep{breiman:1984}. If we are aiming at the
 latter, then our goal is to understand what variables or interactions of
 variables drive the phenomenon. For practitioners, which are not experts in
 machine learning, interpretability is indeed often as important as prediction
-accuracy. It allows for a finer exploration of the data and an easier self-appropriation
-of the results. When an algorithm is used as a black box, it may
-indeed be difficult to thrust or accept its results if it cannot be understood
-how and why it came to them. Unfortunately, the current state-of-the-art in
-machine learning often makes it difficult for non-experts to understand and
-interpret the results of an algorithm. While considerable efforts have been put
-to improve their prediction accuracy, it is still not clearly understood what
-makes them truly work -- and under what assumptions -- and few of them actually
-provide clear and insightful explanations about the results they generate.
+accuracy. It allows for a better understanding of the phenomenon under study, a
+finer exploration of the data and an easier self-appropriation of the results.
+By contrast, when an algorithm is used as a black box, yielding results
+seemingly out of nowhere, it may indeed be difficult to thrust or accept if it
+cannot be understood how and why the procedure came to them. Unfortunately, the
+current state-of-the-art in machine learning often makes it difficult for
+non-experts to understand and interpret the results of an algorithm. While
+considerable efforts have been put to improve their prediction accuracy, it is
+still not clearly understood what makes machine learning algorithms truly work,
+and under what assumptions. Likewise, few of them actually provide clear and
+insightful explanations about the results they generate.
 
-In this context, the goal of this thesis is ...
-
-The manuscript is organized as follows: [...]
+In this context, the goal of this thesis is to provide a comprehensive analysis
+of a class of algorithms known as forests of decision
+trees~\citep{breiman:2001,geurts:2006}. While these methods have proven to be
+a robust, accurate and successful tool for solving various machine learning
+tasks, including classification, regression, density estimation, manifold
+learning or semi-supervised learning~\citep{criminisi:2011}, there remains
+many gray areas in its theoretical understanding, its practical implementation
+and its interpretation. In the first part ...
 
 % Goals =
 % - a comprehensive study of decision trees and random forests
@@ -81,5 +88,3 @@ The manuscript is organized as follows: [...]
 % Content of the thesis
 
 % Reuse content from tentative paper
-
-
