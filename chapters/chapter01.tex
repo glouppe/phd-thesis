@@ -12,7 +12,7 @@ a given type of molecules or atoms. In all of these cases, the goal is
 the prediction of a response variable based on a set of observed predictor
 variables.
 
-For centuries, scientists have addressed these questions by deriving
+For centuries, scientists have addressed such problems by deriving
 theoretical frameworks from first principles or have accumulated knowledge in
 order to model, analyze and understand the pheno\-menon under study. For
 example, practicians know from past experience that elderly heart attack
@@ -28,13 +28,13 @@ variables need to be taken into account, which quickly goes beyond the
 capabilities of experts to put them all into a unified set equations. To break
 this cognitive barrier and further advance science, machines of increasing
 speed and capacity have been built and designed since the mid-twentieth century
-to assist humans in their calculations. However, alongside this progress in
+to assist humans in their calculations. Amazingly however, alongside this progress in
 terms of hardware, developments in theoretical computer science, artificial
 intelligence and statistics have made machines to become more than calculators.
 Recent advances have made them experts of their own kind, capable to learn from
 data and to uncover by themselves the predictive structure of problems.
 Techniques and algorithms that have stemmed from the field of {\it machine
-learning} have now become a powerful tool for the analysis of complex and large
+learning} have indeed now become a powerful tool for the analysis of complex and large
 data, successfully assisting scientists in numerous breakthroughs of various
 fields of science and technology.
 
@@ -64,13 +64,25 @@ and under what assumptions. Likewise, few of them actually provide clear and
 insightful explanations about the results they generate.
 
 In this context, the goal of this thesis is to provide a comprehensive analysis
-of a class of algorithms known as forests of decision
-trees~\citep{breiman:2001,geurts:2006}. While these methods have proven to be
-a robust, accurate and successful tool for solving various machine learning
-tasks, including classification, regression, density estimation, manifold
-learning or semi-supervised learning~\citep{criminisi:2011}, there remains
-many gray areas in its theoretical understanding, its practical implementation
-and its interpretation. \todo{In the first part... }
+of a class of algorithms known as decision trees~\citep{breiman:1984} and
+forests of randomized trees~\citep{breiman:2001,geurts:2006}. While these
+methods have proven to be a robust, accurate and successful tool for solving
+countless of machine learning tasks, including classification, regression,
+density estimation, manifold learning or semi-supervised
+learning~\citep{criminisi:2011}, there remains many gray areas in their
+understanding. First, the theoretical properties and statistical mechanisms
+that drive the algorithm are still not clearly undertstood. Second, while the
+construction process of a single decision tree can easily be described within
+half a page, implementing this algorithm properly and efficiently remains a
+challenging task involving issues that are easily overlooked. Third,
+interpreting the resulting model remains a difficult task, for which even
+machine learning experts still fail at finely analyzing and uncovering the
+precise predictive structure learned by the procedure.
+
+\todo{In the first part of this work, ...}
+
+
+
 
 % foreword on implementation
 
