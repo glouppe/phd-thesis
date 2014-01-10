@@ -7,11 +7,13 @@ which is sought is to find a systematic way of predicting a phenomenon given a
 set of measurements. In machine learning terms, this goal is formulated as the
 {\it supervised learning} task of infering from collected data a model that
 predicts the value of an output variable based on the observed values of input
-variables. In medicine for instance, the goal is to find a decision rule (i.e.,
-a model) from a set of past cases (i.e., the collected data) for predicting the
-condition of an incoming patient (i.e., the output value) given a set of
-measurements such as age, sex, blood pressure or history (i.e., the input
-values).
+variables. As such, finding an appropriate model is based on the assumption
+that the output variable does not take its value at random and that there
+exists a relation between the inputs and the output. In medicine for instance,
+the goal is to find a decision rule (i.e., a model) from a set of past cases
+(i.e., the collected data) for predicting the condition of an incoming patient
+(i.e., the output value) given a set of measurements such as age, sex, blood
+pressure or history (i.e., the input values).
 
 To give a more precise formulation, let us arrange the set of measurements on a
 case in a pre-assigned order, i.e., take the input values to be $x_1, x_2, ...,
@@ -64,21 +66,22 @@ vector $\mathbf{y}=(y_1, ..., y_N)$.
 \end{remark}
 
 In this framework, the supervised learning task can be stated as learning a
-model, or function, ${\cal X} \mapsto {\cal Y}$ from a learning set ${\cal
+function $\varphi: {\cal X} \mapsto {\cal Y}$ from a learning set ${\cal
 L}=(\mathbf{X}, \mathbf{y})$. In particular, the goal of the learning task is
-to find a model such that its predictions $\hat{Y}$ of the output variable $Y$
-are as good as possible. If $Y$ is a categorical variable then the learning
-task is a classification problem. If $Y$ is numerical variable, then learning
-task is a regression problem. Without loss of generality, the resulting models
-can be defined as follows:
+to find a model such that its predictions $\varphi(\mathbf{x})$, also denoted
+by the variable $\hat{Y}$, are as good as possible. If $Y$ is a categorical
+variable then the learning task is a classification problem. If $Y$ is
+numerical variable, then learning task is a regression problem. Without loss of
+generality, the resulting models, or \textit{estimators}, can be defined as
+follows:
 
 \begin{definition}
-A \emph{classifier} or \emph{classification rule} is a function ${\cal X}
+A \emph{classifier} or \emph{classification rule} is a function $\varphi: {\cal X}
 \mapsto {\cal Y}$, where ${\cal Y}$ is a finite set of classes denoted $\{1, 2, ..., J\}$.
 \end{definition}
 
 \begin{definition}
-A \emph{regressor} is a function ${\cal X} \mapsto {\cal Y}$, where ${\cal Y}=\mathbb{R}$.
+A \emph{regressor} is a function $\varphi: {\cal X} \mapsto {\cal Y}$, where ${\cal Y}=\mathbb{R}$.
 \end{definition}
 
 \begin{remark}{Estimator interface}
@@ -95,6 +98,7 @@ A \emph{regressor} is a function ${\cal X} \mapsto {\cal Y}$, where ${\cal Y}=\m
 
 
 \section{Estimating performance}
+    % See Pierre thesis
     % { API = score }
     % - train/test accuracy => underfitting/overfitting
     % - cv accuracy
@@ -103,5 +107,6 @@ A \emph{regressor} is a function ${\cal X} \mapsto {\cal Y}$, where ${\cal Y}=\m
 
 
 \section{Classes of estimators}
+    % See Pierre thesis
     % { API = fit, predict }
     % - Describe popular algorithms (trees, knn, linear models)
