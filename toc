@@ -77,7 +77,7 @@ Part I: Growing random forests
     > Impurity criteria
         - Efficient implementation for iterative evaluation
         - Effet du critère sur les cuts
-            End-cut preference
+            End-cut preference (CART 11.8)
             Normalisation par l'entropy (cf. Vincent, Louis)
             Effet sur la structure des arbres générés
         - Sample weighting
