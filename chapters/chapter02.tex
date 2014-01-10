@@ -5,41 +5,56 @@
 In the examples introduced in Chapter~\ref{ch:introduction}, the objective
 which is sought is to find a systematic way of predicting a phenomenon given a
 set of measurements. In machine learning terms, this goal is formulated as the
-{\it supervised learning} task of infering a model that predicts the value of
-an output variable based on the observed values of input variables. In
-medicine for instance, the goal is to find a decision rule (i.e., a model) for
-predicting the condition of a patient (i.e., the output value) given a set of
+{\it supervised learning} task of infering from collected data a model that
+predicts the value of an output variable based on the observed values of input
+variables. In medicine for instance, the goal is to find a decision rule (i.e.,
+a model) from a set of past cases (i.e., the collected data) for predicting the
+condition of an incoming patient (i.e., the output value) given a set of
 measurements such as age, sex, blood pressure or history (i.e., the input
 values).
 
-To give a more precise formulation, let us arrange the set of measurements in a
-pre-assigned order, i.e., take the input values to be $x_1, x_2, ..., x_p$,
-where $x_i \in {\cal X}_i$ (for $i = 1, ..., p$) corresponds to the value of
-the input variable $X_i$. Together, the input values $(x_1, x_2, ..., x_p)$
+To give a more precise formulation, let us arrange the set of measurements on a
+case in a pre-assigned order, i.e., take the input values to be $x_1, x_2, ...,
+x_p$, where $x_i \in {\cal X}_i$ (for $i = 1, ..., p$) corresponds to the value
+of the input variable $X_i$. Together, the input values $(x_1, x_2, ..., x_p)$
 form a $p$-dimensional input vector $\mathbf{x}$ taking its values in ${\cal
 X}_1 \times ... \times {\cal X}_p = {\cal X}$, where ${\cal X}$ is defined as
 the input space. Similarly, let us define as $y \in {\cal Y}$ the value of the
 output variable $Y$, where ${\cal Y}$ is defined as the output space. By
 definition, both the input and the output spaces are assumed to respectively
-contain all possible input vectors and all possible output values. Finally, let us also
-note that in the literature, input variables are sometimes known as {\it features},
-input vectors as {\it cases}, {\it observations} or {\it samples} and the
-output variable as {\it target}.
+contain all possible input vectors and all possible output values. Let
+us also note that input variables are sometimes known as {\it features}, input
+vectors as {\it objects}, {\it examples} or {\it samples} and the output
+variable as {\it target}.
 
 In a typical supervised learning task, past observations are summarized by a
-{\it learning sample}. It consists in a set of observed input
-vectors together with their actual output value. Formally, we define a learning
-sample as follows:
+{\it learning set}. It consists in a set of observed input vectors together
+with their actual output value. Formally, we define a learning set as follows:
 
 \begin{definition}
-A \emph{learning sample} ${\cal L}$ is a set of $N$
+A \emph{learning set} ${\cal L}$ is a set of $N$
 pairs of input vectors and output values $(\mathbf{x}_1, y_1), ...,
 (\mathbf{x}_N, y_N)$, where $\mathbf{x}_n \in {\cal X}$ and $y_n \in {\cal Y}$.
 \end{definition}
 
+Among variables that define the problem, we distinguish between two general
+types. The former correspond to quantitative variables whose values are integer
+or real numbers, such as age or blood pressure. The latter correspond to
+qualitative variables whose values are symbolic, such as gender or condition.
+Formally, we define them as follows:
 
-% def variable catégorique, numériques
-%
+\begin{definition}
+A variable $X_i$ is \emph{numerical} or \emph{ordered} if ${\cal X}_i$ is a
+totally ordered set.
+\end{definition}
+
+\begin{definition}
+A variable $X_i$ is \emph{categorical} if ${\cal X}_i$ is a finite set of values,
+without any natural order.
+\end{definition}
+
+
+
 
     % { API = array }
     % - Data => variables (types), notation, etc
@@ -47,9 +62,6 @@ pairs of input vectors and output values $(\mathbf{x}_1, y_1), ...,
     %     - Classification regression
 
 
-\section{Building estimators}
-    % { API = fit, predict }
-    % - Describe popular algorithms (trees, knn, linear models)
 
 
 \section{Estimating performance}
@@ -58,3 +70,8 @@ pairs of input vectors and output values $(\mathbf{x}_1, y_1), ...,
     % - cv accuracy
     % - metrics
     % - bayes error => jusqu'où?
+
+
+\section{Classes of estimators}
+    % { API = fit, predict }
+    % - Describe popular algorithms (trees, knn, linear models)

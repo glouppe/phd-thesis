@@ -70,35 +70,48 @@ methods have proven to be a robust, accurate and successful tool for solving
 countless of machine learning tasks, including classification, regression,
 density estimation, manifold learning or semi-supervised
 learning~\citep{criminisi:2011}, there remains many gray areas in their
-understanding. First, the theoretical properties and statistical mechanisms
-that drive the algorithm are still not clearly undertstood. Second, while the
-construction process of a single decision tree can easily be described within
-half a page, implementing this algorithm properly and efficiently remains a
-challenging task involving issues that are easily overlooked. Third,
-interpreting the resulting model remains a difficult task, for which even
-machine learning experts still fail at finely analyzing and uncovering the
-precise predictive structure learned by the procedure.
+understanding:
+\begin{enumerate}
+\item First, the theoretical properties and statistical mechanisms
+that drive the algorithm are still not clearly and entirely understood.
+\item Second, while the construction process of a single decision tree can
+easily be described within half a page, implementing this algorithm properly
+and efficiently remains a challenging task involving issues that are easily
+overlooked. Unfortunately, implementation details are often omitted in the
+machine learning literature and can often only be found by diving into
+(unequally documented) existing software implementations. As far as we know,
+there is indeed no comprehensive survey covering the implementation details of
+random forests, and their respective effects in terms of runtime and space
+complexity.
+\item Third, interpreting the resulting model remains a difficult task,
+for which even machine learning experts still fail at finely analyzing and
+uncovering the precise predictive structure learned by the procedure.
+\end{enumerate}
+Accordingly, this work aims at revisiting decision trees and random forests to
+hopefully shed new light on their capabilities, inner workings and
+interpretability.
 
-\todo{In the first part of this work, ...}
-
-
-
-
-% foreword on implementation
-
-% Goals =
-% - a comprehensive study of decision trees and random forests
-%    from a theoretical and theoretical point of view
-% - of their implementation (how), which is easily overlooked
-% - insights on interpretability (why)
-
-
-% ==> In plain English (no maths!)
-% General introduction to ML
-%  => pourquoi se passer de l'humain et désirer qu'une machine apprenne? (Zighed pg 20)
-% Goals and purposes of ML, examples of applications
-% => interprétabilité, extraction de connaissances à partir de données
-% Tree-based methods (introduction, atouts, etc)
-% Content of the thesis
-
-% Reuse content from tentative paper
+Part~\textsc{\ref{part:1}} of this manuscript is first dedicated to a thorough
+treatment of decision trees and forests of randomized trees. We begin in
+Chapter~\ref{ch:background} by outlining fundamental concepts of machine
+learning, and then proceed in Chapters~\ref{ch:cart} and \ref{ch:forest} with a
+comprehensive review of the algorithms at the core of decision trees and random
+forests. We discuss the learning capabilities of these models and carefully
+study the complementary effects of their algorithmic components. All throughout
+these chapters, implementation details are considered and treated with care in
+order to make the description as precise and rigorous as possible.
+Chapter~\ref{ch:complexity} concludes this first part with a space and time
+complexity analysis of random forests (and their variants), along with a
+detailed comparison of existing implementations. Part~\textsc{\ref{part:2}}
+then analyzes and discusses the interpretability of random forests. In
+Chapter~\ref{ch:importances}, we study variable importances as computed with a
+forest of randomized trees and study how these scores can be interpreted in order to
+reveal the underlying predictive structure learned from the data. In
+particular, we derive a theoretical framework from which we derive theoretical
+and practical properties of variable importances. In
+chapter~\ref{ch:applications}, we then exploit this framework for studying and
+exploring genetic and clinical data. Finally, Part~\textsc{\ref{part:3}}
+addresses limitations of random forests in the context or large datasets.
+Through extensive experiments, we show in Chapter~\ref{ch:random-patches} that
+subsampling strategies provides on par performance while simultaneously
+lowering the memory requirements.

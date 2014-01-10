@@ -38,14 +38,14 @@ Part I: Growing random forests
     - Data => variables (types), notation, etc
     - ML tasks, focus on supervised learning
         - Classification regression
-* Building estimators
-    { API = fit, predict }
-    - Describe popular algorithms (trees, knn, linear models)
+    - estimator { API = fit, predict }
 * Estimating performance
     { API = score }
     - train/test accuracy => underfitting/overfitting
     - cv accuracy
     - metrics
+* Classes of estimators
+    - Describe popular algorithms (trees, knn, linear models)
 
 
 3. Classification and regression trees                                    02/02
