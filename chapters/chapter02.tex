@@ -29,16 +29,6 @@ us also note that input variables are sometimes known as {\it features}, input
 vectors as {\it objects}, {\it examples} or {\it samples} and the output
 variable as {\it target}.
 
-In a typical supervised learning task, past observations are summarized by a
-{\it learning set}. It consists in a set of observed input vectors together
-with their actual output value. Formally, we define a learning set as follows:
-
-\begin{definition}
-A \emph{learning set} ${\cal L}$ is a set of $N$
-pairs of input vectors and output values $(\mathbf{x}_1, y_1), ...,
-(\mathbf{x}_N, y_N)$, where $\mathbf{x}_i \in {\cal X}$ and $y_i \in {\cal Y}$.
-\end{definition}
-
 Among variables that define the problem, we distinguish between two general
 types. The former correspond to quantitative variables whose values are integer
 or real numbers, such as age or blood pressure. The latter correspond to
@@ -53,6 +43,17 @@ totally ordered set.
 \begin{definition}
 A variable $X_j$ is \emph{categorical} if ${\cal X}_j$ is a finite set of values,
 without any natural order.
+\end{definition}
+
+In a typical supervised learning task, past observations are summarized by a
+dataset called {\it learning set}. It consists in a set of observed input
+vectors together with their actual output value and formally defined as
+follows:
+
+\begin{definition}
+A \emph{learning set} ${\cal L}$ is a set of $N$
+pairs of input vectors and output values $(\mathbf{x}_1, y_1), ...,
+(\mathbf{x}_N, y_N)$, where $\mathbf{x}_i \in {\cal X}$ and $y_i \in {\cal Y}$.
 \end{definition}
 
 Equivalently, a set of $p$-input vectors $\mathbf{x}_i$ (for $i=1, ..., N$) can
