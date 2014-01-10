@@ -4,6 +4,9 @@
 
 \input{classicthesis-config}
 
+% Custom config ===============================================================
+
+% Theorems and definitions
 \usepackage{amsthm}
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -11,7 +14,20 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{definition}{Definition}
 
+% Shaded boxes
+\usepackage{framed}
+\newenvironment{remark}[1]{%
+  \definecolor{shadecolor}{gray}{0.9}%
+  \begin{shaded}{\color{Maroon}\noindent\textsc{#1.}}\\%
+}{%
+  \end{shaded}%
+}
+
+% Todo
 \newcommand{\todo}[1]{\textcolor{red}{\textit{[TODO] #1}}}
+
+% -----------------------------------------------------------------------------
+
 
 \begin{document}
 \frenchspacing

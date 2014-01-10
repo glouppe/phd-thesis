@@ -15,8 +15,8 @@ values).
 
 To give a more precise formulation, let us arrange the set of measurements on a
 case in a pre-assigned order, i.e., take the input values to be $x_1, x_2, ...,
-x_p$, where $x_i \in {\cal X}_i$ (for $i = 1, ..., p$) corresponds to the value
-of the input variable $X_i$. Together, the input values $(x_1, x_2, ..., x_p)$
+x_p$, where $x_j \in {\cal X}_j$ (for $j = 1, ..., p$) corresponds to the value
+of the input variable $X_j$. Together, the input values $(x_1, x_2, ..., x_p)$
 form a $p$-dimensional input vector $\mathbf{x}$ taking its values in ${\cal
 X}_1 \times ... \times {\cal X}_p = {\cal X}$, where ${\cal X}$ is defined as
 the input space. Similarly, let us define as $y \in {\cal Y}$ the value of the
@@ -34,7 +34,7 @@ with their actual output value. Formally, we define a learning set as follows:
 \begin{definition}
 A \emph{learning set} ${\cal L}$ is a set of $N$
 pairs of input vectors and output values $(\mathbf{x}_1, y_1), ...,
-(\mathbf{x}_N, y_N)$, where $\mathbf{x}_n \in {\cal X}$ and $y_n \in {\cal Y}$.
+(\mathbf{x}_N, y_N)$, where $\mathbf{x}_i \in {\cal X}$ and $y_i \in {\cal Y}$.
 \end{definition}
 
 Among variables that define the problem, we distinguish between two general
@@ -44,16 +44,46 @@ qualitative variables whose values are symbolic, such as gender or condition.
 Formally, we define them as follows:
 
 \begin{definition}
-A variable $X_i$ is \emph{numerical} or \emph{ordered} if ${\cal X}_i$ is a
+A variable $X_j$ is \emph{numerical} or \emph{ordered} if ${\cal X}_j$ is a
 totally ordered set.
 \end{definition}
 
 \begin{definition}
-A variable $X_i$ is \emph{categorical} if ${\cal X}_i$ is a finite set of values,
+A variable $X_j$ is \emph{categorical} if ${\cal X}_j$ is a finite set of values,
 without any natural order.
 \end{definition}
 
+Equivalently, a set of $p$-input vectors $\mathbf{x}_i$ (for $i=1, ..., N$) can
+be denoted by a $N\times p$ matrix $\mathbf{X}$, whose rows $i=1, ..., N$
+correspond to input vectors $\mathbf{x}_i$ and columns $j=1, ..., p$ to input
+variables $X_j$. Similarly, the corresponding output values can be written as a
+vector $\mathbf{y}=(y_1, ..., y_N)$.
 
+\begin{remark}{Data representation}
+\todo{}
+\end{remark}
+
+In this framework, the supervised learning task can be stated as learning a
+model, or function, ${\cal X} \mapsto {\cal Y}$ from a learning set ${\cal
+L}=(\mathbf{X}, \mathbf{y})$. In particular, the goal of the learning task is
+to find a model such that its predictions $\hat{Y}$ of the output variable $Y$
+are as good as possible. If $Y$ is a categorical variable then the learning
+task is a classification problem. If $Y$ is numerical variable, then learning
+task is a regression problem. Without loss of generality, the resulting models
+can be defined as follows:
+
+\begin{definition}
+A \emph{classifier} or \emph{classification rule} is a function ${\cal X}
+\mapsto {\cal Y}$, where ${\cal Y}$ is a finite set of classes denoted $\{1, 2, ..., J\}$.
+\end{definition}
+
+\begin{definition}
+A \emph{regressor} is a function ${\cal X} \mapsto {\cal Y}$, where ${\cal Y}=\mathbb{R}$.
+\end{definition}
+
+\begin{remark}{Estimator interface}
+\todo{}
+\end{remark}
 
 
     % { API = array }
