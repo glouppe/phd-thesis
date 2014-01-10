@@ -1,7 +1,7 @@
 \chapter{Introduction}\label{ch:introduction}
 
-In various fields of science, technology and humanities, as in medicine,
-meteorology, finance or robotics to cite a few, experts aim at predicting a
+In various fields of science, technology and humanities, as in biology,
+meteorology, medicine or finance to cite a few, experts aim at predicting a
 phenomenon based on past observations or measurements. For instance,
 meteorologists try to forecast the weather for the next days from the climatic
 conditions of the previous days. In medicine, practicians collect measurements
@@ -65,30 +65,32 @@ insightful explanations about the results they generate.
 
 In this context, the goal of this thesis is to provide a comprehensive analysis
 of a class of algorithms known as decision trees~\citep{breiman:1984} and
-forests of randomized trees~\citep{breiman:2001,geurts:2006}. While these
+random forests~\citep{breiman:2001,geurts:2006}. While these
 methods have proven to be a robust, accurate and successful tool for solving
 countless of machine learning tasks, including classification, regression,
 density estimation, manifold learning or semi-supervised
 learning~\citep{criminisi:2011}, there remains many gray areas in their
 understanding:
 \begin{enumerate}
-\item First, the theoretical properties and statistical mechanisms
-that drive the algorithm are still not clearly and entirely understood.
+\item First, the theoretical properties and statistical mechanisms that drive
+the algorithm are still not clearly and entirely understood. Preliminary
+results have proven the consistency of simplified to very close variants of
+random forests, but consistency of the original algorithm remains unproven.
 \item Second, while the construction process of a single decision tree can
 easily be described within half a page, implementing this algorithm properly
 and efficiently remains a challenging task involving issues that are easily
 overlooked. Unfortunately, implementation details are often omitted in the
-machine learning literature and can often only be found by diving into
+scientific literature and can often only be found by diving into
 (unequally documented) existing software implementations. As far as we know,
 there is indeed no comprehensive survey covering the implementation details of
-random forests, and their respective effects in terms of runtime and space
-complexity.
+random forests, nor with their respective effects in terms of runtime and space
+complexity or learning ability.
 \item Third, interpreting the resulting model remains a difficult task,
 for which even machine learning experts still fail at finely analyzing and
 uncovering the precise predictive structure learned by the procedure.
 \end{enumerate}
 Accordingly, this work aims at revisiting decision trees and random forests to
-hopefully shed new light on their capabilities, inner workings and
+hopefully shed new light on their learning capabilities, inner workings and
 interpretability.
 
 Part~\textsc{\ref{part:1}} of this manuscript is first dedicated to a thorough
@@ -105,9 +107,9 @@ complexity analysis of random forests (and their variants), along with a
 detailed comparison of existing implementations. Part~\textsc{\ref{part:2}}
 then analyzes and discusses the interpretability of random forests. In
 Chapter~\ref{ch:importances}, we study variable importances as computed with a
-forest of randomized trees and study how these scores can be interpreted in order to
-reveal the underlying predictive structure learned from the data. In
-particular, we derive a theoretical framework from which we derive theoretical
+forest of randomized trees and study how these scores can be interpreted in
+order to reveal the underlying predictive structure learned from the data. In
+particular, we derive a theoretical framework from which we prove theoretical
 and practical properties of variable importances. In
 chapter~\ref{ch:applications}, we then exploit this framework for studying and
 exploring genetic and clinical data. Finally, Part~\textsc{\ref{part:3}}
