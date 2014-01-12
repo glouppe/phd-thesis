@@ -2,9 +2,10 @@
                footinclude=true,cleardoublepage=empty,abstractoff,BCOR=5mm,%
                paper=a4,fontsize=11pt,ngerman,american]{scrreprt}
 
-\input{classicthesis-config}
-
 % Custom config ===============================================================
+
+% Classic thesis
+\input{classicthesis-config}
 
 % Theorems and definitions
 \usepackage{amsthm}
@@ -22,6 +23,12 @@
 }{%
   \end{shaded}%
 }
+
+% Code snippets
+\usepackage{minted}
+\definecolor{rulecolor}{rgb}{0.80,0.80,0.80}
+\definecolor{bgcolor}{rgb}{1.0,1.0,1.0}
+\newminted{python}{bgcolor=bgcolor}
 
 % Todo
 \newcommand{\todo}[1]{\textcolor{red}{\textit{[TODO] #1}}}
