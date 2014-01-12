@@ -63,7 +63,23 @@ variables $X_j$. Similarly, the corresponding output values can be written as a
 vector $\mathbf{y}=(y_1, ..., y_N)$.
 
 \begin{remark}{Data representation}
-\todo{}
+For optimal implementations of machine learning algorithms, data needs to
+represented using structures which allows for high-performance numerical
+computation. In this work, code snippets will be described under  that assumption
+that data is represented using a data structure similar to a NumPy
+array~\citep{vanderwalt:2011}.
+
+A NumPy array is basically a multidimensional uniform collection of values, all
+of the same type and organized in a given shape. For instance, a matrix
+$\mathbf{X}$ can be represented as a 2-dimensional NumPy array of shape
+$N \times p$ that contains numbers (e.g., floating point values or integers).
+This structure allows for random access in constant time, vectorized operations
+and efficient memory usage.
+
+Additionally, using a data representation which is close to the matrix
+formulation makes it possible to write implementations that are close to their
+original textbook formulation, thereby making them easier to understand and
+maintain.
 \end{remark}
 
 In this framework, the supervised learning task can be stated as learning a
