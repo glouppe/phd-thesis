@@ -151,12 +151,21 @@ expected\footnote{$\mathbb{E}_X \{f(X)\}$ denotes the expected value of $f(x)$
 random variable $X$. It is defined as $$\mathbb{E}_X \{f(X)\} = \sum_{x \in {\cal
 X}} P(X=x) f(x).$$} prediction error
 \begin{equation}\label{eqn:exp-prediction-error}
-Err(\varphi) = \mathbb{E}_{X, Y}\{ L(Y, \varphi(X)) \}
+Err(\varphi) = \mathbb{E}_{X, Y}\{ L(Y, \varphi(X)) \},
 \end{equation}
 where $L$ is a loss function measuring the discrepancy between its two
-arguments~\citep{geurts:2002}. Put otherwise, Equation~\ref{eqn:exp-prediction-error}
-measures the goodness of fit of the model over all possible couples that
-can be drawn from ${\cal X}\times {\cal Y}$.
+arguments~\citep{geurts:2002}. Equation~\ref{eqn:exp-prediction-error} is also
+known as the \textit{generalization error} of the model. It basically measures
+the prediction error of $\varphi$ over all possible couples $(\mathbf{x}, y)\in
+{\cal X}\times{\cal Y}$, including the observed couples from the learning set
+${\cal L}$ but also the \textit{unseen} ones from ${\cal X}\times{\cal Y} \setminus
+{\cal L}$.
+
+\subsection{Loss functions}
+
+\subsection{Estimating $Err(\varphi)$}
+
+\subsection{Bayes model and residual error}
 
 
     % Find the model phi minimizing a loss L
