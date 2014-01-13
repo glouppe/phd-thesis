@@ -24,8 +24,8 @@ X}_1 \times ... \times {\cal X}_p = {\cal X}$, where ${\cal X}$ is defined as
 the input space. Similarly, let us define as $y \in {\cal Y}$ the value of the
 output variable $Y$, where ${\cal Y}$ is defined as the output space. By
 definition, both the input and the output spaces are assumed to respectively
-contain all possible input vectors and all possible output values. Let
-us also note that input variables are sometimes known as {\it features}, input
+contain all possible input vectors and all possible output values.
+Note that input variables are sometimes known as {\it features}, input
 vectors as {\it objects}, {\it examples} or {\it samples} and the output
 variable as {\it target}.
 
@@ -136,12 +136,36 @@ y_hat = clf.predict(X_test)
 
 
 \section{Estimating performance}
-    % See Pierre thesis
-    % { API = score }
-    % - train/test accuracy => underfitting/overfitting
-    % - cv accuracy
-    % - metrics
-    % - bayes error => jusqu'où?
+
+In the statistical sense, input and output variables $X_1, ..., X_p$ and $Y$
+are \textit{random variables} taking jointly their values from the space ${\cal X}
+\times {\cal Y}$ with respect to the joint probability distribution $P(X, Y)$,
+where $X$ denotes the random vector $(X_1, ..., X_p)$. That is,
+$P(X=\mathbf{x}, Y=y)$ is the probability of drawing the couple $(\mathbf{x},
+y)$ at random from ${\cal X} \times {\cal Y}$.
+
+Accordingly, learning a model $\varphi$ whose predictions are as good as
+possible can be defined as finding a model $\varphi$ which minimizes its
+expected\footnote{$\mathbb{E}_X \{f(X)\}$ denotes the expected value of $f(x)$
+(for $x \in {\cal X}$) with respect to the probability distribution of the
+random variable $X$. It is defined as $$\mathbb{E}_X \{f(X)\} = \sum_{x \in {\cal
+X}} P(X=x) f(x).$$} prediction error
+\begin{equation}\label{eqn:exp-prediction-error}
+Err(\varphi) = \mathbb{E}_{X, Y}\{ L(Y, \varphi(X)) \}
+\end{equation}
+where $L$ is a loss function measuring the discrepancy between its two
+arguments~\citep{geurts:2002}. Put otherwise, Equation~\ref{eqn:exp-prediction-error}
+measures the goodness of fit of the model over all possible couples that
+can be drawn from ${\cal X}\times {\cal Y}$.
+
+
+    % Find the model phi minimizing a loss L
+    % Losses L
+    % Estimation of L
+        % restitution
+        % train/test
+        % cv
+    % Bayes error, Bayes model
 
 
 \section{Classes of estimators}

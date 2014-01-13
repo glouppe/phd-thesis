@@ -45,7 +45,7 @@ Part I: Growing random forests
     - cv accuracy
     - metrics
 * Classes of estimators
-    - Describe popular algorithms (trees, knn, linear models)
+    - Describe popular algorithms (trees, knn, linear models, deep learning)
 
 
 3. Classification and regression trees                                    02/02
