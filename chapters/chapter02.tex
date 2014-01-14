@@ -138,7 +138,7 @@ y_hat = clf.predict(X_test)
 \end{remark}
 
 
-\section{Performance evaluation}
+\section{Performance evaluation and model selection}
 
 In the statistical sense, input and output variables $X_1, ..., X_p$ and $Y$
 are \textit{random variables} taking jointly their values from ${\cal X}
@@ -147,24 +147,26 @@ where $X$ denotes the random vector $(X_1, ..., X_p)$. That is,
 $P(X=\mathbf{x}, Y=y)$ is the probability of drawing the couple $(\mathbf{x},
 y)$ at random from ${\cal X} \times {\cal Y}$.
 
-Accordingly, learning from ${\cal L}$ a model $\varphi$ whose predictions are as good as
+Accordingly, learning  a model $\varphi$ whose predictions are as good as
 possible can be defined as finding a model $\varphi$ which minimizes its
 expected\footnote{$\mathbb{E}_X \{f(X)\}$ denotes the expected value of $f(x)$
 (for $x \in {\cal X}$) with respect to the probability distribution of the
 random variable $X$. It is defined as $$\mathbb{E}_X \{f(X)\} = \sum_{x \in {\cal
 X}} P(X=x) f(x).$$} prediction error
 \begin{equation}\label{eqn:generalization-error}
-Err(\varphi) = \mathbb{E}_{X, Y}\{ L(Y, \varphi(X)) \},
+Err_{{\cal L}}(\varphi) = \mathbb{E}_{X, Y}\{ L(Y, \varphi(X)) | {\cal L} \},
 \end{equation}
-where $L$ is a loss function measuring the discrepancy between its two
+where ${\cal L}$ is the learning set used to build $\varphi$ and $L$ a loss
+function measuring the discrepancy between its two
 arguments~\citep{geurts:2002}. Equation~\ref{eqn:generalization-error} is also
-known as the \textit{generalization error} of the model. It basically measures
-the prediction error of $\varphi$ over all possible couples $(\mathbf{x}, y)\in
-{\cal X}\times{\cal Y}$, including the observed couples from the learning set
-${\cal L}$ but also all the \textit{unseen} ones from ${\cal X}\times{\cal Y}
-\setminus {\cal L}$. Indeed, the goal is not in fact to make the very-most accurate
-predictions over the subset ${\cal L}$ of known data, but rather to learn a model which
-is correct and reliable on all possible data.
+known as the \textit{generalization error} of the model $\varphi$ built from
+${\cal L}$. It basically measures the prediction error of $\varphi$ over all
+possible couples $(\mathbf{x}, y)\in {\cal X}\times{\cal Y}$, including the
+observed couples from the learning set ${\cal L}$ but also all the
+\textit{unseen} ones from ${\cal X}\times{\cal Y} \setminus {\cal L}$. Indeed,
+the goal is not in fact to make the very-most accurate predictions over the
+subset ${\cal L}$ of known data, but rather to learn a model which is correct
+and reliable on all possible data.
 
 For classification, the most common loss function is the \textit{zero-one} loss
 function\footnote{$1(\text{\textit{condition}})$ denotes the unit function. It
@@ -177,9 +179,8 @@ $$1(\text{\textit{condition}}) =
 $$} $L(Y, \varphi(X)) = 1(Y \neq \varphi(X))$, where all
 misclassifications are equally penalized. In this case, the generalization
 error of $\varphi$ becomes the probability of misclassification of the model:
-
 \begin{equation}
-Err(\varphi) = \mathbb{E}_{X, Y}\{ 1(Y \neq \varphi(X)) \} = P(Y \neq \varphi(X))
+Err_{\cal L}(\varphi) = \mathbb{E}_{X, Y}\{ 1(Y \neq \varphi(X)) | {\cal L} \} = P(Y \neq \varphi(X)|{\cal L})
 \end{equation}
 
 Similarly, for regression, the most used loss function is the \textit{squared
@@ -187,15 +188,15 @@ error} loss $L(Y, \varphi(X)) = (Y - \varphi(X))^2$, where large differences
 between the true values and the predicted values are penalized more heavily
 than small ones. With this loss, the generalization error of the model becomes:
 \begin{equation}
-Err(\varphi) = \mathbb{E}_{X, Y}\{ (Y - \varphi(X))^2 \}
+Err_{\cal L}(\varphi) = \mathbb{E}_{X, Y}\{ (Y - \varphi(X))^2 | {\cal L} \}
 \end{equation}
 
-\subsection{Estimating $Err(\varphi)$}
+\subsection{Estimating $Err_{\cal L}(\varphi)$}
 
 In practice, the probability distribution $P(X, Y)$ is usually unknown, making
-the direct evaluation of $Err(\varphi)$ infeasible. Equivalently, it is often
+the direct evaluation of $Err_{\cal L}(\varphi)$ infeasible. Equivalently, it is often
 not possible to draw additional data, thereby making infeasible the empirical
-estimation of $Err(\varphi)$ on a (virtually infinite) set ${\cal L}'$ drawn
+estimation of $Err_{\cal L}(\varphi)$ on a (virtually infinite) set ${\cal L}'$ drawn
 independently from ${\cal L}$. In most problems, ${\cal L}$ constitutes the
 only data available, on which both the model needs to be learned and its
 generalization error estimated.
@@ -204,14 +205,14 @@ authors~\citep{toussaint:1974,nadeau:2003,arlot:2010}, the generalization error
 in Equation~\ref{eqn:generalization-error} can however be estimated in several ways.
 
 The first and simplest estimate is the \textit{resubstitution estimate} or \textit{training error}. It
-consists in empirically estimating $Err(\varphi)$ on the same data as the
+consists in empirically estimating $Err_{\cal L}(\varphi)$ on the same data as the
 learning set ${\cal L}$ used to build $\varphi$, that is:
 \begin{equation}\label{eqn:training-error}
-\widehat{Err}(\varphi, {\cal L}) = \frac{1}{N} \sum_{(\mathbf{x_i}, y_i) \in {\cal L}} L(y_i, \varphi(\mathbf{x_i}))
+\widehat{Err}_{\cal L}(\varphi) = \frac{1}{N} \sum_{(\mathbf{x_i}, y_i) \in {\cal L}} L(y_i, \varphi(\mathbf{x_i}))
 \end{equation}
 where $N$ is the size of ${\cal L}$.
 In general, the resubstitution error is a poor estimate of
-$Err(\varphi)$. In particular, since most machine learning algorithms
+$Err_{\cal L}(\varphi)$. In particular, since most machine learning algorithms
 aim at precisely minimizing Equation~\ref{eqn:training-error} (either directly
 or indirectly), it typically results in an underestimation of the
 generalization error.
@@ -220,11 +221,10 @@ The second approach is the \textit{test sample estimate} or \textit{test error}.
 dividing the learning set ${\cal L}$ into two disjoint sets ${\cal
 L}_\text{train}$ and ${\cal L}_\text{test}$, respectively called
 \textit{training set} and \textit{test set}, and then to use each part
-respectively for learning the model and estimating its generalization error. If
-$\varphi_{{\cal L}_\text{train}}$ is the model built on the training set, then
-is test sample estimate is given by:
+respectively for learning the model and estimating its generalization error.
+The test sample estimate over ${\cal L}_\text{test}$ of the model $\varphi$ built on ${\cal L}_\text{train}$ is therefore given by:
 \begin{equation}\label{eqn:test-error}
-\widehat{Err}(\varphi_{{\cal L}_\text{train}}, {\cal L}_\text{test}) = \frac{1}{N_\text{test}} \sum_{(\mathbf{x_i}, y_i) \in {\cal L}_\text{test}} L(y_i, \varphi_{{\cal L}_\text{train}}(\mathbf{x_i}))
+\widehat{Err}_{{\cal L}_\text{train}}^{{\cal L}_\text{test}}(\varphi) = \frac{1}{N_\text{test}} \sum_{(\mathbf{x_i}, y_i) \in {\cal L}_\text{test}} L(y_i, \varphi(\mathbf{x_i}))
 \end{equation}
 where $N_\text{test}$ is the size of ${\cal L}_\text{test}$.
 
