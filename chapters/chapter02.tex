@@ -147,27 +147,37 @@ where $X$ denotes the random vector $(X_1, ..., X_p)$. That is,
 $P(X=\mathbf{x}, Y=y)$ is the probability of drawing the couple $(\mathbf{x},
 y)$ at random from ${\cal X} \times {\cal Y}$.
 
-Accordingly, learning a model $\varphi$ whose predictions are as good as
+Accordingly, learning from ${\cal L}$ a model $\varphi$ whose predictions are as good as
 possible can be defined as finding a model $\varphi$ which minimizes its
 expected\footnote{$\mathbb{E}_X \{f(X)\}$ denotes the expected value of $f(x)$
 (for $x \in {\cal X}$) with respect to the probability distribution of the
 random variable $X$. It is defined as $$\mathbb{E}_X \{f(X)\} = \sum_{x \in {\cal
 X}} P(X=x) f(x).$$} prediction error
-\begin{equation}\label{eqn:exp-prediction-error}
+\begin{equation}\label{eqn:generalization-error}
 Err(\varphi) = \mathbb{E}_{X, Y}\{ L(Y, \varphi(X)) \},
 \end{equation}
 where $L$ is a loss function measuring the discrepancy between its two
-arguments~\citep{geurts:2002}. Equation~\ref{eqn:exp-prediction-error} is also
+arguments~\citep{geurts:2002}. Equation~\ref{eqn:generalization-error} is also
 known as the \textit{generalization error} of the model. It basically measures
 the prediction error of $\varphi$ over all possible couples $(\mathbf{x}, y)\in
 {\cal X}\times{\cal Y}$, including the observed couples from the learning set
-${\cal L}$ but also the \textit{unseen} ones from ${\cal X}\times{\cal Y} \setminus
-{\cal L}$.
+${\cal L}$ but also all the \textit{unseen} ones from ${\cal X}\times{\cal Y}
+\setminus {\cal L}$. Indeed, the goal is not in fact to make the very-most accurate
+predictions over the subset ${\cal L}$ of known data, but rather to learn a model which
+is correct and reliable on all possible data.
 
-For classification, the most common loss function is the \textit{zero-one}
-loss function $L(Y, \varphi(X)) = 1(Y \neq \varphi(X))$, where all misclassifications
-are equally penalized. In this case, the generalization error of $\varphi$
-becomes the probability of misclassification of the model:
+For classification, the most common loss function is the \textit{zero-one} loss
+function\footnote{$1(\text{\textit{condition}})$ denotes the unit function. It
+is defined as
+$$1(\text{\textit{condition}}) =
+\begin{cases}
+1 & \text{if \textit{condition} is true}\\
+0 & \text{if \textit{condition} is false}
+\end{cases}.
+$$} $L(Y, \varphi(X)) = 1(Y \neq \varphi(X))$, where all
+misclassifications are equally penalized. In this case, the generalization
+error of $\varphi$ becomes the probability of misclassification of the model:
+
 \begin{equation}
 Err(\varphi) = \mathbb{E}_{X, Y}\{ 1(Y \neq \varphi(X)) \} = P(Y \neq \varphi(X))
 \end{equation}
@@ -182,18 +192,42 @@ Err(\varphi) = \mathbb{E}_{X, Y}\{ (Y - \varphi(X))^2 \}
 
 \subsection{Estimating $Err(\varphi)$}
 
-\subsection{Bayes model and residual error}
+In practice, the probability distribution $P(X, Y)$ is usually unknown, making
+the direct evaluation of $Err(\varphi)$ infeasible. Equivalently, it is often
+not possible to draw additional data, thereby making infeasible the empirical
+estimation of $Err(\varphi)$ on a (virtually infinite) set ${\cal L}'$ drawn
+independently from ${\cal L}$. In most problems, ${\cal L}$ constitutes the
+only data available, on which both the model needs to be learned and its
+generalization error estimated.
+As reviewed and described by several
+authors~\citep{toussaint:1974,nadeau:2003,arlot:2010}, the generalization error
+in Equation~\ref{eqn:generalization-error} can however be estimated in several ways.
+
+The first and simplest estimate is the \textit{resubstitution estimate} or \textit{training error}. It
+consists in empirically estimating $Err(\varphi)$ on the same data as the
+learning set ${\cal L}$ used to build $\varphi$:
+\begin{equation}\label{eqn:training-error}
+\widehat{Err}(\varphi, {\cal L}) = \frac{1}{|{\cal L}|} \sum_{(\mathbf{x_i}, y_i) \in {\cal L}} L(y_i, \varphi(\mathbf{x_i}))
+\end{equation}
+In general, the resubstitution error is a poor estimate of
+Equation~\ref{eqn:generalization-error}. In particular, since
+most machine learning algorithms aim at precisely minimizing this quantity (either directly or indirectly), it typically results in an underestimation of the generalization error.
+
+
+    % Estimation of Err
+        % restitution
+        % train/test
+            % => overfitting/underfitting
+        % cv
+    % Score method
+
+\subsection{Residual error and Bayes model}
+
+% Hastie
 
 \subsection{Precision, recall and $F$-measure}
 
-
-    % Find the model phi minimizing a loss L
-    % Losses L
-    % Estimation of L
-        % restitution
-        % train/test
-        % cv
-    % Bayes error, Bayes model
+% P, R, F, ROC curve, etc
 
 
 \section{Classes of estimators}
