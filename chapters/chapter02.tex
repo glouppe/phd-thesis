@@ -22,12 +22,15 @@ of the input variable $X_j$. Together, the input values $(x_1, x_2, ..., x_p)$
 form a $p$-dimensional input vector $\mathbf{x}$ taking its values in ${\cal
 X}_1 \times ... \times {\cal X}_p = {\cal X}$, where ${\cal X}$ is defined as
 the input space. Similarly, let us define as $y \in {\cal Y}$ the value of the
-output variable $Y$, where ${\cal Y}$ is defined as the output space. By
-definition, both the input and the output spaces are assumed to respectively
-contain all possible input vectors and all possible output values.
-Note that input variables are sometimes known as {\it features}, input
-vectors as {\it objects}, {\it examples} or {\it samples} and the output
-variable as {\it target}.
+output variable $Y$, where ${\cal Y}$ is defined as the output
+space\footnote{Unless stated otherwise, supervised learning is reduced to the
+prediction of a \textit{single} output variable. More generally however, this
+framework can be defined as the prediction of one or several output variables.}.
+By definition, both the input and the output spaces are assumed to respectively
+contain all possible input vectors and all possible output values. Note that
+input variables are sometimes known as {\it features}, input vectors as {\it
+objects}, {\it examples} or {\it samples} and the output variable as {\it
+target}.
 
 Among variables that define the problem, we distinguish between two general
 types. The former correspond to quantitative variables whose values are integer
@@ -135,10 +138,10 @@ y_hat = clf.predict(X_test)
 \end{remark}
 
 
-\section{Estimating performance}
+\section{Performance evaluation}
 
 In the statistical sense, input and output variables $X_1, ..., X_p$ and $Y$
-are \textit{random variables} taking jointly their values from the space ${\cal X}
+are \textit{random variables} taking jointly their values from ${\cal X}
 \times {\cal Y}$ with respect to the joint probability distribution $P(X, Y)$,
 where $X$ denotes the random vector $(X_1, ..., X_p)$. That is,
 $P(X=\mathbf{x}, Y=y)$ is the probability of drawing the couple $(\mathbf{x},
@@ -161,11 +164,27 @@ the prediction error of $\varphi$ over all possible couples $(\mathbf{x}, y)\in
 ${\cal L}$ but also the \textit{unseen} ones from ${\cal X}\times{\cal Y} \setminus
 {\cal L}$.
 
-\subsection{Loss functions}
+For classification, the most common loss function is the \textit{zero-one}
+loss function $L(Y, \varphi(X)) = 1(Y \neq \varphi(X))$, where all misclassifications
+are equally penalized. In this case, the generalization error of $\varphi$
+becomes the probability of misclassification of the model:
+\begin{equation}
+Err(\varphi) = \mathbb{E}_{X, Y}\{ 1(Y \neq \varphi(X)) \} = P(Y \neq \varphi(X))
+\end{equation}
+
+Similarly, for regression, the most used loss function is the \textit{squared
+error} loss $L(Y, \varphi(X)) = (Y - \varphi(X))^2$, where large differences
+between the true values and the predicted values are penalized more heavily
+than small ones. With this loss, the generalization error of the model becomes:
+\begin{equation}
+Err(\varphi) = \mathbb{E}_{X, Y}\{ (Y - \varphi(X))^2 \}
+\end{equation}
 
 \subsection{Estimating $Err(\varphi)$}
 
 \subsection{Bayes model and residual error}
+
+\subsection{Precision, recall and $F$-measure}
 
 
     % Find the model phi minimizing a loss L
