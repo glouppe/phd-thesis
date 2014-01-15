@@ -263,7 +263,21 @@ intensive, the $K$-fold cross-validation estimate has the advantage that every
 couple $(\mathbf{x}, y) \in {\cal L}$ is used both for learning a final model
 $\varphi$ and estimating its generalization error.
 
-
+\begin{remark}{Expected generalization error}
+As we have shown, our goal is to estimate the generalization error $Err_{\cal
+L}(\varphi)$ conditional on the learning set ${\cal L}$. A related quantity
+is the \textit{expected} generalization error
+\begin{equation}\label{eqn:expected-generalization-error}
+Err = \mathbb{E}_{\cal L} \{ Err_{\cal L}(\varphi) \},
+\end{equation}
+averaging over everything which is random, including the randomness in the
+learning set ${\cal L}$ used to produce $\varphi$. As discussed by
+\citet{hastie:2005}, this quantity is close, yet different from $Err_{\cal
+L}(\varphi)$. In particular, the authors point out that most methods, including $K$-fold
+cross-validation, effectively estimate
+Equation~\ref{eqn:expected-generalization-error} rather than
+Equation~\ref{eqn:generalization-error}.
+\end{remark}
 
     % Estimation of Err
         % restitution
