@@ -138,7 +138,7 @@ y_hat = clf.predict(X_test)
 \end{remark}
 
 
-\section{Performance evaluation and model selection}
+\section{Performance evaluation}
 
 In the statistical sense, input and output variables $X_1, ..., X_p$ and $Y$
 are \textit{random variables} taking jointly their values from ${\cal X}
@@ -156,10 +156,10 @@ X}} P(X=x) f(x).$$} prediction error
 \begin{equation}\label{eqn:generalization-error}
 Err_{{\cal L}}(\varphi) = \mathbb{E}_{X, Y}\{ L(Y, \varphi(X)) | {\cal L} \},
 \end{equation}
-where ${\cal L}$ is the learning set used to build $\varphi$ and $L$ a loss
+where ${\cal L}$ is the learning set used to build $\varphi$ and $L$ is a loss
 function measuring the discrepancy between its two
 arguments~\citep{geurts:2002}. Equation~\ref{eqn:generalization-error} is also
-known as the \textit{generalization error} of the model $\varphi$ built from
+known as the \textit{generalization error} or \textit{test error} of the model $\varphi$ built from
 ${\cal L}$. It basically measures the prediction error of $\varphi$ over all
 possible couples $(\mathbf{x}, y)\in {\cal X}\times{\cal Y}$, including the
 observed couples from the learning set ${\cal L}$ but also all the
@@ -194,15 +194,16 @@ Err_{\cal L}(\varphi) = \mathbb{E}_{X, Y}\{ (Y - \varphi(X))^2 | {\cal L} \}
 \subsection{Estimating $Err_{\cal L}(\varphi)$}
 
 In practice, the probability distribution $P(X, Y)$ is usually unknown, making
-the direct evaluation of $Err_{\cal L}(\varphi)$ infeasible. Equivalently, it is often
-not possible to draw additional data, thereby making infeasible the empirical
-estimation of $Err_{\cal L}(\varphi)$ on a (virtually infinite) set ${\cal L}'$ drawn
-independently from ${\cal L}$. In most problems, ${\cal L}$ constitutes the
-only data available, on which both the model needs to be learned and its
-generalization error estimated.
-As reviewed and described by several
-authors~\citep{toussaint:1974,nadeau:2003,arlot:2010}, the generalization error
-in Equation~\ref{eqn:generalization-error} can however be estimated in several ways.
+the direct evaluation of $Err_{\cal L}(\varphi)$ infeasible. Equivalently, it
+is often not possible to draw additional data, thereby making infeasible the
+empirical estimation of $Err_{\cal L}(\varphi)$ on a (virtually infinite) set
+${\cal L}'$ drawn independently from ${\cal L}$. In most problems, ${\cal L}$
+constitutes the only data available, on which both the model needs to be
+learned and its generalization error estimated. As reviewed and described on
+multiple occasions by several
+authors~\citep{toussaint:1974,stone:1978,nadeau:2003,hastie:2005,arlot:2010},
+the generalization error in Equation~\ref{eqn:generalization-error} can however
+be estimated in several ways.
 
 The first and simplest estimate is the \textit{resubstitution estimate} or \textit{training error}. It
 consists in empirically estimating $Err_{\cal L}(\varphi)$ on the same data as the
@@ -215,18 +216,54 @@ In general, the resubstitution error is a poor estimate of
 $Err_{\cal L}(\varphi)$. In particular, since most machine learning algorithms
 aim at precisely minimizing Equation~\ref{eqn:training-error} (either directly
 or indirectly), it typically results in an underestimation of the
-generalization error.
+generalization error -- which accounts for all couples $(\mathbf{x}, y)$, i.e., not only
+those from ${\cal L}$.
 
-The second approach is the \textit{test sample estimate} or \textit{test error}. It consists in
+The second approach is the \textit{test sample estimate}. It consists in
 dividing the learning set ${\cal L}$ into two disjoint sets ${\cal
-L}_\text{train}$ and ${\cal L}_\text{test}$, respectively called
+L}_\text{train}$ and ${\cal L}_\text{test}$, called
 \textit{training set} and \textit{test set}, and then to use each part
 respectively for learning the model and estimating its generalization error.
-The test sample estimate over ${\cal L}_\text{test}$ of the model $\varphi$ built on ${\cal L}_\text{train}$ is therefore given by:
+The test sample estimate over ${\cal L}_\text{test}$ of the model $\varphi$
+built on ${\cal L}_\text{train}$ is therefore given by:
 \begin{equation}\label{eqn:test-error}
 \widehat{Err}_{{\cal L}_\text{train}}^{{\cal L}_\text{test}}(\varphi) = \frac{1}{N_\text{test}} \sum_{(\mathbf{x_i}, y_i) \in {\cal L}_\text{test}} L(y_i, \varphi(\mathbf{x_i}))
 \end{equation}
-where $N_\text{test}$ is the size of ${\cal L}_\text{test}$.
+where $N_\text{test}$ is the size of ${\cal L}_\text{test}$. As a rule-of-thumb,
+${\cal L}_\text{train}$ is usually taken as $70\%$ of the samples in
+${\cal L}$ and ${\cal L}_\text{test}$ as the remaining $30\%$, though
+theoretical work~\citep{guyon:1997} suggests to progressively reduce the size of test set as
+the size of ${\cal L}$ increases. In any case, care must taken when splitting ${\cal
+L}$ into two subsets, so that samples from ${\cal L}_\text{train}$ can be
+considered independent from those in ${\cal L}_\text{test}$ and drawn from the
+same distribution. This is however usually guaranteed by drawing ${\cal
+L}_\text{train}$ and ${\cal L}_\text{test}$ simply at random from ${\cal L}$.
+While being an unbiased estimate of $Err_{\cal L}(\varphi)$, the test sample
+estimate has the drawback that it reduces the
+effective sample size on which the model is learned. If ${\cal L}$ is large,
+then this is usually not an issue, but if ${\cal L}$ only contains a few dozens
+of samples, then this strategy might impair the performance of the model.
+
+When ${\cal L}$ is small, the \textit{$K$-fold cross-validation estimate} is
+usually preferred over the test sample estimate. It consists in randomly
+dividing the learning set ${\cal L}$ into $K$ disjoint subsets, denoted  ${\cal
+L}_1, ..., {\cal L}_K$, and then to estimate the generalization error $Err_{\cal
+L}(\varphi)$ as the average test error over the folds ${\cal L}_k$ of the
+models $\varphi_k$  learned on the remaining data ${\cal L}\setminus{\cal
+L}_k$:
+\begin{equation}\label{eqn:cv-error}
+\widehat{Err}_{\cal L}^{CV}(\varphi) = \frac{1}{K} \sum_{k=1}^K \widehat{Err}_{{\cal L}\setminus{\cal L}_k}^{{\cal L}_k}(\varphi_k)
+\end{equation}
+The assumption behind this approach is that since each model $\varphi_k$ is
+built using almost all ${\cal L}$, they should all be close to the model
+$\varphi$ learned on the entire set ${\cal L}$. As a result the estimates
+$\smash{\widehat{Err}_{{\cal L}\setminus{\cal L}_k}^{{\cal L}_k}(\varphi_k)}$
+should also all be close to $Err_{\cal L}(\varphi)$. While more computationally
+intensive, the $K$-fold cross-validation estimate has the advantage that every
+couple $(\mathbf{x}, y) \in {\cal L}$ is used both for learning a final model
+$\varphi$ and estimating its generalization error.
+
+
 
     % Estimation of Err
         % restitution
@@ -242,6 +279,9 @@ where $N_\text{test}$ is the size of ${\cal L}_\text{test}$.
 \subsection{Precision, recall and $F$-measure}
 
 % P, R, F, ROC curve, etc
+
+
+\section{Model selection}
 
 
 \section{Classes of estimators}
