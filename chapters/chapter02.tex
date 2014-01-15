@@ -201,7 +201,7 @@ ${\cal L}'$ drawn independently from ${\cal L}$. In most problems, ${\cal L}$
 constitutes the only data available, on which both the model needs to be
 learned and its generalization error estimated. As reviewed and described on
 multiple occasions by several
-authors~\citep{toussaint:1974,stone:1978,nadeau:2003,hastie:2005,arlot:2010},
+authors~\citep{toussaint:1974,stone:1978,breiman:1984,kohavi:1995,nadeau:2003,hastie:2005,arlot:2010},
 the generalization error in Equation~\ref{eqn:generalization-error} can however
 be estimated in several ways.
 
@@ -256,12 +256,13 @@ L}_k$:
 \end{equation}
 The assumption behind this approach is that since each model $\varphi_k$ is
 built using almost all ${\cal L}$, they should all be close to the model
-$\varphi$ learned on the entire set ${\cal L}$. As a result the estimates
+$\varphi$ learned on the entire set ${\cal L}$. As a result the unbiased estimates
 $\smash{\widehat{Err}_{{\cal L}\setminus{\cal L}_k}^{{\cal L}_k}(\varphi_k)}$
 should also all be close to $Err_{\cal L}(\varphi)$. While more computationally
 intensive, the $K$-fold cross-validation estimate has the advantage that every
 couple $(\mathbf{x}, y) \in {\cal L}$ is used both for learning a final model
-$\varphi$ and estimating its generalization error.
+$\varphi$ and estimating its generalization error. In a typical setting,
+$K=10$, usually yielding stable and reliable estimates~\citep{kohavi:1995}.
 
 \begin{remark}{Expected generalization error}
 As we have shown, our goal is to estimate the generalization error $Err_{\cal
