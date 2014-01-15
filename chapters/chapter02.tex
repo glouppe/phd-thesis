@@ -319,14 +319,11 @@ Similarly, for regression with the square error loss, we have:
 In other words, the best possible regressor consists in systematically predicting
 the expected value of $Y$ given $X=\mathbf{x}$.
 
-In practice, $P(X, Y)$ is unknown and it is therefore not possible to derive
-the Bayes model analytically. On simulated data however, where the distribution
-is known, knowing $\varphi_B$ and comparing  $Err(\varphi_B)$ with the test set
-error of a model $\varphi$ can be beneficial for evaluating how effective $\varphi$ is.
-
-\subsection{Precision, recall and $F$-measure}
-
-% P, R, F, ROC curve, etc
+For practical problems, $P(X, Y)$ is unknown and the Bayes model cannot be
+derived analytically. On simulated data however, where the distribution is
+known, knowing $\varphi_B$ and comparing $Err(\varphi_B)$ with the test set
+error of a model $\varphi$ can be beneficial for evaluating how effective
+$\varphi$ is.
 
 
 \section{Model selection}
