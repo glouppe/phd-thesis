@@ -401,10 +401,10 @@ of the hyper-parameter values, that is:
 \end{equation}
 In practice, solving this later equation is also a difficult task but approximations
 can be obtained in several ways, e.g., using either manual tuning of
-$\theta$, exhaustive exploration of the parameter space using grid search or
+$\theta$, exhaustive exploration of the parameter space using grid search, or
 dedicated optimization procedures (e.g., using random
 search~\citep{bergstra:2012}). Finally, once $\widehat{\theta}^*$ is
-identified, the algorithm is run once again on the entire learning set ${\cal
+identified, the learning algorithm is run once again on the entire learning set ${\cal
 L}$, yielding the approximately optimal model ${\cal A}(\widehat{\theta}^*,
 {\cal L})$.
 
@@ -414,6 +414,13 @@ carried out in the exact same way but using $K$-fold cross-validation estimates
 ection~\ref{sec:estimating-generalization-error}) instead of test sample estimates.
 
 In any case, ...
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.5]{figures/ch2_train_test_error.pdf}
+    \caption{Foo bar}
+    \label{fig:train-test-error}
+\end{figure}
 
 \begin{remark}{Selecting and evaluating simultaneously}
 \end{remark}
