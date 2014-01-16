@@ -197,6 +197,7 @@ Err_{\cal L}(\varphi) = \mathbb{E}_{X, Y}\{ (Y - \varphi(X))^2 | {\cal L} \}
 \end{equation}
 
 \subsection{Estimating $Err_{\cal L}(\varphi)$}
+\label{sec:estimating-generalization-error}
 
 In practice, the probability distribution $P(X, Y)$ is usually unknown, making
 the direct evaluation of $Err_{\cal L}(\varphi)$ infeasible. Equivalently, it
@@ -355,13 +356,13 @@ with the number $p$ of input variables in order to compute accurate estimates of
 $P(Y|X)$~\citep{geurts:2002}.
 
 To make supervised learning work in high-dimensional input spaces with learning
-sets of moderate sizes, simplifying or restrictive assumptions must
-be made on the structure of the best model $\varphi_B$. More specifically, a
-supervised learning algorithm assumes that $\varphi_B$ lives in a family
-${\cal H}$ of candidate models, also known as \textit{hypotheses} in
-statistical learning theory, of restricted structure. In this setting, the
-\textit{model selection} problem is then defined as finding the best model
-among ${\cal H}$ on the basis of the learning set ${\cal L}$.
+sets of moderate sizes, simplifying or restrictive assumptions must be made on
+the structure of the best model $\varphi_B$. More specifically, a supervised
+learning algorithm assumes that $\varphi_B$ -- or at least a good enough approximation
+-- lives in a family ${\cal H}$ of candidate models, also known as
+\textit{hypotheses} in statistical learning theory, of restricted structure. In
+this setting, the \textit{model selection} problem is then defined as finding
+the best model among ${\cal H}$ on the basis of the learning set ${\cal L}$.
 
 \begin{remark}{Approximation error}
 Depending on restrictions made on the structure of the problem, the
@@ -376,7 +377,46 @@ where $Err(\varphi)$ is the generalization error of $\varphi$ (independently
 of any learning set ${\cal L})$.
 \end{remark}
 
+To be more specific, let $\theta$ be the vector of hyper-parameters values
+controlling the execution of a learning algorithm ${\cal A}$. The application
+of ${\cal A}$ with parameters $\theta$ on the learning set ${\cal L}$ is a
+deterministic\footnote{If ${\cal A}$ makes use of a pseudo-random generator to
+mimic a stochastic process, then we assume that the corresponding random seed is
+parts of $\theta$.} process yielding a model ${\cal A}(\theta, {\cal L}) =
+\varphi \in {\cal H}$. As such, our goal is to find the vector of hyper-parameters values
+yielding to the best model possibly learnable in ${\cal H}$ from ${\cal L}$:
+\begin{equation}
+\theta^* = \argmin_{\theta} Err_{\cal L}({\cal A}(\theta, {\cal L}))
+\end{equation}
+Again, this problem cannot (usually) be solved exactly in practice since
+it requires the true generalization error of a model to be computable. However
+approximations $\widehat{\theta}^*$ can be obtained in several ways.
 
+When ${\cal L}$ is large, the easiest way to find $\widehat{\theta}^*$ is to
+use test sample estimates (as defined by Equation~\ref{eqn:test-error} of
+Section~\ref{sec:estimating-generalization-error}) to guide the search
+of the hyper-parameter values, that is:
+\begin{equation}
+\widehat{\theta}^* = \argmin_{\theta} \widehat{Err}_{{\cal L}_\text{train}}^{{\cal L}_\text{test}}({\cal A}(\theta, {\cal L}_\text{train}))
+\end{equation}
+In practice, solving this later equation is also a difficult task but approximations
+can be obtained in several ways, e.g., using either manual tuning of
+$\theta$, exhaustive exploration of the parameter space using grid search or
+dedicated optimization procedures (e.g., using random
+search~\citep{bergstra:2012}). Finally, once $\widehat{\theta}^*$ is
+identified, the algorithm is run once again on the entire learning set ${\cal
+L}$, yielding the approximately optimal model ${\cal A}(\widehat{\theta}^*,
+{\cal L})$.
+
+Similarly, when ${\cal L}$ is scarse, the same procedure can be
+carried out in the exact same way but using $K$-fold cross-validation estimates
+(as defined by Equation~\ref{eqn:cv-error} of
+ection~\ref{sec:estimating-generalization-error}) instead of test sample estimates.
+
+In any case, ...
+
+\begin{remark}{Selecting and evaluating simultaneously}
+\end{remark}
 
 % parametrization of \varphi
 % under/over fitting
