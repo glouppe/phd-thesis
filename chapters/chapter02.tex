@@ -262,7 +262,7 @@ should also all be close to $Err_{\cal L}(\varphi)$. While more computationally
 intensive, the $K$-fold cross-validation estimate has the advantage that every
 couple $(\mathbf{x}, y) \in {\cal L}$ is used both for learning a final model
 $\varphi$ and estimating its generalization error. In a typical setting,
-$K=10$, usually yielding stable and reliable estimates~\citep{kohavi:1995}.
+$K$ is usually fixed to $10$, a value often yielding stable and reliable estimates~\citep{kohavi:1995}.
 
 \begin{remark}{Expected generalization error}
 As we have shown, our goal is to estimate the generalization error $Err_{\cal
@@ -282,12 +282,12 @@ Equation~\ref{eqn:generalization-error}.
 
 \subsection{Bayes model and residual error}
 
-When the probability distribution $P(X, Y)$ is known, the model $\varphi_B$
-which minimizes the generalization error of Equation~\ref{eqn:generalization-error}
-can be derived analytically (and independently of any learning set
-${\cal L}$).
+When the probability distribution $P(X, Y)$ is known, the best possible model,
+i.e., the model $\varphi_B$ which minimizes the generalization error of
+Equation~\ref{eqn:generalization-error}, can be derived analytically and
+independently of any learning set ${\cal L}$.
 
-By conditioning on $X$, the generalization error of this model becomes:
+By conditioning on $X$, the generalization error of this model can be rewritten as:
 \begin{equation}\label{eqn:generalization-error-conditionned}
 \mathbb{E}_{X, Y}\{ L(Y, \varphi_B(X)) \} = \mathbb{E}_{X}\{ \mathbb{E}_{Y|X} \{ L(Y, \varphi_B(X)) \} \}
 \end{equation}
@@ -318,13 +318,18 @@ Similarly, for regression with the square error loss, we have:
                       &= \mathbb{E}_{Y|X=\mathbf{x}} \{ Y \}
 \end{align}
 In other words, the best possible regressor consists in systematically predicting
-the expected value of $Y$ given $X=\mathbf{x}$.
+the average value of $Y$ at $X=\mathbf{x}$.
 
 For practical problems, $P(X, Y)$ is unknown and the Bayes model cannot be
-derived analytically. On simulated data however, where the distribution is
-known, knowing $\varphi_B$ and comparing $Err(\varphi_B)$ with the test set
-error of a model $\varphi$ can be beneficial for evaluating how effective
-$\varphi$ is.
+derived analytically. In this context, the effectiveness of a model $\varphi$
+may be difficult to evaluate since (estimates of) $Err_{\cal L}(\varphi)$ may
+not be very indicative of the goodness of $\varphi$ if the lowest attainable
+error $Err(\varphi_B)$ is unknown. On simulated data however, where the
+distribution is known, deriving $\varphi_B$ and $Err(\varphi_B)$ is feasible.
+In particular, this can be beneficial as they can now be used for comparing the
+test set error of $\varphi$ with $Err(\varphi_B)$ and thereby evaluate the
+actual effectiveness of $\varphi$ with respect the best possible model one can
+possibly build.
 
 
 \section{Model selection}
