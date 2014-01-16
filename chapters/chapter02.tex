@@ -211,7 +211,7 @@ authors~\citep{toussaint:1974,stone:1978,breiman:1984,kohavi:1995,nadeau:2003,ha
 the generalization error in Equation~\ref{eqn:generalization-error} can however
 be estimated in several ways.
 
-The first and simplest estimate is the \textit{resubstitution estimate} or \textit{training error}. It
+The first and simplest estimate is the \textit{resubstitution estimate} or \textit{training sample estimate}. It
 consists in empirically estimating $Err_{\cal L}(\varphi)$ on the same data as the
 learning set ${\cal L}$ used to build $\varphi$, that is:
 \begin{equation}\label{eqn:training-error}
@@ -403,22 +403,46 @@ In practice, solving this later equation is also a difficult task but approximat
 can be obtained in several ways, e.g., using either manual tuning of
 $\theta$, exhaustive exploration of the parameter space using grid search, or
 dedicated optimization procedures (e.g., using random
-search~\citep{bergstra:2012}). Finally, once $\widehat{\theta}^*$ is
-identified, the learning algorithm is run once again on the entire learning set ${\cal
-L}$, yielding the approximately optimal model ${\cal A}(\widehat{\theta}^*,
-{\cal L})$.
-
-Similarly, when ${\cal L}$ is scarse, the same procedure can be
+search~\citep{bergstra:2012}). Similarly, when ${\cal L}$ is scarse, the same procedure can be
 carried out in the exact same way but using $K$-fold cross-validation estimates
 (as defined by Equation~\ref{eqn:cv-error} of
-ection~\ref{sec:estimating-generalization-error}) instead of test sample estimates.
+Section~\ref{sec:estimating-generalization-error}) instead of test sample estimates. In any case, once $\widehat{\theta}^*$ is
+identified, the learning algorithm is run once again on the entire learning set ${\cal
+L}$, finally yielding the approximately optimal model ${\cal A}(\widehat{\theta}^*,
+{\cal L})$.
 
-In any case, ...
+When optimizing $\theta$, special care must taken so that the resulting model
+is neither too simple nor too complex. In the former case, the model is indeed
+said to \textit{underfit} the data, i.e., to be not flexible enough the capture
+the structure between $X$ and $Y$. In the later case, the model is said to
+\textit{overfit} the data, i.e., to be too flexible and to capture illusory
+structures that are specific to the learning set ${\cal L}$. As
+Figure~\ref{fig:train-test-error} illustrates, this phenonemon can be observed by examining
+the respective training and test estimates of the model with respect to its
+complexity. When the model is too simple, both the training and test estimates
+are large because of underfitting. As complexity increases, the model gets more
+accurate and both the training and test estimates decrease. However, when the
+model becomes too complex, specific trends from the training set get captured,
+reducing the corresponding training estimates down to $0$, as if the model were
+perfect. At the same time, the test estimates become worse because these
+structures are too specific to the training set and do not generalize. The
+model is overfitting. The best possible parameter values $\theta$ is therefore
+the one making the appropriate trade-off between a resulting model which
+neither too simple nor to complex.
 
 \begin{figure}
     \centering
     \includegraphics[scale=0.5]{figures/ch2_train_test_error.pdf}
-    \caption{Foo bar}
+
+    \caption{Training and test sample estimates with respect to the complexity
+             of the model. The light blue curves show the training sample estimates over
+             ${\cal L}_\text{train}$ (Equation~\ref{eqn:training-error})  while the light red curves show the test sample
+             estimates  over ${\cal L}_\text{test}$ (Equation~\ref{eqn:test-error}) for $100$ learning sets ${\cal L} = {\cal
+             L}_\text{train} \cup {\cal L}_\text{test}$ drawn at random from a
+             known distribution. The thick blue curve is the expected generalization error
+             $Err$ and the thick red curve is the expected training sample estimate $\mathbb{E}_{\cal
+             L} \{ \widehat{Err}_{\cal L}(\varphi) \} $. (Figure inspired from \citep{hastie:2005}) }
+
     \label{fig:train-test-error}
 \end{figure}
 
