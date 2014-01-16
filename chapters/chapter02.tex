@@ -148,19 +148,24 @@ $P(X=\mathbf{x}, Y=y)$ is the probability of drawing the couple $(\mathbf{x},
 y)$ at random from ${\cal X} \times {\cal Y}$.
 
 Accordingly, learning  a model $\varphi$ whose predictions are as good as
-possible can be defined as finding a model $\varphi$ which minimizes its
-expected\footnote{$\mathbb{E}_X \{f(X)\}$ denotes the expected value of $f(x)$
+possible can be stated as finding a model $\varphi$ which minimizes its
+expected prediction error, defined as follows:
+
+\begin{definition}
+The \emph{expected prediction error}, also known as \emph{generalization
+error} or \emph{test error}, of the model $\varphi$ is\footnote{$\mathbb{E}_X \{f(X)\}$ denotes the expected value of $f(x)$
 (for $x \in {\cal X}$) with respect to the probability distribution of the
 random variable $X$. It is defined as $$\mathbb{E}_X \{f(X)\} = \sum_{x \in {\cal
-X}} P(X=x) f(x).$$} prediction error
+X}} P(X=x) f(x).$$}
 \begin{equation}\label{eqn:generalization-error}
 Err_{{\cal L}}(\varphi) = \mathbb{E}_{X, Y}\{ L(Y, \varphi(X)) | {\cal L} \},
 \end{equation}
 where ${\cal L}$ is the learning set used to build $\varphi$ and $L$ is a loss
 function measuring the discrepancy between its two
-arguments~\citep{geurts:2002}. Equation~\ref{eqn:generalization-error} is also
-known as the \textit{generalization error} or \textit{test error} of the model $\varphi$ built from
-${\cal L}$. It basically measures the prediction error of $\varphi$ over all
+arguments~\citep{geurts:2002}.
+\end{definition}
+
+Equation~\ref{eqn:generalization-error} basically measures the prediction error of $\varphi$ over all
 possible couples $(\mathbf{x}, y)\in {\cal X}\times{\cal Y}$, including the
 observed couples from the learning set ${\cal L}$ but also all the
 \textit{unseen} ones from ${\cal X}\times{\cal Y} \setminus {\cal L}$. Indeed,
@@ -215,7 +220,7 @@ where $N$ is the size of ${\cal L}$.
 In general, the resubstitution error is a poor estimate of
 $Err_{\cal L}(\varphi)$. In particular, since most machine learning algorithms
 aim at precisely minimizing Equation~\ref{eqn:training-error} (either directly
-or indirectly), it typically results in an underestimation of the
+or indirectly), it typically results in an overly optimistic estimate of the
 generalization error -- which accounts for all couples $(\mathbf{x}, y)$, i.e., not only
 those from ${\cal L}$.
 
@@ -281,6 +286,7 @@ Equation~\ref{eqn:generalization-error}.
 \end{remark}
 
 \subsection{Bayes model and residual error}
+\label{sec:bayes-model}
 
 When the probability distribution $P(X, Y)$ is known, the best possible model,
 i.e., the model $\varphi_B$ which minimizes the generalization error of
@@ -302,11 +308,16 @@ generalization error $Err(\varphi_B)$ as the \textit{residual error}. It represe
 error that any supervised learning algorithm can possibly attain, that is
 the irreducible error purely due to random deviations in the data.
 
+\begin{definition}
+A model $\varphi_B$ is a \emph{Bayes model} if, for any model $\varphi$ built from any
+learning set ${\cal L}$, $Err(\varphi_B) \leq Err_{\cal L}(\varphi)$.
+\end{definition}
+
 In classification, when $L$ is the zero-one loss, the Bayes model is:
 \begin{align}
-\varphi_B(\mathbf{x}) &= \argmin_{y \in {\cal Y}} \mathbb{E}_{Y|X=\mathbf{x}} \{ 1(Y, y) \}\\
-                      &= \argmin_{y \in {\cal Y}} P(Y \neq y|X=\mathbf{x})\\
-                      &= \argmax_{y \in {\cal Y}} P(Y = y|X=\mathbf{x})
+\varphi_B(\mathbf{x}) &= \argmin_{y \in {\cal Y}} \mathbb{E}_{Y|X=\mathbf{x}} \{ 1(Y, y) \} \nonumber \\
+                      &= \argmin_{y \in {\cal Y}} P(Y \neq y|X=\mathbf{x}) \nonumber \\
+                      &= \argmax_{y \in {\cal Y}} P(Y = y|X=\mathbf{x}) \label{eqn:bayes-model-classification}
 \end{align}
 Put otherwise, the best possible classifier
 consists in systematically predicting the most likely class $y \in \{1, ..., J\}$
@@ -314,8 +325,8 @@ given $X=\mathbf{x}$.
 
 Similarly, for regression with the square error loss, we have:
 \begin{align}
-\varphi_B(\mathbf{x}) &= \argmin_{y \in {\cal Y}} \mathbb{E}_{Y|X=\mathbf{x}} \{ (Y - y)^2 \} \\
-                      &= \mathbb{E}_{Y|X=\mathbf{x}} \{ Y \}
+\varphi_B(\mathbf{x}) &= \argmin_{y \in {\cal Y}} \mathbb{E}_{Y|X=\mathbf{x}} \{ (Y - y)^2 \} \nonumber \\
+                      &= \mathbb{E}_{Y|X=\mathbf{x}} \{ Y \} \label{eqn:bayes-model-regression}
 \end{align}
 In other words, the best possible regressor consists in systematically predicting
 the average value of $Y$ at $X=\mathbf{x}$.
@@ -334,8 +345,44 @@ possibly build.
 
 \section{Model selection}
 
+From the previous discussion in Section~\ref{sec:bayes-model}, it appears that
+to solve the supervised learning problem it would be sufficient to estimate
+$P(Y|X)$ from the learning sample ${\cal L}$ and then to define a model
+accordingly using either Equation~\ref{eqn:bayes-model-classification} or
+Equation~\ref{eqn:bayes-model-regression}. Unfortunately, this approach is
+infeasible in practice because it requires ${\cal L}$ to grow exponentially
+with the number $p$ of input variables in order to compute accurate estimates of
+$P(Y|X)$~\citep{geurts:2002}.
+
+To make supervised learning work in high-dimensional input spaces with learning
+sets of moderate sizes, simplifying or restrictive assumptions must
+be made on the structure of the best model $\varphi_B$. More specifically, a
+supervised learning algorithm assumes that $\varphi_B$ lives in a family
+${\cal H}$ of candidate models, also known as \textit{hypotheses} in
+statistical learning theory, of restricted structure. In this setting, the
+\textit{model selection} problem is then defined as finding the best model
+among ${\cal H}$ on the basis of the learning set ${\cal L}$.
+
+\begin{remark}{Approximation error}
+Depending on restrictions made on the structure of the problem, the actual
+Bayes model usually do not belong to ${\cal H}$, but there may be models
+$\varphi \in {\cal H}$ that are sufficiently close to it. In particular, the
+\textit{approximation error}~\citep{bottou:2011} measures how closely the
+models in ${\cal H}$ can approximate the optimal model $\varphi_B$:
+\begin{equation}
+Err({\cal H}) = \min_{\varphi \in {\cal H}} Err(\varphi) - Err(\varphi_B)
+\end{equation}
+where $Err(\varphi)$ is the generalization of $\varphi$ (independently of any learning set ${\cal L})$.
+\end{remark}
+
+% parametrization of \varphi
+% under/over fitting
+% evaluation, the wrong way
+
 
 \section{Classes of estimators}
     % See Pierre thesis
-    % { API = fit, predict }
-    % - Describe popular algorithms (trees, knn, linear models)
+    % Tree-based methods
+    % KNN
+    % Neural Networks (deep learning)
+    % Linear models
