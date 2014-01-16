@@ -364,16 +364,19 @@ statistical learning theory, of restricted structure. In this setting, the
 among ${\cal H}$ on the basis of the learning set ${\cal L}$.
 
 \begin{remark}{Approximation error}
-Depending on restrictions made on the structure of the problem, the actual
-Bayes model usually do not belong to ${\cal H}$, but there may be models
+Depending on restrictions made on the structure of the problem, the
+Bayes model usually does not belong to ${\cal H}$, but there may be models
 $\varphi \in {\cal H}$ that are sufficiently close to it. In particular, the
 \textit{approximation error}~\citep{bottou:2011} measures how closely the
 models in ${\cal H}$ can approximate the optimal model $\varphi_B$:
 \begin{equation}
 Err({\cal H}) = \min_{\varphi \in {\cal H}} Err(\varphi) - Err(\varphi_B)
 \end{equation}
-where $Err(\varphi)$ is the generalization of $\varphi$ (independently of any learning set ${\cal L})$.
+where $Err(\varphi)$ is the generalization error of $\varphi$ (independently
+of any learning set ${\cal L})$.
 \end{remark}
+
+
 
 % parametrization of \varphi
 % under/over fitting
@@ -381,6 +384,12 @@ where $Err(\varphi)$ is the generalization of $\varphi$ (independently of any le
 
 
 \section{Classes of estimators}
+
+\subsection{Linear models}
+\subsection{$k$-Nearest Neighbors}
+\subsection{Neural networks}
+\subsection{Tree-based methods}
+
     % See Pierre thesis
     % Tree-based methods
     % KNN
