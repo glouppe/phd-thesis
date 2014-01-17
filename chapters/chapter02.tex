@@ -91,7 +91,7 @@ to find a model such that its predictions $\varphi(\mathbf{x})$, also denoted
 by the variable $\hat{Y}$, are as good as possible. If $Y$ is a categorical
 variable then the learning task is a classification problem. If $Y$ is
 numerical variable, then learning task is a regression problem. Without loss of
-generality, the resulting models, or \textit{estimators}, can be defined as
+generality, the resulting models can be defined as
 follows:
 
 \begin{definition}
@@ -105,7 +105,7 @@ A \emph{regressor} is a function $\varphi: {\cal X} \mapsto {\cal Y}$, where ${\
 
 \begin{remark}{Estimator interface}
 We follow in this work the API conventions proposed by~\citet{buitinck:2013}.
-In particular, learning algorithms are described as estimators implementing the
+In particular, learning algorithms are described as \textit{estimators} implementing the
 following interface:
 
 \begin{itemize}
@@ -424,25 +424,23 @@ are large because of underfitting. As complexity increases, the model gets more
 accurate and both the training and test estimates decrease. However, when the
 model becomes too complex, specific trends from the training set get captured,
 reducing the corresponding training estimates down to $0$, as if the model were
-perfect. At the same time, the test estimates become worse because these
-structures are too specific to the training set and do not generalize. The
-model is overfitting. The best possible parameter values $\theta$ is therefore
-the one making the appropriate trade-off between a resulting model which
+perfect. At the same time, the test estimates become worse because the
+structure learned from the training set is too speficic and does not generalize. The
+model is overfitting. The best parameter value $\theta$ is therefore
+the one making the appropriate trade-off and producing a model which
 neither too simple nor to complex.
 
 \begin{figure}
     \centering
     \includegraphics[scale=0.5]{figures/ch2_train_test_error.pdf}
-
     \caption{Training and test sample estimates with respect to the complexity
              of the model. The light blue curves show the training sample estimates over
              ${\cal L}_\text{train}$ (Equation~\ref{eqn:training-error})  while the light red curves show the test sample
              estimates  over ${\cal L}_\text{test}$ (Equation~\ref{eqn:test-error}) for $100$ learning sets ${\cal L} = {\cal
              L}_\text{train} \cup {\cal L}_\text{test}$ drawn at random from a
              known distribution. The thick blue curve is the expected generalization error
-             $Err$ and the thick red curve is the expected training sample estimate $\mathbb{E}_{\cal
-             L} \{ \widehat{Err}_{\cal L}(\varphi) \} $. (Figure inspired from \citep{hastie:2005}) }
-
+             $Err$ (Equation~\ref{eqn:expected-generalization-error}) and the thick red curve is the expected training sample estimate $\mathbb{E}_{\cal
+             L} \{ \widehat{Err}_{\cal L}(\varphi) \} $. (Figure inspired from \citep{hastie:2005}.) }
     \label{fig:train-test-error}
 \end{figure}
 
@@ -454,7 +452,7 @@ neither too simple nor to complex.
 % evaluation, the wrong way
 
 
-\section{Classes of estimators}
+\section{Classes of algorithms}
 
 \subsection{Linear models}
 \subsection{$k$-Nearest Neighbors}

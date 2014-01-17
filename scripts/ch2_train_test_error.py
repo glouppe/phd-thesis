@@ -53,8 +53,8 @@ plt.plot(parameter_values[::-1], np.mean(all_test_errors, axis=0),
          color=(1, 0, 0), label="Test error")
 
 plt.tick_params(axis="x", which="both", bottom="off", top="off", labelbottom="off")
-plt.xlabel("Complexity")
-plt.ylabel("MSE")
+plt.xlabel("Model complexity")
+plt.ylabel("Mean square error")
 plt.legend(loc="best")
 
 plt.show()
