@@ -418,7 +418,9 @@ is neither too simple nor too complex. In the former case, the model is indeed
 said to \textit{underfit} the data, i.e., to be not flexible enough the capture
 the structure between $X$ and $Y$. In the later case, the model is said to
 \textit{overfit} the data, i.e., to be too flexible and to capture illusory
-structures that are specific to the learning set. As Figure~\ref{fig:train-test-error}
+structures that are specific to the learning set.
+
+As Figure~\ref{fig:train-test-error}
 illustrates, this phenonemon can be observed by examining the
 respective training and test estimates of the model with respect to its
 complexity. When the model is too simple, both the training and test estimates
@@ -452,27 +454,26 @@ happens that one wants to do both model selection and model assessment. That
 is, having chosen a final model ${\cal A}(\widehat{\theta}^*, {\cal L})$, one
 wants to also estimate its generalization error.
 
-A naive assessment of the generalization error of the selected model might be to
-simply use the test sample estimate
-$\smash{\widehat{Err}_{{\cal L}_\text{train}}^{{\cal L}_\text{test}}({\cal A}(\widehat{\theta}^*, {\cal L}_\text{train}))}$
-that was minimized during model selection. The issue with this estimate
-is that the learned model is not independent from ${\cal L}_\text{test}$
-since its repeated construction was precisely guided by the minimization of its
-prediction error over ${\cal L}_\text{test}$. As a result, the minimized
-test sample estimate constitutes an underestimation of the true generalization
-error, sometimes substantial. For the same reasons, using the $K$-fold cross-validation
-estimate instead of the test sample estimate does not provide a better
-estimate since model selection was similarly guided by the
-minimization of this quantity.
+A naive assessment of the generalization error of the selected model might be
+to simply use the test sample estimate $\smash{\widehat{Err}_{{\cal
+L}_\text{train}}^{{\cal L}_\text{test}}({\cal A}(\widehat{\theta}^*, {\cal
+L}_\text{train}))}$ that was minimized during model selection. The issue with
+this estimate is that the learned model is not independent from ${\cal
+L}_\text{test}$ since its repeated construction was precisely guided by the
+minimization of its prediction error over ${\cal L}_\text{test}$. As a result,
+the minimized test sample error is in fact a biased, optimistic, estimate of
+the true generalization error, sometimes leading substantial understimations.
+For the same reasons, using the $K$-fold cross-validation estimate instead of
+the test sample estimate does not provide a better estimate since model
+selection was similarly guided by the minimization of this quantity.
 
 To guarantee an unbiased estimate, the test set on which the generalization
 error is evaluated should ideally be kept out of the entire model selection
-procedure and only be used once the final model is selected. Appropriate and
-correct protocols for both model selection and evaluation, using either test
-samples estimates or $K$-fold cross-validation estimates, are respectively
-given in Algorithm~\ref{algo:train-valid-test}, describing the
-\textit{Train-Valid-Test set protocol}, and Algorithm~\ref{algo:cv}, describing the
-\textit{nested $K$-fold cross-validation protocol}.
+procedure and only be used once the final model is selected.
+Algorithm~\ref{algo:train-valid-test} details such a protocol. Similarly,
+per-fold estimates of the generalization error should be kept out of the model
+selection procedure, for example using nested cross-validation within each
+fold, as explicited in Algorithm~\ref{algo:cv}.
 
 \begin{algorithm}\label{algo:train-valid-test}
 Train-Valid-Test set protocol for both model selection and evaluation.
@@ -484,7 +485,7 @@ ${\cal L}_\text{train}$, ${\cal L}_\text{valid}$ and ${\cal L}_\text{test}$;
 \begin{equation}
 \widehat{\theta}^* = \argmin_{\theta} \widehat{Err}_{{\cal L}_\text{train}}^{{\cal L}_\text{valid}}({\cal A}(\theta, {\cal L}_\text{train}));
 \end{equation}
-\item Evaluate the generalization error of the selected final model as
+\item Evaluate the (unbiased) generalization error of the final model as
 \begin{equation}
 \widehat{Err}_{{\cal L}_\text{train} \cup {\cal L}_\text{valid}}^{{\cal L}_\text{test}}({\cal A}(\widehat{\theta}^*, {\cal L}_\text{train} \cup {\cal L}_\text{valid}));
 \end{equation}
@@ -499,22 +500,23 @@ Nested $K$-fold cross-validation protocol for both model selection and evaluatio
 \item Divide the learning set ${\cal L}$ into $K$ folds ${\cal L}_1, ..., {\cal L}_K$;
 \item For each fold $k=1, ..., K$:
     \begin{enumerate}
-        \item Perform model selection on the subset ${\cal L}\setminus {\cal L}_k$ using nested $K$-fold estimates, i.e., find:
+        \item Divide ${\cal L}\setminus{\cal L}_k = {\cal L}^{-k}$ into $K$ folds ${\cal L}_1^{-k}, ..., {\cal L}_K^{-k}$;
+        \item Perform model selection on the subset ${\cal L}^{-k}$ using nested $K$-fold estimates, i.e., find:
         \begin{equation}
-            \widehat{\theta}_k^* = \argmin_{\theta} \widehat{Err}_{{\cal L}\setminus{\cal L}_k}^{CV}({\cal A}(\theta, {\cal L}\setminus{\cal L}_k));
+            \widehat{\theta}_k^* = \argmin_{\theta} \frac{1}{K} \sum_{l=1}^K \widehat{Err}_{{\cal L}^{-k}\setminus{\cal L}_l^{-k}}^{{\cal L}_l^{-k}}({\cal A}(\theta, {\cal L}^{-k}\setminus{\cal L}_l^{-k}));
         \end{equation}
         \item Evaluate the generalization error of the selected sub-model as
         \begin{equation}
             \widehat{Err}_{{\cal L}\setminus{\cal L}_k}^{{\cal L}_k}({\cal A}(\widehat{\theta}_k^*, {\cal L}\setminus{\cal L}_k);
         \end{equation}
     \end{enumerate}
-\item Evaluate the generalization error the selected final model as the average generalization estimate of the model selected over the folds:
+\item Evaluate the (unbiased) generalization error the selected model as the average generalization estimate of the sub-models selected over the folds:
 \begin{equation}
-\frac{1}{K} \sum_{k=1}^K \widehat{Err}_{{\cal L}\setminus{\cal L}_k}^{{\cal L}_k}({\cal A}(\widehat{\theta}_k^*, {\cal L}\setminus{\cal L}_k)
+\frac{1}{K} \sum_{k=1}^K \widehat{Err}_{{\cal L}\setminus{\cal L}_k}^{{\cal L}_k}({\cal A}(\widehat{\theta}_k^*, {\cal L}\setminus{\cal L}_k);
 \end{equation}
 \item Perform model selection on the entire learning set ${\cal L}$ using $K$-fold cross-validation estimates, i.e., find:
 \begin{equation}
-    \widehat{\theta}^* = \argmin_{\theta} \widehat{Err}_{{\cal L}}^{CV}({\cal A}(\theta, {\cal L}));
+    \widehat{\theta}^* = \argmin_{\theta} \frac{1}{K} \sum_{k=1}^K \widehat{Err}_{{\cal L}\setminus{\cal L}_k}^{{\cal L}_k}({\cal A}(\theta, {\cal L}\setminus{\cal L}_k));
 \end{equation}
 \item Learn the final model ${\cal A}(\widehat{\theta}^*, {\cal L})$ on the entire learning set.
 \end{enumerate}
