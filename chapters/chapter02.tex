@@ -105,7 +105,7 @@ A \emph{regressor} is a function $\varphi: {\cal X} \mapsto {\cal Y}$, where ${\
 
 \begin{remark}{Estimator interface}
 We follow in this work the API conventions proposed by~\citet{buitinck:2013}.
-In particular, learning algorithms are described as \textit{estimators} implementing the
+In particular, learning algorithms are described as \textit{estimator} objects implementing the
 following interface:
 
 \begin{itemize}
@@ -124,7 +124,7 @@ this method returns labels from ${\cal Y} = \{1, 2, ..., J\}$. In the case of re
 it returns numerical values from ${\cal Y} = \mathbb{R}$.
 \end{itemize}
 
-With this API, a typical supervised learning task is therefore performed as follows:
+With this API, a typical supervised learning task is performed as follows:
 
 \vskip0.3cm
 \begin{pythoncode}
@@ -355,6 +355,8 @@ infeasible in practice because it requires ${\cal L}$ to grow exponentially
 with the number $p$ of input variables in order to compute accurate estimates of
 $P(Y|X)$~\citep{geurts:2002}.
 
+\subsection{Selecting the (approximately) best model}
+
 To make supervised learning work in high-dimensional input spaces with learning
 sets of moderate sizes, simplifying or restrictive assumptions must be made on
 the structure of the best model $\varphi_B$. More specifically, a supervised
@@ -416,18 +418,18 @@ is neither too simple nor too complex. In the former case, the model is indeed
 said to \textit{underfit} the data, i.e., to be not flexible enough the capture
 the structure between $X$ and $Y$. In the later case, the model is said to
 \textit{overfit} the data, i.e., to be too flexible and to capture illusory
-structures that are specific to the learning set ${\cal L}$. As
-Figure~\ref{fig:train-test-error} illustrates, this phenonemon can be observed by examining
-the respective training and test estimates of the model with respect to its
+structures that are specific to the learning set. As Figure~\ref{fig:train-test-error}
+illustrates, this phenonemon can be observed by examining the
+respective training and test estimates of the model with respect to its
 complexity. When the model is too simple, both the training and test estimates
 are large because of underfitting. As complexity increases, the model gets more
 accurate and both the training and test estimates decrease. However, when the
 model becomes too complex, specific trends from the training set get captured,
 reducing the corresponding training estimates down to $0$, as if the model were
 perfect. At the same time, the test estimates become worse because the
-structure learned from the training set is too speficic and does not generalize. The
-model is overfitting. The best parameter value $\theta$ is therefore
-the one making the appropriate trade-off and producing a model which
+structure learned from the training set is actually too speficic and does not
+generalize. The model is overfitting. The best parameter value $\theta$ is
+therefore the one making the appropriate trade-off and producing a model which
 neither too simple nor to complex.
 
 \begin{figure}
@@ -444,8 +446,79 @@ neither too simple nor to complex.
     \label{fig:train-test-error}
 \end{figure}
 
-\begin{remark}{Selecting and evaluating simultaneously}
-\end{remark}
+\subsection{Selecting and evaluating simultaneously}
+On real applications, and in particular when reporting results, it usually
+happens that one wants to do both model selection and model assessment. That
+is, having chosen a final model ${\cal A}(\widehat{\theta}^*, {\cal L})$, one
+wants to also estimate its generalization error.
+
+A naive assessment of the generalization error of the selected model might be to
+simply use the test sample estimate
+$\smash{\widehat{Err}_{{\cal L}_\text{train}}^{{\cal L}_\text{test}}({\cal A}(\widehat{\theta}^*, {\cal L}_\text{train}))}$
+that was minimized during model selection. The issue with this estimate
+is that the learned model is not independent from ${\cal L}_\text{test}$
+since its repeated construction was precisely guided by the minimization of its
+prediction error over ${\cal L}_\text{test}$. As a result, the minimized
+test sample estimate constitutes an underestimation of the true generalization
+error, sometimes substantial. For the same reasons, using the $K$-fold cross-validation
+estimate instead of the test sample estimate does not provide a better
+estimate since model selection was similarly guided by the
+minimization of this quantity.
+
+To guarantee an unbiased estimate, the test set on which the generalization
+error is evaluated should ideally be kept out of the entire model selection
+procedure and only be used once the final model is selected. Appropriate and
+correct protocols for both model selection and evaluation, using either test
+samples estimates or $K$-fold cross-validation estimates, are respectively
+given in Algorithm~\ref{algo:train-valid-test}, describing the
+\textit{Train-Valid-Test set protocol}, and Algorithm~\ref{algo:cv}, describing the
+\textit{nested $K$-fold cross-validation protocol}.
+
+\begin{algorithm}\label{algo:train-valid-test}
+Train-Valid-Test set protocol for both model selection and evaluation.
+
+\begin{enumerate}
+\item Divide the learning set ${\cal L}$ into three parts
+${\cal L}_\text{train}$, ${\cal L}_\text{valid}$ and ${\cal L}_\text{test}$;
+\item Perform model selection on ${\cal L}_\text{train}$ and ${\cal L}_\text{valid}$, i.e., find:
+\begin{equation}
+\widehat{\theta}^* = \argmin_{\theta} \widehat{Err}_{{\cal L}_\text{train}}^{{\cal L}_\text{valid}}({\cal A}(\theta, {\cal L}_\text{train}));
+\end{equation}
+\item Evaluate the generalization error of the selected final model as
+\begin{equation}
+\widehat{Err}_{{\cal L}_\text{train} \cup {\cal L}_\text{valid}}^{{\cal L}_\text{test}}({\cal A}(\widehat{\theta}^*, {\cal L}_\text{train} \cup {\cal L}_\text{valid}));
+\end{equation}
+\item Learn the final model ${\cal A}(\widehat{\theta}^*, {\cal L})$ on the entire learning set.
+\end{enumerate}
+\end{algorithm}
+
+\begin{algorithm}\label{algo:cv}
+Nested $K$-fold cross-validation protocol for both model selection and evaluation.
+
+\begin{enumerate}
+\item Divide the learning set ${\cal L}$ into $K$ folds ${\cal L}_1, ..., {\cal L}_K$;
+\item For each fold $k=1, ..., K$:
+    \begin{enumerate}
+        \item Perform model selection on the subset ${\cal L}\setminus {\cal L}_k$ using nested $K$-fold estimates, i.e., find:
+        \begin{equation}
+            \widehat{\theta}_k^* = \argmin_{\theta} \widehat{Err}_{{\cal L}\setminus{\cal L}_k}^{CV}({\cal A}(\theta, {\cal L}\setminus{\cal L}_k));
+        \end{equation}
+        \item Evaluate the generalization error of the selected sub-model as
+        \begin{equation}
+            \widehat{Err}_{{\cal L}\setminus{\cal L}_k}^{{\cal L}_k}({\cal A}(\widehat{\theta}_k^*, {\cal L}\setminus{\cal L}_k);
+        \end{equation}
+    \end{enumerate}
+\item Evaluate the generalization error the selected final model as the average generalization estimate of the model selected over the folds:
+\begin{equation}
+\frac{1}{K} \sum_{k=1}^K \widehat{Err}_{{\cal L}\setminus{\cal L}_k}^{{\cal L}_k}({\cal A}(\widehat{\theta}_k^*, {\cal L}\setminus{\cal L}_k)
+\end{equation}
+\item Perform model selection on the entire learning set ${\cal L}$ using $K$-fold cross-validation estimates, i.e., find:
+\begin{equation}
+    \widehat{\theta}^* = \argmin_{\theta} \widehat{Err}_{{\cal L}}^{CV}({\cal A}(\theta, {\cal L}));
+\end{equation}
+\item Learn the final model ${\cal A}(\widehat{\theta}^*, {\cal L})$ on the entire learning set.
+\end{enumerate}
+\end{algorithm}
 
 % parametrization of \varphi
 % under/over fitting

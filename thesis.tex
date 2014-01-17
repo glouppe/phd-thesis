@@ -14,10 +14,15 @@
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{definition}{Definition}
+\newtheorem{algorithm}{Algorithm}
 
 % Counters
+\renewcommand{\labelenumi}{(\alph{enumi})}
+\renewcommand{\labelenumii}{\roman{enumii}.}
+
 \numberwithin{theorem}{chapter}
 \numberwithin{definition}{chapter}
+\numberwithin{algorithm}{chapter}
 \numberwithin{figure}{chapter}
 
 % Maths
