@@ -227,13 +227,14 @@ those from ${\cal L}$.
 
 The second approach is the \textit{test sample estimate}. It consists in
 dividing the learning set ${\cal L}$ into two disjoint sets ${\cal
-L}_\text{train}$ and ${\cal L}_\text{test}$, called
-\textit{training set} and \textit{test set}, and then to use each part
-respectively for learning the model and estimating its generalization error.
-The test sample estimate over ${\cal L}_\text{test}$ of the model $\varphi$
-built on ${\cal L}_\text{train}$ is therefore given by:
+L}_\text{train}$ and ${\cal L}_\text{test}$, called \textit{training set} and
+\textit{test set}, and then to use each part respectively for learning a model
+and estimating its generalization error. The test sample estimate of the generalization error of the model
+$\varphi$ that would be obtained from ${\cal L}$ is then given as the
+average prediction error over ${\cal L}_\text{test}$ of the model
+$\varphi^\prime$ built on ${\cal L}_\text{train}$:
 \begin{equation}\label{eqn:test-error}
-\widehat{Err}_{{\cal L}_\text{train}}^{{\cal L}_\text{test}}(\varphi) = \frac{1}{N_\text{test}} \sum_{(\mathbf{x_i}, y_i) \in {\cal L}_\text{test}} L(y_i, \varphi(\mathbf{x_i}))
+\widehat{Err}_{{\cal L}_\text{train}}^{{\cal L}_\text{test}}(\varphi) = \frac{1}{N_\text{test}} \sum_{(\mathbf{x_i}, y_i) \in {\cal L}_\text{test}} L(y_i, \varphi^\prime(\mathbf{x_i}))
 \end{equation}
 where $N_\text{test}$ is the size of ${\cal L}_\text{test}$. As a rule-of-thumb,
 ${\cal L}_\text{train}$ is usually taken as $70\%$ of the samples in
@@ -248,7 +249,8 @@ While being an unbiased estimate of $Err_{\cal L}(\varphi)$, the test sample
 estimate has the drawback that it reduces the
 effective sample size on which the model is learned. If ${\cal L}$ is large,
 then this is usually not an issue, but if ${\cal L}$ only contains a few dozens
-of samples, then this strategy might impair the performance of the model.
+of samples, then this strategy might not correctly approximate the true
+generalization error of the model learned on the entire learning set.
 
 When ${\cal L}$ is small, the \textit{$K$-fold cross-validation estimate} is
 usually preferred over the test sample estimate. It consists in randomly
