@@ -345,6 +345,7 @@ possibly build.
 
 
 \section{Model selection}
+\label{sec:model-selection}
 
 From the previous discussion in Section~\ref{sec:bayes-model}, it appears that
 to solve the supervised learning problem it would be sufficient to estimate
@@ -373,7 +374,7 @@ $\varphi \in {\cal H}$ that are sufficiently close to it. In particular, the
 \textit{approximation error}~\citep{bottou:2011} measures how closely the
 models in ${\cal H}$ can approximate the optimal model $\varphi_B$:
 \begin{equation}
-Err({\cal H}) = \min_{\varphi \in {\cal H}} Err(\varphi) - Err(\varphi_B)
+Err({\cal H}) = \min_{\varphi \in {\cal H}} \{ Err(\varphi) \} - Err(\varphi_B)
 \end{equation}
 where $Err(\varphi)$ is the generalization error of $\varphi$ (independently
 of any learning set ${\cal L})$.
@@ -384,7 +385,7 @@ controlling the execution of a learning algorithm ${\cal A}$. The application
 of ${\cal A}$ with parameters $\theta$ on the learning set ${\cal L}$ is a
 deterministic\footnote{If ${\cal A}$ makes use of a pseudo-random generator to
 mimic a stochastic process, then we assume that the corresponding random seed is
-parts of $\theta$.} process yielding a model ${\cal A}(\theta, {\cal L}) =
+part of $\theta$.} process yielding a model ${\cal A}(\theta, {\cal L}) =
 \varphi \in {\cal H}$. As such, our goal is to find the vector of hyper-parameters values
 yielding to the best model possibly learnable in ${\cal H}$ from ${\cal L}$:
 \begin{equation}
@@ -522,20 +523,42 @@ Nested $K$-fold cross-validation protocol for both model selection and evaluatio
 \end{enumerate}
 \end{algorithm}
 
-% parametrization of \varphi
-% under/over fitting
-% evaluation, the wrong way
-
 
 \section{Classes of algorithms}
 
-\subsection{Linear models}
-\subsection{$k$-Nearest Neighbors}
+As introduced in Section~\ref{sec:model-selection}, classes of  learning
+algorithms can be defined in terms of the space ${\cal H}$ of hypotheses  they
+are built upon. Before focusing in the next chapters on one of these classes,
+we briefly review in this section the main learning algorithms that have now
+matured in the field, including linear models, the $k$-nearest neighbor
+algorithm, neural networks and tree-based methods.
+
+
+\subsection{Linear methods}
+
+\citep{maccullagh:1989,hastie:2005,bishop:2006}
+
+% generalized linear models
+
+\subsection{$k$-nearest neighbors}
+
+% T. Cover and P. Hart. Nearest neighbor pattern classiﬁcation
+
 \subsection{Neural networks}
+
+% perceptron
+% The perceptron: a probabilistic model for information storage and organization in the brain.
+
+% see bishop chapter 5
+
+% deep learning
+
+% Representation Learning: A Review and New Perspectives, Yoshua Bengio, Aaron Courville, Pascal Vincent, Arxiv, 2012.
+% The monograph or review paper Learning Deep Architectures for AI (Foundations & Trends in Machine Learning, 2009).
+% Deep Machine Learning – A New Frontier in Artificial Intelligence Research – a survey paper by Itamar Arel, Derek C. Rose, and Thomas P. Karnowski.
+
 \subsection{Tree-based methods}
 
-    % See Pierre thesis
-    % Tree-based methods
-    % KNN
-    % Neural Networks (deep learning)
-    % Linear models
+% single
+% ensemble
+% boosting
