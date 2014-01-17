@@ -517,7 +517,7 @@ Nested $K$-fold cross-validation protocol for both model selection and evaluatio
         \item Divide ${\cal L}\setminus{\cal L}_k = {\cal L}^{-k}$ into $K$ folds ${\cal L}_1^{-k}, ..., {\cal L}_K^{-k}$;
         \item Perform model selection on the subset ${\cal L}^{-k}$ using nested $K$-fold estimates, i.e., find:
         \begin{align}
-            \widehat{\theta}_k^* &= \argmin_{\theta} \widehat{Err}_{{\cal L}_k}^{CV}({\cal A}(\theta, {\cal L}^{-k}))\\
+            \widehat{\theta}_k^* &= \argmin_{\theta} \widehat{Err}_{{\cal L}^{-k}}^{CV}({\cal A}(\theta, {\cal L}^{-k}))\\
                                  &= \argmin_{\theta} \frac{1}{K} \sum_{l=1}^K \overline{E}({\cal A}(\theta, {\cal L}^{-k} \setminus {\cal L}_l^{-k}), {\cal L}_l^{-k});
         \end{align}
         \item Evaluate the generalization error of the selected sub-model as
