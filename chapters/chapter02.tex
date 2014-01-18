@@ -96,7 +96,7 @@ follows:
 
 \begin{definition}
 A \emph{classifier} or \emph{classification rule} is a function $\varphi: {\cal X}
-\mapsto {\cal Y}$, where ${\cal Y}$ is a finite set of classes denoted $\{1, 2, ..., J\}$.
+\mapsto {\cal Y}$, where ${\cal Y}$ is a finite set of classes denoted $\{0, 1, ..., J-1\}$.
 \end{definition}
 
 \begin{definition}
@@ -120,7 +120,7 @@ it was called on, which now serves as a model and can be used to make prediction
 \item[-] Predictions are performed through a \texttt{predict} method, taking
 as input an array \texttt{X\_test} and producing as output the predictions for
 \texttt{X\_test} based on the learned parameters. In the case of classification,
-this method returns labels from ${\cal Y} = \{1, 2, ..., J\}$. In the case of regression,
+this method returns labels from ${\cal Y} = \{0, 1, ..., J-1\}$. In the case of regression,
 it returns numerical values from ${\cal Y} = \mathbb{R}$.
 \end{itemize}
 
@@ -211,8 +211,8 @@ authors~\citep{toussaint:1974,stone:1978,breiman:1984,kohavi:1995,nadeau:2003,ha
 the generalization error in Equation~\ref{eqn:generalization-error} can however
 be estimated in several ways.
 
-To make notations clearer, let us first define as $\overline{E}(\varphi^\prime, {\cal
-L}^\prime)$ the average prediction error of the model $\varphi^\prime$ over the set
+To make notations clearer, let us first define $\overline{E}(\varphi^\prime, {\cal
+L}^\prime)$ as the average prediction error of the model $\varphi^\prime$ over the set
 ${\cal L}^\prime$ (possibly different from the learning set used to produce
 $\varphi^\prime$), that is:
 \begin{equation}
@@ -332,7 +332,7 @@ In classification, when $L$ is the zero-one loss, the Bayes model is:
                       &= \argmax_{y \in {\cal Y}} P(Y = y|X=\mathbf{x}) \label{eqn:bayes-model-classification}
 \end{align}
 Put otherwise, the best possible classifier
-consists in systematically predicting the most likely class $y \in \{1, ..., J\}$
+consists in systematically predicting the most likely class $y \in \{0, 1, ..., J-1\}$
 given $X=\mathbf{x}$.
 
 Similarly, for regression with the square error loss, we have:
@@ -351,7 +351,7 @@ error $Err(\varphi_B)$ is unknown. On simulated data however, where the
 distribution is known, deriving $\varphi_B$ and $Err(\varphi_B)$ is feasible.
 In particular, this can be beneficial as they can now be used for comparing the
 test set error of $\varphi$ with $Err(\varphi_B)$ and thereby evaluate the
-actual effectiveness of $\varphi$ with respect the best possible model one can
+actual effectiveness of $\varphi$ with respect the best model one can
 possibly build.
 
 
@@ -438,7 +438,7 @@ structures that are specific to the learning set.
     \caption{Training and test error with respect to the complexity
              of a model. The light blue curves show the training error over
              ${\cal L}_\text{train}$ while the light red curves show the test
-             error over ${\cal L}_\text{test}$ for $100$ pairs for training
+             error estimated over ${\cal L}_\text{test}$ for $100$ pairs of training
              and test sets ${\cal L}_\text{train}$ and ${\cal L}_\text{test}$
              drawn at random from a known distribution. The thick blue curve
              is the average training error while the thick red curve is the
@@ -551,9 +551,38 @@ algorithm, neural networks and tree-based methods.
 
 \subsection{Linear methods}
 
-\citep{maccullagh:1989,hastie:2005,bishop:2006}
+One of the oldest class of supervised learning algorithms is the class of
+linear methods from the field of statistics. In these methods, the central
+assumption made on ${\cal H}$ is that the output variable $Y$ can be described
+as a linear combination of the input variables $X_1, ..., X_p$, or at least
+that the linear model is a reasonable approximation. For regression, ${\cal H}$
+includes all models $\varphi$ of the form:
+\begin{equation}
+\varphi(\mathbf{x}) = \beta_0 + \sum_{j=1}^p x_j \beta_j
+\end{equation}
+For binary classification (i.e., when ${\cal Y}=\{0, 1\}$),  ${\cal H}$ includes all
+models $\varphi$ of the form:
+\begin{equation}
+\varphi(\mathbf{x}) = \begin{cases}
+1 & \text{if } \beta_0 + \sum_{j=1}^p x_j \beta_j > 0\\
+0 & \text{otherwise}
+\end{cases}
+\end{equation}
 
-% generalized linear models
+Linear methods come in many flavours but mostly differ from each other in the
+way they estimate the coefficient $\beta_j$, usually using some specific
+optimization procedure to minimize a specific criterion. Among all of them, the most famous
+is the method of \textit{least squares}. It consists in finding the
+$\beta_j$ coefficients that minimize the resubstitution estimate
+(Equation~\ref{eqn:training-error}) of the resulting the model.
+
+Despite an apparent simplicity, linear methods often provide reliable
+predictions and an interpretable description of how the input variables affect
+the output. Contrary to their name, linear methods can also be used to model
+non-linear relations between $X$ and $Y$, for example by applying these methods
+on (non-linear) transformations of the input variables. For more details, see
+the reviews of \citet{maccullagh:1989}, \citet{hastie:2005},
+\citet{bishop:2006} or \citet{duda:2012}.
 
 \subsection{$k$-nearest neighbors}
 
