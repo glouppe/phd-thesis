@@ -586,15 +586,15 @@ on (non-linear) transformations of the input variables. For more details on
 
 \subsection{$k$-nearest neighbor}
 
-\textit{Nearest neighbor methods} form a class of learning algorithms known as
-\textit{prototype methods}~\citep{hastie:2005}. They distinguish from other
-learning algorithms in the sense that they are memory-based and require no
-model to be fit.
+\textit{Nearest neighbor methods} belong to a class of learning algorithms
+known as \textit{prototype methods}~\citep{hastie:2005}. They distinguish from
+other learning algorithms in the sense that they are memory-based and require
+no model to be fit.
 
 The principle behind nearest neighbor methods is to find a predefined number of
 training samples closest in distance to the new sample, and then infer from
 these the value of the output variable. For regression, the $k$-nearest
-neighbor algorithm~\citep{cover:1967} averages the output values from the $k$
+neighbor algorithm averages the output values from the $k$
 closest training samples, that is:
 \begin{equation}
 \varphi(\mathbf{x}) = \frac{1}{k} \sum_{(\mathbf{x_i}, y_i) \in NN(\mathbf{x}, {\cal L}, k)} y_i,
@@ -607,17 +607,20 @@ output value is computed as the majority class among the $k$ nearest neigbors:
 \end{equation}
 In general, the distance function used to identify the $k$ nearest neighbors
 can be any metric, but the standard Euclidean distance is the most common
-choice. A notable variant of the $k$-nearest neighbor algorithm is the
+choice. A notable variant is the
 \textit{radius-based neighbor algorithm}, in which the predicted output value
 is computed from the training samples within a radius $r$ of the new sample.
+In cases where data is not uniformly sampled, this latter algorithm can be
+a better choice than the $k$-nearest neighbor method.
 
 Despite their simplicity, nearest neighbor methods usually yield very good
 results in practice. In particular, they are are often successful in
 classification situations where the decision boundary is very irregular. From a
 theoretical point of view, an important result due to \citet{cover:1967} is the
-proof of consistency of the method. When ${\cal L}$ grows to infinity and $k$
-is appropriately adjusted to ${\cal L}$, the model produced the $k$-nearest
-neighbor method is shown to converge towards the Bayes model.
+proof of consistency of the method. When the size of ${\cal L}$ tends to
+infinity and $k$ is appropriately adjusted to ${\cal L}$, the generalization
+error of the model produced by the $k$-nearest neighbor method is shown to
+converge towards the generalization error of the Bayes model.
 
 \subsection{Neural networks}
 
