@@ -584,7 +584,7 @@ on (non-linear) transformations of the input variables. For more details on
 (generalized) linear methods, see the reviews of \citet{maccullagh:1989},
 \citet{hastie:2005}, \citet{bishop:2006} or \citet{duda:2012}.
 
-\subsection{$k$-nearest neighbor}
+\subsection{Nearest neighbor methods}
 
 \textit{Nearest neighbor methods} belong to a class of learning algorithms
 known as \textit{prototype methods}~\citep{hastie:2005}. They distinguish from
@@ -594,7 +594,7 @@ no model to be fit.
 The principle behind nearest neighbor methods is to find a predefined number of
 training samples closest in distance to the new sample, and then infer from
 these the value of the output variable. For regression, the $k$-nearest
-neighbor algorithm averages the output values from the $k$
+neighbor algorithm~\citep{fix:1951} averages the output values from the $k$
 closest training samples, that is:
 \begin{equation}
 \varphi(\mathbf{x}) = \frac{1}{k} \sum_{(\mathbf{x_i}, y_i) \in NN(\mathbf{x}, {\cal L}, k)} y_i,
