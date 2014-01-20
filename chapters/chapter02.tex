@@ -571,11 +571,10 @@ Nested $K$-fold cross-validation protocol for both model selection and evaluatio
 
 As introduced in Section~\ref{sec:model-selection}, classes of  learning
 algorithms can be defined in terms of the space ${\cal H}$ of hypotheses  they
-are built upon. Before focusing in the next chapters on one of these classes,
-we briefly review in this section the main learning algorithms that have now
-matured in the field, including linear models, the $k$-nearest neighbor
-algorithm, neural networks and finally tree-based methods on which this thesis
-is about.
+are built upon. Before focusing for the rest of this work on the class of tree-
+based methods, we briefly review in this section some of the other main
+learning algorithms that have matured in the field, including linear methods,
+neural networks and nearest neighbor methods.
 
 \subsection{Linear methods}
 
@@ -611,6 +610,38 @@ non-linear relations between $X$ and $Y$, for example by applying these methods
 on (non-linear) transformations of the input variables. For more details on
 (generalized) linear methods, see the reviews of \citet{maccullagh:1989},
 \citet{hastie:2005}, \citet{bishop:2006} or \citet{duda:2012}.
+
+\subsection{Neural networks}
+
+The family of \textit{neural networks} methods finds its origins in attempts
+from the early 1940s to find mathematical representations of information
+processing in biological systems~\citep{bishop:2006}. While their biological
+plausiblity is still far from being proven, neural networks have now grown into
+one of the most effective methods in machine learning.
+
+A neural network is usually made of several units of the form
+\begin{equation}
+h(\mathbf{x}) = \sigma(w_0 + \sum_{i=1}^p w_i x_i),
+\end{equation}
+where $\sigma$ is a non-linear activation function, such as the sign function,
+the sigmoid function or the softmax activation. In most common cases, these units are
+structured into successive layers, where the outputs of a layer are connected
+to the inputs of the next layer.
+
+Recent advances, ...
+
+
+% perceptron
+% The perceptron: a probabilistic model for information storage and organization in the brain.
+
+% see bishop chapter 5
+
+% deep learning
+% learn representations
+
+% Representation Learning: A Review and New Perspectives, Yoshua Bengio, Aaron Courville, Pascal Vincent, Arxiv, 2012.
+% The monograph or review paper Learning Deep Architectures for AI (Foundations & Trends in Machine Learning, 2009).
+% Deep Machine Learning – A New Frontier in Artificial Intelligence Research – a survey paper by Itamar Arel, Derek C. Rose, and Thomas P. Karnowski.
 
 \subsection{Nearest neighbor methods}
 
@@ -649,22 +680,3 @@ proof of consistency of the method. When the size of ${\cal L}$ tends to
 infinity and $k$ is appropriately adjusted to ${\cal L}$, the generalization
 error of the model produced by the $k$-nearest neighbor method is shown to
 converge towards the generalization error of the Bayes model.
-
-\subsection{Neural networks}
-
-% perceptron
-% The perceptron: a probabilistic model for information storage and organization in the brain.
-
-% see bishop chapter 5
-
-% deep learning
-
-% Representation Learning: A Review and New Perspectives, Yoshua Bengio, Aaron Courville, Pascal Vincent, Arxiv, 2012.
-% The monograph or review paper Learning Deep Architectures for AI (Foundations & Trends in Machine Learning, 2009).
-% Deep Machine Learning – A New Frontier in Artificial Intelligence Research – a survey paper by Itamar Arel, Derek C. Rose, and Thomas P. Karnowski.
-
-\subsection{Tree-based methods}
-
-% single
-% ensemble
-% boosting
