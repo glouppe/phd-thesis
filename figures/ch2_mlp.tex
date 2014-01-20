@@ -1,0 +1,51 @@
+\documentclass{minimal}
+\usepackage{pstricks}
+\usepackage{pst-plot}
+\pagestyle{empty}
+\begin{document}
+    \begin{pspicture}(20,15)
+    %\psgrid[subgriddiv=1,griddots=10,gridlabels=7pt]
+    % Arrows
+    % Layer 0 to 1
+    \psline[linewidth=0.5pt]{->}(3.2,8)(4.6,8.6)
+    \psline[linewidth=0.5pt]{->}(3.2,8)(4.6,7.6)
+    \psline[linewidth=0.5pt]{->}(3.2,8)(4.6,6.6)
+    \psline[linewidth=0.5pt]{->}(3.2,8)(4.6,5.6)
+    \psline[linewidth=0.5pt]{->}(3.2,7)(4.6,8.5)
+    \psline[linewidth=0.5pt]{->}(3.2,7)(4.6,7.5)
+    \psline[linewidth=0.5pt]{->}(3.2,7)(4.6,6.5)
+    \psline[linewidth=0.5pt]{->}(3.2,7)(4.6,5.5)
+    \psline[linewidth=0.5pt]{->}(3.2,6)(4.6,8.4)
+    \psline[linewidth=0.5pt]{->}(3.2,6)(4.6,7.4)
+    \psline[linewidth=0.5pt]{->}(3.2,6)(4.6,6.4)
+    \psline[linewidth=0.5pt]{->}(3.2,6)(4.6,5.4)
+    \psline[linewidth=0.5pt]{->}(7,7)(7.6,7)
+    % Layer 1 to 2
+    \psline[linewidth=0.5pt]{->}(5.2,8.5)(6.6,7.075)
+    \psline[linewidth=0.5pt]{->}(5.2,7.5)(6.6,7.025)
+    \psline[linewidth=0.5pt]{->}(5.2,6.5)(6.6,6.975)
+    \psline[linewidth=0.5pt]{->}(5.2,5.5)(6.6,6.925)
+    % Layer 0
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](3,8){0.4}
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](3,7){0.4}
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](3,6){0.4}
+    % Layer 1
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](5,8.5){0.4}
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](5,7.5){0.4}
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](5,6.5){0.4}
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](5,5.5){0.4}
+    % Layer 2
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](7,7){0.4}
+    % Text
+    \rput(4,8.75){$w_{ij}$}
+    \rput(3,8){$x_1$}
+    \rput(3,7){$x_2$}
+    \rput(3,6){$x_3$}
+    \rput(5,8.5){$h_1$}
+    \rput(5,7.5){$h_2$}
+    \rput(5,6.5){$h_3$}
+    \rput(5,5.5){$h_4$}
+    \rput(7,7){$h_5$}
+    \rput(7.8,7){$\hat{y}$}
+    \end{pspicture}
+\end{document}

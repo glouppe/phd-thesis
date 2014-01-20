@@ -571,10 +571,10 @@ Nested $K$-fold cross-validation protocol for both model selection and evaluatio
 
 As introduced in Section~\ref{sec:model-selection}, classes of  learning
 algorithms can be defined in terms of the space ${\cal H}$ of hypotheses  they
-are built upon. Before focusing for the rest of this work on the class of tree-
-based methods, we briefly review in this section some of the other main
-learning algorithms that have matured in the field, including linear methods,
-neural networks and nearest neighbor methods.
+are built upon. Before proceeding in the next chapters to an in-depth analysis
+of the class of tree-based methods,  we briefly review in this section some of
+the other learning algorithms that have matured in the field, including
+linear methods, neural networks and nearest neighbor methods.
 
 \subsection{Linear methods}
 
@@ -585,22 +585,22 @@ as a linear combination of the input variables $X_1, ..., X_p$, or at least
 that the linear model is a reasonable approximation. For regression, ${\cal H}$
 includes all models $\varphi$ of the form:
 \begin{equation}
-\varphi(\mathbf{x}) = \beta_0 + \sum_{j=1}^p x_j \beta_j
+\varphi(\mathbf{x}) = w_0 + \sum_{j=1}^p x_j w_j
 \end{equation}
 For binary classification (i.e., when ${\cal Y}=\{0, 1\}$),  ${\cal H}$ includes all
 models $\varphi$ of the form:
 \begin{equation}
 \varphi(\mathbf{x}) = \begin{cases}
-1 & \text{if } \beta_0 + \sum_{j=1}^p x_j \beta_j > 0\\
+1 & \text{if } w_0 + \sum_{j=1}^p x_j w_j > 0\\
 0 & \text{otherwise}
 \end{cases}
 \end{equation}
 
 Linear methods come in many flavours but mostly differ from each other in the
-way they estimate the coefficient $\beta_j$, usually using some specific
+way they estimate the coefficient $w_j$, usually using some specific
 optimization procedure to minimize a specific criterion. Among all of them, the
 most famous is the method of \textit{least squares}. It consists in finding the
-$\beta_j$ coefficients that minimize the resubstitution estimate
+$w_j$ coefficients that minimize the resubstitution estimate
 (Equation~\ref{eqn:training-error}) using the squared error loss.
 
 Despite an apparent simplicity, linear methods often provide reliable
@@ -613,35 +613,48 @@ on (non-linear) transformations of the input variables. For more details on
 
 \subsection{Neural networks}
 
-The family of \textit{neural networks} methods finds its origins in attempts
-from the early 1940s to find mathematical representations of information
-processing in biological systems~\citep{bishop:2006}. While their biological
-plausiblity is still far from being proven, neural networks have now grown into
-one of the most effective methods in machine learning.
+The family of \textit{neural networks} methods finds its origins in attempts to
+identify mathematical representations of information processing in biological
+systems. While their biological plausiblity is still far from being proven,
+(artificial) neural networks have grown into one of the most effective methods
+in machine learning, both for classification and regression tasks.
 
-A neural network is usually made of several units of the form
+A neural network is usually made of several units, also known as \textit{neurons}, of the form
 \begin{equation}
-h(\mathbf{x}) = \sigma(w_0 + \sum_{i=1}^p w_i x_i),
+h_j(\mathbf{x}) = \sigma(w_j + \sum_{i=1}^n w_{ij} x_i),
 \end{equation}
 where $\sigma$ is a non-linear activation function, such as the sign function,
-the sigmoid function or the softmax activation. In most common cases, these units are
-structured into successive layers, where the outputs of a layer are connected
-to the inputs of the next layer.
+the sigmoid function or the softmax activation. In most cases, these
+units are structured into successive layers, where the outputs of a layer are
+directed through weighted connections, also known as \textit{synapses}, to the
+inputs of the next layer. As an example, Figure~\ref{fig:mlp} illustrates
+a three layered neural network. The first layer is the input layer, which
+transmits the input values $\mathbf{x} = (x_1, ..., x_p)$ to the second layer.
+The second layer is made of activation units $h_j$, taking as inputs
+the weighted values of the input layer and producing non-linear transformations
+as outputs. The third layer is made of a single activation unit, taking as
+inputs the weighted outputs of the second layer and producing the predicted value $\hat{y}$.
 
-Recent advances, ...
+\begin{figure}
+    \centering
+    \includegraphics[scale=1.0]{figures/ch2_mlp.pdf}
+    \caption{An artificial neural network.}
+    \label{fig:mlp}
+\end{figure}
 
+As for linear methods, learning a neural network  amounts to estimate the
+weights $w_{ij}$ that minimize some specific loss function, using some specific
+optimization procedure. Among all of them, the most famous is the
+\textit{backpropagation algorithm}.
 
-% perceptron
-% The perceptron: a probabilistic model for information storage and organization in the brain.
-
-% see bishop chapter 5
-
-% deep learning
-% learn representations
-
-% Representation Learning: A Review and New Perspectives, Yoshua Bengio, Aaron Courville, Pascal Vincent, Arxiv, 2012.
-% The monograph or review paper Learning Deep Architectures for AI (Foundations & Trends in Machine Learning, 2009).
-% Deep Machine Learning – A New Frontier in Artificial Intelligence Research – a survey paper by Itamar Arel, Derek C. Rose, and Thomas P. Karnowski.
+Recent advances on neural networks, now themed as \textit{deep learning}, have
+recently shown the capability of these models to autonomously learn abstract
+and very effective representations of data. On various difficult tasks, such as
+image classification or speech recognition, neural networks have indeed achieved
+outstanding performance, outperforming most of the state-of-the-art methods.
+From a theoretical point of view however, little is still known about what
+makes them truly work. Reviews on recent developments include the works of
+\citet{bengio:2013} or \citet{arel:2010}.
 
 \subsection{Nearest neighbor methods}
 

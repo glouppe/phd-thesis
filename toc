@@ -84,7 +84,6 @@ Part I: Growing random forests
             Negative weights? (@ndawe)
 * Predicting
     > Procedure
-    > Consistency
 
 
 4. Forests of decision trees                                              16/02
@@ -102,6 +101,9 @@ Part I: Growing random forests
         - Pre-sorting + data reorganization (Breiman's strategy)
         - Pre-sorting + sample_mask
     > Multi-threading
+* Consistency
+    > Mise au point
+    > Preuve de consistence des extra-trees?
 
 
 5. Complexity analysis                                                    02/03
