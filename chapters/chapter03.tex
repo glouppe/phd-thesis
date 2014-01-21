@@ -5,6 +5,7 @@
 % * Citer les premiers travaux
 %       Historique
 %       Présentation unifiée de ID3, C4.5 et CART
+% * Review Zighed
 
 \section{Tree structured models}
 
@@ -12,11 +13,11 @@
 %     > (Titanic classification problem)
 %     > Estimators as partitions
 %         CART page 4, Zighed
-%     > Data structures (arrays vs. object-oriented structures)
 %     > définitions formelles
+%     > Data structures (arrays vs. object-oriented structures)
 % * Prediction
 
-\section{Induction}
+\section{Induction of decision trees}
 
 % * Growing decision trees
 %     > Recursive partition
@@ -30,15 +31,16 @@
 %         [ max_features, min_samples_leaf ]
 %         - Best splits
 %             + Greedy approximation of optimal trees
-%             + How to evaluate multiple candidate thresholds cheaply for
-%               a given feature (algorithm, f-ordered)
-%             + Sorting algorithms
 %         - Approximately best splits
 %             + Binning
 %             + Subsampling
 %         - Weak learners (different from axis-aligned splits)
 %     > Impurity criteria
+%         - Gini, Entropy, Variance, etc (see cart + graphes)
 %         - Efficient implementation for iterative evaluation
+%             + How to evaluate multiple candidate thresholds cheaply for
+%               a given feature (algorithm, f-ordered)
+%             + Sorting algorithms
 %         - Effet du critère sur les cuts
 %             End-cut preference (CART 11.8)
 %             Normalisation par l'entropy (cf. Vincent, Louis)
@@ -46,6 +48,5 @@
 %         - Sample weighting
 %             Negative weights? (@ndawe)
 
-\section{Intepreting trees}
-
-% From trees to rules
+% \section{Interpreting decision trees}
+% % From trees to rules
