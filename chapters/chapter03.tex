@@ -20,21 +20,28 @@
 \section{Induction of decision trees}
 
 % * Growing decision trees
-%     > Recursive partition
-%         [ max_depth, max_leaf_nodes, min_samples_split, min_samples_leaf ]
-%         - Critères d'arrêt
-%         - Depth/Breadth/Best first
+%  Description de l'algo (high-level)
+%       * Recursive partition
+%           Depth/Breadth/Best first
+%       * Splitting rules (overview)
+%       * Criterion (overview)
+%       * Critères d'arrêts [ différents paramètres, chi² ]
+%       * Assignment in terminal nodes
 
 \section{Splitting rules}
 
 %     > Splitting nodes
 %         [ max_features, min_samples_leaf ]
+%         - set of questions (categorical vs continuous) + answers (bi-partitions vs n-partitions)
 %         - Best splits
 %             + Greedy approximation of optimal trees
 %         - Approximately best splits
 %             + Binning
 %             + Subsampling
 %         - Weak learners (different from axis-aligned splits)
+
+\section{Goodness of split}
+
 %     > Impurity criteria
 %         - Gini, Entropy, Variance, etc (see cart + graphes)
 %         - Efficient implementation for iterative evaluation
