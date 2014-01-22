@@ -569,9 +569,10 @@ Nested $K$-fold cross-validation protocol for both model selection and evaluatio
 
 \section{Classes of algorithms}
 
-As introduced in Section~\ref{sec:model-selection}, classes of  learning
-algorithms can be defined in terms of the space ${\cal H}$ of hypotheses  they
-are built upon. Before proceeding in the next chapters, and for the rest of
+% As introduced in Section~\ref{sec:model-selection}, classes of  learning
+% algorithms can be defined in terms of the space ${\cal H}$ of hypotheses  they
+% are built upon.
+Before proceeding in the next chapters, and for the rest of
 this work, to an in-depth analysis of the class of tree-based methods,  we
 briefly review in this section some of the other learning algorithms that have
 matured in the field, including linear methods, neural networks and nearest
@@ -616,25 +617,32 @@ on (non-linear) transformations of the input variables. For more details on
 
 The family of \textit{neural networks} methods finds its origins in attempts to
 identify mathematical representations of information processing in biological
-systems. While their biological plausiblity is still far from being proven,
-(artificial) neural networks have grown into one of the most effective methods
-in machine learning, both for classification and regression tasks.
+systems. While this objective is still far from being reached, (artificial)
+neural networks have nonetheless proven all their worth from a statistical point of
+view, and have actually grown into one of the most effective methods in machine
+learning.
 
 A neural network is usually made of several units, also known as \textit{neurons}, of the form
 \begin{equation}
 h_j(\mathbf{x}) = \sigma(w_j + \sum_{i=1}^n w_{ij} x_i),
 \end{equation}
 where $\sigma$ is a non-linear activation function, such as the sign function,
-the sigmoid function or the softmax activation. In most cases, these
-units are structured into successive layers, where the outputs of a layer are
-directed through weighted connections, also known as \textit{synapses}, to the
-inputs of the next layer. As an example, Figure~\ref{fig:mlp} illustrates
-a three layered neural network. The first layer is the input layer, which
-transmits the input values $\mathbf{x} = (x_1, ..., x_p)$ to the second layer.
-The second layer is made of activation units $h_j$, taking as inputs
-the weighted values of the input layer and producing non-linear transformations
-as outputs. The third layer is made of a single activation unit, taking as
-inputs the weighted outputs of the second layer and producing the predicted value $\hat{y}$.
+the sigmoid function or the softmax activation. In most cases, these units are
+structured into successive layers, where the outputs of a layer are directed
+through weighted connections, also known as \textit{synapses}, to the inputs of
+the next layer. As an example, Figure~\ref{fig:mlp} illustrates a three layered
+neural network. The first layer is the input layer, which transmits the input
+values $\mathbf{x} = (x_1, ..., x_p)$ to the second layer. The second layer is
+made of activation units $h_j$, taking as inputs the weighted values of the
+input layer and producing non-linear transformations as outputs. The third
+layer is made of a single activation unit, taking as inputs the weighted
+outputs of the second layer and producing the predicted value $\hat{y}$.
+Assuming that this structure is fixed and that all units from the network make
+use of the same activation function $\sigma$, the hypothesis space ${\cal H}$
+therefore includes all models $\varphi$ of the form
+\begin{equation}
+\varphi(\mathbf{x}) = \sigma(w_5 + \sum_{j=1}^4 w_{j5} \sigma(w_j + \sum_{i=1}^p w_{ij} x_i)).
+\end{equation}
 
 \begin{figure}
     \centering
@@ -649,22 +657,25 @@ optimization procedure. Among all of them, the most famous is the
 \textit{backpropagation algorithm}.
 
 Recent advances on neural networks, now themed as \textit{deep learning}, have
-recently shown the capability of these models to autonomously learn abstract
+recently shown the capability of these models to autonomously learn high-level
 and very effective representations of data. On various difficult tasks, such as
-image classification or speech recognition, neural networks have indeed achieved
-outstanding performance, outperforming most of the state-of-the-art methods.
-From a theoretical point of view however, little is still known about what
-makes them truly work. Reviews on recent developments include the works of
-\citet{bengio:2013} or \citet{arel:2010}.
+image classification or speech recognition, neural networks have indeed
+achieved outstanding performance, outperforming most of the state-of-the-art
+methods. From a theoretical point of view however, little is still known about
+what makes them truly work. In particular, picking the appropriate combination
+of number of units, layers and types of activation functions remains a delicate
+task, which unfortunately makes (deep) neural networks still difficult to use for non-experts.
+Reviews on recent developments include the works of \citet{bengio:2013} or
+\citet{arel:2010}.
 
 \subsection{Nearest neighbor methods}
 
-\textit{Nearest neighbor methods} belong to a class of learning algorithms
+\textit{Nearest neighbor methods} belong to a class of algorithms
 known as \textit{prototype methods}~\citep{hastie:2005}. They distinguish from
 other learning algorithms in the sense that they are memory-based and require
 no model to be fit.
 
-The principle behind nearest neighbor methods is to find a predefined number of
+The principle behind nearest neighbor methods is to find a number of
 training samples closest in distance to the new sample, and then infer from
 these the value of the output variable. For regression, the $k$-nearest
 neighbor algorithm~\citep{fix:1951} averages the output values from the $k$
