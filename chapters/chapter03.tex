@@ -1,13 +1,16 @@
 \chapter{Classification and regression trees}\label{ch:cart}
 
 \begin{remark}{Outline}
-In this chapter, we present a unified framework in which we detail
-(single) decision trees methods. In Section~\ref{sec:3:introduction}, we
-first give an overview of the context in which these algorithms have been developed.
-In Section~\ref{sec:3:tree-structured-models}, we proceed with a mathematical
-presentation, introducing all necessary concepts and notations. The general learning
-algorithm is then presented in Section~\ref{sec:3:induction} and discussed
-in finer details in Sections~\ref{sec:3:splitting-rules} and \ref{sec:3:criteria}.
+In this chapter, we present a unified framework in which we detail (single)
+decision trees methods. In Section~\ref{sec:3:introduction}, we first give an
+overview of the context in which these algorithms have been developed. In
+Section~\ref{sec:3:tree-structured-models}, we proceed with a mathematical
+presentation, introducing all necessary concepts and notations. The general
+learning algorithm is then presented in Section~\ref{sec:3:induction} while
+more advanced concepts are discussed in finer details in Sections~\ref{sec:3:splitting-rules}
+and \ref{sec:3:criteria}. As such, specific algorithms (e.g.,
+CART, ID3 or C4.5) are described as specializations of the general framework
+presented here.
 \end{remark}
 
 \section{Introduction}
@@ -23,29 +26,32 @@ the most effective and useful method, capable to produce both reliable and
 understandable results, on mostly any kind of data.
 
 Historically, the appearance of \textit{decision trees} seems to be due to
-\citet{morgan:1963}, who first proposed a tree-based method for handling
-multi-variate non-additive effects in the context of survey data. Without contest
+\citet{morgan:1963}, who first proposed a tree-based method for handling multi-variate
+non-additive effects in the context of survey data. Without contest
 however, the principal investigators that have driven research on the
 methodological principles  are \citet{breiman:1978a,breiman:1978b},
 \citet{friedman:1977,friedman:1979} and \citet{quinlan:1979,quinlan:1986} who
-simultaneously and independently proposed very close algorithms for the induction of
-tree-based models. In particular, the summarizing work of \citet{breiman:1984}, later complemented with the work of \citet{quinlan:1993},  set decision trees into a simple and consistent methodological framework, on which further theoretical and practical developments were then able to build upon.
-Most notably, authors chose to massively diffuse efficient and easy-to-use implementations of their
-algorithms, which without doubt greatly help their adoption by a larger audience.
+simultaneously and independently proposed very close algorithms for the
+induction of tree-based models. In particular, the summarizing work of
+\citet{breiman:1984}, later complemented with the work of \citet{quinlan:1993},
+have set decision trees into a simple and consistent methodological framework,
+that have made them easy to understand and easy to use by a large audience. Most
+importantly, decision trees are at the foundation of many modern and
+state-of-the-art algorithms, including forests of decision trees -- on which this work is
+about (see Chapter~\ref{ch:forest}) -- or
+boosting methods~\citep{freund:1995,friedman:2001}.
 
+As we will explore in further details all throughout this work, the success
+of decision trees (and by extension, of all tree-based methods) may partly
+be explained by several factors that make them attractive in practice:
+\begin{itemize}
+\item[-] Decision trees are non-parametric, i.e., they can model arbitrarily complex relations between inputs and outputs, without any restrictive assumption on their inner structure;
+\item[-] Decision trees handle heterogeneous data, including both ordered and categorical variables;
+\item[-] Decision trees intrinsically implement feature selection, making them robust to irrelevant or noisy variables;
+\item[-] Decision trees are robust to outliers;
+\item[-] Decision trees are easily interpretable, even for non-statistically oriented users.
+\end{itemize}
 
-% * Citer les premiers travaux
-%       Historique
-%       Présentation unifiée de ID3, C4.5 et CART
-%       foundation to many modern data mining approaches based on bagging and boosting.
-% * Review Zighed,\citep{criminisi:2013}
-% * Avantages (cart 56+)
-%       - can handle any type of data (both ordered and categorical)
-%       - handle conditional information in non-homogeneous relations => consistence
-%       - intepretability (cart 58, non-statistical interpretation)
-%       - robust to noisy features <=> intrinstic feature selection
-%       - invariant with monotone transforme of variables
-%       - robust to outliers and misclassification
 
 \section{Tree structured models}
 \label{sec:3:tree-structured-models}
