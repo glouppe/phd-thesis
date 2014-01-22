@@ -1,6 +1,18 @@
 \chapter{Background}\label{ch:background}
 
+\begin{remark}{Outline}
+In this chapter, we introduce supervised learning along with fundamental
+concepts on which this work builds upon. In Section~\ref{sec:learning-from-data},
+we first describe the learning tasks of classification and regression
+and then define the notion of model. In Sections~\ref{sec:performance-evaluation}
+and \ref{sec:model-selection}, we then proceed with a discussion on
+how to evaluate and select the model produced by a learning algorithm. Finally,
+we conclude in Section~\ref{sec:classes-of-algorithms} with a brief overview of
+some of the main methods in supervised learning.
+\end{remark}
+
 \section{Learning from data}
+\label{sec:learning-from-data}
 
 In the examples introduced in Chapter~\ref{ch:introduction}, the objective
 which is sought is to find a systematic way of predicting a phenomenon given a
@@ -139,6 +151,7 @@ y_hat = clf.predict(X_test)
 
 
 \section{Performance evaluation}
+\label{sec:performance-evaluation}
 
 In the statistical sense, input and output variables $X_1, ..., X_p$ and $Y$
 are \textit{random variables} taking jointly their values from ${\cal X}
@@ -568,6 +581,7 @@ Nested $K$-fold cross-validation protocol for both model selection and evaluatio
 
 
 \section{Classes of learning algorithms}
+\label{sec:classes-of-algorithms}
 
 % As introduced in Section~\ref{sec:model-selection}, classes of  learning
 % algorithms can be defined in terms of the space ${\cal H}$ of hypotheses  they
@@ -670,7 +684,7 @@ include the works of \citet{hinton:2007}, \citet{arel:2010} or \citet{bengio:201
 
 \subsection{Nearest neighbor methods}
 
-\textit{Nearest neighbor methods} belong to a class of algorithms
+\textit{Nearest neighbor methods} belong to a class of non-parametric algorithms
 known as \textit{prototype methods}~\citep{hastie:2005}. They distinguish from
 other learning algorithms in the sense that they are memory-based and require
 no model to be fit.
