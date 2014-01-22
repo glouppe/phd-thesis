@@ -6,6 +6,13 @@
 %       Historique
 %       Présentation unifiée de ID3, C4.5 et CART
 % * Review Zighed
+% * Avantages (cart 56+)
+%       - can handle any type of data (both ordered and categorical)
+%       - handle conditional information in non-homogeneous relations => consistence
+%       - intepretability (cart 58, non-statistical interpretation)
+%       - robust to noisy features <=> intrinstic feature selection
+%       - invariant with monotone transforme of variables
+%       - robust to outliers and misclassification
 
 \section{Tree structured models}
 
@@ -15,6 +22,7 @@
 %         CART page 4, Zighed
 %     > définitions formelles
 %     > Data structures (arrays vs. object-oriented structures)
+%     > Intuitively, when all variables are ordered, it is like cutting X into rectangles (see CART 31+)
 % * Prediction
 
 \section{Induction of decision trees}
@@ -32,13 +40,16 @@
 
 %     > Splitting nodes
 %         [ max_features, min_samples_leaf ]
-%         - set of questions (categorical vs continuous) + answers (bi-partitions vs n-partitions)
+%         - set of questions / answers
+%               + categorical vs continuous)
+%               + bi-partitions vs n-partitions
+%               + weak learners
 %         - Best splits
 %             + Greedy approximation of optimal trees
+%             + optimizing locally the impurity <=> optimizing globally? see page 33+
 %         - Approximately best splits
 %             + Binning
 %             + Subsampling
-%         - Weak learners (different from axis-aligned splits)
 
 \section{Goodness of split}
 
