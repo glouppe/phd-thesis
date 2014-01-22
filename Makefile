@@ -5,6 +5,7 @@ thesis.pdf: bibliography.bib thesis.tex classicthesis-config.tex chapters/*.tex 
 	pdflatex -shell-escape thesis
 
 partial:
+	bibtex thesis
 	pdflatex -shell-escape thesis
 
 clean:
