@@ -1,10 +1,17 @@
 \chapter{Classification and regression trees}\label{ch:cart}
 
 \begin{remark}{Outline}
-\lipsum[1]
+In this chapter, we present a unified framework in which we detail
+(single) decision trees methods. In Section~\ref{sec:3:introduction}, we
+first give an overview of the context in which these algorithms have been developed.
+In Section~\ref{sec:3:tree-structured-models}, we proceed with a mathematical
+presentation, introducing all necessary concepts and notations. The general learning
+algorithm is then presented in Section~\ref{sec:3:induction} and discussed
+in finer details in Sections~\ref{sec:3:splitting-rules} and \ref{sec:3:criteria}.
 \end{remark}
 
 \section{Introduction}
+\label{sec:3:introduction}
 
 Since always, artificial intelligence has been driven by the ambition to
 understand and uncover complex relations in data. That is, to find models that
@@ -31,6 +38,7 @@ produce both reliable and understandable results, on mostly any kind of data.
 %       - robust to outliers and misclassification
 
 \section{Tree structured models}
+\label{sec:3:tree-structured-models}
 
 % * Tree structured estimators
 %     > (Titanic classification problem)
@@ -42,6 +50,7 @@ produce both reliable and understandable results, on mostly any kind of data.
 % * Prediction
 
 \section{Induction of decision trees}
+\label{sec:3:induction}
 
 % * Growing decision trees
 %  Description de l'algo (high-level)
@@ -53,6 +62,7 @@ produce both reliable and understandable results, on mostly any kind of data.
 %       * Assignment in terminal nodes
 
 \section{Splitting rules}
+\label{sec:3:splitting-rules}
 
 %     > Splitting nodes
 %         [ max_features, min_samples_leaf ]
@@ -68,6 +78,7 @@ produce both reliable and understandable results, on mostly any kind of data.
 %             + Subsampling
 
 \section{Goodness of split}
+\label{sec:3:criteria}
 
 %     > Impurity criteria
 %         - Gini, Entropy, Variance, etc (see cart + graphes)

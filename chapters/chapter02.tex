@@ -2,17 +2,15 @@
 
 \begin{remark}{Outline}
 In this chapter, we introduce supervised learning along with fundamental
-concepts on which this work builds upon. In Section~\ref{sec:learning-from-data},
+concepts on which this work builds upon. In Section~\ref{sec:2:learning-from-data},
 we first describe the learning tasks of classification and regression
-and then define the notion of model. In Sections~\ref{sec:performance-evaluation}
-and \ref{sec:model-selection}, we then proceed with a discussion on
-how to evaluate and select the model produced by a learning algorithm. Finally,
-we conclude in Section~\ref{sec:classes-of-algorithms} with a brief overview of
+and then define the notion of model. In Section~\ref{sec:2:performance-evaluation}, we proceed with a discussion on performance evulation and then describe in Section~\ref{sec:2:model-selection} algorithms for selecting the best possible model.  Finally,
+we conclude in Section~\ref{sec:2:classes-of-algorithms} with a brief overview of
 some of the main methods in supervised learning.
 \end{remark}
 
 \section{Learning from data}
-\label{sec:learning-from-data}
+\label{sec:2:learning-from-data}
 
 In the examples introduced in Chapter~\ref{ch:introduction}, the objective
 which is sought is to find a systematic way of predicting a phenomenon given a
@@ -93,7 +91,7 @@ operations and efficient memory usage.
 
 Additionally, using a data representation which is close to the matrix
 formulation, like NumPy arrays, makes it possible to write implementations that
-are close to their original textbook formulation, thereby making them easier to
+are close to their original textbook formulation, thereby making them easier to code,
 understand and maintain. \end{remark}
 
 In this framework, the supervised learning task can be stated as learning a
@@ -151,7 +149,7 @@ y_hat = clf.predict(X_test)
 
 
 \section{Performance evaluation}
-\label{sec:performance-evaluation}
+\label{sec:2:performance-evaluation}
 
 In the statistical sense, input and output variables $X_1, ..., X_p$ and $Y$
 are \textit{random variables} taking jointly their values from ${\cal X}
@@ -210,7 +208,7 @@ Err_{\cal L}(\varphi) = \mathbb{E}_{X, Y}\{ (Y - \varphi(X))^2 | {\cal L} \}
 \end{equation}
 
 \subsection{Estimating $Err_{\cal L}(\varphi)$}
-\label{sec:estimating-generalization-error}
+\label{sec:2:estimating-generalization-error}
 
 In practice, the probability distribution $P(X, Y)$ is usually unknown, making
 the direct evaluation of $Err_{\cal L}(\varphi)$ infeasible. Equivalently, it
@@ -311,7 +309,7 @@ Equation~\ref{eqn:generalization-error}.
 \end{remark}
 
 \subsection{Bayes model and residual error}
-\label{sec:bayes-model}
+\label{sec:2:bayes-model}
 
 When the probability distribution $P(X, Y)$ is known, the best possible model,
 i.e., the model $\varphi_B$ which minimizes the generalization error of
@@ -397,9 +395,9 @@ for any distribution $P(X, Y)$, then $\varphi$ is said to be \textit{universally
 
 
 \section{Model selection}
-\label{sec:model-selection}
+\label{sec:2:model-selection}
 
-From the previous discussion in Section~\ref{sec:bayes-model}, it appears that
+From the previous discussion in Section~\ref{sec:2:bayes-model}, it appears that
 to solve the supervised learning problem it would be sufficient to estimate
 $P(Y|X)$ from the learning sample ${\cal L}$ and then to define a model
 accordingly using either Equation~\ref{eqn:bayes-model-classification} or
@@ -581,9 +579,9 @@ Nested $K$-fold cross-validation protocol for both model selection and evaluatio
 
 
 \section{Classes of learning algorithms}
-\label{sec:classes-of-algorithms}
+\label{sec:2:classes-of-algorithms}
 
-% As introduced in Section~\ref{sec:model-selection}, classes of  learning
+% As introduced in Section~\ref{sec:2:model-selection}, classes of  learning
 % algorithms can be defined in terms of the space ${\cal H}$ of hypotheses  they
 % are built upon.
 Before proceeding in the next chapters, and for the rest of
