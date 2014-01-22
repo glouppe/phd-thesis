@@ -35,32 +35,39 @@ simultaneously and independently proposed very close algorithms for the
 induction of tree-based models. In particular, the summarizing work of
 \citet{breiman:1984}, later complemented with the work of \citet{quinlan:1993},
 have set decision trees into a simple and consistent methodological framework,
-that have made them easy to understand and easy to use by a large audience. Most
-importantly, decision trees are at the foundation of many modern and
-state-of-the-art algorithms, including forests of decision trees -- on which this work is
-about (see Chapter~\ref{ch:forest}) -- or
-boosting methods~\citep{freund:1995,friedman:2001}.
+which largely contributed in making them easy to understand and easy to use by
+a large audience.
 
 As we will explore in further details all throughout this work, the success
-of decision trees (and by extension, of all tree-based methods) may partly
-be explained by several factors that make them attractive in practice:
+of decision trees (and by extension, of all tree-based methods) is explained
+by several factors that make them attractive in practice:
 \begin{itemize}
-\item[-] Decision trees are non-parametric, i.e., they can model arbitrarily complex relations between inputs and outputs, without any restrictive assumption on their inner structure;
+\item[-] Decision trees are non-parametric -- they can model arbitrarily complex relations between inputs and outputs, without any restrictive assumption on their inner structure;
 \item[-] Decision trees handle heterogeneous data, including both ordered and categorical variables;
 \item[-] Decision trees intrinsically implement feature selection, making them robust to irrelevant or noisy variables;
-\item[-] Decision trees are robust to outliers;
+\item[-] Decision trees are robust to outliers or errors in labels;
 \item[-] Decision trees are easily interpretable, even for non-statistically oriented users.
 \end{itemize}
+
+Most importantly, decision trees are at the foundation of
+many modern and state-of-the-art algorithms, including forests of randomized
+trees (on which this work is about, see Chapter~\ref{ch:forest}) or
+boosting methods~\citep{freund:1995,friedman:2001}, where they are used
+as building blocks for composing larger models. Understanding all algorithmic
+details of single decision trees is therefore an expected prerequisite
+for an in-depth analysis of these methods.
+
+
 
 
 \section{Tree structured models}
 \label{sec:3:tree-structured-models}
 
 % * Tree structured estimators
-%     > (Titanic classification problem)
+%     > (Titanic classification problem) => running example
 %     > Estimators as partitions
 %         CART page 4, Zighed
-%     > définitions formelles
+%     > définitions formelles + notations
 %     > Data structures (arrays vs. object-oriented structures)
 %     > Intuitively, when all variables are ordered, it is like cutting X into rectangles (see CART 31+)
 % * Prediction
