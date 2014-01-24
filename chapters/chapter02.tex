@@ -471,7 +471,7 @@ is neither too simple nor too complex. In the former case, the model is indeed
 said to \textit{underfit} the data, i.e., to be not flexible enough the capture
 the structure between $X$ and $Y$. In the later case, the model is said to
 \textit{overfit} the data, i.e., to be too flexible and to capture illusory
-structures that are specific to the learning set.
+structures (i.e., noise) that are specific to the learning set.
 
 \begin{figure}
     \centering
@@ -500,6 +500,13 @@ structure learned from the training set is actually too speficic and does not
 generalize. The model is overfitting. The best parameter value $\theta$ is
 therefore the one making the appropriate trade-off and producing a model which
 neither too simple nor to complex.
+
+As we will see later in Chapter~\ref{ch:forest},
+this phenomenon can also be explained by decomposing the generalization error
+in terms of bias and variance. A model which is too simple usually has
+high bias but low variance, while a model which is too complex usually has
+low bias but high variance. In those terms, finding the best model amounts
+to make the approriate \textit{bias-variance trade-off}.
 
 \subsection{Selecting and evaluating simultaneously}
 On real applications, and in particular when reporting results, it usually
