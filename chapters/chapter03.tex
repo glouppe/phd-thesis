@@ -112,10 +112,15 @@ have two children.
 \end{definition}
 
 In those terms, a \textit{tree-structured model} (or \textit{decision tree})
-can be defined as a model $\varphi$ represented by a rooted tree (often binary,
-but not necessarily) where any node $t$ corresponds to a subspace ${\cal X}_t
-\subseteq {\cal X}$ of the input space, with the root node corresponding to
-${\cal X}$ itself.
+can be defined as a model $\varphi: {\cal X} \mapsto {\cal Y}$ represented by a
+rooted tree (often binary, but not necessarily), where any node $t$ represents
+a subspace ${\cal X}_t \subseteq {\cal X}$ of the intput space, with the root
+node corresponding to ${\cal X}$ itself. Internal nodes $t$ are labeled with a
+\textit{split} $s_t$ (taken from a set of questions ${\cal Q}$) dividing the space
+${\cal X}_t$ they each represent into disjoint subspaces respectively corresponding to
+each of their children. Terminal nodes are labeled with a best guess
+value $\widehat{y}_t \in {\cal Y}$ of the output variable.
+
 
 
 % \begin{remark}{Notations}
