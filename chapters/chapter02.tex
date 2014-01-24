@@ -108,7 +108,7 @@ follows:
 
 \begin{definition}
 A \emph{classifier} or \emph{classification rule} is a function $\varphi: {\cal X}
-\mapsto {\cal Y}$, where ${\cal Y}$ is a finite set of classes (or labels) denoted $\{0, 1, ..., J-1\}$.
+\mapsto {\cal Y}$, where ${\cal Y}$ is a finite set of classes (or labels) denoted $\{c_1, c_2, ..., c_J\}$.
 \end{definition}
 
 \begin{definition}
@@ -132,7 +132,7 @@ it was called on, which now serves as a model and can be used to make prediction
 \item[-] Predictions are performed through a \texttt{predict} method, taking
 as input an array \texttt{X\_test} and producing as output the predictions for
 \texttt{X\_test} based on the learned parameters. In the case of classification,
-this method returns labels from ${\cal Y} = \{0, 1, ..., J-1\}$. In the case of regression,
+this method returns labels from ${\cal Y} = \{c_1, c_2, ..., c_J\}$. In the case of regression,
 it returns numerical values from ${\cal Y} = \mathbb{R}$.
 \end{itemize}
 
@@ -345,7 +345,7 @@ In classification, when $L$ is the zero-one loss, the Bayes model is:
                       &= \argmax_{y \in {\cal Y}} P(Y = y|X=\mathbf{x}) \label{eqn:bayes-model-classification}
 \end{align}
 Put otherwise, the best possible classifier
-consists in systematically predicting the most likely class $y \in \{0, 1, ..., J-1\}$
+consists in systematically predicting the most likely class $y \in \{c_1, c_2, ..., c_J\}$
 given $X=\mathbf{x}$.
 
 Similarly, for regression with the square error loss, we have:
@@ -610,12 +610,12 @@ includes all models $\varphi$ of the form:
 \begin{equation}
 \varphi(\mathbf{x}) = w_0 + \sum_{j=1}^p x_j w_j
 \end{equation}
-For binary classification (i.e., when ${\cal Y}=\{0, 1\}$),  ${\cal H}$ includes all
+For binary classification (i.e., when ${\cal Y}=\{c_1, c_2\}$),  ${\cal H}$ includes all
 models $\varphi$ of the form:
 \begin{equation}
 \varphi(\mathbf{x}) = \begin{cases}
-1 & \text{if } w_0 + \sum_{j=1}^p x_j w_j > 0\\
-0 & \text{otherwise}
+c_1 & \text{if } w_0 + \sum_{j=1}^p x_j w_j > 0\\
+c_2 & \text{otherwise}
 \end{cases}
 \end{equation}
 
