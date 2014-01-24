@@ -61,37 +61,81 @@ for an in-depth analysis of these methods.
 \section{Tree structured models}
 \label{sec:3:tree-structured-models}
 
+\subsection{Definition}
+
 When the output space is a finite set of values, like in classification where
 ${\cal Y} = \{c_1, c_2, ..., c_J\}$, another way of looking at a supervised
 learning problem is to notice that $Y$ defines a partition over the input space
 ${\cal X}$, that is $${\cal X} = {\cal X}_{c_1} \cup {\cal X}_{c_2} \cup ...
 \cup {\cal X}_{c_J},$$ where ${\cal X}_{c_k}$ is the set of objects
 $\mathbf{x}$ for which $Y|X=\mathbf{x}$ is $c_k$. Similarly, a classifier
-$\varphi$ can also be regarded as a partition since it defines an
-approximation $\widehat{Y}$ of $Y$, which in turn partitions the
-input space ${\cal X}$, that is $${\cal X} = \widehat{{\cal X}_{c_1}} \cup
+$\varphi$ can also be regarded as a partition of the input space ${\cal X}$
+since it defines an approximation $\widehat{Y}$ of $Y$, which in turn
+partitions ${\cal X}$, that is $${\cal X} = \widehat{{\cal X}_{c_1}} \cup
 \widehat{{\cal X}_{c_2}} \cup ... \cup \widehat{{\cal X}_{c_J}},$$ where
 $\widehat{{\cal X}_{c_k}}$ is the set of objects $\mathbf{x}$ such that
-$\varphi(\mathbf{x}) = c_k$. In those terms, learning a classifier can
-therefore be restated as learning a partition of ${\cal X}$ which matches as
-closely as possible the (true) partition engendered by $Y$ over ${\cal X}$.
+$\varphi(\mathbf{x}) = c_k$. Accordingly, learning a classifier can
+therefore be restated as learning a partition of ${\cal X}$ matching as closely
+as possible the (true) partition engendered by $Y$ over ${\cal X}$.
 
-With this in mind, the principles of tree structured models are beautifully
-simple. It consists in recursively partitioning the input space ${\cal X}$
-into subspaces and the assign some constant value $c$ to all objects $\mathbf{x}$
-which belong to each subspace.
+With this in mind, the principle of tree structured models is beautifully
+simple. It consists in recursively partitioning the input space ${\cal X}$ into
+subspaces and then assign constant prediction values $\widehat{y}\in{\cal Y}$ to all objects
+$\mathbf{x}$ within each terminal subspace. To make things clearer, let us first define
+the following concepts:
+
+\begin{definition}
+A \emph{tree} is a graph $G=(V,E)$ in which any two vertices (or \emph{nodes})
+are connected by exactly one path.
+\end{definition}
+
+\begin{definition}
+A \emph{rooted tree} is a tree in which one of the nodes has been designated as
+the \emph{root}. In our case, we additionally assume that a rooted tree is a
+\emph{directed} graph, where all edges are directed away from the root.
+\end{definition}
+
+\begin{definition}
+If $(t_1, t_2)\in E$ then node $t_1$ is said to be the \emph{parent} of
+node $t_2$ while node $t_2$ is said to be a \emph{child} of node $t_1$.
+\end{definition}
+
+\begin{definition}
+In a rooted tree, a node is said to be \emph{internal} if it has one or more
+children and \emph{terminal} if it has no children. Terminal nodes are also
+known as \emph{leaves}.
+\end{definition}
+
+\begin{definition}
+A \emph{binary tree} is a rooted tree where all internal nodes exactly
+have two children.
+\end{definition}
+
+In those terms, a \textit{tree-structured model} (or \textit{decision tree})
+can be defined as a model $\varphi$ represented by a rooted tree (often binary,
+but not necessarily) where any node $t$ corresponds to a subspace ${\cal X}_t
+\subseteq {\cal X}$ of the input space, with the root node corresponding to
+${\cal X}$ itself.
 
 
+% \begin{remark}{Notations}
+% \end{remark}
 
-% * Tree structured estimators
-%     > Estimators as partitions
-%         CART page 4, Zighed
-%     > (Titanic classification problem) => running example
+
 %     > définitions formelles + notations
 %       + noter que les arbres sont un cas particulier des graphes d'induction
-%     > Data structures (arrays vs. object-oriented structures)
 %     > Intuitively, when all variables are ordered, it is like cutting X into rectangles (see CART 31+)
 % * Prediction
+
+\subsection{Example}
+
+%     > (Titanic classification problem) => running example
+
+\subsection{Data structures}
+
+%     > Data structures (arrays vs. object-oriented structures)
+
+
 
 \section{Induction of decision trees}
 \label{sec:3:induction}
