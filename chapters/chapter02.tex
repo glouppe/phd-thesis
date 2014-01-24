@@ -5,7 +5,7 @@ In this chapter, we introduce supervised learning and fundamental concepts on
 which this work builds upon. In Section~\ref{sec:2:learning-from-data}, we
 first describe classification and regression learning tasks and then formally
 define the notion of model. In Section~\ref{sec:2:performance-evaluation}, we
-proceed with a discussion on performance evulation and then describe, in
+proceed with a discussion on performance evaluation and then describe, in
 Section~\ref{sec:2:model-selection}, procedures for selecting the best possible
 model. Finally, we conclude in Section~\ref{sec:2:classes-of-algorithms} with a
 brief overview of some of the main methods in supervised learning.
@@ -17,7 +17,7 @@ brief overview of some of the main methods in supervised learning.
 In the examples introduced in Chapter~\ref{ch:introduction}, the objective
 which is sought is to find a systematic way of predicting a phenomenon given a
 set of measurements. In machine learning terms, this goal is formulated as the
-{\it supervised learning} task of infering from collected data a model that
+{\it supervised learning} task of inferring from collected data a model that
 predicts the value of an output variable based on the observed values of input
 variables. As such, finding an appropriate model is based on the assumption
 that the output variable does not take its value at random and that there
@@ -458,7 +458,7 @@ In practice, solving this later equation is also a difficult task but
 approximations can be obtained in several ways, e.g., using either manual
 tuning of $\theta$, exhaustive exploration of the parameter space using grid
 search, or dedicated optimization procedures (e.g., using random
-search~\citep{bergstra:2012}). Similarly, when ${\cal L}$ is scarse, the same
+search~\citep{bergstra:2012}). Similarly, when ${\cal L}$ is scars, the same
 procedure can be carried out in the exact same way but using $K$-fold
 cross-validation estimates (as defined by Equation~\ref{eqn:cv-error}) instead of test sample
 estimates. In any case, once $\widehat{\theta}^*$ is identified, the learning
@@ -488,7 +488,7 @@ structures (i.e., noise) that are specific to the learning set.
 \end{figure}
 
 As Figure~\ref{fig:train-test-error}
-illustrates, this phenonemon can be observed by examining the
+illustrates, this phenomenon can be observed by examining the
 respective training and test estimates of the model with respect to its
 complexity. When the model is too simple, both the training and test estimates
 are large because of underfitting. As complexity increases, the model gets more
@@ -496,17 +496,17 @@ accurate and both the training and test estimates decrease. However, when the
 model becomes too complex, specific trends from the training set get captured,
 reducing the corresponding training estimates down to $0$, as if the model were
 perfect. At the same time, the test estimates become worse because the
-structure learned from the training set is actually too speficic and does not
+structure learned from the training set is actually too specific and does not
 generalize. The model is overfitting. The best parameter value $\theta$ is
 therefore the one making the appropriate trade-off and producing a model which
 neither too simple nor to complex.
 
 As we will see later in Chapter~\ref{ch:forest},
-this phenomenon can also be explained by decomposing the generalization error
+overfitting can also be explained by decomposing the generalization error
 in terms of bias and variance. A model which is too simple usually has
 high bias but low variance, while a model which is too complex usually has
 low bias but high variance. In those terms, finding the best model amounts
-to make the approriate \textit{bias-variance trade-off}.
+to make the appropriate \textit{bias-variance trade-off}.
 
 \subsection{Selecting and evaluating simultaneously}
 On real applications, and in particular when reporting results, it usually
@@ -523,7 +523,7 @@ learned model is not independent from ${\cal L}_\text{test}$ since its repeated
 construction was precisely guided by the minimization of the prediction error
 over ${\cal L}_\text{test}$. As a result, the minimized test sample error is in
 fact a biased, optimistic, estimate of the true generalization error, sometimes
-leading substantial understimations. For the same reasons, using the $K$-fold
+leading substantial underestimations. For the same reasons, using the $K$-fold
 cross-validation estimate does not provide a better estimate since model
 selection was similarly guided by the minimization of this quantity.
 
@@ -619,7 +619,7 @@ models $\varphi$ of the form:
 \end{cases}
 \end{equation}
 
-Linear methods come in many flavours but mostly differ from each other in the
+Linear methods come in many flavors but mostly differ from each other in the
 way they estimate the coefficients $w_j$, usually using some specific
 optimization procedure to minimize a specific criterion. Among all of them, the
 most famous is the method of \textit{least squares}. It consists in finding the
@@ -706,7 +706,7 @@ closest training samples, that is:
 \end{equation}
 where $NN(\mathbf{x}, {\cal L}, k)$ denotes the $k$ nearest neighbors of ${\mathbf{x}}$ in ${\cal L}$.
 For classification, the procedure is the same except that the predicted
-output value is computed as the majority class among the $k$ nearest neigbors:
+output value is computed as the majority class among the $k$ nearest neighbors:
 \begin{equation}
 \varphi(\mathbf{x}) = \argmax_{c \in {\cal Y}} \sum_{(\mathbf{x_i}, y_i) \in NN(\mathbf{x}, {\cal L}, k)} 1(y_i = c).
 \end{equation}
