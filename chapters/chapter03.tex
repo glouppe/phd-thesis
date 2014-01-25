@@ -42,8 +42,8 @@ As we will explore in further details all throughout this work, the success
 of decision trees (and by extension, of all tree-based methods) is explained
 by several factors that make them attractive in practice:
 \begin{itemize}
-\item Decision trees are non-parametric. They can model arbitrarily complex relations between inputs and outputs, without any restrictive assumption on their inner structure;
-\item Decision trees handle heterogeneous data (ordered or categorical variables, or a mix of ordered and categorical variables);
+\item Decision trees are non-parametric. They can model arbitrarily complex relations between inputs and outputs, without any a priori assumption;
+\item Decision trees handle heterogeneous data (ordered or categorical variables, or a mix of both);
 \item Decision trees intrinsically implement feature selection, making them robust to irrelevant or noisy variables;
 \item Decision trees are robust to outliers or errors in labels;
 \item Decision trees are easily interpretable, even for non-statistically oriented users.
@@ -65,18 +65,21 @@ for an in-depth analysis of these methods.
 
 When the output space is a finite set of values, like in classification where
 ${\cal Y} = \{c_1, c_2, ..., c_J\}$, another way of looking at a supervised
-learning problem is to notice that $Y$ defines a partition over the input space
-${\cal X}$, that is $${\cal X} = {\cal X}_{c_1} \cup {\cal X}_{c_2} \cup ...
-\cup {\cal X}_{c_J},$$ where ${\cal X}_{c_k}$ is the set of objects
-$\mathbf{x}$ for which $Y|X=\mathbf{x}$ is $c_k$. Similarly, a classifier
-$\varphi$ can also be regarded as a partition of the input space ${\cal X}$
-since it defines an approximation $\widehat{Y}$ of $Y$, which in turn
-partitions ${\cal X}$, that is $${\cal X} = \widehat{{\cal X}_{c_1}} \cup
+learning problem is to notice that $Y$ defines a partition\footnote{When $Y$ is
+not univocally determined given $X=\mathbf{x}$, then the subsets ${\cal
+X}_{c_k}$ are not necessarily disjoints.} over the input space ${\cal X}$, that
+is $${\cal X} = {\cal X}_{c_1} \cup {\cal X}_{c_2} \cup ... \cup {\cal
+X}_{c_J},$$ where ${\cal X}_{c_k}$ is the set of objects $\mathbf{x}$ for which
+$Y|X=\mathbf{x}$ is $c_k$. Similarly, a classifier $\varphi$ can also be
+regarded as a partition\footnote{Since $\varphi$ is deterministic, the subsets
+$\widehat{{\cal X}_{c_k}}$ are necessarily disjoints.} of the input space
+${\cal X}$ since it defines an approximation $\widehat{Y}$ of $Y$, which in
+turn partitions ${\cal X}$, that is $${\cal X} = \widehat{{\cal X}_{c_1}} \cup
 \widehat{{\cal X}_{c_2}} \cup ... \cup \widehat{{\cal X}_{c_J}},$$ where
 $\widehat{{\cal X}_{c_k}}$ is the set of objects $\mathbf{x}$ such that
-$\varphi(\mathbf{x}) = c_k$. Accordingly, learning a classifier can
-therefore be restated as learning a partition of ${\cal X}$ matching as closely
-as possible the (true) partition engendered by $Y$ over ${\cal X}$.
+$\varphi(\mathbf{x}) = c_k$. Accordingly, learning a classifier can therefore
+be restated as learning a partition of ${\cal X}$ matching as closely as
+possible the (true) partition engendered by $Y$ over ${\cal X}$.
 
 With this in mind, the principle of tree structured models is beautifully
 simple. It consists in recursively partitioning the input space ${\cal X}$ into
@@ -120,6 +123,7 @@ node corresponding to ${\cal X}$ itself. Internal nodes $t$ are labeled with a
 ${\cal X}_t$ they each represent into disjoint subspaces respectively corresponding to
 each of their children. Terminal nodes are labeled with a best guess
 value $\widehat{y}_t \in {\cal Y}$ of the output variable.
+% terminal nodes form a partition
 
 
 
