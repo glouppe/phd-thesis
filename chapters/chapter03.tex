@@ -66,13 +66,19 @@ for an in-depth analysis of these methods.
 When the output space is a finite set of values, like in classification where
 ${\cal Y} = \{c_1, c_2, ..., c_J\}$, another way of looking at a supervised
 learning problem is to notice that $Y$ defines a partition over the input space ${\cal X}$, that
-is $${\cal X} = {\cal X}_{c_1} \cup {\cal X}_{c_2} \cup ... \cup {\cal
-X}_{c_J},$$ where ${\cal X}_{c_k}$ is the set of objects $\mathbf{x}$ for which
+is
+\begin{equation}
+{\cal X} = {\cal X}_{c_1} \cup {\cal X}_{c_2} \cup ... \cup {\cal X}_{c_J},
+\end{equation}
+where ${\cal X}_{c_k}$ is the set of objects $\mathbf{x}$ for which
 $Y$ has value $c_k$. Similarly, a classifier $\varphi$ can also be
 regarded as a partition of the input space
 ${\cal X}$ since it defines an approximation $\widehat{Y}$ of $Y$, which in
-turn partitions ${\cal X}$, that is $${\cal X} = \widehat{{\cal X}_{c_1}} \cup
-\widehat{{\cal X}_{c_2}} \cup ... \cup \widehat{{\cal X}_{c_J}},$$ where
+turn partitions ${\cal X}$, that is
+\begin{equation}\label{eqn:3:partition}
+{\cal X} = \widehat{{\cal X}_{c_1}} \cup \widehat{{\cal X}_{c_2}} \cup ... \cup \widehat{{\cal X}_{c_J}},
+\end{equation}
+where
 $\widehat{{\cal X}_{c_k}}$ is the set of objects $\mathbf{x}$ such that
 $\varphi(\mathbf{x}) = c_k$. Accordingly, learning a classifier can therefore
 be restated as learning a partition of ${\cal X}$ matching as closely as
@@ -85,18 +91,18 @@ necessarily disjoints. There may exist couples $(\mathbf{x}_1, y_1)$ and
 $(\mathbf{x}_2, y_1)$ such that $\mathbf{x}_1=\mathbf{x}_2$ but $y_1 \neq y_2$.
 By contrast, since $\varphi$ defines a function from ${\cal X}$ to ${\cal Y}$,
 any input $\mathbf{x} \in {\cal X}$ is mapped to exactly one output $y \in
-{\cal Y}$ and the subsets $\widehat{{\cal X}_{c_k}}$ are therefore necessarily
+{\cal Y}$ and the subsets $\widehat{{\cal X}_{c_k}}$ are therefore necessarily.
 This unavoidable limitation on $\varphi$ is an illustration of the residual error (see
 Section~\ref{sec:2:bayes-model}).
 \end{remark}
 
 \subsection{Decision trees}
 
-With this in mind, the principle of tree structured models is beautifully
-simple. It consists in recursively partitioning the input space ${\cal X}$ into
-subspaces and then assign constant prediction values $\widehat{y}\in{\cal Y}$ to all objects
-$\mathbf{x}$ within each terminal subspace. To make things clearer, let us first define
-the following concepts:
+From this geometrical point of view, the principle of tree structured models is
+beautifully simple. It consists in recursively partitioning the input space
+${\cal X}$ into subspaces and then assign constant prediction values
+$\widehat{y}\in{\cal Y}$ to all objects $\mathbf{x}$ within each terminal
+subspace. To make things clearer, let us first define the following concepts:
 
 \begin{definition}
 A \emph{tree} is a graph $G=(V,E)$ in which any two vertices (or \emph{nodes})
@@ -130,10 +136,17 @@ can be defined as a model $\varphi: {\cal X} \mapsto {\cal Y}$ represented by a
 rooted tree (often binary, but not necessarily), where any node $t$ represents
 a subspace ${\cal X}_t \subseteq {\cal X}$ of the intput space, with the root
 node corresponding to ${\cal X}$ itself. Internal nodes $t$ are labeled with a
-\textit{split} $s_t$ (taken from a set of questions ${\cal Q}$) dividing the space
-${\cal X}_t$ they each represent into disjoint subspaces respectively corresponding to
-each of their children. Terminal nodes are labeled with a best guess
-value $\widehat{y}_t \in {\cal Y}$ of the output variable.
+\textit{split} $s_t$ (taken from a set of questions ${\cal Q}$) dividing the
+space ${\cal X}_t$ they each represent into disjoint subspaces respectively
+corresponding to each of their children. Terminal nodes are labeled with a best
+guess value $\widehat{y}_t \in {\cal Y}$ of the output variable.
+In classification, the terminal nodes hence form a partition (as defined by
+Equation~\ref{eqn:3:partition}) of ${\cal X}$, where each set $\widehat{{\cal
+X}_{c_k}}$ is obtained from the union of the subspaces ${\cal X}_t$ of all
+terminal nodes $t$ such that $\widehat{y}_t = c_k$.
+
+As an example, Figure~\ref{fig:3:tree} illustrates...
+
 % terminal nodes form a partition
 % regression
 
@@ -152,6 +165,7 @@ value $\widehat{y}_t \in {\cal Y}$ of the output variable.
 \subsection{Data structures}
 
 %     > Data structures (arrays vs. object-oriented structures)
+%     > definir l'algo de prédiction
 
 \subsection{Example}
 
