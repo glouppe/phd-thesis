@@ -61,18 +61,15 @@ for an in-depth analysis of these methods.
 \section{Tree structured models}
 \label{sec:3:tree-structured-models}
 
-\subsection{Definition}
+\subsection{Classifiers as partitions}
 
 When the output space is a finite set of values, like in classification where
 ${\cal Y} = \{c_1, c_2, ..., c_J\}$, another way of looking at a supervised
-learning problem is to notice that $Y$ defines a partition\footnote{When $Y$ is
-not univocally determined given $X=\mathbf{x}$, then the subsets ${\cal
-X}_{c_k}$ are not necessarily disjoints.} over the input space ${\cal X}$, that
+learning problem is to notice that $Y$ defines a partition over the input space ${\cal X}$, that
 is $${\cal X} = {\cal X}_{c_1} \cup {\cal X}_{c_2} \cup ... \cup {\cal
 X}_{c_J},$$ where ${\cal X}_{c_k}$ is the set of objects $\mathbf{x}$ for which
-$Y|X=\mathbf{x}$ is $c_k$. Similarly, a classifier $\varphi$ can also be
-regarded as a partition\footnote{Since $\varphi$ is deterministic, the subsets
-$\widehat{{\cal X}_{c_k}}$ are necessarily disjoints.} of the input space
+$Y$ has value $c_k$. Similarly, a classifier $\varphi$ can also be
+regarded as a partition of the input space
 ${\cal X}$ since it defines an approximation $\widehat{Y}$ of $Y$, which in
 turn partitions ${\cal X}$, that is $${\cal X} = \widehat{{\cal X}_{c_1}} \cup
 \widehat{{\cal X}_{c_2}} \cup ... \cup \widehat{{\cal X}_{c_J}},$$ where
@@ -80,6 +77,20 @@ $\widehat{{\cal X}_{c_k}}$ is the set of objects $\mathbf{x}$ such that
 $\varphi(\mathbf{x}) = c_k$. Accordingly, learning a classifier can therefore
 be restated as learning a partition of ${\cal X}$ matching as closely as
 possible the (true) partition engendered by $Y$ over ${\cal X}$.
+
+\begin{remark}{Noise and partition}
+Notice that when $Y$ cannot be univocally determined given $X=\mathbf{x}$,
+e.g., when there is noise on $Y$, then the subsets ${\cal X}_{c_k}$ are not
+necessarily disjoints. There may exist couples $(\mathbf{x}_1, y_1)$ and
+$(\mathbf{x}_2, y_1)$ such that $\mathbf{x}_1=\mathbf{x}_2$ but $y_1 \neq y_2$.
+By contrast, since $\varphi$ defines a function from ${\cal X}$ to ${\cal Y}$,
+any input $\mathbf{x} \in {\cal X}$ is mapped to exactly one output $y \in
+{\cal Y}$ and the subsets $\widehat{{\cal X}_{c_k}}$ are therefore necessarily
+This unavoidable limitation on $\varphi$ is an illustration of the residual error (see
+Section~\ref{sec:2:bayes-model}).
+\end{remark}
+
+\subsection{Decision trees}
 
 With this in mind, the principle of tree structured models is beautifully
 simple. It consists in recursively partitioning the input space ${\cal X}$ into
@@ -124,6 +135,7 @@ ${\cal X}_t$ they each represent into disjoint subspaces respectively correspond
 each of their children. Terminal nodes are labeled with a best guess
 value $\widehat{y}_t \in {\cal Y}$ of the output variable.
 % terminal nodes form a partition
+% regression
 
 
 
@@ -137,13 +149,15 @@ value $\widehat{y}_t \in {\cal Y}$ of the output variable.
 %     > terminal nodes form a partition
 % * Prediction
 
+\subsection{Data structures}
+
+%     > Data structures (arrays vs. object-oriented structures)
+
 \subsection{Example}
 
 %     > (Titanic classification problem) => running example
 
-\subsection{Data structures}
 
-%     > Data structures (arrays vs. object-oriented structures)
 
 
 
