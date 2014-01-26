@@ -61,8 +61,6 @@ for an in-depth analysis of these methods.
 \section{Tree structured models}
 \label{sec:3:tree-structured-models}
 
-\subsection{Classifiers as partitions}
-
 When the output space is a finite set of values, like in classification where
 ${\cal Y} = \{c_1, c_2, ..., c_J\}$, another way of looking at a supervised
 learning problem is to notice that $Y$ defines a partition over the input space ${\cal X}$, that
@@ -80,25 +78,26 @@ turn partitions ${\cal X}$, that is
 \end{equation}
 where
 $\widehat{{\cal X}_{c_k}}$ is the set of objects $\mathbf{x}$ such that
-$\varphi(\mathbf{x}) = c_k$. Accordingly, learning a classifier can therefore
+$\varphi(\mathbf{x}) = c_k$. Accordingly, learning a classifier can thus
 be restated as learning a partition of ${\cal X}$ matching as closely as
 possible the (true) partition engendered by $Y$ over ${\cal X}$.
 
-\begin{remark}{Noise and partition}
-Notice that when $Y$ cannot be univocally determined given $X=\mathbf{x}$,
+\begin{remark}{Partitioning with noise}
+Notice that when $Y$ cannot be univocally de termined given $X=\mathbf{x}$,
 e.g., when there is noise on $Y$, then the subsets ${\cal X}_{c_k}$ are not
 necessarily disjoints. There may exist couples $(\mathbf{x}_1, y_1)$ and
 $(\mathbf{x}_2, y_1)$ such that $\mathbf{x}_1=\mathbf{x}_2$ but $y_1 \neq y_2$.
 By contrast, since $\varphi$ defines a function from ${\cal X}$ to ${\cal Y}$,
 any input $\mathbf{x} \in {\cal X}$ is mapped to exactly one output $y \in
-{\cal Y}$ and the subsets $\widehat{{\cal X}_{c_k}}$ are therefore necessarily.
-This unavoidable limitation on $\varphi$ is an illustration of the residual error (see
-Section~\ref{sec:2:bayes-model}).
+{\cal Y}$ and the subsets $\widehat{{\cal X}_{c_k}}$ are therefore necessarily
+disjoints, which means that no model will ever perfectly predict the true output
+value in all cases. As discussed in Section~\ref{sec:2:bayes-model}, this
+limitation is unavoidable and can in fact be viewed as the cause of the residual error.
 \end{remark}
 
 \subsection{Decision trees}
 
-From this geometrical point of view, the principle of tree structured models is
+From a geometrical point of view, the principle of tree structured models is
 beautifully simple. It consists in recursively partitioning the input space
 ${\cal X}$ into subspaces and then assign constant prediction values
 $\widehat{y}\in{\cal Y}$ to all objects $\mathbf{x}$ within each terminal
@@ -147,7 +146,7 @@ terminal nodes $t$ such that $\widehat{y}_t = c_k$.
 
 As an example, Figure~\ref{fig:3:tree} illustrates...
 
-% terminal nodes form a partition
+
 % regression
 
 
@@ -161,6 +160,8 @@ As an example, Figure~\ref{fig:3:tree} illustrates...
 %     > Intuitively, when all variables are ordered, it is like cutting X into rectangles (see CART 31+)
 %     > terminal nodes form a partition
 % * Prediction
+
+% comment construire l'arbre? choix des splits, d'un critère d'arrêt et des valeurs associées aux feuilles
 
 \subsection{Data structures}
 
