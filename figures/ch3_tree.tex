@@ -1,0 +1,31 @@
+\documentclass{article}
+\usepackage{pstricks}
+\usepackage{pst-plot}
+\pagestyle{empty}
+\begin{document}
+    \begin{pspicture}(20,15)
+    %\psgrid[subgriddiv=1,griddots=10,gridlabels=7pt]
+    % Arrows
+    \psline[linewidth=0.5pt]{->}(10,12)(8.3,11.3)
+    \psline[linewidth=0.5pt]{->}(10,12)(11.7,11.3)
+    \psline[linewidth=0.5pt]{->}(8,11)(7,9.35)
+    \psline[linewidth=0.5pt]{->}(8,11)(9,9.35)
+    % Nodes
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](10,12){0.4}
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](8,11){0.4}
+    \psframe[fillstyle=solid,linewidth=1pt,linecolor=black](11.7,10.7)(12.3,11.3)
+    \psframe[fillstyle=solid,linewidth=1pt,linecolor=black](6.7,8.7)(7.3,9.3)
+    \psframe[fillstyle=solid,linewidth=1pt,linecolor=black](8.7,8.7)(9.3,9.3)
+    % Text
+    \rput(10,12){$t_0$}
+    \rput(8,11){$t_1$}
+    \rput(12,11){$t_2$}
+    \rput(7,9){$t_3$}
+    \rput(9,9){$t_4$}
+    \rput(10,11.3){{\small $X_1 \leq 0.7$}}
+    \rput(8,9.7){{\small $X_2 \leq 0.5$}}
+    \rput(12,10.5){$c_2$}
+    \rput(7,8.5){$c_2$}
+    \rput(9,8.5){$c_1$}
+    \end{pspicture}
+\end{document}

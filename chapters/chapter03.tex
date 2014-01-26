@@ -25,11 +25,12 @@ directions. Among all of them however, tree-based methods stand as one of
 the most effective and useful method, capable to produce both reliable and
 understandable results, on mostly any kind of data.
 
-Historically, the appearance of \textit{decision trees} seems to be due to
-\citet{morgan:1963}, who first proposed a tree-based method for handling multi-variate
-non-additive effects in the context of survey data. Without contest
-however, the principal investigators that have driven research on the
-methodological principles  are \citet{breiman:1978a,breiman:1978b},
+Historically, the appearance of \textit{decision trees} is due to
+\citet{morgan:1963}, who first proposed a tree-based method called
+\textit{automatic interaction dectection} for handling multi-variate
+non-additive effects in the context of survey data. Without contest however, the
+principal investigators that have driven research on the methodological
+principles  are \citet{breiman:1978a,breiman:1978b},
 \citet{friedman:1977,friedman:1979} and \citet{quinlan:1979,quinlan:1986} who
 simultaneously and independently proposed very close algorithms for the
 induction of tree-based models. In particular, the summarizing work of
@@ -138,13 +139,38 @@ node corresponding to ${\cal X}$ itself. Internal nodes $t$ are labeled with a
 \textit{split} $s_t$ (taken from a set of questions ${\cal Q}$) dividing the
 space ${\cal X}_t$ they each represent into disjoint subspaces respectively
 corresponding to each of their children. Terminal nodes are labeled with a best
-guess value $\widehat{y}_t \in {\cal Y}$ of the output variable.
-In classification, the terminal nodes form a partition (as defined by
-Equation~\ref{eqn:3:partition}) of ${\cal X}$, where each set $\widehat{{\cal
-X}_{c_k}}$ is obtained from the union of the subspaces ${\cal X}_t$ of all
-terminal nodes $t$ such that $\widehat{y}_t = c_k$.
+guess value $\widehat{y}_t \in {\cal Y}$ of the output variable. As such, the
+predicted output value $\varphi(\mathbf{x})$ for some instance $\mathbf{x}$ is
+the label of the leaf reached by the instance when it is propagated through the
+tree by following the splits $s_t$.
 
-As an example, Figure~\ref{fig:3:tree} illustrates...
+\begin{figure}
+    \centering
+    \includegraphics[scale=1.0]{figures/ch3_tree.pdf}
+    \caption{A decision tree.}
+    \label{fig:3:tree}
+\end{figure}
+
+As an example, Figure~\ref{fig:3:tree} illustrates a decision tree $\varphi$
+made of five nodes and partitioning the input space ${\cal X} = {\cal X}_1
+\times {\cal X}_2 = [0;1] \times [0; 1]$ on a binary classification problem.
+Node $t_0$ is the root node and corresponds to whole input space ${\cal X}_0 =
+{\cal X}$. It is labeled with the split $X_1 \leq 0.7$ which divides ${\cal
+X}_0$ into two disjoint subsets ${\cal X}_1 \cup {\cal X}_2$. The first set
+corresponds to its left child $t_1$ and defines the set of all input vectors
+$\mathbf{x} \in {\cal X}_0$ such that $x_1 \leq 0.7$. Similarly, the second set
+corresponds to its right child $t_2$ and defines the set of all input vectors
+$\mathbf{x} \in {\cal X}_0$ such that $x_1 > 0.7$. Likewise, $t_1$ is labeled
+with the split $X_2 \leq 0.5$ which further divides ${\cal X}_1$ into two
+disjoint subsets ${\cal X}_3 \cup {\cal X}_4$ respectively corresponding the
+sets of all input vectors $\mathbf{x} \in {\cal X}_1$ such that $x_2 \leq 0.5$
+(resp. $x_2 > 0.5$). Terminal nodes $t_2$, $t_3$ and $t_4$ are represented by
+squares labeled with an output value $\widehat{y}_t$. They form together a
+partition (as defined by Equation~\ref{eqn:3:partition}) of ${\cal X}$, where
+each set $\widehat{{\cal X}_{c_k}}$ is obtained from the union of the subspaces
+${\cal X}_t$ of all terminal nodes $t$ such that $\widehat{y}_t = c_k$. In this
+case, $\widehat{{\cal X}_{c_1}} = {\cal X}_{t_4}$ while $\widehat{{\cal
+X}_{c_2}} = {\cal X}_{t_2} \cup {\cal X}_{t_3}$.
 
 
 % regression
