@@ -147,14 +147,15 @@ tree by following the splits $s_t$.
 \begin{figure}
     \centering
     \includegraphics[scale=1.0]{figures/ch3_tree.pdf}
-    \caption{A decision tree $\varphi$ built for a binary classification problem from an input space ${\cal X}=[0,1]\times[0,1]$. (Figure inspired from \citet{breiman:1984}.)}
+    \caption{A decision tree $\varphi$ built for a binary classification
+             problem from an input space ${\cal X}=[0,1]\times[0,1]$.
+             (Figure inspired from \citet{breiman:1984}.)}
     \label{fig:3:tree}
 \end{figure}
 
-
 As an example, Figure~\ref{fig:3:tree} illustrates a decision tree $\varphi$
 made of five nodes and partitioning the input space ${\cal X} = {\cal X}_1
-\times {\cal X}_2 = [0;1] \times [0; 1]$ on a binary classification problem
+\times {\cal X}_2 = [0;1] \times [0; 1]$ for a binary classification problem
 (i.e., ${\cal Y}=\{ c_1, c_2 \}$). Node $t_0$ is the root node and corresponds
 to whole input space ${\cal X}_0 = {\cal X}$. It is labeled with the split $X_1
 \leq 0.7$ which divides ${\cal X}_0$ into two disjoint subsets ${\cal X}_1 \cup
@@ -174,14 +175,23 @@ terminal nodes $t$ such that $\widehat{y}_t = c_k$. In this case,
 $\widehat{{\cal X}_{c_1}} = {\cal X}_{t_4}$ while $\widehat{{\cal X}_{c_2}} =
 {\cal X}_{t_2} \cup {\cal X}_{t_3}$. As shown in Figure~\ref{fig:3:partition},
 the partition engendered by  $\varphi$ on ${\cal X}$ divides the input space
-into subspaces that are almost class homogeneous. As we will explore in
-Section~\ref{sec:3:splitting-rules}, the partition is in this case made of
-rectangles because of the nature of the splits $s_t$ dividing the nodes.
+into subspaces that are more and more class homogeneous, starting from ${\cal
+X}$ at the root node,  then ${\cal X}_{t_1} \cup {\cal X}_{t_2}$ at the
+second level of tree and finally $({\cal X}_{t_3} \cup {\cal X}_{t_4})\cup
+{\cal X}_{t_2}$ at the leaves.  As we will explore in
+Section~\ref{sec:3:splitting-rules}, the partition is in this case made of rectangles because of
+the nature of the splits $s_t$ dividing the nodes. Finally, predictions ...
+
+% , which means that the
+% predictions of the decision tree will be correct in most cases, except for a
+% few outliers.
 
 \begin{figure}
     \centering
     \includegraphics[scale=0.5]{figures/ch3_partition.pdf}
-    \caption{Partition of ${\cal X}$ induced by the decision tree $\varphi$. Blue dots correspond to objects of class $c_1$ while red dots correspond to objects of class $c_2$. (Figure inspired from \citet{breiman:1984}.)}
+    \caption{Partition of ${\cal X}$ induced by the decision tree $\varphi$.
+             Blue dots correspond to objects of class $c_1$ while red dots correspond
+             to objects of class $c_2$. (Figure inspired from \citet{breiman:1984}.)}
     \label{fig:3:partition}
 \end{figure}
 
