@@ -116,7 +116,7 @@ the \emph{root}. In our case, we additionally assume that a rooted tree is a
 \end{definition}
 
 \begin{definition}
-If $(t_1, t_2)\in E$ then node $t_1$ is said to be the \emph{parent} of
+If there exists an edge from $t_1$ to $t_2$ (i.e., if $(t_1, t_2)\in E$) then node $t_1$ is said to be the \emph{parent} of
 node $t_2$ while node $t_2$ is said to be a \emph{child} of node $t_1$.
 \end{definition}
 
@@ -147,30 +147,46 @@ tree by following the splits $s_t$.
 \begin{figure}
     \centering
     \includegraphics[scale=1.0]{figures/ch3_tree.pdf}
-    \caption{A decision tree.}
+    \caption{A decision tree $\varphi$ built for a binary classification problem from an input space ${\cal X}=[0,1]\times[0,1]$. (Figure inspired from \citet{breiman:1984}.)}
     \label{fig:3:tree}
 \end{figure}
 
+
 As an example, Figure~\ref{fig:3:tree} illustrates a decision tree $\varphi$
 made of five nodes and partitioning the input space ${\cal X} = {\cal X}_1
-\times {\cal X}_2 = [0;1] \times [0; 1]$ on a binary classification problem.
-Node $t_0$ is the root node and corresponds to whole input space ${\cal X}_0 =
-{\cal X}$. It is labeled with the split $X_1 \leq 0.7$ which divides ${\cal
-X}_0$ into two disjoint subsets ${\cal X}_1 \cup {\cal X}_2$. The first set
-corresponds to its left child $t_1$ and defines the set of all input vectors
-$\mathbf{x} \in {\cal X}_0$ such that $x_1 \leq 0.7$. Similarly, the second set
-corresponds to its right child $t_2$ and defines the set of all input vectors
-$\mathbf{x} \in {\cal X}_0$ such that $x_1 > 0.7$. Likewise, $t_1$ is labeled
-with the split $X_2 \leq 0.5$ which further divides ${\cal X}_1$ into two
-disjoint subsets ${\cal X}_3 \cup {\cal X}_4$ respectively corresponding the
-sets of all input vectors $\mathbf{x} \in {\cal X}_1$ such that $x_2 \leq 0.5$
-(resp. $x_2 > 0.5$). Terminal nodes $t_2$, $t_3$ and $t_4$ are represented by
-squares labeled with an output value $\widehat{y}_t$. They form together a
-partition (as defined by Equation~\ref{eqn:3:partition}) of ${\cal X}$, where
-each set $\widehat{{\cal X}_{c_k}}$ is obtained from the union of the subspaces
-${\cal X}_t$ of all terminal nodes $t$ such that $\widehat{y}_t = c_k$. In this
-case, $\widehat{{\cal X}_{c_1}} = {\cal X}_{t_4}$ while $\widehat{{\cal
-X}_{c_2}} = {\cal X}_{t_2} \cup {\cal X}_{t_3}$.
+\times {\cal X}_2 = [0;1] \times [0; 1]$ on a binary classification problem
+(i.e., ${\cal Y}=\{ c_1, c_2 \}$). Node $t_0$ is the root node and corresponds
+to whole input space ${\cal X}_0 = {\cal X}$. It is labeled with the split $X_1
+\leq 0.7$ which divides ${\cal X}_0$ into two disjoint subsets ${\cal X}_1 \cup
+{\cal X}_2$. The first set corresponds to its left child $t_1$ and represents
+the set of all input vectors $\mathbf{x} \in {\cal X}_0$ such that $x_1 \leq
+0.7$. Similarly, the second set corresponds to its right child $t_2$ and
+represents the set of all input vectors $\mathbf{x} \in {\cal X}_0$ such that
+$x_1 > 0.7$. Likewise, $t_1$ is labeled with the split $X_2 \leq 0.5$ which
+further divides ${\cal X}_1$ into two disjoint subsets ${\cal X}_3 \cup {\cal
+X}_4$ respectively corresponding the sets of all input vectors $\mathbf{x} \in
+{\cal X}_1$ such that $x_2 \leq 0.5$ (resp. $x_2 > 0.5$). Terminal nodes $t_2$,
+$t_3$ and $t_4$ are represented by squares labeled with an output value
+$\widehat{y}_t$. They form together a partition (as defined by
+Equation~\ref{eqn:3:partition}) of ${\cal X}$, where each set $\widehat{{\cal
+X}_{c_k}}$ is obtained from the union of the subspaces ${\cal X}_t$ of all
+terminal nodes $t$ such that $\widehat{y}_t = c_k$. In this case,
+$\widehat{{\cal X}_{c_1}} = {\cal X}_{t_4}$ while $\widehat{{\cal X}_{c_2}} =
+{\cal X}_{t_2} \cup {\cal X}_{t_3}$. As shown in Figure~\ref{fig:3:partition},
+the partition engendered by  $\varphi$ on ${\cal X}$ divides the input space
+into subspaces that are almost class homogeneous. As we will explore in
+Section~\ref{sec:3:splitting-rules}, the partition is in this case made of
+rectangles because of the nature of the splits $s_t$ dividing the nodes.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.5]{figures/ch3_partition.pdf}
+    \caption{Partition of ${\cal X}$ induced by the decision tree $\varphi$. Blue dots correspond to objects of class $c_1$ while red dots correspond to objects of class $c_2$. (Figure inspired from \citet{breiman:1984}.)}
+    \label{fig:3:partition}
+\end{figure}
+
+
+
 
 
 % regression
