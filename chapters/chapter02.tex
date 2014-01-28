@@ -98,7 +98,7 @@ understand and maintain. \end{remark}
 
 In this framework, the supervised learning task can be stated as learning a
 function $\varphi: {\cal X} \mapsto {\cal Y}$ from a learning set ${\cal
-L}=(\mathbf{X}, \mathbf{y})$. In particular, the goal of the learning task is
+L}=(\mathbf{X}, \mathbf{y})$. The objective is
 to find a model such that its predictions $\varphi(\mathbf{x})$, also denoted
 by the variable $\hat{Y}$, are as good as possible. If $Y$ is a categorical
 variable then the learning task is a classification problem. If $Y$ is
@@ -117,7 +117,7 @@ A \emph{regressor} is a function $\varphi: {\cal X} \mapsto {\cal Y}$, where ${\
 
 \begin{remark}{Estimator interface}
 We follow in this work the API conventions proposed by~\citet{buitinck:2013}.
-In particular, learning algorithms are described as \textit{estimator} objects implementing the
+Learning algorithms are described as \textit{estimator} objects implementing the
 following interface:
 
 \begin{itemize}
@@ -422,7 +422,7 @@ the best model among ${\cal H}$ on the basis of the learning set ${\cal L}$.
 \begin{remark}{Approximation error}
 Depending on restrictions made on the structure of the problem, the
 Bayes model usually does not belong to ${\cal H}$, but there may be models
-$\varphi \in {\cal H}$ that are sufficiently close to it. In particular, the
+$\varphi \in {\cal H}$ that are sufficiently close to it. As such, the
 \textit{approximation error}~\citep{bottou:2011} measures how closely the
 models in ${\cal H}$ can approximate the optimal model $\varphi_B$:
 \begin{equation}
@@ -719,10 +719,10 @@ In cases where data is not uniformly sampled, this latter algorithm can be
 a better choice than the $k$-nearest neighbor method.
 
 Despite their simplicity, nearest neighbor methods usually yield very good
-results in practice. In particular, they are are often successful in
-classification situations where the decision boundary is very irregular. From a
-theoretical point of view, an important result due to \citet{cover:1967} is the
-proof of consistency of the method. When the size of ${\cal L}$ tends to
-infinity and $k$ is appropriately adjusted to ${\cal L}$, the generalization
-error of the model produced by the $k$-nearest neighbor method is shown to
-converge towards the generalization error of the Bayes model.
+results in practice. They are are often successful in classification situations
+where the decision boundary is very irregular. From a theoretical point of
+view, an important result due to \citet{cover:1967} is the proof of consistency
+of the method. When the size of ${\cal L}$ tends to infinity and $k$ is
+appropriately adjusted to ${\cal L}$, the generalization error of the model
+produced by the $k$-nearest neighbor method is shown to converge towards the
+generalization error of the Bayes model.
