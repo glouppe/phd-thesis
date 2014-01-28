@@ -144,6 +144,13 @@ predicted output value $\varphi(\mathbf{x})$ for some instance $\mathbf{x}$ is
 the label of the leaf reached by the instance when it is propagated through the
 tree by following the splits $s_t$.
 
+\begin{remark}{Induction graphs}
+From a graph theory point of view, decision trees belong to a larger family
+of methods known as \textit{induction graphs}~\citep{zighed:2000}. In this more
+general framework, the structure is a directed acyclic graph, which allows for
+nodes to be both divided and recombined.
+\end{remark}
+
 \begin{figure}
     \centering
     \includegraphics[scale=1.0]{figures/ch3_tree.pdf}
@@ -156,35 +163,35 @@ tree by following the splits $s_t$.
 As an example, Figure~\ref{fig:3:tree} illustrates a decision tree $\varphi$
 made of five nodes and partitioning the input space ${\cal X} = {\cal X}_1
 \times {\cal X}_2 = [0;1] \times [0; 1]$ for a binary classification problem
-(${\cal Y}=\{ c_1, c_2 \}$). Node $t_0$ is the root node and corresponds
-to whole input space ${\cal X}_0 = {\cal X}$. It is labeled with the split $X_1
-\leq 0.7$ which divides ${\cal X}_0$ into two disjoint subsets ${\cal X}_1 \cup
-{\cal X}_2$. The first set corresponds to its left child $t_1$ and represents
-the set of all input vectors $\mathbf{x} \in {\cal X}_0$ such that $x_1 \leq
-0.7$. Similarly, the second set corresponds to its right child $t_2$ and
-represents the set of all input vectors $\mathbf{x} \in {\cal X}_0$ such that
-$x_1 > 0.7$. Likewise, $t_1$ is labeled with the split $X_2 \leq 0.5$ which
-further divides ${\cal X}_1$ into two disjoint subsets ${\cal X}_3 \cup {\cal
-X}_4$ respectively corresponding the sets of all input vectors $\mathbf{x} \in
-{\cal X}_1$ such that $x_2 \leq 0.5$ (resp. $x_2 > 0.5$). Terminal nodes $t_2$,
-$t_3$ and $t_4$ are represented by squares labeled with an output value
-$\widehat{y}_t$. They form together a partition (as defined by
-Equation~\ref{eqn:3:partition}) of ${\cal X}$, where each set $\widehat{{\cal
-X}_{c_k}}$ is obtained from the union of the subspaces ${\cal X}_t$ of all
-terminal nodes $t$ such that $\widehat{y}_t = c_k$. In this case,
-$\widehat{{\cal X}_{c_1}} = {\cal X}_{t_4}$ while $\widehat{{\cal X}_{c_2}} =
-{\cal X}_{t_2} \cup {\cal X}_{t_3}$. As shown in Figure~\ref{fig:3:partition},
-the partition engendered by  $\varphi$ on ${\cal X}$ divides the input space
-into subspaces that are more and more class homogeneous, starting from ${\cal
-X}$ at the root node,  then ${\cal X}_{t_1} \cup {\cal X}_{t_2}$ at the
-second level of tree and finally $({\cal X}_{t_3} \cup {\cal X}_{t_4})\cup
-{\cal X}_{t_2}$ at the leaves.  As we will explore in
-Section~\ref{sec:3:splitting-rules}, the partition is in this case made of rectangles because of
-the nature of the splits $s_t$ dividing the nodes. Finally, predictions ...
-
-% , which means that the
-% predictions of the decision tree will be correct in most cases, except for a
-% few outliers.
+(where ${\cal Y}=\{ c_1, c_2 \}$). Node $t_0$ is the root node and corresponds
+to the whole input space ${\cal X}_{t_0} = {\cal X}$. It is labeled with the
+split $X_1 \leq 0.7$ which divides ${\cal X}_{t_0}$ into two disjoint subsets
+${\cal X}_{t_1} \cup {\cal X}_{t_2}$. The first set corresponds to its left
+child $t_1$ and represents the set of all input vectors $\mathbf{x} \in {\cal
+X}_0$ such that $x_1 \leq 0.7$. Similarly, the second set corresponds to its
+right child $t_2$ and represents the set of all input vectors $\mathbf{x} \in
+{\cal X}_{t_0}$ such that $x_1 > 0.7$. Likewise, $t_1$ is labeled with the
+split $X_2 \leq 0.5$ which further divides ${\cal X}_{t_1}$ into two disjoint
+subsets ${\cal X}_{t_3} \cup {\cal X}_{t_4}$ respectively corresponding the
+sets of all input vectors $\mathbf{x} \in {\cal X}_{t_1}$ such that $x_2 \leq
+0.5$ (resp. $x_2 > 0.5$). Terminal nodes $t_2$, $t_3$ and $t_4$ are represented
+by squares labeled with an output value $\widehat{y}_t$. They form together a
+partition (as defined by Equation~\ref{eqn:3:partition}) of ${\cal X}$, where
+each set $\widehat{{\cal X}_{c_k}}$ is obtained from the union of the subspaces
+${\cal X}_t$ of all terminal nodes $t$ such that $\widehat{y}_t = c_k$. In this
+case, $\widehat{{\cal X}_{c_1}} = {\cal X}_{t_4}$ while $\widehat{{\cal
+X}_{c_2}} = {\cal X}_{t_2} \cup {\cal X}_{t_3}$. As shown in
+Figure~\ref{fig:3:partition}, the partition engendered by  $\varphi$ on ${\cal
+X}$ divides the input space into subspaces that are more and more class
+homogeneous, starting from ${\cal X}$ at the root node,  then ${\cal X}_{t_1}
+\cup {\cal X}_{t_2}$ at the second level of tree and finally $({\cal X}_{t_3}
+\cup {\cal X}_{t_4})\cup {\cal X}_{t_2}$ at the leaves.  As we will explore in
+Section~\ref{sec:3:splitting-rules}, the partition is in this case made of
+rectangles because of the nature of the splits $s_t$ dividing the nodes.
+Predictions are made by propagating instances through the tree and using as
+output value the value labeling the terminal nodes in which they fall
+into. For example, an object $\mathbf{x}=(x_1=0.2, x_2=0.7)$ falls into $t_4$
+and therefore $\varphi(\mathbf{x}) = \widehat{y}(t_4) = c_1$.
 
 \begin{figure}
     \centering
@@ -194,6 +201,22 @@ the nature of the splits $s_t$ dividing the nodes. Finally, predictions ...
              to objects of class $c_2$. (Figure inspired from \citet{breiman:1984}.)}
     \label{fig:3:partition}
 \end{figure}
+
+Given a learning set ${\cal L}$, building a decision tree therefore amounts to
+determine the tree structure which produces the most accurate partition, i.e.,
+the one leading to the smallest generalization error. The entire construction
+then revolves around three elements:
+
+\begin{enumerate}
+\item The selection of the splits $s_k$ dividing internal nodes;
+\item The choice of a criterion for deciding when a node becomes a terminal node;
+\item The assignment of values to terminal nodes.
+\end{enumerate}
+
+As we will see, assigning values to terminal nodes happens to be quite simple.
+The crux of the problem is in finding good splits and in knowing when to
+stop splitting.
+
 
 
 
@@ -209,11 +232,6 @@ the nature of the splits $s_t$ dividing the nodes. Finally, predictions ...
 
 %     > définitions formelles + notations
 %       + noter que les arbres sont un cas particulier des graphes d'induction
-%     > Intuitively, when all variables are ordered, it is like cutting X into rectangles (see CART 31+)
-%     > terminal nodes form a partition
-% * Prediction
-
-% comment construire l'arbre? choix des splits, d'un critère d'arrêt et des valeurs associées aux feuilles
 
 \subsection{Data structures}
 
