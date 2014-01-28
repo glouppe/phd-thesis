@@ -209,7 +209,7 @@ then revolves around three elements:
 
 \begin{enumerate}
 \item The selection of the splits $s_k$ dividing internal nodes;
-\item The choice of a criterion for deciding when a node becomes a terminal node;
+\item The choice of a stopping criterion for deciding when a node becomes a terminal node;
 \item The assignment of values to terminal nodes.
 \end{enumerate}
 
@@ -220,7 +220,32 @@ stop splitting.
 
 \subsection{Data structures}
 
+Implementing decision trees involves many issues that are easily overlooked
+if not considered with care. The first of these issues concerns the choice
+of the data structure for representing a tree-structured model.
+
+Among all possible ways of representing a tree, one of the simplest and most
+direct representation is to adopt an object-oriented approach. In this
+paradigm, a decision tree is naturally represented as a hierarchy of high-level objects,
+where each object corresponds to a node of the tree and comprises attributes
+referencing its children or encoding for its split and value. Such a
+representation would indeed constitute a correct, intuitive and flexible
+implementation but may in fact not be the most appropriate when aiming for
+high-performance. One of the biggest issues with this approach is  that
+object-oriented programming makes extensive use of multiple levels of indirection,
+which may easily impairs computing times in a high-performance context (see
+Chapter~\ref{ch:complexity}), e.g., by not making it possible to leverage CPU
+cache mechanisms.
+
+At the price of less flexibility, we adopt instead a low-level
+representation of decision trees, thereby allowing us for a fine and complete control
+over memory management and CPU mechanisms.
+
+
+
+
 %     > Data structures (arrays vs. object-oriented structures)
+%       binary vs n-ary tree
 %     > definir l'algo de prédiction
 
 \subsection{Example}
