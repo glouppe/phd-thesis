@@ -228,18 +228,19 @@ Among all possible ways of representing a tree, one of the simplest and most
 direct representation is to adopt an object-oriented approach. In this
 paradigm, a decision tree is naturally represented as a hierarchy of high-level objects,
 where each object corresponds to a node of the tree and comprises attributes
-referencing its children or encoding for its split and value. Such a
+referencing its children or storing its split and value. Such a
 representation would indeed constitute a correct, intuitive and flexible
 implementation but may in fact not be the most appropriate when aiming for
-high-performance. One of the biggest issues with this approach is  that
-object-oriented programming makes extensive use of multiple levels of indirection,
-which may easily impairs computing times in a high-performance context (see
-Chapter~\ref{ch:complexity}), e.g., by not making it possible to leverage CPU
+high-performance. One of the biggest issues indeed with this approach is  that
+object-oriented programming often makes extensive use of multiple levels of indirection,
+which may easily impairs computing times in performance-critical applications (see
+Chapter~\ref{ch:complexity} for benchmarks), e.g., by not making it possible to leverage CPU
 cache mechanisms.
 
-At the price of less flexibility, we adopt instead a low-level
-representation of decision trees, thereby allowing us for a fine and complete control
-over memory management and CPU mechanisms.
+At the price of less abstraction and flexibility, we adopt instead in this work
+a low-level representation of decision trees, thereby allowing us for a
+fine-grained and complete control over memory management and CPU mechanisms. The
+tree representation that we propose ....
 
 
 
