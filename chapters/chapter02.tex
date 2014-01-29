@@ -27,22 +27,23 @@ the goal is to find a decision rule (i.e., a model) from a set of past cases
 (i.e., the output value) given a set of measurements such as age, sex, blood
 pressure or history (i.e., the input values).
 
-To give a more precise formulation, let us arrange the set of measurements on a
-case in a pre-assigned order, i.e., take the input values to be $x_1, x_2, ...,
-x_p$, where $x_j \in {\cal X}_j$ (for $j = 1, ..., p$) corresponds to the value
-of the input variable $X_j$. Together, the input values $(x_1, x_2, ..., x_p)$
-form a $p$-dimensional input vector $\mathbf{x}$ taking its values in ${\cal
-X}_1 \times ... \times {\cal X}_p = {\cal X}$, where ${\cal X}$ is defined as
-the input space. Similarly, let us define as $y \in {\cal Y}$ the value of the
-output variable $Y$, where ${\cal Y}$ is defined as the output
-space\footnote{Unless stated otherwise, supervised learning is reduced to the
-prediction of a \textit{single} output variable. More generally however, this
-framework can be defined as the prediction of one or several output variables.}.
-By definition, both the input and the output spaces are assumed to respectively
-contain all possible input vectors and all possible output values. Note that
-input variables are sometimes known as {\it features}, input vectors as {\it
-objects}, {\it instances} or {\it samples} and the output variable as {\it
-target}.
+To give a more precise formulation, let us assume as set of \textit{cases} or
+\textit{objects} taken from a universe $\Omega$. Let us arrange the set of
+measurements on a case in a pre-assigned order, i.e., take the input values to
+be $x_1, x_2, ..., x_p$, where $x_j \in {\cal X}_j$ (for $j = 1, ..., p$)
+corresponds to the value of the input variable $X_j$. Together, the input
+values $(x_1, x_2, ..., x_p)$ form a $p$-dimensional input vector $\mathbf{x}$
+taking its values in ${\cal X}_1 \times ... \times {\cal X}_p = {\cal X}$,
+where ${\cal X}$ is defined as the input space. Similarly, let us define as $y
+\in {\cal Y}$ the value of the output variable $Y$, where ${\cal Y}$ is defined
+as the output space\footnote{Unless stated otherwise, supervised learning is
+reduced to the prediction of a \textit{single} output variable. More generally
+however, this framework can be defined as the prediction of one or several
+output variables.}. By definition, both the input and the output spaces are
+assumed to respectively contain all possible input vectors and all possible
+output values. Note that input variables are sometimes known as {\it features},
+input vectors as {\it instances} or {\it samples} and the output variable as
+{\it target}.
 
 Among variables that define the problem, we distinguish between two general
 types. The former correspond to quantitative variables whose values are integer

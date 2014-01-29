@@ -230,12 +230,17 @@ stop splitting.
 
 \subsection{Recursive partitioning}
 
-
+% il y a plus d'un decision tree permettant d'expliquer L
+% une hypothèse est de considérer le plus simple d'entre eux, pour espérer une bonne généralisation mais aussi une meilleure interprétabilité
+% on pourrait chercher cet arbre en brute force, mais l'espace des arbres est large (quoique fini)
+% => approche greedy pour limiter le nombre de computations
 
 %  Description de l'algo (high-level)
 %       * Recursive partition
 %           Depth/Breadth/Best first
 %       * Splitting rules (overview)
+%           def impurity
+%           def decrease impurity
 %       * Criterion (overview)
 
 \subsection{Stopping criteria}
@@ -298,7 +303,7 @@ representation that we consider ...
 \label{sec:3:criteria}
 
 %     > Impurity criteria
-%         - Gini, Entropy, Variance, etc (see cart + graphes)
+%         - Gini, Entropy, Variance, Information gain etc (see cart + graphes)
 %         - Efficient implementation for iterative evaluation
 %             + How to evaluate multiple candidate thresholds cheaply for
 %               a given feature (algorithm, f-ordered)
