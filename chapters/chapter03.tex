@@ -33,7 +33,7 @@ principal investigators that have driven research on the methodological
 principles  are \citet{breiman:1978a,breiman:1978b},
 \citet{friedman:1977,friedman:1979} and \citet{quinlan:1979,quinlan:1986} who
 simultaneously and independently proposed very close algorithms for the
-induction of tree-based models. In particular, the summarizing work of
+induction of tree-based models. Most notably, the summarizing work of
 \citet{breiman:1984}, later complemented with the work of \citet{quinlan:1993},
 have set decision trees into a simple and consistent methodological framework,
 which largely contributed in making them easy to understand and easy to use by
@@ -96,8 +96,6 @@ value in all cases. As discussed in Section~\ref{sec:2:bayes-model}, this
 limitation is unavoidable and can in fact be viewed as the cause of the residual error.
 \end{remark}
 
-\subsection{Decision trees}
-
 From a geometrical point of view, the principle of tree structured models is
 beautifully simple. It consists in recursively partitioning the input space
 ${\cal X}$ into subspaces and then assign constant prediction values
@@ -116,8 +114,9 @@ the \emph{root}. In our case, we additionally assume that a rooted tree is a
 \end{definition}
 
 \begin{definition}
-If there exists an edge from $t_1$ to $t_2$ (i.e., if $(t_1, t_2)\in E$) then node $t_1$ is said to be the \emph{parent} of
-node $t_2$ while node $t_2$ is said to be a \emph{child} of node $t_1$.
+If there exists an edge from $t_1$ to $t_2$ (i.e., if $(t_1, t_2)\in E$) then
+node $t_1$ is said to be the \emph{parent} of node $t_2$ while node $t_2$ is
+said to be a \emph{child} of node $t_1$.
 \end{definition}
 
 \begin{definition}
@@ -218,56 +217,56 @@ The crux of the problem is in finding good splits and in knowing when to
 stop splitting.
 
 
-\subsection{Data structures}
-
-Implementing decision trees involves many issues that are easily overlooked
-if not considered with care. The first of these issues concerns the choice
-of the data structure for representing a tree-structured model.
-
-Among all possible ways of representing a tree, one of the simplest and most
-direct representation is to adopt an object-oriented approach. In this
-paradigm, a decision tree is naturally represented as a hierarchy of high-level objects,
-where each object corresponds to a node of the tree and comprises attributes
-referencing its children or storing its split and value. Such a
-representation would indeed constitute a correct, intuitive and flexible
-implementation but may in fact not be the most appropriate when aiming for
-high-performance. One of the biggest issues indeed with this approach is  that
-object-oriented programming often makes extensive use of multiple levels of indirection,
-which may easily impairs computing times in performance-critical applications (see
-Chapter~\ref{ch:complexity} for benchmarks), e.g., by not making it possible to leverage CPU
-cache mechanisms.
-
-At the price of less abstraction and flexibility, we adopt instead in this work
-a low-level representation of decision trees, thereby allowing us for a
-fine-grained and complete control over memory management and CPU mechanisms. The
-tree representation that we propose ....
-
-
-
-
-%     > Data structures (arrays vs. object-oriented structures)
-%       binary vs n-ary tree
-%     > definir l'algo de prédiction
-
-\subsection{Example}
-
-%     > (Titanic classification problem) => running example
-
-
-
-
-
 \section{Induction of decision trees}
 \label{sec:3:induction}
 
-% * Growing decision trees
+\subsection{Recursive partitioning}
+
 %  Description de l'algo (high-level)
 %       * Recursive partition
 %           Depth/Breadth/Best first
 %       * Splitting rules (overview)
 %       * Criterion (overview)
+
+\subsection{Stopping criteria}
+
 %       * Critères d'arrêts [ différents paramètres, chi² ]
-%       * Assignment in terminal nodes
+
+\subsection{Assigning values to terminal nodes}
+
+%       * Assignment in terminal nodes, cart 34+
+
+\subsection{Data structures and implementation considerations}
+
+Implementing decision trees involves many issues that are easily overlooked if
+not considered with care. The first of these issues concerns the choice of the
+data structure for representing decision trees.
+
+Among all possible ways of representing a tree, one of the simplest and most
+direct representation is to adopt an object-oriented approach. In this
+paradigm, a decision tree is naturally represented as a hierarchy of high-level
+objects, where each object corresponds to a node of the tree and comprises
+attributes referencing its children or storing its split and value. Such a
+representation would make for a correct, intuitive and flexible implementation
+but may in fact not be the most appropriate when aiming for high-performance.
+One of the biggest issues indeed is that object-oriented programming usually
+fragments complex and nested objects into non-contiguous memory blocks, thereby
+requiring multiple levels of indirection for traversing the structure. In
+particular, this design can easily impair computing times in
+performance-critical applications (see Chapter~\ref{ch:complexity} for
+benchmarks), e.g., by not making it possible to leverage CPU cache or pre-
+fetching mechanisms.
+
+At the price of less abstraction and flexibility, we adopt instead in this work
+a low-level representation of decision trees, allowing us for a fine-grained
+and complete control over memory management and CPU mechanisms. The tree
+representation that we consider ...
+
+%     > Data structures (arrays vs. object-oriented structures)
+%       binary vs n-ary tree
+%     > définir l'algo de construction
+%     > definir l'algo de prédiction
+
 
 \section{Splitting rules}
 \label{sec:3:splitting-rules}
