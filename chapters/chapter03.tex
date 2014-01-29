@@ -137,7 +137,13 @@ a subspace ${\cal X}_t \subseteq {\cal X}$ of the intput space, with the root
 node corresponding to ${\cal X}$ itself. Internal nodes $t$ are labeled with a
 \textit{split} $s_t$ (taken from a set of questions ${\cal Q}$) dividing the
 space ${\cal X}_t$ they each represent into disjoint subspaces respectively
-corresponding to each of their children. Terminal nodes are labeled with a best
+corresponding to each of their children. For instance, the set of all binary
+splits is the set ${\cal Q}$ of questions $s$ of the form \textit{``Is $\mathbf{x} \in {\cal
+X}_A?$''}, where ${\cal X}_A \subset {\cal X}$ is some subset of the input space.
+Any split $s$ of this form divides ${\cal X}_t$ into two subspaces respectively
+corresponding to ${\cal X}_t \cap {\cal X}_A$ for the left child of $t$ and to
+${\cal X}_t \cap ({\cal X}\setminus{\cal X}_A)$ for the right child of $t$.
+Terminal nodes are labeled with a best
 guess value $\widehat{y}_t \in {\cal Y}$ of the output variable. As such, the
 predicted output value $\varphi(\mathbf{x})$ for some instance $\mathbf{x}$ is
 the label of the leaf reached by the instance when it is propagated through the
@@ -163,8 +169,8 @@ As an example, Figure~\ref{fig:3:tree} illustrates a decision tree $\varphi$
 made of five nodes and partitioning the input space ${\cal X} = {\cal X}_1
 \times {\cal X}_2 = [0;1] \times [0; 1]$ for a binary classification problem
 (where ${\cal Y}=\{ c_1, c_2 \}$). Node $t_0$ is the root node and corresponds
-to the whole input space ${\cal X}_{t_0} = {\cal X}$. It is labeled with the
-split $X_1 \leq 0.7$ which divides ${\cal X}_{t_0}$ into two disjoint subsets
+to the whole input space ${\cal X}_{t_0} = {\cal X}$. It is labeled with the binary
+split $X_1 \leq 0.7$ (i.e., the question \textit{``Is $X_1 \leq 0.7$?''}) which divides ${\cal X}_{t_0}$ into two disjoint subsets
 ${\cal X}_{t_1} \cup {\cal X}_{t_2}$. The first set corresponds to its left
 child $t_1$ and represents the set of all input vectors $\mathbf{x} \in {\cal
 X}_0$ such that $x_1 \leq 0.7$. Similarly, the second set corresponds to its
@@ -186,7 +192,7 @@ homogeneous, starting from ${\cal X}$ at the root node,  then ${\cal X}_{t_1}
 \cup {\cal X}_{t_2}$ at the second level of tree and finally $({\cal X}_{t_3}
 \cup {\cal X}_{t_4})\cup {\cal X}_{t_2}$ at the leaves.  As we will explore in
 Section~\ref{sec:3:splitting-rules}, the partition is in this case made of
-rectangles because of the nature of the splits $s_t$ dividing the nodes.
+rectangles because of the nature of the splits $s_t \in {\cal Q}$ dividing the nodes.
 Predictions are made by propagating instances through the tree and using as
 output value the value labeling the terminal nodes in which they fall
 into. For example, an object $\mathbf{x}=(x_1=0.2, x_2=0.7)$ falls into $t_4$
@@ -207,7 +213,7 @@ the one leading to the smallest generalization error. The entire construction
 then revolves around three elements:
 
 \begin{enumerate}
-\item The selection of the splits $s_k$ dividing internal nodes;
+\item The selection of the splits $s_t \in {\cal Q}$ dividing internal nodes;
 \item The choice of a stopping criterion for deciding when a node becomes a terminal node;
 \item The assignment of values to terminal nodes.
 \end{enumerate}
@@ -221,6 +227,8 @@ stop splitting.
 \label{sec:3:induction}
 
 \subsection{Recursive partitioning}
+
+
 
 %  Description de l'algo (high-level)
 %       * Recursive partition
