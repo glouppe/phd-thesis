@@ -138,16 +138,18 @@ node corresponding to ${\cal X}$ itself. Internal nodes $t$ are labeled with a
 \textit{split} $s_t$ (taken from a set of questions ${\cal Q}$) dividing the
 space ${\cal X}_t$ they each represent into disjoint subspaces respectively
 corresponding to each of their children. For instance, the set of all binary
-splits is the set ${\cal Q}$ of questions $s$ of the form \textit{``Is $\mathbf{x} \in {\cal
-X}_A?$''}, where ${\cal X}_A \subset {\cal X}$ is some subset of the input space.
-Any split $s$ of this form divides ${\cal X}_t$ into two subspaces respectively
-corresponding to ${\cal X}_t \cap {\cal X}_A$ for the left child of $t$ and to
-${\cal X}_t \cap ({\cal X}\setminus{\cal X}_A)$ for the right child of $t$.
-Terminal nodes are labeled with a best
-guess value $\widehat{y}_t \in {\cal Y}$ of the output variable. As such, the
-predicted output value $\varphi(\mathbf{x})$ for some instance $\mathbf{x}$ is
-the label of the leaf reached by the instance when it is propagated through the
-tree by following the splits $s_t$.
+splits is the set ${\cal Q}$ of questions $s$ of the form \textit{``Is
+$\mathbf{x} \in {\cal X}_A?$''}, where ${\cal X}_A \subset {\cal X}$ is some
+subset of the input space. Any split $s$ of this form divides ${\cal X}_t$ into
+two subspaces respectively corresponding to ${\cal X}_t \cap {\cal X}_A$ for
+the left child of $t$ and to ${\cal X}_t \cap ({\cal X}\setminus{\cal X}_A)$
+for the right child of $t$. Terminal nodes are labeled with a best guess value
+$\widehat{y}_t \in {\cal Y}$ of the output variable. If $\varphi$ is a
+classification tree, then $\widehat{y}_t \in \{ c_1, ..., c_J \}$ while if
+$\varphi$ is a regression tree, then $\widehat{y}_t \in \mathbb{R}$. As such,
+the predicted output value $\varphi(\mathbf{x})$ for some instance $\mathbf{x}$
+is the label of the leaf reached by the instance when it is propagated through
+the tree by following the splits $s_t$.
 
 \begin{remark}{Induction graphs}
 From a graph theory point of view, decision trees belong to a larger family
