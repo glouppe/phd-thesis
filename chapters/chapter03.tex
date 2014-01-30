@@ -251,14 +251,6 @@ As we will see, assigning values to terminal nodes happens to be quite simple.
 The crux of the problem is in finding good splits and in knowing when to
 stop splitting.
 
-% il y a plus d'un decision tree permettant d'expliquer L
-% une hypothèse est de considérer le plus simple d'entre eux (occam's razzor comme guide) => prefer the simplest solution that fits the data, pour espérer une bonne généralisation mais aussi une meilleure interprétabilité
-% occam : http://fr.slideshare.net/cnu/machine-learning-lecture-3 32
-% on pourrait chercher cet arbre en brute force, mais l'espace des arbres est large (quoique fini)
-% et en plus c'est NP complet : Constructing Optimal Binary Decision Trees is NP-complete \ref
-% (optimal = smallest to explain L)
-% => approche greedy/heuristic for near-optimal decision trees are the best solution (sous l'hypothèse P!=NP) pour éviter trop de computations
-
 \subsection{Recursive partitioning}
 
 %  Description de l'algo (high-level)
