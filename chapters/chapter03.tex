@@ -210,10 +210,36 @@ and therefore $\varphi(\mathbf{x}) = \widehat{y}(t_4) = c_1$.
     \label{fig:3:partition}
 \end{figure}
 
-Given a learning set ${\cal L}$, building a decision tree therefore amounts to
-determine the tree structure which produces the most accurate partition, i.e.,
-the one leading to the smallest generalization error. The entire construction
-then revolves around three elements:
+
+\section{Induction of decision trees}
+\label{sec:3:induction}
+
+Learning a decision tree ideally amounts to determine the tree structure which
+produces the partition which is closest to the partition engendered by $Y$ over
+${\cal X}$. Since it is unknown, the construction of a decision tree is usually
+driven instead with the objective of finding a model which explains the
+learning set ${\cal L}$ as best as possible. Among all decision trees $\varphi
+\in {\cal H}$ however, there may exist several of them that explain ${\cal L}$
+equally best. Following Occam's Razzor principles of prefering the explanation
+which makes as few assumptions as possible, that is to favor the simplest
+solution that fits the data, learning a decision tree from ${\cal L}$ is then
+usually restated as finding the smallest tree $\varphi^*$ minimizing its
+resubstitution estimate $\overline{E}(\varphi^*, {\cal L})$. While this
+assumption makes sense from a generalization point of view, it also makes
+sense regarding interpretability. A decision tree which is small is easier
+to understand than a large and complex tree.
+
+As shown by \citet{hyafil:1976} however, finding the smallest tree $\varphi^*$
+that minimizes its resubstitution estimate is a NP-complete problem. As a
+consequence, under the assumption that $P \neq NP$, there exists no efficient
+algorithm for finding $\varphi^*$, thereby suggesting that finding efficient heuristics
+for constructing near-optimal decision trees is the best solution to keep computation
+requirements within realistic boundaries.
+
+As such, decision trees are commonly built using a greedy approach, starting
+from a single node and then recursively partitioning the space it represents
+into smaller subspaces until convergence.  The learning procedure then revolves
+around three elements:
 
 \begin{enumerate}
 \item The selection of the splits $s_t \in {\cal Q}$ dividing internal nodes;
@@ -225,16 +251,15 @@ As we will see, assigning values to terminal nodes happens to be quite simple.
 The crux of the problem is in finding good splits and in knowing when to
 stop splitting.
 
-
-\section{Induction of decision trees}
-\label{sec:3:induction}
+% il y a plus d'un decision tree permettant d'expliquer L
+% une hypothèse est de considérer le plus simple d'entre eux (occam's razzor comme guide) => prefer the simplest solution that fits the data, pour espérer une bonne généralisation mais aussi une meilleure interprétabilité
+% occam : http://fr.slideshare.net/cnu/machine-learning-lecture-3 32
+% on pourrait chercher cet arbre en brute force, mais l'espace des arbres est large (quoique fini)
+% et en plus c'est NP complet : Constructing Optimal Binary Decision Trees is NP-complete \ref
+% (optimal = smallest to explain L)
+% => approche greedy/heuristic for near-optimal decision trees are the best solution (sous l'hypothèse P!=NP) pour éviter trop de computations
 
 \subsection{Recursive partitioning}
-
-% il y a plus d'un decision tree permettant d'expliquer L
-% une hypothèse est de considérer le plus simple d'entre eux, pour espérer une bonne généralisation mais aussi une meilleure interprétabilité
-% on pourrait chercher cet arbre en brute force, mais l'espace des arbres est large (quoique fini)
-% => approche greedy pour limiter le nombre de computations
 
 %  Description de l'algo (high-level)
 %       * Recursive partition
