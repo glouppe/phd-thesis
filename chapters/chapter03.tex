@@ -217,7 +217,7 @@ and therefore $\varphi(\mathbf{x}) = \widehat{y}(t_4) = c_1$.
 Learning a decision tree ideally amounts to determine the tree structure which
 produces the partition which is closest to the partition engendered by $Y$ over
 ${\cal X}$. Since it is unknown, the construction of a decision tree is usually
-driven instead with the objective of finding a model which explains the
+driven instead with the objective of finding a model which partitions the
 learning set ${\cal L}$ as best as possible. Among all decision trees $\varphi
 \in {\cal H}$ however, there may exist several of them that explain ${\cal L}$
 equally best. Following Occam's Razzor principles of prefering the explanation
@@ -238,9 +238,9 @@ requirements within realistic boundaries.
 
 As such, decision trees are commonly built using a greedy and approximate
 approach, starting from a single node representing the whole learning set
-${\cal L}$, and then recursively partitioning the subsets of ${\cal L}$ nodes
-represent into smaller subsets until convergence.  The learning procedure then
-revolves around three elements:
+${\cal L}$, and then recursively partitioning the subsets of ${\cal L}$
+represented by the nodes into smaller subsets until convergence.  The learning
+procedure then revolves around three elements:
 
 \begin{enumerate}
 \item The selection of the splits $s_t \in {\cal Q}$ dividing internal nodes;
@@ -254,27 +254,27 @@ stop splitting.
 
 \subsection{Recursive partitioning}
 
-For now, let us broadly define an impurity measure $i(t)$ as a non-negative
-function that evaluates the goodness of any node $t$, such that the closer
-$i(t)$ from $0$, the purer and better the node.  Let us further assume that the
-smaller $i(t)$, the better the predictions $\widehat{y}_t(\mathbf{x})$ for all
-$\mathbf{x} \in {\cal L}_t$, where ${\cal L}_t$ is the subset of learning
-samples $(\mathbf{x}, y) \in {\cal L}$ such that $\mathbf{x} \in {\cal X}_t$.
+For now, let us broadly define an \textit{impurity} measure $i(t)$ as a
+non-negative function that evaluates the goodness of any node $t$. Let assume that
+the smaller $i(t)$, the \textit{purer} the node and implicitly the better the predictions
+$\widehat{y}_t(\mathbf{x})$ for all $\mathbf{x} \in {\cal L}_t$, where ${\cal
+L}_t$ is the subset of learning samples falling into $t$, that is all
+$(\mathbf{x}, y) \in {\cal L}$ such that $\mathbf{x} \in {\cal X}_t$.
 
-In those terms, a construction procedure for finding a  decision tree that
-perfectly explains ${\cal L}$ consists in recursively dividing nodes into purer
-and purer nodes, until all terminal nodes cannot be made purer, hence
-guaranting near-optimal predictions over ${\cal L}$. The greedy assumption to
-make the resulting tree as small as possible, thereby seeking for good
-generalization, is then to divide each node $t$ using the split $s^*$ that
-locally minimizes the impurity of the resulting child nodes.
+In those terms, a construction procedure for decision trees consists in
+iteratively dividing nodes into purer nodes, until all terminal nodes
+cannot be made purer, hence guaranting near-optimal predictions over ${\cal
+L}$. The greedy assumption to make the resulting tree as small as possible,
+thereby seeking for good generalization, is then to divide each node $t$ using
+the split $s^*$ that locally minimizes the impurity of the resulting child
+nodes.
 
 Formally, given a learning set ${\cal L}$ of size $N$, the decrease of impurity
-of a split $s$ is defined as follows:
+of a binary split $s$ is defined as follows:
 
-\begin{definition}
-The \emph{impurity decrease} of a split $s \in {\cal Q}$ dividing node $t$ into
-a left child node $t_L$ and a right child node $t_R$ is
+\begin{definition}\label{def:impurity-decrease}
+The \emph{impurity decrease} of a binary split $s \in {\cal Q}$ dividing node $t$ into
+a left node $t_L$ and a right node $t_R$ is
 \begin{equation}
 \Delta i(s, t) = i(t) - p_L i(t_L) - p_R i(t_R)
 \end{equation}
@@ -282,25 +282,40 @@ where $p_L$ (resp., $p_R$) is the proportion $\tfrac{N_{t_L}}{N_t}$ (resp., $\tf
 of learning samples from ${\cal L}_t$ going to $t_L$ (resp., to $t_R$).
 \end{definition}
 
-In the framework of \citet{breiman:1984}, a general greedy procedure for the
-induction of decision trees is then outlined  as in
-Algorithm~\ref{algo:induction}.
+Following the framework of \citet{breiman:1984}, a general greedy procedure for
+the induction of binary decision trees is then outlined as follows:
 
 \begin{algorithm}\label{algo:induction}
-Greedy decision tree induction.
-
-
-
+Greedy induction of a binary decision tree.
+\textnormal{
+\begin{algorithmic}[1]
+\Function{BuildDecisionTree}{${\cal L}$}
+    \State Create a decision tree $\varphi$ with root node $t_0$;
+    \State Create an empty queue $Q$ of \emph{open} nodes $(t, {\cal L}_t)$ ;
+    \State $Q$\Call{.push}{($t_0, {\cal L}$)}
+    \While{$Q$ is not empty}
+        \State $t, {\cal L}_t \gets$ $Q$\Call{.pop}{~}
+        \If{the stopping criterion is met for $t$}
+            \State $\widehat{y}_{t} \gets$ some constant value;
+        \Else
+            \State Find the split that maximizes impurity decrease $$s^* = \argmax_{s \in {\cal Q}} \Delta i(s, t);$$
+            \State Partition ${\cal L}_t$ into ${\cal L}_{t_L} \cup {\cal L}_{t_R}$ according to $s^*$;
+            \State Create the left child node $t_L$ of $t$;
+            \State Create the right child node $t_R$ of $t$;
+            \State $Q$\Call{.push}{($t_L, {\cal L}_{t_L}$)};
+            \State $Q$\Call{.push}{($t_R, {\cal L}_{t_R}$)};
+        \EndIf
+    \EndWhile
+    \State \Return $\varphi$
+\EndFunction
+\end{algorithmic}
+}
 \end{algorithm}
 
-% minimiser impurity <=> minimiser E(phi, L)
-
-%  Description de l'algo (high-level)
-
-%       * Splitting rules (overview)
-%           def impurity
-%           def decrease impurity
-%       * Criterion (overview)
+Note that for the sake of clarity, Definition~\ref{def:impurity-decrease} and
+Algorithm~\ref{algo:induction} are formulated in terms of binary splits. As
+we will explore later in Section~\ref{sec:3:splitting-rules},
+they generalize naturally to $n$-ary splits.
 
 
 \subsection{Stopping criteria}
