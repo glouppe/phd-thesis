@@ -223,23 +223,24 @@ learning set ${\cal L}$ as best as possible. Among all decision trees $\varphi
 equally best. Following Occam's Razzor principles of prefering the explanation
 which makes as few assumptions as possible, that is to favor the simplest
 solution that fits the data, learning a decision tree from ${\cal L}$ is then
-usually restated as finding the smallest tree $\varphi^*$ minimizing its
+usually restated as finding the smallest tree $\varphi^*$ (in terms of internal nodes) minimizing its
 resubstitution estimate $\overline{E}(\varphi^*, {\cal L})$. While this
 assumption makes sense from a generalization point of view, it also makes
 sense regarding interpretability. A decision tree which is small is easier
 to understand than a large and complex tree.
 
 As shown by \citet{hyafil:1976} however, finding the smallest tree $\varphi^*$
-that minimizes its resubstitution estimate is a NP-complete problem. As a
+that minimizes its resubstitution estimate is an NP-complete problem. As a
 consequence, under the assumption that $P \neq NP$, there exists no efficient
 algorithm for finding $\varphi^*$, thereby suggesting that finding efficient heuristics
 for constructing near-optimal decision trees is the best solution to keep computation
 requirements within realistic boundaries.
 
-As such, decision trees are commonly built using a greedy approach, starting
-from a single node and then recursively partitioning the space it represents
-into smaller subspaces until convergence.  The learning procedure then revolves
-around three elements:
+As such, decision trees are commonly built using a greedy and approximate
+approach, starting from a single node representing the whole learning set
+${\cal L}$, and then recursively partitioning the subsets of ${\cal L}$ nodes
+represent into smaller subsets until convergence.  The learning procedure then
+revolves around three elements:
 
 \begin{enumerate}
 \item The selection of the splits $s_t \in {\cal Q}$ dividing internal nodes;
@@ -253,21 +254,68 @@ stop splitting.
 
 \subsection{Recursive partitioning}
 
+For now, let us broadly define an impurity measure $i(t)$ as a non-negative
+function that evaluates the goodness of any node $t$, such that the closer
+$i(t)$ from $0$, the purer and better the node.  Let us further assume that the
+smaller $i(t)$, the better the predictions $\widehat{y}_t(\mathbf{x})$ for all
+$\mathbf{x} \in {\cal L}_t$, where ${\cal L}_t$ is the subset of learning
+samples $(\mathbf{x}, y) \in {\cal L}$ such that $\mathbf{x} \in {\cal X}_t$.
+
+In those terms, a construction procedure for finding a  decision tree that
+perfectly explains ${\cal L}$ consists in recursively dividing nodes into purer
+and purer nodes, until all terminal nodes cannot be made purer, hence
+guaranting near-optimal predictions over ${\cal L}$. The greedy assumption to
+make the resulting tree as small as possible, thereby seeking for good
+generalization, is then to divide each node $t$ using the split $s^*$ that
+locally minimizes the impurity of the resulting child nodes.
+
+Formally, given a learning set ${\cal L}$ of size $N$, the decrease of impurity
+of a split $s$ is defined as follows:
+
+\begin{definition}
+The \emph{impurity decrease} of a split $s \in {\cal Q}$ dividing node $t$ into
+a left child node $t_L$ and a right child node $t_R$ is
+\begin{equation}
+\Delta i(s, t) = i(t) - p_L i(t_L) - p_R i(t_R)
+\end{equation}
+where $p_L$ (resp., $p_R$) is the proportion $\tfrac{N_{t_L}}{N_t}$ (resp., $\tfrac{N_{t_R}}{N_t}$)
+of learning samples from ${\cal L}_t$ going to $t_L$ (resp., to $t_R$).
+\end{definition}
+
+In the framework of \citet{breiman:1984}, a general greedy procedure for the
+induction of decision trees is then outlined  as in
+Algorithm~\ref{algo:induction}.
+
+\begin{algorithm}\label{algo:induction}
+Greedy decision tree induction.
+
+
+
+\end{algorithm}
+
+% minimiser impurity <=> minimiser E(phi, L)
+
 %  Description de l'algo (high-level)
-%       * Recursive partition
-%           Depth/Breadth/Best first
+
 %       * Splitting rules (overview)
 %           def impurity
 %           def decrease impurity
 %       * Criterion (overview)
 
+
 \subsection{Stopping criteria}
 
 %       * Critères d'arrêts [ différents paramètres, chi² ]
 
+
 \subsection{Assigning values to terminal nodes}
+\label{sec:3:assignment}
 
 %       * Assignment in terminal nodes, cart 34+
+%           classification
+%           regression
+
+
 
 \subsection{Data structures and implementation considerations}
 
@@ -300,6 +348,9 @@ representation that we consider ...
 %     > définir l'algo de construction
 %     > definir l'algo de prédiction
 
+%       * Recursive partition
+%           Depth/Breadth/Best first
+
 
 \section{Splitting rules}
 \label{sec:3:splitting-rules}
@@ -321,6 +372,7 @@ representation that we consider ...
 \label{sec:3:criteria}
 
 %     > Impurity criteria
+%         - pourquoi pas simplifier utiliser l'erreur de resubstitution?
 %         - Gini, Entropy, Variance, Information gain etc (see cart + graphes)
 %         - Efficient implementation for iterative evaluation
 %             + How to evaluate multiple candidate thresholds cheaply for
