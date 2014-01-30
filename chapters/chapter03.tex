@@ -269,8 +269,8 @@ thereby seeking for good generalization, is then to divide each node $t$ using
 the split $s^*$ that locally minimizes the impurity of the resulting child
 nodes.
 
-Formally, given a learning set ${\cal L}$ of size $N$, the decrease of impurity
-of a binary split $s$ is defined as follows:
+Following the framework of \citet{breiman:1984}, the decrease of impurity
+of a binary split $s$ is formally defined as follows:
 
 \begin{definition}\label{def:impurity-decrease}
 The \emph{impurity decrease} of a binary split $s \in {\cal Q}$ dividing node $t$ into
@@ -282,8 +282,8 @@ where $p_L$ (resp., $p_R$) is the proportion $\tfrac{N_{t_L}}{N_t}$ (resp., $\tf
 of learning samples from ${\cal L}_t$ going to $t_L$ (resp., to $t_R$).
 \end{definition}
 
-Following the framework of \citet{breiman:1984}, a general greedy procedure for
-the induction of binary decision trees is then outlined as follows:
+Given this definition, a general greedy procedure for the induction of binary
+decision trees can then be outlined as follows:
 
 \begin{algorithm}\label{algo:induction}
 Greedy induction of a binary decision tree.
