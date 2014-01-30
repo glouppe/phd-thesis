@@ -41,7 +41,7 @@ a large audience.
 
 As we will explore in further details all throughout this work, the success
 of decision trees (and by extension, of all tree-based methods) is explained
-by several factors that make them attractive in practice:
+by several factors that make them quite attractive in practice:
 \begin{itemize}
 \item Decision trees are non-parametric. They can model arbitrarily complex relations between inputs and outputs, without any a priori assumption;
 \item Decision trees handle heterogeneous data (ordered or categorical variables, or a mix of both);
@@ -135,7 +135,7 @@ In those terms, a \textit{tree-structured model} (or \textit{decision tree})
 can be defined as a model $\varphi: {\cal X} \mapsto {\cal Y}$ represented by a
 rooted tree (often binary, but not necessarily), where any node $t$ represents
 a subspace ${\cal X}_t \subseteq {\cal X}$ of the intput space, with the root
-node corresponding to ${\cal X}$ itself. Internal nodes $t$ are labeled with a
+node $t_0$ corresponding to ${\cal X}$ itself. Internal nodes $t$ are labeled with a
 \textit{split} $s_t$ (taken from a set of questions ${\cal Q}$) dividing the
 space ${\cal X}_t$ they each represent into disjoint subspaces respectively
 corresponding to each of their children. For instance, the set of all binary
@@ -150,7 +150,22 @@ classification tree, then $\widehat{y}_t \in \{ c_1, ..., c_J \}$ while if
 $\varphi$ is a regression tree, then $\widehat{y}_t \in \mathbb{R}$. As such,
 the predicted output value $\varphi(\mathbf{x})$ for some instance $\mathbf{x}$
 is the label of the leaf reached by the instance when it is propagated through
-the tree by following the splits $s_t$.
+the tree by following the splits $s_t$ (see Algorithm~\ref{algo:prediction}).
+
+\begin{algorithm}\label{algo:prediction}
+Predicting $\widehat{y} =\varphi(\mathbf{x})$ in a decision tree;
+\textnormal{
+\begin{algorithmic}[1]
+\Function{Predict}{$\varphi, \mathbf{x}$}
+    \State $t \gets t_0$;
+    \While{$t$ is not a terminal node}
+        \State $t \gets$ the child node $t'$ of $t$ such that $\mathbf{x} \in {\cal X}_{t'}$;
+    \EndWhile
+    \State \Return $\widehat{y}_t$;
+\EndFunction
+\end{algorithmic}
+}
+\end{algorithm}
 
 \begin{remark}{Induction graphs}
 From a graph theory point of view, decision trees belong to a larger family
@@ -199,7 +214,7 @@ rectangles because of the nature of the splits $s_t \in {\cal Q}$ dividing the n
 Predictions are made by propagating instances through the tree and using as
 output value the value labeling the terminal nodes in which they fall
 into. For example, an object $\mathbf{x}=(x_1=0.2, x_2=0.7)$ falls into $t_4$
-and therefore $\varphi(\mathbf{x}) = \widehat{y}(t_4) = c_1$.
+and therefore $\varphi(\mathbf{x}) = \widehat{y}_{t_4} = c_1$.
 
 \begin{figure}
     \centering
@@ -279,11 +294,13 @@ a left node $t_L$ and a right node $t_R$ is
 \Delta i(s, t) = i(t) - p_L i(t_L) - p_R i(t_R)
 \end{equation}
 where $p_L$ (resp., $p_R$) is the proportion $\tfrac{N_{t_L}}{N_t}$ (resp., $\tfrac{N_{t_R}}{N_t}$)
-of learning samples from ${\cal L}_t$ going to $t_L$ (resp., to $t_R$).
+of learning samples from ${\cal L}_t$ going to $t_L$ (resp., to $t_R$) and where $N_t$
+is the size of the subset ${\cal L}_t$.
 \end{definition}
 
-Given this definition, a general greedy procedure for the induction of binary
-decision trees can then be outlined as follows:
+On the basis of Definition~\ref{def:impurity-decrease}, a general greedy
+procedure for the induction of binary decision trees can then be outlined as
+formally described in Algorithm~\ref{algo:induction}.
 
 \begin{algorithm}\label{algo:induction}
 Greedy induction of a binary decision tree.
@@ -306,7 +323,7 @@ Greedy induction of a binary decision tree.
             \State $Q$\Call{.push}{($t_R, {\cal L}_{t_R}$)};
         \EndIf
     \EndWhile
-    \State \Return $\varphi$
+    \State \Return $\varphi$;
 \EndFunction
 \end{algorithmic}
 }
@@ -332,7 +349,7 @@ they generalize naturally to $n$-ary splits.
 
 
 
-\subsection{Data structures and implementation considerations}
+\subsection{Data structures}
 
 Implementing decision trees involves many issues that are easily overlooked if
 not considered with care. The first of these issues concerns the choice of the
