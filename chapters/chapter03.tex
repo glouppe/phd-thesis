@@ -303,7 +303,11 @@ is the size of the subset ${\cal L}_t$.
 
 On the basis of Definition~\ref{def:impurity-decrease}, a general greedy
 procedure for the induction of binary decision trees can then be outlined as
-formally described in Algorithm~\ref{algo:induction}.
+formally described in Algorithm~\ref{algo:induction}. Note that for the sake of
+clarity, Definition~\ref{def:impurity-decrease} and
+Algorithm~\ref{algo:induction} are formulated in terms of binary splits.
+However, as we will explore later in Section~\ref{sec:3:splitting-rules}, they
+generalize naturally to $n$-ary splits.
 
 \begin{algorithm}\label{algo:induction}
 Greedy induction of a binary decision tree.
@@ -315,10 +319,10 @@ Greedy induction of a binary decision tree.
     \State $S$\Call{.push}{($t_0, {\cal L}$)}
     \While{$S$ is not empty}
         \State $t, {\cal L}_t \gets$ $S$\Call{.pop}{~}
-        \If{the stopping criterion is met for $t$}
-            \State $\widehat{y}_{t} \gets$ some constant value;
+        \If{the stopping criterion is met for $t$}\label{algo:induction:stop}
+            \State $\widehat{y}_{t} \gets$ some constant value;\label{algo:induction:terminal}
         \Else
-            \State Find the split that maximizes impurity decrease $$s^* = \argmax_{s \in {\cal Q}} \Delta i(s, t);$$
+            \State Find the split that maximizes impurity decrease $$s^* = \argmax_{s \in {\cal Q}} \Delta i(s, t);$$ \label{algo:induction:split}
             \State Partition ${\cal L}_t$ into ${\cal L}_{t_L} \cup {\cal L}_{t_R}$ according to $s^*$;
             \State Create the left child node $t_L$ of $t$;
             \State Create the right child node $t_R$ of $t$;
@@ -332,23 +336,25 @@ Greedy induction of a binary decision tree.
 }
 \end{algorithm}
 
-Note that for the sake of clarity, Definition~\ref{def:impurity-decrease} and
-Algorithm~\ref{algo:induction} are formulated in terms of binary splits. As
-we will explore later in Section~\ref{sec:3:splitting-rules},
-they generalize naturally to $n$-ary splits.
-
-
-\subsection{Stopping criteria}
-
-%       * Critères d'arrêts [ différents paramètres, chi² ]
-
-
-\subsection{Assigning values to terminal nodes}
+\subsection{Assignment rules}
 \label{sec:3:assignment}
 
-%       * Assignment in terminal nodes, cart 34+
-%           classification
-%           regression
+\subsubsection{Classification}
+
+\subsubsection{Regression}
+
+
+
+\subsection{Pruning}
+
+%       Simplest approaches:
+%           - L_t cannot be split more (eg., X is constant)
+%           - min_samples_split (aka nmin)
+%           - max_depth
+%           - max_nodes?
+%       CART 37+, chapter 3
+%       * Critères d'arrêts [ différents paramètres, chi² ]
+%       Pre-pruning / Post-pruning
 
 
 \section{Splitting rules}
