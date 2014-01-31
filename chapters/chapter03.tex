@@ -301,13 +301,12 @@ of learning samples from ${\cal L}_t$ going to $t_L$ (resp., to $t_R$) and where
 is the size of the subset ${\cal L}_t$.
 \end{definition}
 
-On the basis of Definition~\ref{def:impurity-decrease}, a general greedy
-procedure for the induction of binary decision trees can then be outlined as
-formally described in Algorithm~\ref{algo:induction}. Note that for the sake of
-clarity, Definition~\ref{def:impurity-decrease} and
-Algorithm~\ref{algo:induction} are formulated in terms of binary splits.
-However, as we will explore later in Section~\ref{sec:3:splitting-rules}, they
-generalize naturally to $n$-ary splits.
+On the basis of this concept, a general greedy procedure for the induction of
+binary decision trees can now be described formally, as outlined in
+Algorithm~\ref{algo:induction}. Note that for the sake of clarity,
+Algorithm~\ref{algo:induction} is formulated in terms of binary splits.
+However, as we will explore later in Section~\ref{sec:3:splitting-rules}, it
+generalizes naturally to $n$-ary splits.
 
 \begin{algorithm}\label{algo:induction}
 Greedy induction of a binary decision tree.
@@ -336,16 +335,28 @@ Greedy induction of a binary decision tree.
 }
 \end{algorithm}
 
-\subsection{Assignment rules}
+The rest of this chapter is now dedicated to a detailed discussion of specific
+parts of Algorithm~\ref{algo:induction}. Section~\ref{sec:3:assignment}
+discusses assignment rules for terminal nodes
+(Line~\ref{algo:induction:terminal} of Algorithm~\ref{algo:induction}) while
+Section~\ref{sec:3:stop} outlines stopping criteria for deciding when a node
+becomes terminal (Line~\ref{algo:induction:stop} of
+Algorithm~\ref{algo:induction}). Section~\ref{sec:3:splitting-rules} then
+presents families of splitting rules along with exact and approximate
+strategies for finding the best split $s^*$ (Line~\ref{algo:induction:split} of
+Algorithm~\ref{algo:induction}) according to some goodness criterion, such as those
+finally described in Section~\ref{sec:3:criteria}.
+
+
+\section{Assignment rules}
 \label{sec:3:assignment}
 
-\subsubsection{Classification}
-
-\subsubsection{Regression}
-
+\subsection{Classification}
+\subsection{Regression}
 
 
-\subsection{Pruning}
+\section{Stopping criteria}
+\label{sec:3:stop}
 
 %       Simplest approaches:
 %           - L_t cannot be split more (eg., X is constant)
@@ -354,7 +365,7 @@ Greedy induction of a binary decision tree.
 %           - max_nodes?
 %       CART 37+, chapter 3
 %       * Critères d'arrêts [ différents paramètres, chi² ]
-%       Pre-pruning / Post-pruning
+%       Pre-pruning vs. Post-pruning (brief discussion)
 
 
 \section{Splitting rules}
