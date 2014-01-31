@@ -308,10 +308,10 @@ Greedy induction of a binary decision tree.
 \begin{algorithmic}[1]
 \Function{BuildDecisionTree}{${\cal L}$}
     \State Create a decision tree $\varphi$ with root node $t_0$;
-    \State Create an empty queue $Q$ of \emph{open} nodes $(t, {\cal L}_t)$ ;
-    \State $Q$\Call{.push}{($t_0, {\cal L}$)}
-    \While{$Q$ is not empty}
-        \State $t, {\cal L}_t \gets$ $Q$\Call{.pop}{~}
+    \State Create an empty stack $S$ of \emph{open} nodes $(t, {\cal L}_t)$ ;
+    \State $S$\Call{.push}{($t_0, {\cal L}$)}
+    \While{$S$ is not empty}
+        \State $t, {\cal L}_t \gets$ $S$\Call{.pop}{~}
         \If{the stopping criterion is met for $t$}
             \State $\widehat{y}_{t} \gets$ some constant value;
         \Else
@@ -319,8 +319,8 @@ Greedy induction of a binary decision tree.
             \State Partition ${\cal L}_t$ into ${\cal L}_{t_L} \cup {\cal L}_{t_R}$ according to $s^*$;
             \State Create the left child node $t_L$ of $t$;
             \State Create the right child node $t_R$ of $t$;
-            \State $Q$\Call{.push}{($t_L, {\cal L}_{t_L}$)};
-            \State $Q$\Call{.push}{($t_R, {\cal L}_{t_R}$)};
+            \State $S$\Call{.push}{($t_R, {\cal L}_{t_R}$)};
+            \State $S$\Call{.push}{($t_L, {\cal L}_{t_L}$)};
         \EndIf
     \EndWhile
     \State \Return $\varphi$;
@@ -348,42 +348,6 @@ they generalize naturally to $n$-ary splits.
 %           regression
 
 
-
-\subsection{Data structures}
-
-Implementing decision trees involves many issues that are easily overlooked if
-not considered with care. The first of these issues concerns the choice of the
-data structure for representing decision trees.
-
-Among all possible ways of representing a tree, one of the simplest and most
-direct representation is to adopt an object-oriented approach. In this
-paradigm, a decision tree is naturally represented as a hierarchy of high-level
-objects, where each object corresponds to a node of the tree and comprises
-attributes referencing its children or storing its split and value. Such a
-representation would make for a correct, intuitive and flexible implementation
-but may in fact not be the most appropriate when aiming for high-performance.
-One of the biggest issues indeed is that object-oriented programming usually
-fragments complex and nested objects into non-contiguous memory blocks, thereby
-requiring multiple levels of indirection for traversing the structure. In
-particular, this design can easily impair computing times in
-performance-critical applications (see Chapter~\ref{ch:complexity} for
-benchmarks), e.g., by not making it possible to leverage CPU cache or pre-
-fetching mechanisms.
-
-At the price of less abstraction and flexibility, we adopt instead in this work
-a low-level representation of decision trees, allowing us for a fine-grained
-and complete control over memory management and CPU mechanisms. The tree
-representation that we consider ...
-
-%     > Data structures (arrays vs. object-oriented structures)
-%       binary vs n-ary tree
-%     > définir l'algo de construction
-%     > definir l'algo de prédiction
-
-%       * Recursive partition
-%           Depth/Breadth/Best first
-
-
 \section{Splitting rules}
 \label{sec:3:splitting-rules}
 
@@ -406,10 +370,6 @@ representation that we consider ...
 %     > Impurity criteria
 %         - pourquoi pas simplifier utiliser l'erreur de resubstitution?
 %         - Gini, Entropy, Variance, Information gain etc (see cart + graphes)
-%         - Efficient implementation for iterative evaluation
-%             + How to evaluate multiple candidate thresholds cheaply for
-%               a given feature (algorithm, f-ordered)
-%             + Sorting algorithms
 %         - Effet du critère sur les cuts
 %             End-cut preference (CART 11.8)
 %             Normalisation par l'entropy (cf. Vincent, Louis)

@@ -109,6 +109,12 @@ Part I: Growing random forests
 5. Complexity analysis                                                    02/03
 ----------------------
 
+* Implementation considerations
+    - Data structures
+    - Efficient implementation of criteria for iterative evaluation
+       + How to evaluate multiple candidate thresholds cheaply for
+         a given feature (algorithm, f-ordered)
+       + Sorting algorithms
 * Overall complexity
     - Best cases => Master theorem and/or Akra Bazzi method
         RF: O(n log^2 n)
