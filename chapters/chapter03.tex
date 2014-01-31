@@ -269,6 +269,7 @@ be made purer, hence guaranting near-optimal predictions over ${\cal L}$. The
 greedy assumption to make the resulting tree as small as possible, thereby
 seeking for good generalization, is then to divide each node $t$ using the
 split $s^*$ that locally minimizes the impurity of the resulting child nodes.
+
 Formally, the decrease of impurity of a binary split $s$ is defined as follows:
 
 \begin{definition}\label{def:impurity-decrease}
@@ -323,12 +324,13 @@ discusses assignment rules for terminal nodes
 Section~\ref{sec:3:stop} outlines stopping criteria for deciding when a node
 becomes terminal (Line~\ref{algo:induction:stop} of
 Algorithm~\ref{algo:induction}). Section~\ref{sec:3:splitting-rules} then
-presents families of splitting rules along with exact and approximate
-strategies for finding the best split $s^*$ (Line~\ref{algo:induction:split} of
-Algorithm~\ref{algo:induction}) according to some goodness criterion, such as
-those finally described in Section~\ref{sec:3:criteria}. As we will see,
-assigning values to terminal nodes happens to be quite simple. The crux of the
-problem is in finding good splits and in knowing when to stop splitting.
+presents families ${\cal Q}$ of splitting rules along with exact and
+approximate strategies for finding the best split $s^* \in {\cal Q}$
+(Line~\ref{algo:induction:split} of Algorithm~\ref{algo:induction}) according
+to some goodness or impurity criterion $i(t)$, such as those finally described
+in Section~\ref{sec:3:criteria}. As we will see, assigning values to terminal
+nodes happens to be quite simple. The crux of the problem is in finding good
+splits and in knowing when to stop splitting.
 
 
 \section{Assignment rules}
