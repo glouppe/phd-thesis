@@ -91,7 +91,7 @@ Notice that when $Y$ cannot be univocally determined given $X=\mathbf{x}$,
 e.g., when there is noise on $Y$, then the subsets ${\cal X}_{c_k}$ are not
 necessarily disjoints. There may exist two distinct objects from the universe $\Omega$ such
 that their representations $\mathbf{x}_1$ and $\mathbf{x}_2$ in the input space
-are equal, yet such that the corresponding output values $y_1$ and $y_2$ are unequal.
+are equal, yet such that the corresponding output values $y_1$ and $y_2$ are different.
 By contrast, since $\varphi$ defines a function from ${\cal X}$ to ${\cal Y}$,
 any input $\mathbf{x} \in {\cal X}$ is mapped to exactly one output value $y \in
 {\cal Y}$ and the subsets $\widehat{{\cal X}_{c_k}}$ are therefore necessarily
@@ -151,12 +151,12 @@ for the right child of $t$. Terminal nodes are labeled with a best guess value
 $\widehat{y}_t \in {\cal Y}$ of the output variable. If $\varphi$ is a
 classification tree, then $\widehat{y}_t \in \{ c_1, ..., c_J \}$ while if
 $\varphi$ is a regression tree, then $\widehat{y}_t \in \mathbb{R}$. As such,
-the predicted output value $\varphi(\mathbf{x})$ for some instance $\mathbf{x}$
-is the label of the leaf reached by the instance when it is propagated through
+the predicted output value $\varphi(\mathbf{x})$
+is the label of the leaf reached by the instance $\mathbf{x}$ when it is propagated through
 the tree by following the splits $s_t$ (see Algorithm~\ref{algo:prediction}).
 
 \begin{algorithm}\label{algo:prediction}
-Predicting $\widehat{y} =\varphi(\mathbf{x})$ in a decision tree;
+Prediction of the output value $\widehat{y} =\varphi(\mathbf{x})$ in a decision tree.
 \textnormal{
 \begin{algorithmic}[1]
 \Function{Predict}{$\varphi, \mathbf{x}$}
@@ -256,9 +256,9 @@ requirements within realistic boundaries.
 
 As such, decision trees are commonly built using a greedy and approximate
 approach, starting from a single node representing the whole learning set
-${\cal L}$, and then recursively partitioning the subsets of ${\cal L}$
-represented by the nodes into smaller subsets until convergence.  The learning
-procedure then revolves around three elements:
+${\cal L}$, and then recursively partitioning into smaller subsets the subsets
+of ${\cal L}$ represented by the nodes.  The learning procedure then revolves
+around three elements:
 
 \begin{enumerate}
 \item The selection of the splits $s_t \in {\cal Q}$ dividing internal nodes;
