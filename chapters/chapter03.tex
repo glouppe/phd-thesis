@@ -254,41 +254,22 @@ algorithm for finding $\varphi^*$, thereby suggesting that finding efficient heu
 for constructing near-optimal decision trees is the best solution to keep computation
 requirements within realistic boundaries.
 
-As such, decision trees are commonly built using a greedy and approximate
-approach, starting from a single node representing the whole learning set
-${\cal L}$, and then recursively partitioning into smaller subsets the subsets
-of ${\cal L}$ represented by the nodes.  The learning procedure then revolves
-around three elements:
-
-\begin{enumerate}
-\item The selection of the splits $s_t \in {\cal Q}$ dividing internal nodes;
-\item The choice of a stopping criterion for deciding when a node becomes a terminal node;
-\item The assignment of values to terminal nodes.
-\end{enumerate}
-
-As we will see, assigning values to terminal nodes happens to be quite simple.
-The crux of the problem is in finding good splits and in knowing when to
-stop splitting.
-
-\subsection{Recursive partitioning}
-
-For now, let us broadly define an \textit{impurity} measure $i(t)$ as a
+Following the framework of \citet{breiman:1984}, let us broadly define an \textit{impurity} measure $i(t)$ as a
 non-negative function that evaluates the goodness of any node $t$. Let assume that
-the smaller $i(t)$, the \textit{purer} the node and implicitly the better the predictions
+the smaller $i(t)$, the \textit{purer} the node and the better the predictions
 $\widehat{y}_t(\mathbf{x})$ for all $\mathbf{x} \in {\cal L}_t$, where ${\cal
 L}_t$ is the subset of learning samples falling into $t$, that is all
 $(\mathbf{x}, y) \in {\cal L}$ such that $\mathbf{x} \in {\cal X}_t$.
 
-In those terms, a construction procedure for decision trees consists in
-iteratively dividing nodes into purer nodes, until all terminal nodes
-cannot be made purer, hence guaranting near-optimal predictions over ${\cal
-L}$. The greedy assumption to make the resulting tree as small as possible,
-thereby seeking for good generalization, is then to divide each node $t$ using
-the split $s^*$ that locally minimizes the impurity of the resulting child
-nodes.
-
-Following the framework of \citet{breiman:1984}, the decrease of impurity
-of a binary split $s$ is formally defined as follows:
+Starting from a single node representing the whole learning set  ${\cal L}$, a
+greedy and approximate construction procedure then consists in iteratively dividing
+nodes into purer nodes, that is to iteratively  divide into smaller subsets the
+subsets of ${\cal L}$ represented by the nodes, until all terminal nodes cannot
+be made purer, hence guaranting near-optimal predictions over ${\cal L}$. The
+greedy assumption to make the resulting tree as small as possible, thereby
+seeking for good generalization, is then to divide each node $t$ using the
+split $s^*$ that locally minimizes the impurity of the resulting child nodes.
+Formally, the decrease of impurity of a binary split $s$ is defined as follows:
 
 \begin{definition}\label{def:impurity-decrease}
 The \emph{impurity decrease} of a binary split $s \in {\cal Q}$ dividing node $t$ into
@@ -302,7 +283,7 @@ is the size of the subset ${\cal L}_t$.
 \end{definition}
 
 On the basis of this concept, a general greedy procedure for the induction of
-binary decision trees can now be described formally, as outlined in
+binary decision trees can now be described formally as outlined in
 Algorithm~\ref{algo:induction}. Note that for the sake of clarity,
 Algorithm~\ref{algo:induction} is formulated in terms of binary splits.
 However, as we will explore later in Section~\ref{sec:3:splitting-rules}, it
@@ -344,8 +325,10 @@ becomes terminal (Line~\ref{algo:induction:stop} of
 Algorithm~\ref{algo:induction}). Section~\ref{sec:3:splitting-rules} then
 presents families of splitting rules along with exact and approximate
 strategies for finding the best split $s^*$ (Line~\ref{algo:induction:split} of
-Algorithm~\ref{algo:induction}) according to some goodness criterion, such as those
-finally described in Section~\ref{sec:3:criteria}.
+Algorithm~\ref{algo:induction}) according to some goodness criterion, such as
+those finally described in Section~\ref{sec:3:criteria}. As we will see,
+assigning values to terminal nodes happens to be quite simple. The crux of the
+problem is in finding good splits and in knowing when to stop splitting.
 
 
 \section{Assignment rules}
