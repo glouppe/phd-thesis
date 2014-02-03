@@ -234,7 +234,7 @@ and therefore $\varphi(\mathbf{x}) = \widehat{y}_{t_4} = c_1$.
 
 Learning a decision tree ideally amounts to determine the tree structure which
 produces the partition which is closest to the partition engendered by $Y$ over
-${\cal X}$. Since it is unknown, the construction of a decision tree is usually
+${\cal X}$. Since it is unknown however, the construction of a decision tree is usually
 driven instead with the objective of finding a model which partitions the
 learning set ${\cal L}$ as best as possible. Among all decision trees $\varphi
 \in {\cal H}$ however, there may exist several of them that explain ${\cal L}$
@@ -263,12 +263,12 @@ $(\mathbf{x}, y) \in {\cal L}$ such that $\mathbf{x} \in {\cal X}_t$.
 
 Starting from a single node representing the whole learning set  ${\cal L}$,
 near-optimal decision trees can then be grown greedily by iteratively dividing
-nodes into purer nodes, that is to iteratively  divide into smaller subsets the
+nodes into purer nodes. That is, to iteratively  divide into smaller subsets the
 subsets of ${\cal L}$ represented by the nodes, until all terminal nodes cannot
 be made purer, hence guaranting near-optimal predictions over ${\cal L}$. The
 greedy assumption to make the resulting tree as small as possible, thereby
 seeking for good generalization, is then to divide each node $t$ using the
-split $s^*$ that locally minimizes the impurity of the resulting child nodes.
+split $s^*$ that locally maximizes the decrease of impurity of the resulting child nodes.
 
 Formally, the decrease of impurity of a binary split $s$ is defined as follows:
 
@@ -326,9 +326,9 @@ becomes terminal (Line~\ref{algo:induction:stop} of
 Algorithm~\ref{algo:induction}). Section~\ref{sec:3:splitting-rules} then
 presents families ${\cal Q}$ of splitting rules along with exact and
 approximate strategies for finding the best split $s^* \in {\cal Q}$
-(Line~\ref{algo:induction:split} of Algorithm~\ref{algo:induction}) according
-to some goodness or impurity criterion $i(t)$, such as those finally described
-in Section~\ref{sec:3:criteria}. As we will see, assigning values to terminal
+(Line~\ref{algo:induction:split} of Algorithm~\ref{algo:induction}). Finally,
+Section~\ref{sec:3:criteria} describes  impurity criterion $i(t)$ to evaluate
+the goodness of splits. As we will see, assigning values to terminal
 nodes happens to be quite simple. The crux of the problem is in finding good
 splits and in knowing when to stop splitting.
 
@@ -373,6 +373,7 @@ splits and in knowing when to stop splitting.
 \label{sec:3:criteria}
 
 %     > Impurity criteria
+%           Voir chapitres 9+ Zighed
 %         - pourquoi pas simplifier utiliser l'erreur de resubstitution?
 %         - Gini, Entropy, Variance, Information gain etc (see cart + graphes)
 %         - Effet du critère sur les cuts
