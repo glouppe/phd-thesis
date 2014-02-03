@@ -336,13 +336,33 @@ splits and in knowing when to stop splitting.
 \section{Assignment rules}
 \label{sec:3:assignment}
 
+Let us assume that node $t$ has been declared terminal given some stopping
+criterion (See Section~\ref{sec:3:stop}). The next step
+(Line~\ref{algo:induction:terminal} of Algorithm~\ref{algo:induction}) in the
+induction procedure is to label $t$ with some constant value $\widehat{y}_t$ to
+be used as a prediction of the output variable $Y$. As such, node $t$ can  be
+regarded as a simplistic model defined locally on ${\cal X}_t \times {\cal Y}$
+and producing the same output value $\widehat{y}_t$ for all possible input
+vectors falling into $t$. Accordingly, and as discussed in
+Section~\ref{sec:2:performance-evaluation}, learning the model whose predictions are locally as
+good as possible  amounts to find the constant $\widehat{y}_t$ which minimizes
+it expected local prediction error
+\begin{equation}
+Err_{{\cal L}}(t) = \mathbb{E}_{X, Y|t}\{ L(Y, \widehat{y}_t) | {\cal L} \},
+\end{equation}
+where the expectation for $X$ is taken over all objects $i \in \Omega$ such that $\mathbf{x}_i \in {\cal X}_t$.
 
+
+
+% t est un modèle simpliste. On cherche à minimiser l'erreur en généralisation sur X_t
 
 \subsection{Classification}
 
 % Breiman 34+
+%   Proposition 2.14
 % Zighed 115+
 %       indétermination
+% proba
 
 \subsection{Regression}
 
