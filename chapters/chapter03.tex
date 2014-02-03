@@ -238,7 +238,7 @@ ${\cal X}$. Since it is unknown however, the construction of a decision tree is 
 driven instead with the objective of finding a model which partitions the
 learning set ${\cal L}$ as best as possible. Among all decision trees $\varphi
 \in {\cal H}$ however, there may exist several of them that explain ${\cal L}$
-equally best. Following Occam's Razzor principles of prefering the explanation
+equally best. Following Occam's Razzor principles~\citep{blumer:1987} of prefering the explanation
 which makes as few assumptions as possible, that is to favor the simplest
 solution that fits the data, learning a decision tree from ${\cal L}$ is then
 usually restated as finding the smallest tree $\varphi^*$ (in terms of internal nodes) minimizing its
@@ -346,17 +346,42 @@ and producing the same output value $\widehat{y}_t$ for all possible input
 vectors falling into $t$. Accordingly, and as discussed in
 Section~\ref{sec:2:performance-evaluation}, learning the model whose predictions are locally as
 good as possible  amounts to find the constant $\widehat{y}_t$ which minimizes
-it expected local prediction error
-\begin{equation}
+its expected local prediction error
+\begin{equation}\label{eqn:assignment-generalization}
 Err_{{\cal L}}(t) = \mathbb{E}_{X, Y|t}\{ L(Y, \widehat{y}_t) | {\cal L} \},
 \end{equation}
-where the expectation for $X$ is taken over all objects $i \in \Omega$ such that $\mathbf{x}_i \in {\cal X}_t$.
-
-
-
-% t est un modèle simpliste. On cherche à minimiser l'erreur en généralisation sur X_t
+where the joint expectation for $X$ and $Y$ is taken over all objects $i \in
+\Omega$ such that $\mathbf{x}_i \in {\cal X}_t$.
 
 \subsection{Classification}
+
+When $L$ is the zero-one loss, Equation~\ref{eqn:assignment-generalization}
+is minimized by the plurality rule:
+\begin{align}
+\widehat{y}_t^* &= \argmin_{c \in {\cal Y}} \mathbb{E}_{X, Y|t}\{ 1(Y, c) | {\cal L} \} \nonumber \\
+                &= \argmin_{c \in {\cal Y}} P(Y \neq c | X \in {\cal X}_t) \nonumber \\
+                &= \argmax_{c \in {\cal Y}} P(Y = c | X \in {\cal X}_t)\label{eqn:assignment-classification}
+\end{align}
+Put otherwise, the generalization error of $t$ is minimized by predicting
+the class which is the most likely for the samples in the subspace of $t$.
+Note that if the maximum is achieved by two or more different classes, then
+$\widehat{y}_t^*$ is assigned arbitrarily as any one of the maximizing classes.
+
+Unfortunately, Equation~\ref{eqn:assignment-classification} cannot be solved
+without the probability distribution $P(X, Y)$. However, its solution can
+approximated by using estimates of $P(Y=c|X \in {\cal X}_t)$. Let $N_t$ denotes
+the number of objects in ${\cal L}_t$ and let $N_{ct}$ denotes the number of
+objects of class $c$ in ${\cal L}_t$. Then, the proportion $p(c|t) =
+\tfrac{N_{ct}}{N_t}$ can be interpreted as the estimated probability of
+class $c$ in $t$ and therefore be used to solve Equation~\ref{eqn:assignment-classification}:
+\begin{align}
+\widehat{y}_t &= \argmax_{c \in {\cal Y}} p(c | t)
+\end{align}
+
+
+
+
+
 
 % Breiman 34+
 %   Proposition 2.14
