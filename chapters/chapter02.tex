@@ -155,11 +155,12 @@ y_hat = clf.predict(X_test)
 \label{sec:2:performance-evaluation}
 
 In the statistical sense, input and output variables $X_1, ..., X_p$ and $Y$
-are \textit{random variables} taking jointly their values from ${\cal X}
-\times {\cal Y}$ with respect to the joint probability distribution $P(X, Y)$,
-where $X$ denotes the random vector $(X_1, ..., X_p)$. That is,
-$P(X=\mathbf{x}, Y=y)$ is the probability of drawing the couple $(\mathbf{x},
-y)$ at random from ${\cal X} \times {\cal Y}$.
+are \textit{random variables} taking jointly their values from ${\cal X} \times
+{\cal Y}$ with respect to the joint probability distribution $P(X, Y)$, where
+$X$ denotes the random vector $(X_1, ..., X_p)$. That is, $P(X=\mathbf{x},
+Y=y)$ is the probability that random variables $X$ and $Y$ take values
+$\mathbf{x}$ and $y$ from ${\cal X}$ and ${\cal Y}$ when drawing an object
+uniformly at random from $\Omega$.
 
 Accordingly, using an algorithm ${\cal A}$ for learning a model $\varphi$ whose
 predictions are as good as possible can be stated as finding a model $\varphi$
