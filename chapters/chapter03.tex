@@ -384,7 +384,7 @@ objects of class $c$ in ${\cal L}_t$. Then, the proportion
 $\tfrac{N_{ct}}{N_t}$ can be interpreted as the estimated probability\footnote{Lower case $p$ denotes an estimated probability while upper case $P$ denotes a theoretical probability.}
 $p(Y=c|X\in{\cal X}_t)$ (shortly denoted $p(c|t)$) of class $c$ in $t$ and therefore be used to solve
 Equation~\ref{eqn:assignment-classification}:
-\begin{align}
+\begin{align}\label{eqn:assignement-classification-approx}
 \widehat{y}_t &= \argmax_{c \in {\cal Y}} p(c | t)
 \end{align}
 
@@ -398,13 +398,30 @@ above, it follows:
     &= \sum_{t \in \widetilde{\varphi}} \frac{N_t}{N} (1 - \frac{N_{{\widehat{y}_t}t}}{N_t}) \nonumber \\
     &= \frac{1}{N} \sum_{t \in \widetilde{\varphi}} N_t - N_{{\widehat{y}_t}t} \nonumber \\
     &= \frac{1}{N} \sum_{t \in \widetilde{\varphi}} \sum_{\mathbf{x}_i, y_i \in {\cal L}_t} 1(y_i \neq \widehat{y}_t) \nonumber \\
-    &= \frac{1}{N} \sum_{\mathbf{x}_i, y_i \in {\cal L}} 1(y_i \neq \varphi(t)) = \widehat{Err}_{\cal L}^\text{train}(\varphi)
+    &= \frac{1}{N} \sum_{\mathbf{x}_i, y_i \in {\cal L}} 1(y_i \neq \varphi(t)) = \widehat{Err}_{\cal L}^\text{train}(\varphi) \label{eqn:train-error-tree}
 \end{align}
-In other words, minimizing Equation~\ref{eqn:assignment-generalization} (for a fixed structure) through
-probability estimates computed from class proportions in ${\cal L}$ is in fact
-equivalent to minimizing the resubstitution estimate of $\varphi$ (Equation~\ref{eqn:training-error}).
+In other words, approximating Equation~\ref{eqn:assignment-generalization}
+through probability estimates computed from class proportions in ${\cal L}$ is
+equivalent to the resubstitution estimate of $\varphi$
+(Equation~\ref{eqn:training-error}). As a consequence, assignement
+rule~\ref{eqn:assignement-classification-approx} in fact minimizes this latter quantity rather than the
+true generalization error.
 
+An important property of assignment rule~\ref{eqn:assignement-classification-approx} is
+that the more one splits a terminal node \textit{in any way}, the smaller
+$\smash{\widehat{Err}_{\cal L}^\text{train}(\varphi)}$ becomes.
 
+\begin{proposition}
+For any split of $t$ into $t_L$ and $t_R$
+\begin{equation}
+p(t)(1 - p(\widehat{y}_t | t)) \geq p(t_L)(1 - p(\widehat{y}_{t_L} | t_L)) + p(t_L)(1 - p(\widehat{y}_{t_R} | t_R))
+\end{equation}
+with equality if $\widehat{y}_t = \widehat{y}_{t_L} = \widehat{y}_{t_R}$ \citep{breiman:1984}.
+\end{proposition}
+
+\begin{proof}
+Hi
+\end{proof}
 
 \subsection{Regression}
 
