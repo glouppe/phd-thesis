@@ -339,23 +339,31 @@ splits and in knowing when to stop splitting.
 Let us assume that node $t$ has been declared terminal given some stopping
 criterion (See Section~\ref{sec:3:stop}). The next step
 (Line~\ref{algo:induction:terminal} of Algorithm~\ref{algo:induction}) in the
-induction procedure is to label $t$ with some constant value $\widehat{y}_t$ to
+induction procedure is to label $t$ with a constant value $\widehat{y}_t$ to
 be used as a prediction of the output variable $Y$. As such, node $t$ can  be
 regarded as a simplistic model defined locally on ${\cal X}_t \times {\cal Y}$
 and producing the same output value $\widehat{y}_t$ for all possible input
-vectors falling into $t$. Accordingly, and as discussed in
-Section~\ref{sec:2:performance-evaluation}, learning the model whose predictions are locally as
-good as possible  amounts to find the constant $\widehat{y}_t$ which minimizes
-its expected local prediction error
-\begin{equation}\label{eqn:assignment-generalization}
-Err_{{\cal L}}(t) = \mathbb{E}_{X, Y|t}\{ L(Y, \widehat{y}_t) | {\cal L} \},
-\end{equation}
-where the joint expectation for $X$ and $Y$ is taken over all objects $i \in
-\Omega$ such that $\mathbf{x}_i \in {\cal X}_t$.
+vectors falling into $t$.
+
+Let us first notice that, for a tree $\varphi$ of \textit{fixed} structure, minimizing its global generalization
+error is strictly equivalent to minimizing the local generalization
+error of each simplistic model in its terminal nodes. Indeed:
+\begin{align}
+Err_{\cal L}(\varphi) &= \mathbb{E}_{X,Y} \{ L(Y, \varphi(X)) | {\cal L} \} \nonumber \\
+                      &= \sum_{t \in \widetilde{\varphi}} P(X \in {\cal X}_t) \mathbb{E}_{X,Y|t} \{ L(Y, \widehat{y}_t) | {\cal L} \} \label{eqn:assignment-generalization}
+\end{align}
+where $\widetilde{\varphi}$ denotes the set of terminal nodes in $\varphi$
+and where the inner expectation\footnote{The joint expectation of $X$ and $Y$
+is taken over all objects $i \in \Omega$ such $\mathbf{x}_i \in {\cal X}_t$.}
+is the local generalization error of the model at node $t$. In this later form,
+a model which minimizes $Err_{\cal L}(\varphi)$ is a model which minimizes the inner
+expectation leaf-wise. As such, learning the best possible decion tree (of
+fixed structure) therefore simply amounts to find the best constants
+$\widehat{y}_t$ at each terminal node.
 
 \subsection{Classification}
 
-When $L$ is the zero-one loss, Equation~\ref{eqn:assignment-generalization}
+When $L$ is the zero-one loss, the inner expectation in Equation~\ref{eqn:assignment-generalization}
 is minimized by the plurality rule:
 \begin{align}
 \widehat{y}_t^* &= \argmin_{c \in {\cal Y}} \mathbb{E}_{X, Y|t}\{ 1(Y, c) | {\cal L} \} \nonumber \\
@@ -367,18 +375,37 @@ the class which is the most likely for the samples in the subspace of $t$.
 Note that if the maximum is achieved by two or more different classes, then
 $\widehat{y}_t^*$ is assigned arbitrarily as any one of the maximizing classes.
 
-Unfortunately, Equation~\ref{eqn:assignment-classification} cannot be solved
-without the probability distribution $P(X, Y)$. However, its solution can
+Once again, Equation~\ref{eqn:assignment-classification} cannot be solved
+without the probability distribution $P(X, Y)$. However, its solution can be
 approximated by using estimates of $P(Y=c|X \in {\cal X}_t)$. Let $N_t$ denotes
 the number of objects in ${\cal L}_t$ and let $N_{ct}$ denotes the number of
-objects of class $c$ in ${\cal L}_t$. Then, the proportion $p(c|t) =
-\tfrac{N_{ct}}{N_t}$ can be interpreted as the estimated probability of
-class $c$ in $t$ and therefore be used to solve Equation~\ref{eqn:assignment-classification}:
+objects of class $c$ in ${\cal L}_t$. Then, the proportion
+$\tfrac{N_{ct}}{N_t}$ can be interpreted as the estimated probability\footnote{Lower case $p$ denotes an estimated probability while upper $P$ a theoretical probability.}
+$p(Y=c|X\in{\cal X}_t)$ (shortly denoted $p(c|t)$) of class $c$ in $t$ and therefore be used to solve
+Equation~\ref{eqn:assignment-classification}:
 \begin{align}
 \widehat{y}_t &= \argmax_{c \in {\cal Y}} p(c | t)
 \end{align}
 
+Similarly, let us also define the proportion $\tfrac{N_t}{N}$ as the
+estimated probability $p(X \in {\cal X}_t)$ (shortly denoted $p(t)$). Plugging
+this estimate into Equation~\ref{eqn:assignment-generalization} and
+approximating the inner expectation with $1 - p(\widehat{y}_t | t)$ as above,
+we have
+\begin{align}
+\sum_{t \in \widetilde{\varphi}} p(t) (1 - p(\widehat{y}_t | t)) &= \frac{1}{N} \sum_{t \in \widetilde{\varphi}} N_t - N_{{\widehat{y}_t}t} \nonumber \\
+    &= \frac{1}{N} \sum_{t \in \widetilde{\varphi}} \sum_{\mathbf{x}_i, y_i \in {\cal L}_t} 1(y_i \neq \widehat{y}_t) \nonumber \\
+    &= \frac{1}{N} \sum_{\mathbf{x}_i, y_i \in {\cal L}} 1(y_i \neq \varphi(t))
+\end{align}
+In other words, minimizing Equation~\ref{eqn:assignment-generalization}
+through probability estimates computed from class proportions in the learning
+set ${\cal L}$ is in fact equivalent to minimizing the resubstitution estimate of $\varphi$.
 
+% équivalent à minimizer R(T) globalement
+% splitter t réduit R(T) => déveloper totalement conduit à des arbres parfaits
+
+
+% Cas où ${\cal L}_t = 1$
 
 
 
