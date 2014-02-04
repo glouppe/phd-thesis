@@ -345,9 +345,10 @@ regarded as a simplistic model defined locally on ${\cal X}_t \times {\cal Y}$
 and producing the same output value $\widehat{y}_t$ for all possible input
 vectors falling into $t$.
 
-Let us first notice that, for a tree $\varphi$ of \textit{fixed} structure, minimizing its global generalization
-error is strictly equivalent to minimizing the local generalization
-error of each simplistic model in its terminal nodes. Indeed:
+Let us first notice that, for a tree $\varphi$ of \textit{fixed} structure,
+minimizing the global generalization error is strictly equivalent to minimizing
+the local generalization error of each simplistic model in the terminal nodes.
+Indeed,
 \begin{align}
 Err_{\cal L}(\varphi) &= \mathbb{E}_{X,Y} \{ L(Y, \varphi(X)) | {\cal L} \} \nonumber \\
                       &= \sum_{t \in \widetilde{\varphi}} P(X \in {\cal X}_t) \mathbb{E}_{X,Y|t} \{ L(Y, \widehat{y}_t) | {\cal L} \} \label{eqn:assignment-generalization}
@@ -357,7 +358,7 @@ and where the inner expectation\footnote{The joint expectation of $X$ and $Y$
 is taken over all objects $i \in \Omega$ such $\mathbf{x}_i \in {\cal X}_t$.}
 is the local generalization error of the model at node $t$. In this later form,
 a model which minimizes $Err_{\cal L}(\varphi)$ is a model which minimizes the inner
-expectation leaf-wise. As such, learning the best possible decion tree (of
+expectation leaf-wise. Learning the best possible decion tree (of
 fixed structure) therefore simply amounts to find the best constants
 $\widehat{y}_t$ at each terminal node.
 
@@ -380,41 +381,30 @@ without the probability distribution $P(X, Y)$. However, its solution can be
 approximated by using estimates of $P(Y=c|X \in {\cal X}_t)$. Let $N_t$ denotes
 the number of objects in ${\cal L}_t$ and let $N_{ct}$ denotes the number of
 objects of class $c$ in ${\cal L}_t$. Then, the proportion
-$\tfrac{N_{ct}}{N_t}$ can be interpreted as the estimated probability\footnote{Lower case $p$ denotes an estimated probability while upper $P$ a theoretical probability.}
+$\tfrac{N_{ct}}{N_t}$ can be interpreted as the estimated probability\footnote{Lower case $p$ denotes an estimated probability while upper case $P$ denotes a theoretical probability.}
 $p(Y=c|X\in{\cal X}_t)$ (shortly denoted $p(c|t)$) of class $c$ in $t$ and therefore be used to solve
 Equation~\ref{eqn:assignment-classification}:
 \begin{align}
 \widehat{y}_t &= \argmax_{c \in {\cal Y}} p(c | t)
 \end{align}
 
-Similarly, let us also define the proportion $\tfrac{N_t}{N}$ as the
-estimated probability $p(X \in {\cal X}_t)$ (shortly denoted $p(t)$). Plugging
-this estimate into Equation~\ref{eqn:assignment-generalization} and
-approximating the inner expectation with $1 - p(\widehat{y}_t | t)$ as above,
-we have
+Similarly, let us also define the proportion $\tfrac{N_t}{N}$ as the estimated
+probability $p(X \in {\cal X}_t)$ (shortly denoted $p(t)$). Plugging this
+estimate into Equation~\ref{eqn:assignment-generalization} and approximating
+the local generalization error with $1 - p(\widehat{y}_t | t)$ as done
+above, it follows:
 \begin{align}
-\sum_{t \in \widetilde{\varphi}} p(t) (1 - p(\widehat{y}_t | t)) &= \frac{1}{N} \sum_{t \in \widetilde{\varphi}} N_t - N_{{\widehat{y}_t}t} \nonumber \\
+\widehat{Err}_{\cal L}(\varphi) &= \sum_{t \in \widetilde{\varphi}} p(t) (1 - p(\widehat{y}_t | t)) \nonumber \\
+    &= \sum_{t \in \widetilde{\varphi}} \frac{N_t}{N} (1 - \frac{N_{{\widehat{y}_t}t}}{N_t}) \nonumber \\
+    &= \frac{1}{N} \sum_{t \in \widetilde{\varphi}} N_t - N_{{\widehat{y}_t}t} \nonumber \\
     &= \frac{1}{N} \sum_{t \in \widetilde{\varphi}} \sum_{\mathbf{x}_i, y_i \in {\cal L}_t} 1(y_i \neq \widehat{y}_t) \nonumber \\
-    &= \frac{1}{N} \sum_{\mathbf{x}_i, y_i \in {\cal L}} 1(y_i \neq \varphi(t))
+    &= \frac{1}{N} \sum_{\mathbf{x}_i, y_i \in {\cal L}} 1(y_i \neq \varphi(t)) = \widehat{Err}_{\cal L}^\text{train}(\varphi)
 \end{align}
-In other words, minimizing Equation~\ref{eqn:assignment-generalization}
-through probability estimates computed from class proportions in the learning
-set ${\cal L}$ is in fact equivalent to minimizing the resubstitution estimate of $\varphi$.
-
-% équivalent à minimizer R(T) globalement
-% splitter t réduit R(T) => déveloper totalement conduit à des arbres parfaits
+In other words, minimizing Equation~\ref{eqn:assignment-generalization} (for a fixed structure) through
+probability estimates computed from class proportions in ${\cal L}$ is in fact
+equivalent to minimizing the resubstitution estimate of $\varphi$ (Equation~\ref{eqn:training-error}).
 
 
-% Cas où ${\cal L}_t = 1$
-
-
-
-
-% Breiman 34+
-%   Proposition 2.14
-% Zighed 115+
-%       indétermination
-% proba
 
 \subsection{Regression}
 
