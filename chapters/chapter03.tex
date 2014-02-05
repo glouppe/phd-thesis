@@ -446,9 +446,22 @@ object from ${\cal L}$.
 
 Based on this result, we will also show in Section~\ref{sec:3:criteria} why
 using the resubstitution estimate to evaluate the goodness of a split $s$
-has serious defects.
+has serious defects for classification.
 
 \subsection{Regression}
+
+When $L$ is the squared error loss, the inner expectation in
+Equation~\ref{eqn:assignment-generalization}
+is minimized by the expectation of $Y$ in $t$:
+\begin{align}
+\widehat{y}_t^* &= \argmin_{\widehat{y} \in {\cal Y}} \mathbb{E}_{X, Y|t}\{ (Y - \widehat{y})^2 | {\cal L} \} \nonumber \\
+                &= \mathbb{E}_{X, Y|t} \{ Y \} \label{eqn:assignment-regression}
+\end{align}
+
+As in classification, Equation~\ref{eqn:assignment-regression} cannot be solved
+without the probability distribution $P(X, Y)$. However, its solution can
+approximated using estimates of $\mathbb{E}_{X, Y|t} \{ Y \}$. The simplest approximation
+consists in
 
 % Breiman 230+
 
