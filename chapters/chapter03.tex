@@ -378,7 +378,7 @@ $\widehat{y}_t^*$ is assigned arbitrarily as any one of the maximizing classes.
 
 Equation~\ref{eqn:assignment-classification} cannot be solved
 without the probability distribution $P(X, Y)$. However, its solution can be
-approximated by using estimates of $P(Y=c|X \in {\cal X}_t)$. Let $N_t$ denotes
+approximated by using estimates of the local generalization error. Let $N_t$ denotes
 the number of objects in ${\cal L}_t$ and let $N_{ct}$ denotes the number of
 objects of class $c$ in ${\cal L}_t$. Then, the proportion
 $\tfrac{N_{ct}}{N_t}$ can be interpreted as the estimated probability\footnote{Lower case $p$ denotes an estimated probability while upper case $P$ denotes a theoretical probability.}
@@ -402,7 +402,7 @@ the local generalization error with $1 - p(\widehat{y}_t | t)$ as done above, it
     &= \widehat{Err}_{\cal L}^\text{train}(\varphi) \label{eqn:train-error-tree}
 \end{align}
 Accordingly, approximating Equation~\ref{eqn:assignment-generalization}
-through probability estimates computed from class proportions derived from
+through local probability estimates computed from class proportions in
 ${\cal L}_t$ reduces to the resubstitution estimate of $\varphi$
 (Equation~\ref{eqn:training-error}). In other words, assignment
 rule~\ref{eqn:assignement-classification-approx} in fact minimizes the
@@ -414,8 +414,8 @@ rule~\ref{eqn:assignement-classification-approx} is that the more one splits a t
 any way}, the smaller the resubstitution estimate $\smash{\widehat{Err}_{\cal
 L}^\text{train}(\varphi)}$ becomes.
 
-\begin{proposition}\label{prop:any-split-reduce}
-For any split of a terminal node $t \in \widetilde{\varphi}$ into $t_L$ and
+\begin{proposition}\label{prop:any-split-reduce-classification}
+For any non-empty split of a terminal node $t \in \widetilde{\varphi}$ into $t_L$ and
 $t_R$, resulting in a new tree $\varphi^\prime$ where $\widehat{y}_{t_L}$ and $\widehat{y}_{t_R}$
 are assigned with rule~\ref{eqn:assignement-classification-approx}, $$\widehat{Err}_{\cal
 L}^\text{train}(\varphi) \geq \widehat{Err}_{\cal
@@ -433,20 +433,18 @@ N_t - \max_{c \in {\cal Y}} N_{ct} &\geq N_{t_L} - \max_{c \in {\cal Y}} N_{ct_L
 \max_{c \in {\cal Y}} N_{ct} &\leq \max_{c \in {\cal Y}} N_{ct_L} + \max_{c \in {\cal Y}} N_{ct_R} \\
 \max_{c \in {\cal Y}} (N_{ct_L} + N_{ct_R}) &\leq \max_{c \in {\cal Y}} N_{ct_L} + \max_{c \in {\cal Y}} N_{ct_R}
 \end{align*}
-
 Which is true since $\max_{c \in {\cal Y}} N_{ct_L}$ (resp., $t_R$) is
 necessarily greater or equal to the left term $N_{ct_L}$ (resp., to right term
 $N_{ct_R}$) in the left-hand side of the equation. Equality holds if the
 majority classes are the same in $t$, $t_L$ and $t_R$.
 \end{proof}
 
-As a corollary of Proposition~\ref{prop:any-split-reduce}, the resubstitution
+As a corollary of Proposition~\ref{prop:any-split-reduce-classification}, the resubstitution
 estimate is minimal when terminal nodes can no longer be divided.  In
 particular, it is equal to zero if the tree can be \textit{fully developed},
 that is if terminal nodes can be divided until they all contain exactly one
 object from ${\cal L}$.
-
-Based on this result, we will also show in Section~\ref{sec:3:criteria} why
+Based on this result, we will show however in Section~\ref{sec:3:criteria} why
 using the resubstitution estimate to evaluate the goodness of a split $s$
 has serious defects for classification.
 
@@ -462,24 +460,53 @@ is minimized by the expectation of $Y$ in $t$:
 
 Again, Equation~\ref{eqn:assignment-regression} cannot be solved
 without the probability distribution $P(X, Y)$. However, its solution can
-approximated using estimates of $\mathbb{E}_{X, Y|t} \{ Y \}$. The simplest
-approximation consists in using the average value of $Y$ for subset of learning
-samples falling into $t$:
+approximated using estimates of the local generalization error:
 \begin{align}\label{eqn:assignement-regression-approx}
-\widehat{y}_t &= \frac{1}{N_t} \sum_{\mathbf{x}_i, y_i \in {\cal L}_t} y_i
+\widehat{y}_t   &= \argmin_{\widehat{y} \in {\cal L}} \frac{1}{N_t} \sum_{\mathbf{x}_i, y_i \in {\cal L}_t} (y_i - \widehat{y})^2 \nonumber \\
+                &= \frac{1}{N_t} \sum_{\mathbf{x}_i, y_i \in {\cal L}_t} y_i
 \end{align}
 
 As in classification, using $p(t)$ as estimate of $P(X \in {\cal X}_t)$ and approximating
 the local generalization error with $\tfrac{1}{N_t} \sum_{\mathbf{x}_i, y_i \in {\cal
-L}_t} (y_i - \widehat{y}_t)^2$, one can show that
+L}_t} (y_i - \widehat{y}_t)^2$ as done above, one can show that
 Equation~\ref{eqn:assignment-generalization} reduces the resubstitution estimate of $\varphi$, thereby
 indicating that assignment rule~\ref{eqn:assignement-regression-approx}
 also minimizes the training error rather the true generalization error.
 
+Most importantly, one can also show that assignment rule~\ref{eqn:assignement-regression-approx}
+behaves in the same way as \ref{eqn:assignement-classification-approx}. The
+more one splits a terminal node in any way, the smaller the resubstitution estimate $\smash{\widehat{Err}_{\cal
+L}^\text{train}(\varphi)}$ becomes.
 
+\begin{proposition}\label{prop:any-split-reduce-regression}
+For any non-empty split of a terminal node $t \in \widetilde{\varphi}$ into $t_L$ and
+$t_R$, resulting in a new tree $\varphi^\prime$ where $\widehat{y}_{t_L}$ and $\widehat{y}_{t_R}$
+are assigned with rule~\ref{eqn:assignement-regression-approx}, $$\widehat{Err}_{\cal
+L}^\text{train}(\varphi) \geq \widehat{Err}_{\cal
+L}^\text{train}(\varphi^\prime)$$ with equality if $\widehat{y}_{t_L} = \widehat{y}_{t_R}$.
+\end{proposition}
 
-% Breiman 230+
+\begin{proof}
+\begin{align*}
+\widehat{Err}_{\cal L}^\text{train}(\varphi) &\geq \widehat{Err}_{\cal L}^\text{train}(\varphi^\prime)  \\
+\sum_{t \in \widetilde{\varphi}} p(t) (\frac{1}{N_t} \sum_{\mathbf{x}_i, y_i \in {\cal L}_t} (y_i - \widehat{y}_t)^2) &\geq \sum_{t \in \widetilde{\varphi^\prime}} p(t) (\frac{1}{N_t} \sum_{\mathbf{x}_i, y_i \in {\cal L}_t} (y_i - \widehat{y}_t)^2) \\
+\sum_{\mathbf{x}_i, y_i \in {\cal L}_t} (y_i - \widehat{y}_t)^2 &\geq \sum_{\mathbf{x}_i, y_i \in {\cal L}_{t_L}} (y_i - \widehat{y}_{t_L})^2 + \sum_{\mathbf{x}_i, y_i \in {\cal L}_{t_R}} (y_i - \widehat{y}_{t_R})^2 \\
+N_t \widehat{y}_t^2 &\leq N_{t_L} \widehat{y}_{t_L}^2 + N_{t_R} \widehat{y}_{t_R}^2 \\
+\frac{1}{N_t} (\sum_{\mathbf{x}_i, y_i \in {\cal L}_{t}} y_i)^2 &\leq \frac{1}{N_{t_L}} (\sum_{\mathbf{x}_i, y_i \in {\cal L}_{t_L}} y_i)^2 + \frac{1}{N_{t_R}} (\sum_{\mathbf{x}_i, y_i \in {\cal L}_{t_R}} y_i)^2
+\end{align*}
+For simplifying, let us denote $\sigma_t = \sum_{\mathbf{x}_i, y_i \in {\cal L}_{t}} y_i = N_t \widehat{y}_t$
+the sum of the output values in $t$. Remark that $\sigma_t = \sigma_{t_L} + \sigma_{t_R}$. It comes:
+\begin{align*}
+\frac{\sigma_t^2}{N_t} &\leq \frac{\sigma_{t_L}^2}{N_{t_L}} + \frac{\sigma_{t_R}^2}{N_{t_R}} \\
+\frac{(\sigma_{t_L} + \sigma_{t_R})^2}{N_{t_L} + N_{t_R}} &\leq \frac{\sigma_{t_L}^2}{N_{t_L}} + \frac{\sigma_{t_R}^2}{N_{t_R}} \\
+\frac{(\sigma_{t_L} N_{t_R} - \sigma_{t_R} N_{t_L})^2}{N_{t_L} N_{t_R} (N_{t_L} + N_{t_R})} &\geq 0
+\end{align*}
+Which is necessary true since the numerator is non-negative and the denominator is
+strictly positive. Equality holds if $\sigma_{t_L} N_{t_R} = \sigma_{t_R} N_{t_L}$, that is if $\widehat{y}_{t_L} = \widehat{y}_{t_R}$.
+\end{proof}
 
+As for Proposition~\ref{prop:any-split-reduce-classification}, a corollary of Proposition~\ref{prop:any-split-reduce-regression}
+is that the resubstitution estimate is minimal when terminal nodes can no longer be divided.
 
 \section{Stopping criteria}
 \label{sec:3:stop}
