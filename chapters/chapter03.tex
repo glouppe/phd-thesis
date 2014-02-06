@@ -511,6 +511,18 @@ is that the resubstitution estimate is minimal when terminal nodes can no longer
 \section{Stopping criteria}
 \label{sec:3:stop}
 
+As we have shown through Propositions~\ref{prop:any-split-reduce-classification}
+and \ref{prop:any-split-reduce-regression}, the deeper a
+decision tree, the smaller its training estimate, and the better we think the
+tree is. As discussed in Section~\ref{sec:2:model-selection} however,
+increasing  model complexity, in this case by enlarging too much  the set of
+terminal nodes, is likely to eventually capture noise in the learning set and
+to cause overfitting. To prevent this phenomenon it is therefore necessary to
+find the right trade-off between a tree which is not too shallow nor too deep.
+The problem is in knowing when to stop splitting.
+
+
+
 %       Simplest approaches:
 %           - L_t cannot be split more (eg., X is constant)
 %           - min_samples_split (aka nmin)
