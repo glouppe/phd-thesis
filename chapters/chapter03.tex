@@ -513,14 +513,35 @@ is that the resubstitution estimate is minimal when terminal nodes can no longer
 
 As we have shown through Propositions~\ref{prop:any-split-reduce-classification}
 and \ref{prop:any-split-reduce-regression}, the deeper a
-decision tree, the smaller its training estimate, and the better we think the
-tree is. As discussed in Section~\ref{sec:2:model-selection} however,
-increasing  model complexity, in this case by enlarging too much  the set of
-terminal nodes, is likely to eventually capture noise in the learning set and
-to cause overfitting. To prevent this phenomenon it is therefore necessary to
-find the right trade-off between a tree which is not too shallow nor too deep.
-The problem is in knowing when to stop splitting.
+decision tree, the smaller its training estimate, and the better we think it
+is. As discussed in Section~\ref{sec:2:model-selection} however, increasing
+model complexity, in this case by enlarging too much  the set of terminal
+nodes, is likely to eventually capture noise in the learning set and to cause
+overfitting. In other words, it is not because the training estimate can be
+proved to go down to zero that the test estimate converges accordingly. On the
+contrary, it is very likely to diverge as complexity increases. To prevent this
+phenomenon it is therefore necessary to find the right trade-off between a tree
+which is not too shallow nor too deep. The problem is in knowing when to stop
+splitting.
 
+The stopping criterion (Line~\ref{algo:induction:stop} of
+Algorithm~\ref{algo:induction}) is usually formulated as a heuristic halting
+the recursive partition if no sufficiently good split can be found.  The most
+common stopping criteria can be described as follows:
+
+% \begin{itemize}
+% \item abc
+% \end{itemize}
+
+
+% \begin{itemize}
+% \item If the output values $y_i$ of the samples in ${\cal L}_t$ are homogeneous,
+% then $t$ is set as a terminal node.
+
+% \item If for each input variable $X_j$ the respective input values of the
+% samples in ${\cal L}_t$ are all identical, then ${\cal L}_t$ cannot
+% be divided further and $t$ is set as a terminal node.
+% \end{itemize}
 
 
 %       Simplest approaches:
@@ -530,7 +551,7 @@ The problem is in knowing when to stop splitting.
 %           - max_nodes?
 %       CART 37+, chapter 3
 %       * Critères d'arrêts [ différents paramètres, chi² ]
-%       Zighed: page 100+
+%       Zighed: page 100+ et 115+
 %       Pre-pruning vs. Post-pruning (brief discussion)
 
 
