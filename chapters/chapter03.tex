@@ -263,7 +263,7 @@ $(\mathbf{x}, y) \in {\cal L}$ such that $\mathbf{x} \in {\cal X}_t$.
 
 Starting from a single node representing the whole learning set  ${\cal L}$,
 near-optimal decision trees can then be grown greedily by iteratively dividing
-nodes into purer nodes. That is, to iteratively  divide into smaller subsets the
+nodes into purer nodes. That is, by iteratively  dividing into smaller subsets the
 subsets of ${\cal L}$ represented by the nodes, until all terminal nodes cannot
 be made purer, hence guaranteeing near-optimal predictions over ${\cal L}$. The
 greedy assumption to make the resulting tree as small as possible, thereby
@@ -303,7 +303,7 @@ Greedy induction of a binary decision tree.
         \If{the stopping criterion is met for $t$}\label{algo:induction:stop}
             \State $\widehat{y}_{t} \gets$ some constant value;\label{algo:induction:terminal}
         \Else
-            \State Find the split that maximizes impurity decrease $$s^* = \argmax_{s \in {\cal Q}} \Delta i(s, t);$$ \label{algo:induction:split}
+            \State Find the split on ${\cal L}_t$ that maximizes impurity decrease $$s^* = \argmax_{s \in {\cal Q}} \Delta i(s, t);$$ \label{algo:induction:split}
             \State Partition ${\cal L}_t$ into ${\cal L}_{t_L} \cup {\cal L}_{t_R}$ according to $s^*$;
             \State Create the left child node $t_L$ of $t$;
             \State Create the right child node $t_R$ of $t$;
@@ -355,7 +355,7 @@ Err_{\cal L}(\varphi) &= \mathbb{E}_{X,Y} \{ L(Y, \varphi(X)) | {\cal L} \} \non
 \end{align}
 where $\widetilde{\varphi}$ denotes the set of terminal nodes in $\varphi$
 and where the inner expectation\footnote{The joint expectation of $X$ and $Y$
-is taken over all objects $i \in \Omega$ such $\mathbf{x}_i \in {\cal X}_t$.}
+is taken over all objects $i \in \Omega$ such that $\mathbf{x}_i \in {\cal X}_t$.}
 is the local generalization error of the model at node $t$. In this later form,
 a model which minimizes $Err_{\cal L}(\varphi)$ is a model which minimizes the inner
 expectation leaf-wise. Learning the best possible decision tree (of
@@ -376,7 +376,7 @@ the class which is the most likely for the samples in the subspace of $t$.
 Note that if the maximum is achieved by two or more different classes, then
 $\widehat{y}_t^*$ is assigned arbitrarily as any one of the maximizing classes.
 
-Once again, Equation~\ref{eqn:assignment-classification} cannot be solved
+Equation~\ref{eqn:assignment-classification} cannot be solved
 without the probability distribution $P(X, Y)$. However, its solution can be
 approximated by using estimates of $P(Y=c|X \in {\cal X}_t)$. Let $N_t$ denotes
 the number of objects in ${\cal L}_t$ and let $N_{ct}$ denotes the number of
@@ -385,13 +385,14 @@ $\tfrac{N_{ct}}{N_t}$ can be interpreted as the estimated probability\footnote{L
 $p(Y=c|X\in{\cal X}_t)$ (shortly denoted $p(c|t)$) of class $c$ in $t$ and therefore be used to solve
 Equation~\ref{eqn:assignment-classification}:
 \begin{align}\label{eqn:assignement-classification-approx}
-\widehat{y}_t &= \argmax_{c \in {\cal Y}} p(c | t)
+\widehat{y}_t &= \argmin_{c \in {\cal Y}} 1 - p(c | t) \nonumber \\
+              &= \argmax_{c \in {\cal Y}} p(c | t)
 \end{align}
 
 Similarly, let us also define the proportion $\tfrac{N_t}{N}$ as the estimated
 probability $p(X \in {\cal X}_t)$ (shortly denoted $p(t)$). Plugging this
 estimate into Equation~\ref{eqn:assignment-generalization} and approximating
-the local generalization error with $1 - p(\widehat{y}_t | t)$, it follows:
+the local generalization error with $1 - p(\widehat{y}_t | t)$ as done above, it follows:
 \begin{align}
 \widehat{Err}_{\cal L}(\varphi) &= \sum_{t \in \widetilde{\varphi}} p(t) (1 - p(\widehat{y}_t | t)) \nonumber \\
     &= \sum_{t \in \widetilde{\varphi}} \frac{N_t}{N} (1 - \frac{N_{{\widehat{y}_t}t}}{N_t}) \nonumber \\
@@ -400,22 +401,23 @@ the local generalization error with $1 - p(\widehat{y}_t | t)$, it follows:
     &= \frac{1}{N} \sum_{\mathbf{x}_i, y_i \in {\cal L}} 1(y_i \neq \varphi(t)) \nonumber \\
     &= \widehat{Err}_{\cal L}^\text{train}(\varphi) \label{eqn:train-error-tree}
 \end{align}
-In other words, approximating Equation~\ref{eqn:assignment-generalization}
+Accordingly, approximating Equation~\ref{eqn:assignment-generalization}
 through probability estimates computed from class proportions derived from
-${\cal L}$ reduces to the resubstitution estimate of $\varphi$
-(Equation~\ref{eqn:training-error}). As a consequence, assignment
+${\cal L}_t$ reduces to the resubstitution estimate of $\varphi$
+(Equation~\ref{eqn:training-error}). In other words, assignment
 rule~\ref{eqn:assignement-classification-approx} in fact minimizes the
 resubstitution estimate rather than the true
 generalization error.
 
-Finally, an important property of assignment
+An important property of assignment
 rule~\ref{eqn:assignement-classification-approx} is that the more one splits a terminal node \textit{in
 any way}, the smaller the resubstitution estimate $\smash{\widehat{Err}_{\cal
 L}^\text{train}(\varphi)}$ becomes.
 
 \begin{proposition}\label{prop:any-split-reduce}
 For any split of a terminal node $t \in \widetilde{\varphi}$ into $t_L$ and
-$t_R$, resulting in a new tree $\varphi^\prime$, $$\widehat{Err}_{\cal
+$t_R$, resulting in a new tree $\varphi^\prime$ where $\widehat{y}_{t_L}$ and $\widehat{y}_{t_R}$
+are assigned with rule~\ref{eqn:assignement-classification-approx}, $$\widehat{Err}_{\cal
 L}^\text{train}(\varphi) \geq \widehat{Err}_{\cal
 L}^\text{train}(\varphi^\prime)$$ with equality if $\widehat{y}_t =
 \widehat{y}_{t_L} = \widehat{y}_{t_R}$ \citep{breiman:1984}.
@@ -458,10 +460,23 @@ is minimized by the expectation of $Y$ in $t$:
                 &= \mathbb{E}_{X, Y|t} \{ Y \} \label{eqn:assignment-regression}
 \end{align}
 
-As in classification, Equation~\ref{eqn:assignment-regression} cannot be solved
+Again, Equation~\ref{eqn:assignment-regression} cannot be solved
 without the probability distribution $P(X, Y)$. However, its solution can
-approximated using estimates of $\mathbb{E}_{X, Y|t} \{ Y \}$. The simplest approximation
-consists in
+approximated using estimates of $\mathbb{E}_{X, Y|t} \{ Y \}$. The simplest
+approximation consists in using the average value of $Y$ for subset of learning
+samples falling into $t$:
+\begin{align}\label{eqn:assignement-regression-approx}
+\widehat{y}_t &= \frac{1}{N_t} \sum_{\mathbf{x}_i, y_i \in {\cal L}_t} y_i
+\end{align}
+
+As in classification, using $p(t)$ as estimate of $P(X \in {\cal X}_t)$ and approximating
+the local generalization error with $\tfrac{1}{N_t} \sum_{\mathbf{x}_i, y_i \in {\cal
+L}_t} (y_i - \widehat{y}_t)^2$, one can show that
+Equation~\ref{eqn:assignment-generalization} reduces the resubstitution estimate of $\varphi$, thereby
+indicating that assignment rule~\ref{eqn:assignement-regression-approx}
+also minimizes the training error rather the true generalization error.
+
+
 
 % Breiman 230+
 
