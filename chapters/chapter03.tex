@@ -526,8 +526,9 @@ splitting, i.e., in how to formulate Line~\ref{algo:induction:stop} of
 Algorithm~\ref{algo:induction}.
 
 Let us first consider the stopping criteria that are inherent to the iterative
-partition procedure, regardless of overfitting. Node $t$ is necessarily set as
-a terminal node in the following cases:
+partition procedure, regardless of overfitting. Node $t$ is inevitably
+set as a terminal node when ${\cal L}_t$ can no longer be split, which happens in the
+following cases:
 
 \begin{enumerate}
 \item When the output values of the samples in ${\cal L}_t$ are homogeneous.
@@ -536,8 +537,8 @@ In particular, this is necessarily the case when $N_t = 1$.
 
 \item When the input variables $X_j$ are each locally constant in ${\cal L}_t$. That
 is, if $x_{ij} = x_{i^\prime j}$ for all $(\mathbf{x}_i, y_i), (\mathbf{x}_{i^\prime}, y_{i^\prime}) \in
-{\cal L}_t$ and for each input variable $X_j$. In this case, then ${\cal L}_t$
-cannot indeed be divided any further. \end{enumerate}
+{\cal L}_t$, for each input variable $X_j$. In this case, then ${\cal L}_t$
+cannot be divided any further. \end{enumerate}
 
 To prevent overfitting, the stopping criterion is then usually complemented
 with heuristics halting the recursive partition if ${\cal L}_t$ has become too
@@ -545,11 +546,27 @@ small or if no sufficiently good split can be found. The most common approaches
 are formulated as follows:
 
 \begin{enumerate}\setcounter{enumi}{2}
-\item $N_t < N_\text{min}$
+
+\item Set $t$ as a terminal node if it contains less than $N_\text{min}$ samples,
+($N_\text{min}$ is also known as \texttt{min\_samples\_split}.)
+
+\item Set $t$ as a terminal node if it its depth is greater or equal to a threshold $d$.
+($d$ is also known as \texttt{max\_depth}.)
+
+\item \todo{Seuil sur $\Delta i(s^*, t)$ (cart, id3)}
+
+\item \todo{Test d'independence sur chaque variable (id3)}
 
 \end{enumerate}
 
-
+In all of the above, stopping criteria are defined in terms of user-defined
+hyper-parameters that need to be tuned in order to find the right
+trade-off. These parameters need to be such that they are nor too strict nor too loose for the tree
+to be nor too shallow nor too deep. As described in
+Section~\ref{sec:2:model-selection}, chosing the appropriate parameter values
+is usually performed using a dedicated model selection procedure, which
+can be computationally expensive, yet usually imperative for reaching
+good generalization performance.
 
 
 
