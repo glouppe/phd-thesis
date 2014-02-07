@@ -524,24 +524,33 @@ phenomenon it is therefore necessary to find the right trade-off between a tree
 which is not too shallow nor too deep. The problem is in knowing when to stop
 splitting.
 
-The stopping criterion (Line~\ref{algo:induction:stop} of
-Algorithm~\ref{algo:induction}) is usually formulated as a heuristic halting
-the recursive partition if no sufficiently good split can be found.  The most
-common approaches can be described as follows:
+Let us first consider the stopping criteria (Line~\ref{algo:induction:stop} of
+Algorithm~\ref{algo:induction}) that are inherent to the iterative partition
+procedure, regardless of overfitting. Node $t$ is necessarily set
+as a terminal node in the following cases:
 
-% \begin{itemize}
-% \item abc
-% \end{itemize}
+\begin{enumerate}
+\item When the output values of the samples in ${\cal L}_t$ are homogeneous.
+That is, if $y_i = y_j$ for all $(\mathbf{x}_i, y_i), (\mathbf{x}_j, y_j) \in {\cal L}_t$.
+In particular, this is necessarily the case when $N_t = 1$.
+
+\item When the input variables are each locally constant in ${\cal L}_t$. That
+is, if $x_{ik} = x_{jk}$ for all $(\mathbf{x}_i, y_i), (\mathbf{x}_j, y_j) \in
+{\cal L}_t$ and for each input variable $X_k$. In this case, then ${\cal L}_t$
+cannot indeed be divided any further. \end{enumerate}
+
+To prevent overfitting, the stopping criterion is then usually complemented
+with heuristics halting the recursive partition if ${\cal L}_t$ has become too
+small or if no sufficiently good split can be found. The most common approaches
+are formulated as follows:
+
+\begin{enumerate}\setcounter{enumi}{2}
+\item $N_t < N_\text{min}$
+
+\end{enumerate}
 
 
-% \begin{itemize}
-% \item If the output values $y_i$ of the samples in ${\cal L}_t$ are homogeneous,
-% then $t$ is set as a terminal node.
 
-% \item If for each input variable $X_j$ the respective input values of the
-% samples in ${\cal L}_t$ are all identical, then ${\cal L}_t$ cannot
-% be divided further and $t$ is set as a terminal node.
-% \end{itemize}
 
 
 %       Simplest approaches:
