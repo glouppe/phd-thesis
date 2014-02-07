@@ -167,6 +167,11 @@ Part III: Subsampling data
 * Motivation
     > Bias-variance discussion
     > Big(-ish) data
+    > Argumentation théorique:
+        Dans ensemble, il suffit d'un modèle correct pour que l'ensemble
+        soit correct. (OK en classification, mais pas en régression)
+        Faire la relation avant r <= q <= p et en faisant une hypothèse
+        sur la structure de Y
 * Accuracy
 * Memory usage
 
