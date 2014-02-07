@@ -522,21 +522,21 @@ proved to go down to zero that the test estimate converges accordingly. On the
 contrary, it is very likely to diverge as complexity increases. To prevent this
 phenomenon it is therefore necessary to find the right trade-off between a tree
 which is not too shallow nor too deep. The problem is in knowing when to stop
-splitting.
+splitting, i.e., in how to formulate Line~\ref{algo:induction:stop} of
+Algorithm~\ref{algo:induction}.
 
-Let us first consider the stopping criteria (Line~\ref{algo:induction:stop} of
-Algorithm~\ref{algo:induction}) that are inherent to the iterative partition
-procedure, regardless of overfitting. Node $t$ is necessarily set
-as a terminal node in the following cases:
+Let us first consider the stopping criteria that are inherent to the iterative
+partition procedure, regardless of overfitting. Node $t$ is necessarily set as
+a terminal node in the following cases:
 
 \begin{enumerate}
 \item When the output values of the samples in ${\cal L}_t$ are homogeneous.
-That is, if $y_i = y_j$ for all $(\mathbf{x}_i, y_i), (\mathbf{x}_j, y_j) \in {\cal L}_t$.
+That is, if $y_i = y_{i^\prime}$ for all $(\mathbf{x}_i, y_i), (\mathbf{x}_{i^\prime}, y_{i^\prime}) \in {\cal L}_t$.
 In particular, this is necessarily the case when $N_t = 1$.
 
-\item When the input variables are each locally constant in ${\cal L}_t$. That
-is, if $x_{ik} = x_{jk}$ for all $(\mathbf{x}_i, y_i), (\mathbf{x}_j, y_j) \in
-{\cal L}_t$ and for each input variable $X_k$. In this case, then ${\cal L}_t$
+\item When the input variables $X_j$ are each locally constant in ${\cal L}_t$. That
+is, if $x_{ij} = x_{i^\prime j}$ for all $(\mathbf{x}_i, y_i), (\mathbf{x}_{i^\prime}, y_{i^\prime}) \in
+{\cal L}_t$ and for each input variable $X_j$. In this case, then ${\cal L}_t$
 cannot indeed be divided any further. \end{enumerate}
 
 To prevent overfitting, the stopping criterion is then usually complemented
