@@ -568,13 +568,38 @@ In all of the above, stopping criteria are defined in terms of user-defined
 hyper-parameters ($N_\text{min}$, $d_\text{max}$, $\beta$) that have to be
 tuned in order to find the right trade-off. Ideally, these parameters need to
 be such that they are nor too strict nor too loose for the tree to be nor too
-shallow nor too deep. As described in Section~\ref{sec:2:model-selection},
+shallow nor too deep. Too large a tree will have a higher generalization error
+than the right sized tree. Likewise, too small a tree will not use some of the
+information in ${\cal L}$, again resulting in a higher generalization error
+than the right sized tree. As described in Section~\ref{sec:2:model-selection},
 chosing the appropriate parameter values is usually performed using a dedicated
 model selection procedure, which can be computationally expensive, yet usually
 imperative for reaching good generalization performance.
 
 \begin{remark}{Pre-pruning and post-pruning}
+While the stopping criteria presented above may give good results in practice,
+the strategy of stopping early the induction of the tree is in general
+unsatisfactory. There may be nodes $t$ for which the stopping criterion is
+met but whose descendants $t_L$ and $t_R$ may have splits that would have
+in fact reduced the generalization error of the tree. By declaring $t$ as a
+terminal node, the good splits on $t_L$ and $t_R$ are never exploited.
 
+Another way of looking at the problem of finding the right sized tree consists
+in fully developping all nodes and then to \textit{prune} instead of stopping.
+That is, to sequentially remove the nodes that degrade the generalization error
+(estimated on an independent validation set) until the optimal tree is found.
+Since nodes are pruned after the induction of the tree, this framework
+is also known as \textit{post-pruning}. By opposition, early stopping as described
+earlier is also known as \textit{pre-pruning}.
+
+In the context of single decision trees, post-pruning usually yields better
+results than pre-pruning. From an interpretability point
+of view, it is also a very effective framework for simplifying decision trees
+and better understand the structure in the data. However, in the context of
+ensemble of decision trees, we will see in Chapter~\ref{ch:forest} that pruning
+is no longer required to achieve good generalization performance. For this reason,
+we refer to the literature for more detailed discussion on the topic
+(e.g., \citep{breiman:1984,mingers:1989,zighed:2000}).
 \end{remark}
 
 
@@ -603,6 +628,7 @@ imperative for reaching good generalization performance.
 %               + weak learners
 %         - Best splits
 %             + Greedy approximation of optimal trees
+%               algo
 %             + optimizing locally the impurity <=> optimizing globally? see page 33+
 %         - Approximately best splits
 %             + Binning
