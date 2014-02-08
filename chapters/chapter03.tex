@@ -508,6 +508,7 @@ strictly positive. Equality holds if $\sigma_{t_L} N_{t_R} = \sigma_{t_R} N_{t_L
 As for Proposition~\ref{prop:any-split-reduce-classification}, a corollary of Proposition~\ref{prop:any-split-reduce-regression}
 is that the resubstitution estimate is minimal when terminal nodes can no longer be divided.
 
+
 \section{Stopping criteria}
 \label{sec:3:stop}
 
@@ -601,20 +602,6 @@ is no longer required to achieve good generalization performance. For this reaso
 we refer to the literature for more detailed discussion on the topic
 (e.g., \citep{breiman:1984,mingers:1989,zighed:2000}).
 \end{remark}
-
-
-% wrong way to look at the problem
-% but that's ok in the context of ensembles
-
-%       Simplest approaches:
-%           - L_t cannot be split more (eg., X is constant)
-%           - min_samples_split (aka nmin)
-%           - max_depth
-%           - max_nodes?
-%       CART 37+, chapter 3
-%       * Critères d'arrêts [ différents paramètres, chi² ]
-%       Zighed: page 100+ et 115+
-%       Pre-pruning vs. Post-pruning (brief discussion)
 
 
 \section{Splitting rules}
