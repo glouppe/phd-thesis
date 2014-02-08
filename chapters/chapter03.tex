@@ -515,14 +515,14 @@ As we have shown through Propositions~\ref{prop:any-split-reduce-classification}
 and \ref{prop:any-split-reduce-regression}, the deeper a
 decision tree, the smaller its training estimate, and the better we think it
 is. As discussed in Section~\ref{sec:2:model-selection} however, increasing
-model complexity, in this case by enlarging too much  the set of terminal
+model complexity, in this case by enlarging  the set of terminal
 nodes, is likely to eventually capture noise in the learning set and to cause
 overfitting. In other words, it is not because the training estimate can be
 proved to go down to zero that the test estimate converges accordingly. On the
 contrary, it is very likely to diverge as complexity increases. To prevent this
 phenomenon it is therefore necessary to find the right trade-off between a tree
 which is not too shallow nor too deep. The problem is in knowing when to stop
-splitting, i.e., in how to formulate Line~\ref{algo:induction:stop} of
+splitting, i.e., in how to carefully formulate Line~\ref{algo:induction:stop} of
 Algorithm~\ref{algo:induction}.
 
 Let us first consider the stopping criteria that are inherent to the iterative
@@ -531,14 +531,20 @@ set as a terminal node when ${\cal L}_t$ can no longer be split, which happens i
 following cases:
 
 \begin{enumerate}
-\item When the output values of the samples in ${\cal L}_t$ are homogeneous.
-That is, if $y_i = y_{i^\prime}$ for all $(\mathbf{x}_i, y_i), (\mathbf{x}_{i^\prime}, y_{i^\prime}) \in {\cal L}_t$.
-In particular, this is necessarily the case when $N_t = 1$.
 
-\item When the input variables $X_j$ are each locally constant in ${\cal L}_t$. That
-is, if $x_{ij} = x_{i^\prime j}$ for all $(\mathbf{x}_i, y_i), (\mathbf{x}_{i^\prime}, y_{i^\prime}) \in
-{\cal L}_t$, for each input variable $X_j$. In this case, then ${\cal L}_t$
-cannot be divided any further. \end{enumerate}
+\item When the output values of the samples in ${\cal L}_t$ are homogeneous.
+That is, if $y_i = y_{i^\prime}$ for all $(\mathbf{x}_i, y_i),
+(\mathbf{x}_{i^\prime}, y_{i^\prime}) \in {\cal L}_t$. In particular, this is
+necessarily the case when $N_t = 1$.
+
+\item When the input variables $X_j$ are each locally constant in ${\cal L}_t$.
+That is, if $x_{ij} = x_{i^\prime j}$ for all $(\mathbf{x}_i, y_i),
+(\mathbf{x}_{i^\prime}, y_{i^\prime}) \in {\cal L}_t$, for each input variable
+$X_j$, and where $x_{ij}$ denotes the values of the variable $X_j$ for the
+sample $\mathbf{x}_i$. In this situation, it is indeed not possible
+to divide ${\cal L}_t$ into two (or more) non-empty subsets.
+
+\end{enumerate}
 
 To prevent overfitting, the stopping criterion is then usually complemented
 with heuristics halting the recursive partition if ${\cal L}_t$ has become too
@@ -550,8 +556,8 @@ are formulated as follows:
 \item Set $t$ as a terminal node if it contains less than $N_\text{min}$ samples,
 ($N_\text{min}$ is also known as \texttt{min\_samples\_split}.)
 
-\item Set $t$ as a terminal node if it its depth is greater or equal to a threshold $d$.
-($d$ is also known as \texttt{max\_depth}.)
+\item Set $t$ as a terminal node if it its depth $d_t$ is greater or equal to a threshold $d_\text{max}$.
+($d_\text{max}$ is also known as \texttt{max\_depth}.)
 
 \item \todo{Seuil sur $\Delta i(s^*, t)$ (cart, id3)}
 
@@ -560,13 +566,13 @@ are formulated as follows:
 \end{enumerate}
 
 In all of the above, stopping criteria are defined in terms of user-defined
-hyper-parameters that need to be tuned in order to find the right
-trade-off. These parameters need to be such that they are nor too strict nor too loose for the tree
-to be nor too shallow nor too deep. As described in
+hyper-parameters that have to be tuned in order to find the right trade-off.
+Ideally, these parameters need to be such that they are nor too strict nor too
+loose for the tree to be nor too shallow nor too deep. As described in
 Section~\ref{sec:2:model-selection}, chosing the appropriate parameter values
-is usually performed using a dedicated model selection procedure, which
-can be computationally expensive, yet usually imperative for reaching
-good generalization performance.
+is usually performed using a dedicated model selection procedure, which can be
+computationally expensive, yet usually imperative for reaching good
+generalization performance.
 
 
 
