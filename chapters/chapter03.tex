@@ -559,22 +559,27 @@ are formulated as follows:
 \item Set $t$ as a terminal node if it its depth $d_t$ is greater or equal to a threshold $d_\text{max}$.
 ($d_\text{max}$ is also known as \texttt{max\_depth}.)
 
-\item \todo{Seuil sur $\Delta i(s^*, t)$ (cart, id3)}
-
-\item \todo{Test d'independence sur chaque variable (id3)}
+\item Set $t$ as a terminal node if the maximum decrease in impurity is less than
+a fixed threshold $\beta$. That is, if $p(t) \Delta i(s^*, t) < \beta$.
 
 \end{enumerate}
 
 In all of the above, stopping criteria are defined in terms of user-defined
-hyper-parameters that have to be tuned in order to find the right trade-off.
-Ideally, these parameters need to be such that they are nor too strict nor too
-loose for the tree to be nor too shallow nor too deep. As described in
-Section~\ref{sec:2:model-selection}, chosing the appropriate parameter values
-is usually performed using a dedicated model selection procedure, which can be
-computationally expensive, yet usually imperative for reaching good
-generalization performance.
+hyper-parameters ($N_\text{min}$, $d_\text{max}$, $\beta$) that have to be
+tuned in order to find the right trade-off. Ideally, these parameters need to
+be such that they are nor too strict nor too loose for the tree to be nor too
+shallow nor too deep. As described in Section~\ref{sec:2:model-selection},
+chosing the appropriate parameter values is usually performed using a dedicated
+model selection procedure, which can be computationally expensive, yet usually
+imperative for reaching good generalization performance.
+
+\begin{remark}{Pre-pruning and post-pruning}
+
+\end{remark}
 
 
+% wrong way to look at the problem
+% but that's ok in the context of ensembles
 
 %       Simplest approaches:
 %           - L_t cannot be split more (eg., X is constant)
