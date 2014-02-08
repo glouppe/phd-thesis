@@ -420,7 +420,7 @@ $t_R$, resulting in a new tree $\varphi^\prime$ where $\widehat{y}_{t_L}$ and $\
 are assigned with rule~\ref{eqn:assignement-classification-approx}, $$\widehat{Err}_{\cal
 L}^\text{train}(\varphi) \geq \widehat{Err}_{\cal
 L}^\text{train}(\varphi^\prime)$$ with equality if $\widehat{y}_t =
-\widehat{y}_{t_L} = \widehat{y}_{t_R}$ \citep{breiman:1984}.
+\widehat{y}_{t_L} = \widehat{y}_{t_R}$.
 \end{proposition}
 
 \begin{proof}
@@ -573,7 +573,7 @@ shallow nor too deep. Too large a tree will have a higher generalization error
 than the right sized tree. Likewise, too small a tree will not use some of the
 information in ${\cal L}$, again resulting in a higher generalization error
 than the right sized tree. As described in Section~\ref{sec:2:model-selection},
-chosing the appropriate parameter values is usually performed using a dedicated
+choosing the appropriate parameter values is usually performed using a dedicated
 model selection procedure, which can be computationally expensive, yet usually
 imperative for reaching good generalization performance.
 
@@ -586,7 +586,7 @@ in fact reduced the generalization error of the tree. By declaring $t$ as a
 terminal node, the good splits on $t_L$ and $t_R$ are never exploited.
 
 Another way of looking at the problem of finding the right sized tree consists
-in fully developping all nodes and then to \textit{prune} instead of stopping.
+in fully developing all nodes and then to \textit{prune} instead of stopping.
 That is, to sequentially remove the nodes that degrade the generalization error
 (estimated on an independent validation set) until the optimal tree is found.
 Since nodes are pruned after the induction of the tree, this framework
