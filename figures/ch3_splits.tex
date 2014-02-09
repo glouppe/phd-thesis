@@ -1,0 +1,37 @@
+\documentclass{article}
+\usepackage{pstricks}
+\usepackage{pst-plot}
+\pagestyle{empty}
+\begin{document}
+    \begin{pspicture}(15,15)
+    %\psgrid[subgriddiv=1,griddots=10,gridlabels=7pt]
+    % Binary split
+    % Arrows
+    \psline[linewidth=0.5pt]{->}(5,12)(4.2,10.4)
+    \psline[linewidth=0.5pt]{->}(5,12)(5.8,10.4)
+    % Nodes
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](5,12){0.4}
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](4,10){0.4}
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](6,10){0.4}
+    % Text
+    \rput(5,12){$t$}
+    \rput(4,10){$t_L$}
+    \rput(6,10){$t_R$}
+    % N-ary split
+    % Arrows
+    \psline[linewidth=0.5pt]{->}(10,12)(8.2,10.4)
+    \psline[linewidth=0.5pt]{->}(10,12)(9.2,10.4)
+    \psline[linewidth=0.5pt]{->}(10,12)(11.8,10.4)
+    % Nodes
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](10,12){0.4}
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](8,10){0.4}
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](9,10){0.4}
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](12,10){0.4}
+    % Text
+    \rput(10,12){$t$}
+    \rput(8,10){$t_{i_1}$}
+    \rput(9,10){$t_{i_2}$}
+    \rput(10.5,10){$...$}
+    \rput(12,10){$t_{i_N}$}
+    \end{pspicture}
+\end{document}

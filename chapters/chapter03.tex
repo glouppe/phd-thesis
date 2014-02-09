@@ -614,7 +614,54 @@ Algorithm~\ref{algo:induction}).
 
 \subsection{Families ${\cal Q}$ of splitting rules}
 
+As we loosely have defined in Section~\ref{sec:3:tree-structured-models}, a split $s$
+of node $t$ is  a question that divides the space ${\cal X}_t$ into disjoint
+subspaces respectively  corresponding to each of the children of $t$. Formally, a
+split is defined as a partition:
+
+\begin{definition}
+A \emph{split} $s$ of node $t$ is a partition of ${\cal X}_t$, that is a set of
+non-empty subsets of ${\cal X}_t$ such that every element $\mathbf{x} \in {\cal X}_t$
+is in exactly one of these subsets (i.e., ${\cal X}_t$ is a disjoint union
+of the subsets).
+\end{definition}
+
+If $s$ divides ${\cal X}_t$ into two subsets, then $s$ is said to be a
+\textit{binary} split and its left and right children are denoted $t_L$ and
+$t_R$. In the general case however, $s$ may divide ${\cal X}_t$ into more than
+two subsets, resulting in as many child nodes $t_{i_1}$, ..., $t_{i_N}$ as
+subsets (See Figure~\ref{fig:3:splits}).
+
+\begin{figure}[b]
+    \centering
+    \includegraphics[scale=1.0]{figures/ch3_splits.pdf}
+    \caption{Binary split of $t$ (left) and $N$-ary split of $t$ (right).}
+    \label{fig:3:splits}
+\end{figure}
+
+The set of all possible splits $s$ is the set of all partitions of ${\cal
+X}_t$. It is infinitely large as soon as one the input variables can take
+infinitely many values. For instance, if ${\cal X}_t = \mathbb{R}$, then there
+exists infinitely many ways of partitioning ${\cal X}_t$ into two (or more)
+subsets. Among all of them however, only those that yield a partition of ${\cal
+L}_t$ into two (or more) non-empty subsets are worth considering. For example,
+in the binary case, splits resulting in of the two children being empty (i.e.,
+such that either ${\cal L}_{t_L}$ or ${\cal L}_{t_R}$ is empty) are not worth
+considering since they cannot decrease impurity. % todo: retravailler
+
+
+
+
+
+
+
 % on cherche une fonction X -> {L, R} (ou +) => Is x in X_A
+
+% compter le nombre de partitions => stirling number
+% c'est pour ça qu'on se limite à des bi-partitions ou bien des n-ary partitions
+% mais même pour n=2, il y a tjrs beaucoup de façon de faire...
+% => hypothèse fortes sur la forme de la partition
+
 % formal def
 % hypothèse sur le modèle (fct d'une variable, de plusieurs variables, etc)
 % oblique, functional, criminisi
@@ -627,11 +674,11 @@ Algorithm~\ref{algo:induction}).
 % + bi-partition
 % + n-ary
 
-\subsection{Best bi-partition on a categorical variable}
+\subsection{Best binary split on a categorical variable}
 
-\subsection{Best bi-partition on an ordered variable}
+\subsection{Best binary split on an ordered variable}
 
-\subsection{Approximately best bi-partition on an ordered variable}
+\subsection{Approximately best binary split on an ordered variable}
 
 
 
