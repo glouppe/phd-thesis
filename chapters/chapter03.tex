@@ -614,7 +614,7 @@ Algorithm~\ref{algo:induction}).
 
 \subsection{Families ${\cal Q}$ of splitting rules}
 
-As we loosely have defined in Section~\ref{sec:3:tree-structured-models}, a split $s$
+As we  have defined loosely in Section~\ref{sec:3:tree-structured-models}, a split $s$
 of node $t$ is  a question that divides the space ${\cal X}_t$ into disjoint
 subspaces respectively  corresponding to each of the children of $t$. Formally, a
 split is defined as a partition:
@@ -644,11 +644,13 @@ X}_t$. It is infinitely large as soon as one the input variables can take
 infinitely many values. For instance, if ${\cal X}_t = \mathbb{R}$, then there
 exists infinitely many ways of partitioning ${\cal X}_t$ into two (or more)
 subsets. Among all of them however, only those that yield a partition of ${\cal
-L}_t$ into two (or more) non-empty subsets are worth considering. For example,
-in the binary case, splits resulting in of the two children being empty (i.e.,
-such that either ${\cal L}_{t_L}$ or ${\cal L}_{t_R}$ is empty) are not worth
-considering since they cannot decrease impurity. % todo: retravailler
-
+L}_t$ into non-empty subsets are considered valid. For
+example, in the binary case, splits resulting in of the two children being
+empty (i.e., such that either ${\cal L}_{t_L}$ or ${\cal L}_{t_R}$ is empty) is
+considered invalid since it would otherwise be impossible to assign values
+to these nodes (recall that assignment rules \ref{eqn:assignement-classification-approx} and
+\ref{eqn:assignement-regression-approx} are undefined for empty subsets of
+${\cal L}$).
 
 
 
