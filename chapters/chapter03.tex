@@ -567,7 +567,7 @@ a fixed threshold $\beta$. That is, if $p(t) \Delta i(s^*, t) < \beta$.
 
 In all of the above, stopping criteria are defined in terms of user-defined
 hyper-parameters ($N_\text{min}$, $d_\text{max}$, $\beta$) that have to be
-tuned in order to find the right trade-off. Ideally, these parameters need to
+tuned in order to find the right trade-off. Ideally, they need to
 be such that they are nor too strict nor too loose for the tree to be nor too
 shallow nor too deep. Too large a tree will have a higher generalization error
 than the right sized tree. Likewise, too small a tree will not use some of the
@@ -597,7 +597,7 @@ In the context of single decision trees, post-pruning usually yields better
 results than pre-pruning. From an interpretability point
 of view, it is also a very effective framework for simplifying decision trees
 and better understand the structure in the data. However, in the context of
-ensemble of decision trees, we will see in Chapter~\ref{ch:forest} that pruning
+ensemble of decision trees, we will see in Chapter~\ref{ch:forest} that (pre- or post-)pruning
 is no longer required to achieve good generalization performance. For this reason,
 we refer to the literature for more detailed discussion on the topic
 (e.g., \citep{breiman:1984,mingers:1989,zighed:2000}).
@@ -608,13 +608,16 @@ we refer to the literature for more detailed discussion on the topic
 \label{sec:3:splitting-rules}
 
 Assuming that the stopping criterion is not met, we now focus on the problem of
-finding the split $s^* \in {\cal Q}$ that maximizes the impurity decrease $\Delta i(s^*, t)$
-(Line~\ref{algo:induction:split} of Algorithm~\ref{algo:induction}).
+finding the split $s^* \in {\cal Q}$ of $t$ that maximizes the impurity
+decrease $\Delta i(s^*, t)$ (Line~\ref{algo:induction:split} of
+Algorithm~\ref{algo:induction}).
 
 \subsection{Families ${\cal Q}$ of splitting rules}
 
-% on cherche une fonction X -> {L, R} (ou +)
+% on cherche une fonction X -> {L, R} (ou +) => Is x in X_A
+% formal def
 % hypothèse sur le modèle (fct d'une variable, de plusieurs variables, etc)
+% oblique, functional, criminisi
 
 % Fct d'une variable:
 % ordered variables
