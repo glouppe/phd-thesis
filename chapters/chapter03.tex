@@ -644,13 +644,26 @@ X}_t$. It is infinitely large as soon as one the input variables can take
 infinitely many values. For instance, if ${\cal X}_t = \mathbb{R}$, then there
 exists infinitely many ways of partitioning ${\cal X}_t$ into two (or more)
 subsets. Among all of them however, only those that yield a partition of ${\cal
-L}_t$ into non-empty subsets are considered valid. For
-example, in the binary case, splits resulting in of the two children being
-empty (i.e., such that either ${\cal L}_{t_L}$ or ${\cal L}_{t_R}$ is empty) is
-considered invalid since it would otherwise be impossible to assign values
-to these nodes (recall that assignment rules \ref{eqn:assignement-classification-approx} and
-\ref{eqn:assignement-regression-approx} are undefined for empty subsets of
-${\cal L}$).
+L}_t$ into non-empty subsets are worth considering. For example, in the binary
+case, splits resulting in of the two children being empty (i.e., such that
+either ${\cal L}_{t_L}$ or ${\cal L}_{t_R}$ is empty) are not considered
+because their goodness cannot be evaluated on the learning set. As such, the
+optimization problem of finding the best split $s^*$ of ${\cal X}_t$ can be
+roughly\footnote{We will see shortly than it is more complex than that.}
+restated as finding the best partition of the node samples ${\cal L}_t$.
+
+For a finite set ${\cal L}_t$ of samples, the number of partitions of
+${\cal L}_t$ into $k$ non-empty subsets is given by the Stirling number
+of the second kind~\citep{knuth:1992}
+\begin{equation}
+S(N_t, k) = \frac{1}{k!} \sum_{j=0}^k (-1)^{k-j} {k\choose j} j^{N_t},
+\end{equation}
+which reduces to $2^{N_t}-1$ for binary partitions. Given this exponential
+growth in the number of partitions, the naive strategy of enumerating all
+possible partitions of ${\cal L}_t$ and picking the best of them is clearly
+computationally intractable.
+
+
 
 
 
