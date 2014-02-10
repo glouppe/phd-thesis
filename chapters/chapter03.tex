@@ -638,22 +638,21 @@ subsets (See Figure~\ref{fig:3:splits}).
     \label{fig:3:splits}
 \end{figure}
 
-The set ${\cal S}$ of all possible splits $s$ is the set of all partitions of ${\cal
-X}_t$. It is infinitely large as soon as one the input variables can take
-infinitely many values. For instance, if ${\cal X}_t = \mathbb{R}$, then there
-exists infinitely many ways of partitioning ${\cal X}_t$ into two (or more)
-subsets. Among all of them however, only those that yield a partition of ${\cal
-L}_t$ into non-empty subsets are worth considering. For example, in the binary
-case, splits resulting in of the two children being empty (i.e., such that
-either ${\cal L}_{t_L}$ or ${\cal L}_{t_R}$ is empty) are not considered
+The set ${\cal S}$ of all possible splits $s$ is the set of all partitions of
+${\cal X}_t$. It is infinitely large as soon as one the input variables can
+take infinitely many values. For instance, if ${\cal X}_t = \mathbb{R}$, then
+there exists infinitely many ways of partitioning ${\cal X}_t$ into two (or
+more) subsets. Among all of them however, only those that yield a partition of
+${\cal L}_t$ into non-empty subsets are worth considering. For example, in the
+binary case, splits resulting in of the two children being empty (i.e., such
+that either ${\cal L}_{t_L}$ or ${\cal L}_{t_R}$ is empty) are not considered
 because their goodness cannot be evaluated on the learning set. As such, the
 optimization problem of finding the best split $s^*$ of ${\cal X}_t$ can be
-roughly\footnote{We will see shortly than it is more complex than that.}
-restated as finding the best partition of the node samples ${\cal L}_t$.
+roughly restated as finding the best partition of the node samples.
 
-For a finite set ${\cal L}_t$ of samples, the number of partitions of
-${\cal L}_t$ into $k$ non-empty subsets is given by the Stirling number
-of the second kind~\citep{knuth:1992}
+For a finite set ${\cal L}_t$ of samples, the number of partitions into $k$
+non-empty subsets is given by the Stirling number of the second
+kind~\citep{knuth:1992}
 \begin{equation}
 S(N_t, k) = \frac{1}{k!} \sum_{j=0}^k (-1)^{k-j} {k\choose j} j^{N_t},
 \end{equation}
@@ -665,26 +664,42 @@ More specifically, Algorithm~\ref{algo:induction} usually assumes that $s^*$ --
 or a least a good enough approximation -- lives in a family ${\cal Q} \subseteq
 {\cal S}$ of candidate splits of restricted structure.
 
-As formulated in CART~\citep{breiman:1984}, the most common family ${\cal Q}$
-of splits is set of binary splits defined on a single variable and resulting in non-empty
+As formulated in CART~\citep{breiman:1984}, the usual family ${\cal Q}$
+of splits is the set of binary splits defined on a single variable and resulting in non-empty
 subsets of ${\cal L}_t$:
-\begin{equation}
+\begin{equation}\label{eqn:q:single-variables}
 {\cal Q} = \{s | s \in \bigcup_{j=1}^p {\cal Q}(X_j), {\cal L}_{t_L} \neq \phi, {\cal L}_{t_R} \neq \phi \}
 \end{equation}
 If $X_j$ is an ordered variable, then the set of binary splits on $X_j$ is the set
 of all binary non-crossing partitions than can be constructed on ${\cal X}_j$:
-\begin{equation}
+\begin{equation}\label{eqn:q:ordered}
 {\cal Q}(X_j) = \{ (\{ \mathbf{x} | \mathbf{x} \in {\cal X}_t, x_j \leq v \}, \{ \mathbf{x} | \mathbf{x} \in {\cal X}_t, x_j < v \}) | v \in {\cal X}_j \}
 \end{equation}
+From a geometrical point of view, splits of this form partition the input space
+${\cal X}$ with axis-parallel hyperplanes, as illustrated previously on Figure~\ref{fig:3:partition}.
 If $X_j$ is a categorical variable, then the set of binary splits on $X_j$
 is the set of all binary partitions of ${\cal X}_j$:
-\begin{align}
-{\cal Q}(X_j) = \{ ({\cal P}_1, {\cal P}_2) |& {\cal P}_1, {\cal P}_2 \subset {\cal X}_j, \nonumber \\
-                                             & {\cal P}_1 \cup {\cal P}_2 = {\cal X}_j, {\cal P}_1 \cap {\cal P}_2 = \phi \}
+\begin{align}\label{eqn:q:categorical-cart}
+{\cal Q}(X_j) = \{ ({\cal X}_{t_L}, {\cal X}_{t_R}) |& {\cal X}_{t_L}, {\cal X}_{t_R} \subset {\cal X}_j, \nonumber \\
+                                             & {\cal X}_{t_L} \cup {\cal X}_{t_R} = {\cal X}_j, {\cal X}_{t_L} \cap {\cal X}_{t_R} = \phi \}
 \end{align}
 
-In ID3~\citep{quinlan:1986}
+While Equations~\ref{eqn:q:ordered} and \ref{eqn:q:categorical-cart} certainly
+constitute the most common types of splits, alternatives proposed over the
+years in the literature are worth mentioning. In ID3, \citet{quinlan:1986}
+replaces binary splits on categorical variables with exhaustive splits. That
+is, if ${\cal X}_j$ counts $k$ different values, then a split on $X_j$ divides
+${\cal X}_t$ into $k$ child nodes -- one for each value of the variable. In
+oblique decision trees, \citet{heath:1993} propose to replace axis-parallel
+cutting hyperplanes with hyperplanes of any orientation, resulting into
+smaller, yet as accurate, decision trees.
 
+
+
+
+% id3
+% oblique
+% functional, criminisi, ttrees
 
 
 
