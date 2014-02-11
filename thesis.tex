@@ -5,6 +5,7 @@
 % Custom config ===============================================================
 
 % Classic thesis
+\usepackage{amssymb}
 \input{classicthesis-config}
 
 % Theorems and definitions
@@ -21,7 +22,7 @@
 % Counters
 \renewcommand{\labelenumi}{{\color{halfgray}(\alph{enumi})}}
 \renewcommand{\labelenumii}{\color{halfgray}{\roman{enumii}.}}
-\renewcommand{\labelitemi}{{\color{halfgray}-}}
+\renewcommand{\labelitemi}{{\color{halfgray}\raisebox{0.3ex}{\tiny$\blacksquare$}}}
 
 \numberwithin{theorem}{chapter}
 \numberwithin{definition}{chapter}
