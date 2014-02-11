@@ -668,21 +668,24 @@ in non-empty subsets of ${\cal L}_t$:
 \begin{equation}\label{eqn:q:single-variables}
 {\cal Q} = \{s | s \in \bigcup_{j=1}^p {\cal Q}(X_j), {\cal L}_{t_L} \neq \phi, {\cal L}_{t_R} \neq \phi \}
 \end{equation}
-If $X_j$ is an ordered variable, then the set of binary splits on $X_j$ is the set
+\begin{itemize}
+\item If $X_j$ is an ordered variable, then the set of binary splits on $X_j$ is the set
 of all binary non-crossing partitions of ${\cal X}_j$:
-\begin{equation}\label{eqn:q:ordered}
-{\cal Q}(X_j) = \{ (\{ \mathbf{x} | \mathbf{x} \in {\cal X}_t, x_j \leq v \}, \{ \mathbf{x} | \mathbf{x} \in {\cal X}_t, x_j < v \}) | v \in {\cal X}_j \}
-\end{equation}
+\begin{align}
+{\cal Q}(X_j) = \{ (&\{ \mathbf{x} | \mathbf{x} \in {\cal X}_t, x_j \leq v \}, \nonumber \\
+                    &\{ \mathbf{x} | \mathbf{x} \in {\cal X}_t, x_j > v \}) | v \in {\cal X}_j \} \label{eqn:q:ordered}
+\end{align}
 From a geometrical point of view, splits of this form partition the input space
 ${\cal X}$ with axis-parallel hyperplanes, as previously illustrated on
 Figure~\ref{fig:3:partition}. Accordingly, the decision threshold $v$ thus
 corresponds to the distance of the separating hyperplane from the origin.
-Likewise, if $X_j$ is a categorical variable, then the set of binary splits on
+\item If $X_j$ is a categorical variable, then the set of binary splits on
 $X_j$ is the set of all binary partitions of ${\cal X}_j$:
 \begin{align}\label{eqn:q:categorical-cart}
 {\cal Q}(X_j) = \{ ({\cal X}_{t_L}, {\cal X}_{t_R}) |& {\cal X}_{t_L}, {\cal X}_{t_R} \subset {\cal X}_j, \nonumber \\
                                              & {\cal X}_{t_L} \cup {\cal X}_{t_R} = {\cal X}_j, {\cal X}_{t_L} \cap {\cal X}_{t_R} = \phi \}
 \end{align}
+\end{itemize}
 
 Given decomposition \ref{eqn:q:single-variables} into subsets ${\cal Q}(X_j)$,
 split $s^* \in {\cal Q}$ is the best of the best splits defined on each input
@@ -725,6 +728,7 @@ child nodes.
 %           Voir chapitres 9+ Zighed
 %         - pourquoi pas simplifier utiliser l'erreur de resubstitution?
 %            => réutiliser prop 3.1 déjà démontrée (cart 95+)
+%         - bons critères pour i
 %         - Gini, Entropy, Variance, Information gain etc (see cart + graphes)
 %         - Effet du critère sur les cuts
 %             End-cut preference (CART 11.8)

@@ -122,15 +122,15 @@ Learning algorithms are described as \textit{estimator} objects implementing the
 following interface:
 
 \begin{itemize}
-\item[-] Hyper-parameters of an algorithm are all passed to the constructor of the
+\item Hyper-parameters of an algorithm are all passed to the constructor of the
 estimator. The constructor does not see any actual data. All it does
 is to attach hyper-parameters values as public attributes to the estimator object.
-\item[-] Learning is performed in a \texttt{fit} method. This method is called with
+\item Learning is performed in a \texttt{fit} method. This method is called with
 a learning set (e.g., supplied as two arrays \texttt{X\_train} and \texttt{y\_train}). Its
 task is to run a learning algorithm and to determine model-specific parameters
 from the data. The \texttt{fit} method always returns the estimator object
 it was called on, which now serves as a model and can be used to make predictions.
-\item[-] Predictions are performed through a \texttt{predict} method, taking
+\item Predictions are performed through a \texttt{predict} method, taking
 as input an array \texttt{X\_test} and producing as output the predictions for
 \texttt{X\_test} based on the learned parameters. In the case of classification,
 this method returns labels from ${\cal Y} = \{c_1, c_2, ..., c_J\}$. In the case of regression,
