@@ -648,30 +648,30 @@ binary case, splits resulting in of the two children being empty (i.e., such
 that either ${\cal L}_{t_L}$ or ${\cal L}_{t_R}$ is empty) are not considered
 because their goodness cannot be evaluated on the learning set. As such, the
 optimization problem of finding the best split $s^*$ of ${\cal X}_t$ can be
-roughly restated as finding the best partition of the node samples.
+roughly restated as finding the best partition of the node samples ${\cal L}_t$.
 
-For a finite set ${\cal L}_t$ of samples, the number of partitions into $k$
+For a finite set ${\cal L}_t$, the number of partitions into $k$
 non-empty subsets is given by the Stirling number of the second
 kind~\citep{knuth:1992}
 \begin{equation}
 S(N_t, k) = \frac{1}{k!} \sum_{j=0}^k (-1)^{k-j} {k\choose j} j^{N_t},
 \end{equation}
-which reduces to $2^{N_t}-1$ for binary partitions. Given this exponential
+which reduces to $2^{N_t}-1$ for binary partitions. Given the exponential
 growth in the number of partitions, the naive strategy of enumerating all
 possible partitions and picking the best of them is clearly computationally
 intractable. For this reason, simplifying  assumptions must be made on the best split $s^*$.
-More specifically, Algorithm~\ref{algo:induction} usually assumes that $s^*$ --
+More specifically, the induction algorithm usually assumes that $s^*$ --
 or a least a good enough approximation -- lives in a family ${\cal Q} \subseteq
 {\cal S}$ of candidate splits of restricted structure.
 
-As formulated in CART~\citep{breiman:1984}, the usual family ${\cal Q}$
-of splits is the set of binary splits defined on a single variable and resulting in non-empty
-subsets of ${\cal L}_t$:
+As formulated in CART~\citep{breiman:1984}, the usual family ${\cal Q}$ of
+splits is the set of binary splits defined on a single variable and resulting
+in non-empty subsets of ${\cal L}_t$:
 \begin{equation}\label{eqn:q:single-variables}
 {\cal Q} = \{s | s \in \bigcup_{j=1}^p {\cal Q}(X_j), {\cal L}_{t_L} \neq \phi, {\cal L}_{t_R} \neq \phi \}
 \end{equation}
 If $X_j$ is an ordered variable, then the set of binary splits on $X_j$ is the set
-of all binary non-crossing partitions than can be constructed on ${\cal X}_j$:
+of all binary non-crossing partitions of ${\cal X}_j$:
 \begin{equation}\label{eqn:q:ordered}
 {\cal Q}(X_j) = \{ (\{ \mathbf{x} | \mathbf{x} \in {\cal X}_t, x_j \leq v \}, \{ \mathbf{x} | \mathbf{x} \in {\cal X}_t, x_j < v \}) | v \in {\cal X}_j \}
 \end{equation}
@@ -684,15 +684,27 @@ is the set of all binary partitions of ${\cal X}_j$:
                                              & {\cal X}_{t_L} \cup {\cal X}_{t_R} = {\cal X}_j, {\cal X}_{t_L} \cap {\cal X}_{t_R} = \phi \}
 \end{align}
 
-While Equations~\ref{eqn:q:ordered} and \ref{eqn:q:categorical-cart} certainly
-constitute the most common types of splits, alternatives proposed over the
-years in the literature are worth mentioning. In ID3, \citet{quinlan:1986}
-replaces binary splits on categorical variables with exhaustive splits. That
-is, if ${\cal X}_j$ counts $k$ different values, then a split on $X_j$ divides
-${\cal X}_t$ into $k$ child nodes -- one for each value of the variable. In
-oblique decision trees, \citet{heath:1993} propose to replace axis-parallel
-cutting hyperplanes with hyperplanes of any orientation, resulting into
-smaller, yet as accurate, decision trees.
+Given decomposition \ref{eqn:q:single-variables} into subsets ${\cal Q}(X_j)$,
+split $s^* \in {\cal Q}$ is the best of the best splits defined on each input
+variable. That is,
+\begin{align}
+s^* &= \argmax_{\substack{s^*_j\\ j=1, \dots, p}} \Delta i(s^*_j, t) \label{eqn:best-best-split}\\
+s^*_j &= \argmax_{\substack{s \in Q(X_j)\\ {\cal L}_{t_L}, {\cal L}_{t_R} \neq \phi}} \Delta i(s, t) \label{eqn:best-split-single}
+\end{align}
+In this framework, Line~\ref{algo:induction:split} of Algorithm~\ref{algo:induction}
+therefore simply reduces to the implementation of Equation~\ref{eqn:best-split-single}.
+
+While partitions of form~\ref{eqn:q:ordered} and \ref{eqn:q:categorical-cart}
+certainly constitute the most common types of splits, alternatives proposed
+over the years in the literature are worth mentioning. In ID3,
+\citet{quinlan:1986} replaces binary splits on categorical variables with
+exhaustive splits. That is, if ${\cal X}_j$ counts $k$ different values, then
+splitting on $X_j$ divides ${\cal X}_t$ into $k$ child nodes -- one for each
+value of the variable. In oblique decision trees, \citet{heath:1993} propose to
+replace axis-parallel cutting hyperplanes with hyperplanes of any orientation,
+resulting into smaller, yet as accurate, decision trees. In this framework
+however, decomposition~\ref{eqn:best-best-split} no longer holds, hence making
+the search of the best split often more computationally intensive.
 
 
 
@@ -723,10 +735,13 @@ smaller, yet as accurate, decision trees.
 % + n-ary
 
 \subsection{Best binary split on a categorical variable}
+\label{sec:best-split-categorical}
 
 \subsection{Best binary split on an ordered variable}
+\label{sec:best-split-ordered}
 
 \subsection{Approximately best binary split on an ordered variable}
+\label{sec:best-split-ordered-approx}
 
 
 
