@@ -613,7 +613,7 @@ Algorithm~\ref{algo:induction}).
 
 \subsection{Families ${\cal Q}$ of splitting rules}
 
-As we  have loosely defined in Section~\ref{sec:3:tree-structured-models}, a
+As introduced in Section~\ref{sec:3:tree-structured-models}, a
 split $s$ of node $t$ is  a question that divides the space ${\cal X}_t$ into
 disjoint subspaces respectively  corresponding to each of the children of $t$.
 Formally, a split is defined as a partition:
@@ -676,7 +676,7 @@ of all binary non-crossing partitions of ${\cal X}_j$:
 {\cal Q}(X_j) = \{ (\{ \mathbf{x} | \mathbf{x} \in {\cal X}_t, x_j \leq v \}, \{ \mathbf{x} | \mathbf{x} \in {\cal X}_t, x_j < v \}) | v \in {\cal X}_j \}
 \end{equation}
 From a geometrical point of view, splits of this form partition the input space
-${\cal X}$ with axis-parallel hyperplanes, as illustrated previously on Figure~\ref{fig:3:partition}.
+${\cal X}$ with axis-parallel hyperplanes, as previously illustrated on Figure~\ref{fig:3:partition}.
 If $X_j$ is a categorical variable, then the set of binary splits on $X_j$
 is the set of all binary partitions of ${\cal X}_j$:
 \begin{align}\label{eqn:q:categorical-cart}
@@ -702,37 +702,19 @@ exhaustive splits. That is, if ${\cal X}_j$ counts $k$ different values, then
 splitting on $X_j$ divides ${\cal X}_t$ into $k$ child nodes -- one for each
 value of the variable. In oblique decision trees, \citet{heath:1993} propose to
 replace axis-parallel cutting hyperplanes with hyperplanes of any orientation,
-resulting into smaller, yet as accurate, decision trees. In this framework
+resulting into smaller, yet as accurate, decision trees. In this setting
 however, decomposition~\ref{eqn:best-best-split} no longer holds, hence making
-the search of the best split often more computationally intensive.
+the search of the best split often more computationally intensive. More
+recently, several authors (e.g., \citep{gama:2004}, \citep{criminisi:2013} or
+\citep{botta:2013}) outlined more general frameworks in which splits are
+defined as multi-variate functions, thereby revisiting separating hyperplanes
+like in oblique trees or investigating more advanced models like quadratic
+surfaces or decision trees inside decision trees. Finally, in a slightly
+different direction, \citet{olaru:2003} propose in soft decision trees to
+redefine the notion of split as overlapping fuzzy sets (instead of disjoint
+subsets), hence allowing samples close to the decision threshold $v$ to
+propagate into both child nodes.
 
-
-
-
-% id3
-% oblique
-% functional, criminisi, ttrees
-
-
-
-% on cherche une fonction X -> {L, R} (ou +) => Is x in X_A
-
-% compter le nombre de partitions => stirling number
-% c'est pour ça qu'on se limite à des bi-partitions ou bien des n-ary partitions
-% mais même pour n=2, il y a tjrs beaucoup de façon de faire...
-% => hypothèse fortes sur la forme de la partition
-
-% formal def
-% hypothèse sur le modèle (fct d'une variable, de plusieurs variables, etc)
-% oblique, functional, criminisi
-
-% Fct d'une variable:
-% ordered variables
-% + bi-partition
-% + orthogonal to a feature
-% categorical variables
-% + bi-partition
-% + n-ary
 
 \subsection{Best binary split on a categorical variable}
 \label{sec:best-split-categorical}
