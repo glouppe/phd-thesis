@@ -92,6 +92,7 @@ Part I: Growing random forests
 * Bias-variance tradeoff
 * Randomization
     > Subsampling (with/without replacement)
+        - Sample weighting
     > Splitting nodes
         - Best splits (among max_features)
         - Random splits (random threshold, random index)

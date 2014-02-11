@@ -657,10 +657,10 @@ S(N_t, k) = \frac{1}{k!} \sum_{j=0}^k (-1)^{k-j} {k\choose j} j^{N_t},
 which reduces to $2^{N_t}-1$ for binary partitions. Given the exponential
 growth in the number of partitions, the naive strategy of enumerating all
 possible partitions and picking the best of them is clearly computationally
-intractable. For this reason, simplifying  assumptions must be made on the best split $s^*$.
-More specifically, the induction algorithm usually assumes that $s^*$ --
-or a least a good enough approximation -- lives in a family ${\cal Q} \subseteq
-{\cal S}$ of candidate splits of restricted structure.
+intractable. For this reason, simplifying  assumptions must be made on the best
+split $s^*$. More specifically, the induction algorithm usually assumes that
+$s^*$ -- or a least a good enough approximation -- lives in a family ${\cal Q}
+\subseteq {\cal S}$ of candidate splits of restricted structure.
 
 As formulated in CART~\citep{breiman:1984}, the usual family ${\cal Q}$ of
 splits is the set of binary splits defined on a single variable and resulting
@@ -674,11 +674,11 @@ of all binary non-crossing partitions of ${\cal X}_j$:
 {\cal Q}(X_j) = \{ (\{ \mathbf{x} | \mathbf{x} \in {\cal X}_t, x_j \leq v \}, \{ \mathbf{x} | \mathbf{x} \in {\cal X}_t, x_j < v \}) | v \in {\cal X}_j \}
 \end{equation}
 From a geometrical point of view, splits of this form partition the input space
-${\cal X}$ with axis-parallel hyperplanes, as previously illustrated on Figure~\ref{fig:3:partition}.
-Accordingly, the decision threshold $v$ thus corresponds to the distance of the
-separating hyperplane from the origin.
-If $X_j$ is a categorical variable, then the set of binary splits on $X_j$
-is the set of all binary partitions of ${\cal X}_j$:
+${\cal X}$ with axis-parallel hyperplanes, as previously illustrated on
+Figure~\ref{fig:3:partition}. Accordingly, the decision threshold $v$ thus
+corresponds to the distance of the separating hyperplane from the origin.
+Likewise, if $X_j$ is a categorical variable, then the set of binary splits on
+$X_j$ is the set of all binary partitions of ${\cal X}_j$:
 \begin{align}\label{eqn:q:categorical-cart}
 {\cal Q}(X_j) = \{ ({\cal X}_{t_L}, {\cal X}_{t_R}) |& {\cal X}_{t_L}, {\cal X}_{t_R} \subset {\cal X}_j, \nonumber \\
                                              & {\cal X}_{t_L} \cup {\cal X}_{t_R} = {\cal X}_j, {\cal X}_{t_L} \cap {\cal X}_{t_R} = \phi \}
@@ -719,6 +719,8 @@ child nodes.
 \subsection{Goodness of split}
 \label{sec:3:criteria}
 
+
+
 %     > Impurity criteria
 %           Voir chapitres 9+ Zighed
 %         - pourquoi pas simplifier utiliser l'erreur de resubstitution?
@@ -728,8 +730,10 @@ child nodes.
 %             End-cut preference (CART 11.8)
 %             Normalisation par l'entropy (cf. Vincent, Louis)
 %             Effet sur la structure des arbres générés
-%         - Sample weighting
-%             Negative weights? (@ndawe)
+                % Zighedh chap 9 intro:
+                % le choix du split a une forte influence sur la structure du graphe,
+                % mais finalement peu sur la qualité des prédictions
+
 
 \subsection{Best binary split on a categorical variable}
 \label{sec:best-split-categorical}
