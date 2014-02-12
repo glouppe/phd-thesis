@@ -725,8 +725,8 @@ child nodes.
 In this section,  we describe impurity measures $i(t)$ for evaluating the
 goodness of splitting rules. As they are the heart of our contributions
 regarding interpretability of tree-based methods (See
-Chapter~\ref{ch:importances}), the necessary mathematical fundations that have
-driven their methodological developement is studied here in details.
+Chapter~\ref{ch:importances}), the necessary mathematical foundations that have
+driven their methodological development are studied here in details.
 Section~\ref{sec:3:criteria:classification} reviews impurity functions for
 classification while Section~\ref{sec:3:criteria:regression} discusses criteria
 for regression.
@@ -779,7 +779,7 @@ measure $i(t)$ the local resubstitution estimate at node $t$:
 \begin{equation}\label{eqn:impurity:error}
 i(t) = 1 - p(\widehat{y}_t|t) =  1 - \max_{c \in {\cal Y}} p(c|t).
 \end{equation}
-As such, picking the best split would amount to pick the split that most
+With this criterion, picking the best split would therefore amount to pick the split that most
 decreases training error. Still, in spite of its natural attractiveness,
 criterion~\ref{eqn:impurity:error} has two serious defects:
 \begin{enumerate}
@@ -802,10 +802,10 @@ criterion~\ref{eqn:impurity:error} has two serious defects:
 \item It does not account for the structure which is learned with respect to
       the class distribution.
 
-      For instance, splitting on $X_1$ induces a posterio class distributions
+      For instance, splitting on $X_1$ induces a posteriori class distributions
       that increase our knowledge about the overall class distribution, even if
       it does not change the predictions. In particular, we deduce from the a
-      posterio class distributions that splitting on $X_1$ is likely to yield a
+      posteriori class distributions that splitting on $X_1$ is likely to yield a
       tree which is simpler than if the root node had been split on
       $X_3$. As shown in Figure~\ref{fig:3:goodness}, in the former case the
       right child node is indeed already terminal, while in the latter case
