@@ -662,7 +662,7 @@ split $s^*$. More specifically, the induction algorithm usually assumes that
 $s^*$ -- or a least a good enough approximation -- lives in a family ${\cal Q}
 \subseteq {\cal S}$ of candidate splits of restricted structure.
 
-As formulated in CART~\citep{breiman:1984}, the usual family ${\cal Q}$ of
+The usual family ${\cal Q}$ of
 splits is the set of binary splits defined on a single variable and resulting
 in non-empty subsets of ${\cal L}_t$:
 \begin{equation}\label{eqn:q:single-variables}
@@ -722,13 +722,23 @@ child nodes.
 \subsection{Goodness of split}
 \label{sec:3:criteria}
 
+In this section,  we describe impurity measures $i(t)$ for evaluating the
+goodness of splitting rules. As they are the heart of our contributions
+regarding interpretability of tree-based methods (See
+Chapter~\ref{ch:importances}), the necessary mathematical fundations that have
+driven their methodological developement is studied here in details.
+Section~\ref{sec:3:criteria:classification} reviews impurity functions for
+classification while Section~\ref{sec:3:criteria:regression} discusses criteria
+for regression.
+
 \subsubsection{Classification}
+\label{sec:3:criteria:classification}
 
 Let us consider a binary classification problem defined on three binary
 categorical input variables $X_1$, $X_2$ and $X_3$. Let us assume that we have
 a $10$-sample learning set ${\cal L}$ as listed in Table~\ref{table:toy-problem}.
 At the root node $t_0$, ${\cal L}_{t_0}$ contains all learning
-samples and we are looking for the best binary split defined one of the input
+samples and we are looking for the best binary split defined on one of the input
 variables. Since each of them is binary and categorical, ${\cal Q}(X_j)$ (for $j=1, 2, 3$)
 counts exactly one single split per input variable, each partitioning ${\cal L}_{t_0}$
 into two subsets
@@ -765,8 +775,7 @@ $t_0$ using the split $s^*$ that maximizes the impurity decrease $$\Delta i(s,
 t) = i(t) - p_L i(t_L) - p_R i(t_R),$$ where the impurity function $i(t)$ evaluates
 the goodness of node $t$. Since our goal is to build the decision tree
 that minimizes generalization error, it seems natural to take as impurity
-measure $i(t)$ the local resubtitution estimate at node $t$, which in classification
-is
+measure $i(t)$ the local resubstitution estimate at node $t$:
 \begin{equation}\label{eqn:impurity:error}
 i(t) = 1 - p(\widehat{y}_t|t) =  1 - \max_{c \in {\cal Y}} p(c|t).
 \end{equation}
@@ -782,6 +791,13 @@ criterion~\ref{eqn:impurity:error} has two serious defects:
       child nodes in which the majority class remains class $1$. As a result,
       $\Delta i(s, t_0) = 0$ for all three possible splits, as if they were
       equally bad, or as if no further improvement could be achieved.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=1.0]{figures/ch3_goodness.pdf}
+    \caption{Splitting on $X_1$ versus splitting on $X_3$.}
+    \label{fig:3:goodness}
+\end{figure}
 
 \item It does not account for the structure which is learned with respect to
       the class distribution.
@@ -801,15 +817,11 @@ criterion~\ref{eqn:impurity:error} has two serious defects:
       the possibility of further improvement deeper in the tree.
 \end{enumerate}
 
-\begin{figure}
-    \centering
-    \includegraphics[scale=1.0]{figures/ch3_goodness.pdf}
-    \caption{Splitting on $X_1$ versus splitting on $X_3$.}
-    \label{fig:3:goodness}
-\end{figure}
-
 In CART, \citet{breiman:1984} identify a class of impurity functions $i(t)$
-which do not have the undesirable properties of criterion~\ref{eqn:impurity:error}.
+which do not have the undesirable properties of criterion~\ref{eqn:impurity:error}:
+\begin{definition}
+An impurity function
+\end{definition}
 
 % propriété de stricte concavité => tout split s est tel que \Delta i(s, t) >= 0 => impurity is never increased by splitting
 % statement du theorème Proposition 4.4 page 126
@@ -830,6 +842,7 @@ which do not have the undesirable properties of criterion~\ref{eqn:impurity:erro
                 % mais finalement peu sur la qualité des prédictions
 
 \subsubsection{Regression}
+\label{sec:3:criteria:regression}
 
 
 
