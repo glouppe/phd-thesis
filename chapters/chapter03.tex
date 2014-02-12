@@ -722,6 +722,8 @@ child nodes.
 \subsection{Goodness of split}
 \label{sec:3:criteria}
 
+\subsubsection{Classification}
+
 Let us consider a binary classification problem defined on three binary
 categorical input variables $X_1$, $X_2$ and $X_3$. Let us assume that we have
 a $10$-sample learning set ${\cal L}$ as listed in Table~\ref{table:toy-problem}.
@@ -770,7 +772,7 @@ i(t) = 1 - p(\widehat{y}_t|t) =  1 - \max_{c \in {\cal Y}} p(c|t).
 \end{equation}
 As such, picking the best split would amount to pick the split that most
 decreases training error. Still, in spite of its natural attractiveness,
-criterion~\ref{eqn:impurity:error} as two serious defects:
+criterion~\ref{eqn:impurity:error} has two serious defects:
 \begin{enumerate}
 \item As a corollary of Proposition~\ref{prop:any-split-reduce-classification},
       $\Delta i(s, t)$ is zero for all splits if the majority class remains
@@ -778,12 +780,39 @@ criterion~\ref{eqn:impurity:error} as two serious defects:
 
       In our toy problem, splitting either on $X_1$, $X_2$ or $X_3$ produces
       child nodes in which the majority class remains class $1$. As a result,
-      $\Delta i(s, t_0) = 0$ for all three possible splits, as if splitting
-      would not help capture some structure in the problem.
+      $\Delta i(s, t_0) = 0$ for all three possible splits, as if they were
+      equally bad, or as if no further improvement could be achieved.
 
-\item
+\item It does not account for the structure which is learned with respect to
+      the class distribution.
+
+      For instance, splitting on $X_1$ induces a posterio class distributions
+      that increase our knowledge about the overall class distribution, even if
+      it does not change the predictions. In particular, we deduce from the a
+      posterio class distributions that splitting on $X_1$ is likely to yield a
+      tree which is simpler than if the root node had been split on
+      $X_3$. As shown in Figure~\ref{fig:3:goodness}, in the former case the
+      right child node is indeed already terminal, while in the latter case
+      both resulting child nodes would still have to be divided further.
+
+      This problem is largely due to the fact that the tree growing
+      algorithm~\ref{algo:induction} is based on a one-step optimization
+      procedure. A good impurity criterion should ideally also take into account
+      the possibility of further improvement deeper in the tree.
 \end{enumerate}
 
+\begin{figure}
+    \centering
+    \includegraphics[scale=1.0]{figures/ch3_goodness.pdf}
+    \caption{Splitting on $X_1$ versus splitting on $X_3$.}
+    \label{fig:3:goodness}
+\end{figure}
+
+In CART, \citet{breiman:1984} identify a class of impurity functions $i(t)$
+which do not have the undesirable properties of criterion~\ref{eqn:impurity:error}.
+
+% propriété de stricte concavité => tout split s est tel que \Delta i(s, t) >= 0 => impurity is never increased by splitting
+% statement du theorème Proposition 4.4 page 126
 
 
 %     > Impurity criteria
@@ -799,6 +828,10 @@ criterion~\ref{eqn:impurity:error} as two serious defects:
                 % Zighedh chap 9 intro:
                 % le choix du split a une forte influence sur la structure du graphe,
                 % mais finalement peu sur la qualité des prédictions
+
+\subsubsection{Regression}
+
+
 
 
 \subsection{Best binary split on a categorical variable}
