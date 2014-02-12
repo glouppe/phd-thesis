@@ -722,6 +722,68 @@ child nodes.
 \subsection{Goodness of split}
 \label{sec:3:criteria}
 
+Let us consider a binary classification problem defined on three binary
+categorical input variables $X_1$, $X_2$ and $X_3$. Let us assume that we have
+a $10$-sample learning set ${\cal L}$ as listed in Table~\ref{table:toy-problem}.
+At the root node $t_0$, ${\cal L}_{t_0}$ contains all learning
+samples and we are looking for the best binary split defined one of the input
+variables. Since each of them is binary and categorical, ${\cal Q}(X_j)$ (for $j=1, 2, 3$)
+counts exactly one single split per input variable, each partitioning ${\cal L}_{t_0}$
+into two subsets
+\begin{align*}
+{\cal L}_{t_L} &= \{(\mathbf{x}, y) | (\mathbf{x}, y) \in {\cal L}_{t_0}, x_j = 0\}, \\
+{\cal L}_{t_R} &= \{(\mathbf{x}, y) | (\mathbf{x}, y) \in {\cal L}_{t_0}, x_j = 1\}.
+\end{align*}
+
+\begin{table}
+    \centering
+    \begin{tabular}{| c | c c c | c |}
+    \hline
+        $i$ & \textbf{$X_1$} & \textbf{$X_2$} & \textbf{$X_3$} & \textbf{$Y$} \\
+    \hline
+    \hline
+    0 & 0 & 0 & 0 & 0 \\
+    1 & 0 & 0 & 1 & 0 \\
+    2 & 0 & 1 & 0 & 1 \\
+    3 & 0 & 1 & 1 & 1 \\
+    4 & 0 & 1 & 1 & 1 \\
+    5 & 1 & 0 & 0 & 1 \\
+    6 & 1 & 0 & 0 & 1 \\
+    7 & 1 & 0 & 0 & 1 \\
+    8 & 1 & 0 & 0 & 1 \\
+    9 & 1 & 1 & 1 & 1 \\
+    \hline
+    \end{tabular}
+    \captionof{table}{Toy binary classification problem}
+    \label{table:toy-problem}
+\end{table}
+
+As introduced in Section~\ref{sec:3:induction}, our objective is to partition
+$t_0$ using the split $s^*$ that maximizes the impurity decrease $$\Delta i(s,
+t) = i(t) - p_L i(t_L) - p_R i(t_R),$$ where the impurity function $i(t)$ evaluates
+the goodness of node $t$. Since our goal is to build the decision tree
+that minimizes generalization error, it seems natural to take as impurity
+measure $i(t)$ the local resubtitution estimate at node $t$, which in classification
+is
+\begin{equation}\label{eqn:impurity:error}
+i(t) = 1 - p(\widehat{y}_t|t) =  1 - \max_{c \in {\cal Y}} p(c|t).
+\end{equation}
+As such, picking the best split would amount to pick the split that most
+decreases training error. Still, in spite of its natural attractiveness,
+criterion~\ref{eqn:impurity:error} as two serious defects:
+\begin{enumerate}
+\item As a corollary of Proposition~\ref{prop:any-split-reduce-classification},
+      $\Delta i(s, t)$ is zero for all splits if the majority class remains
+      the same in both child nodes, that is if $\widehat{y}_t = \widehat{y}_{t_L} = \widehat{y}_{t_R}$.
+
+      In our toy problem, splitting either on $X_1$, $X_2$ or $X_3$ produces
+      child nodes in which the majority class remains class $1$. As a result,
+      $\Delta i(s, t_0) = 0$ for all three possible splits, as if splitting
+      would not help capture some structure in the problem.
+
+\item
+\end{enumerate}
+
 
 
 %     > Impurity criteria
