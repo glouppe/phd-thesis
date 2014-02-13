@@ -817,11 +817,25 @@ algorithm~\ref{algo:induction} is based on a one-step optimization procedure. A
 good impurity criterion should ideally also take into account the possibility
 of further improvement deeper in the tree. To avoid the undesirable properties
 of criterion~\ref{eqn:impurity:error}, the choice of $i(t)$ should therefore be
-guided by ensuring that $\Delta i(s,t)$ gets larger when the child nodes are
-more homogeneous in terms of class probabilities (while not being necessarily
-better in terms of misclassification error) and null only in rare
-circumstances, e.g., when the a priorio and a posteriori class distributions
-are exactly the same.
+guided by ensuring that $i(t)$ gets progressively smaller when $t$ gets more
+homogeneous towards one (or some) of the classes (while not being necessarily
+better in terms of misclassification error) and larger when $t$ is more
+heterogeneous. In CART, \citet{breiman:1984} identify a class of impurity
+function $i(t)$ meeting these requirements:
+
+\begin{theorem}
+Let $\Phi(p_1, \dots, p_J)$ be a strictly concave $J$-ary function defined
+on $0 \leq p_k \leq 1$, for $k=1,\dots,J$ and $\sum_{k=1}^J p_k = 1$ and such that
+\begin{itemize}
+\item $\Phi(1, \dots, 0) = \Phi(0, 1, \dots, 0) = \dots = \Phi(0, \dots, 1)$ is minimal;
+\item $\Phi(\frac{1}{J}, \dots, \frac{1}{J})$ is maximal.
+\end{itemize}
+Then, for $i(t) = \Phi(p(c_1|t), \dots, p(c_J|t))$ and any split $s$, $\Delta i(s, t) \geq 0$
+with equality if and only if $p(c_k|t_L)=p(c_k|t_R)=p(c_k|t)$ for $k=1,\dots,J$.
+\end{theorem}
+
+
+
 
 
 
