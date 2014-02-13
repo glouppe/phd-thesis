@@ -779,8 +779,8 @@ measure $i(t)$ the local resubstitution estimate at node $t$:
 \begin{equation}\label{eqn:impurity:error}
 i(t) = 1 - p(\widehat{y}_t|t) =  1 - \max_{c \in {\cal Y}} p(c|t).
 \end{equation}
-With this criterion, picking the best split would therefore amount to pick the split that most
-decreases training error. Still, in spite of its natural attractiveness,
+With this criterion, selecting the best split would therefore amount to pick the split that most
+decreases training error. In spite of its natural attractiveness however,
 criterion~\ref{eqn:impurity:error} has two serious defects:
 \begin{enumerate}
 \item As a corollary of Proposition~\ref{prop:any-split-reduce-classification},
@@ -799,29 +799,48 @@ criterion~\ref{eqn:impurity:error} has two serious defects:
     \label{fig:3:goodness}
 \end{figure}
 
-\item It does not account for the structure which is learned with respect to
-      the class distribution.
+\item It does not sensitively account for changes in the a posteriori class
+      distributions $p(y|t_L)$ and $p(y|t_R)$.
 
-      For instance, splitting on $X_1$ induces a posteriori class distributions
-      that increase our knowledge about the overall class distribution, even if
-      it does not change the predictions. In particular, we deduce from the a
-      posteriori class distributions that splitting on $X_1$ is likely to yield a
-      tree which is simpler than if the root node had been split on
-      $X_3$. As shown in Figure~\ref{fig:3:goodness}, in the former case the
-      right child node is indeed already terminal, while in the latter case
-      both resulting child nodes would still have to be divided further.
-
-      This problem is largely due to the fact that the tree growing
-      algorithm~\ref{algo:induction} is based on a one-step optimization
-      procedure. A good impurity criterion should ideally also take into account
-      the possibility of further improvement deeper in the tree.
+      In our example, all three splits do not improve training error. However,
+      splitting on $X_1$ is likely to yield a tree which is simpler than if the
+      root node had been split on $X_3$.  As shown in
+      Figure~\ref{fig:3:goodness}, splitting on $X_1$ indeed produces a child
+      node that is already terminal and for which no further work is required.
+      By contrast, splitting on $X_3$ results in child nodes that still have be
+      divided further.  Splitting on $X_1$ should therefore be preferred, even
+      if it does not reduce immediately the training error.
 \end{enumerate}
 
-In CART, \citet{breiman:1984} identify a class of impurity functions $i(t)$
-which do not have the undesirable properties of criterion~\ref{eqn:impurity:error}:
-\begin{definition}
-An impurity function
-\end{definition}
+In fact, these issues are largely due to the fact that the tree growing
+algorithm~\ref{algo:induction} is based on a one-step optimization procedure. A
+good impurity criterion should ideally also take into account the possibility
+of further improvement deeper in the tree. To avoid the undesirable properties
+of criterion~\ref{eqn:impurity:error}, the choice of $i(t)$ should therefore be
+guided by ensuring that $\Delta i(s,t)$ gets larger when the child nodes are
+more homogeneous in terms of class probabilities (while not being necessarily
+better in terms of misclassification error) and null only in rare
+circumstances, e.g., when the a priorio and a posteriori class distributions
+are exactly the same.
+
+
+
+
+
+
+
+% In CART, \citet{breiman:1984} identify a class of impurity functions $i(t)$
+% which do not have the undesirable properties of criterion~\ref{eqn:impurity:error}:
+% \begin{definition}
+% An impurity function $i(t)$ is a function ...
+%  evaluating the class distribution within node $t$.
+% It is defined
+% \begin{itemize}
+% \item $i(t)$ is maximum only when $p(c_1|t)=\dots=p(c_J|t)$;
+% \item $i(t)$ is minimum if it exists $j \in \{ 1,\dots,J \}$ such that $p(c_j|t)=1$;
+% \item $i(t)$ is symmetric with respect to the classes $c_1, \dots, c_J$.
+% \end{itemize}
+%\end{definition}
 
 % propriété de stricte concavité => tout split s est tel que \Delta i(s, t) >= 0 => impurity is never increased by splitting
 % statement du theorème Proposition 4.4 page 126
