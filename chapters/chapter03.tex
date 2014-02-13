@@ -823,7 +823,7 @@ better in terms of misclassification error) and larger when $t$ is more
 heterogeneous. In CART, \citet{breiman:1984} identify a class of impurity
 function $i(t)$ meeting these requirements:
 
-\begin{theorem}
+\begin{theorem}\label{thm:reduction-impurity}
 Let $\Phi(p_1, \dots, p_J)$ be a strictly concave $J$-ary function defined
 on $0 \leq p_k \leq 1$, for $k=1,\dots,J$ and $\sum_{k=1}^J p_k = 1$ and such that
 \begin{itemize}
@@ -834,11 +834,48 @@ Then, for $i(t) = \Phi(p(c_1|t), \dots, p(c_J|t))$ and any split $s$, $\Delta i(
 with equality if and only if $p(c_k|t_L)=p(c_k|t_R)=p(c_k|t)$ for $k=1,\dots,J$.
 \end{theorem}
 
+\begin{proof}
+Let us first remark that
+\begin{align*}
+p_L p(c_k|t_L) + p_R p(c_k|t_R) &= \frac{N_{t_L}}{N_t} \frac{N_{kt_L}}{N_{t_L}} +  \frac{N_{t_R}}{N_t} \frac{N_{kt_R}}{N_{t_R}} \\
+                                &= \frac{N_{kt_L} + N_{kt_R}}{N_t} \\
+                                &= \frac{N_kt}{N_t} \\
+                                &= p(c_k|t)
+\end{align*}
+By strict concavity, it comes
+\begin{align*}
+p_L i(t_L) + p_R i(t_R) &= p_L \Phi(p(c_1|t_L), \dots, p(c_J|t_L)) + p_R \Phi(p(c_1|t_R), \dots, p(c_J|t_R)) \\
+                        &\leq \Phi(p_L p(c_1|t_L) + p_R p(c_1|t_R), \dots, p_L p(c_J|t_L) + p_R p(c_J|t_R)) \\
+                        &= \Phi(p(c_1|t), \dots, p(c_J|t)) \\
+                        &= i(t)
+\end{align*}
+with equality if and only
+if $p(c_k|t_L)=p(c_k|t_R)$ for $k=1,\dots,J$.
+\end{proof}
 
+To better understand Theorem~\ref{thm:reduction-impurity}, let us come back to
+our toy problem and let us consider the impurity measure $i(t)$ illustrated on
+Figure~\ref{xxx} for which the requirements are satisfied.
 
+\begin{figure}
+\begin{minipage}[t]{0.48\textwidth}
+\includegraphics[width=\linewidth]{figures/ch3_toy_x1_gini.pdf}
+\end{minipage}
+\hspace{\fill}
+\begin{minipage}[t]{0.48\textwidth}
+\includegraphics[width=\linewidth]{figures/ch3_toy_x1_error.pdf}
+\end{minipage}
 
+\vspace*{0.5cm} % (or whatever vertical separation you prefer)
+\begin{minipage}[t]{0.48\textwidth}
+\includegraphics[width=\linewidth]{figures/ch3_toy_x2_gini.pdf}
+\end{minipage}
+\hspace{\fill}
+\begin{minipage}[t]{0.48\textwidth}
+\includegraphics[width=\linewidth]{figures/ch3_toy_x3_gini.pdf}
+\end{minipage}
 
-
+\end{figure}
 
 
 

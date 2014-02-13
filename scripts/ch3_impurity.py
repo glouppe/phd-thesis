@@ -25,8 +25,8 @@ def p(y_t):
     return 1.0 * y_t / np.sum(y_t)
 
 impurity = impurity_gini
-y_t = np.array([100, 50], dtype=np.float)
-y_t_L = np.array([50, 5], dtype=np.float)
+y_t = np.array([2, 8], dtype=np.float)
+y_t_L = np.array([1, 5], dtype=np.float)
 y_t_R = y_t - y_t_L
 p_y_t = p(y_t)
 p_y_t_L = p(y_t_L)
