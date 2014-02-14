@@ -776,12 +776,16 @@ t) = i(t) - p_L i(t_L) - p_R i(t_R),$$ where the impurity function $i(t)$ evalua
 the goodness of node $t$. Since our goal is to build the decision tree
 that minimizes generalization error, it seems natural to take as impurity
 measure $i(t)$ the local resubstitution estimate at node $t$:
+\begin{definition}
+The impurity function $i_R(t)$ based on the local resubstitution estimate
+is:
 \begin{equation}\label{eqn:impurity:error}
-i(t) = 1 - p(\widehat{y}_t|t) =  1 - \max_{c \in {\cal Y}} p(c|t).
+i_R(t) = 1 - p(\widehat{y}_t|t) =  1 - \max_{c \in {\cal Y}} p(c|t)
 \end{equation}
+\end{definition}
 With this criterion, selecting the best split would therefore amount to pick the split that most
 decreases training error. In spite of its natural attractiveness however,
-criterion~\ref{eqn:impurity:error} has two serious defects:
+$i_R(t)$ has two serious defects:
 \begin{enumerate}
 \item As a corollary of Proposition~\ref{prop:any-split-reduce-classification},
       $\Delta i(s, t)$ is zero for all splits if the majority class remains
@@ -816,7 +820,7 @@ In fact, these issues are largely due to the fact that the tree growing
 algorithm~\ref{algo:induction} is based on a one-step optimization procedure. A
 good impurity criterion should ideally also take into account the possibility
 of further improvement deeper in the tree. To avoid the undesirable properties
-of criterion~\ref{eqn:impurity:error}, the choice of $i(t)$ should therefore be
+of $i_R(t)$, the choice of $i(t)$ should therefore be
 guided by ensuring that $i(t)$ gets progressively smaller when $t$ gets more
 homogeneous towards one (or some) of the classes (while not being necessarily
 better in terms of misclassification error) and larger when $t$ is more
@@ -873,7 +877,7 @@ gets close to $0$ or $1$). As shown by Theorem~\ref{thm:reduction-impurity},
 $i(t)$ is necessarily larger than the weighted sum (illustrated by the gray
 dot) of impurities of the child nodes. Visually, the further away $p(c_1|t_L)$
 and $p(c_1|t_R)$ from $p(c_1|t)$, the larger $\Delta i(s,t)$ (illustrated by
-the red segment) and the better the split $s$. By contrast, when $s$ does not
+the red line) and the better the split $s$. By contrast, when $s$ does not
 significantly change the a posteriori class distributions, as illustrated in
 the second plot of Figure~\ref{fig:3:toy:impurity:gini} when splitting $t_0$ on
 $X_3$, then the closer $p(c_1|t_L)$ and $p(c_1|t_R)$ from $p(c_1|t)$ and the
@@ -887,27 +891,45 @@ $\Delta i(s,t)=0$.
 \begin{figure}
 \centering
 \includegraphics[scale=0.7]{figures/ch3_toy_x1_error.pdf}
-\caption{Splitting $t_0$ on $X_1$ as evaluated by the resubstitution estimate.}
+\caption{Splitting $t_0$ on $X_1$ as evaluated by the resubstitution estimate $i_R(t)$.}
 \label{fig:3:toy:impurity:error}
 \end{figure}
 
 Graphically, it also becomes obvious when comparing
 Figure~\ref{fig:3:toy:impurity:gini} with Figure~\ref{fig:3:toy:impurity:error}
-to understand why the resubstitution estimate is not an appropriate impurity
+to understand why the resubstitution estimate $i_R(t)$ is not an appropriate impurity
 function. As long as the majority class within the child nodes $t_L$ and $t_R$
-is the same than in $t$, the three red dots remain aligned in a perfect line
-and therefore the gray dot overlap with $i(t)$. As a result, $\Delta i(s,t)$ is
-necessarily null no matter the a priorio class distributions induced by the
-split, be them close or far from $p(c_1|t)$.
+is the same as in $t$, the three red dots remain aligned in a perfect line
+(since the resubstitution is not strictly concave) and therefore the gray dot
+overlap with $i(t)$. As a result, $\Delta i(s,t)$ is necessarily null no matter
+the a priorio class distributions induced by the split, be them close or far
+from $p(c_1|t)$.
 
+The most common impurity criteria used for classification trees are the Shannon
+entropy and the Gini index:
 
+\begin{definition}
+The impurity function $i_H(t)$ based on the Shannon entropy~\citep{shannon:1949} is:
+\begin{equation}
+i_H(t) = - \sum_{k=1}^J p(c_k|t) \log_2 (p(c_k|t))
+\end{equation}
+\end{definition}
+\begin{definition}
+The impurity function $i_G(t)$ based on the Gini index~\citep{gini:1912} is:
+\begin{equation}
+i_G(t) = \sum_{k=1}^J p(c_k|t) (1 - p(c_k|t))
+\end{equation}
+\end{definition}
 
-
-
-
-
-
-
+Both $i_H(t)$ and $i_G(t)$ satisfy the requirements of Theorem~\ref{thm:reduction-impurity}
+and exhibit the properties that we are looking
+for. The entropy-based impurity $i_H(t)$ quantifies the uncertainty of $Y$
+within node $t$. With this criterion, the impurity decrease $\Delta i_H(s,t)$,
+also known as the \textit{information gain}, therefore represents the
+information learned about $Y$ by splitting $t$ into $t_L$ and $t_R$. The Gini-based
+impurity $i_G(t)$ measures how often a random chosen object $\mathbf{x}\in {\cal L}_t$
+would be incorrectly classified if it were randomly labeled by a class $c_k$
+according to the distribution $p(y|t)$.
 
 
 
@@ -917,28 +939,30 @@ split, be them close or far from $p(c_1|t)$.
 %            => réutiliser prop 3.1 déjà démontrée (cart 95+)
 %         - bons critères pour i
 %         - Gini, Entropy, Variance, Information gain etc (see cart + graphes)
-%         - Effet du critère sur les cuts
+
+
+\subsubsection{Regression}
+\label{sec:3:criteria:regression}
+
+\subsubsection{Effects on the tree structure}
+
 %             End-cut preference (CART 11.8)
 %             Normalisation par l'entropy (cf. Vincent, Louis)
 %             Effet sur la structure des arbres générés
                 % Zighedh chap 9 intro:
                 % le choix du split a une forte influence sur la structure du graphe,
                 % mais finalement peu sur la qualité des prédictions
+                % citer http://www.ise.bgu.ac.il/faculty/liorr/hbchap9.pdf  pour une comparaison des critères The Data Mining and Knowledge Discovery Handbook
 
-\subsubsection{Regression}
-\label{sec:3:criteria:regression}
-
-
-
-
-\subsection{Best binary split on a categorical variable}
+\subsection{Finding the best binary split}
+\subsubsection{On a categorical variable}
 \label{sec:best-split-categorical}
 
-\subsection{Best binary split on an ordered variable}
+\subsubsection{On an ordered variable}
 \label{sec:best-split-ordered}
 
-\subsection{Approximately best binary split on an ordered variable}
-\label{sec:best-split-ordered-approx}
+% \subsection{Approximately best binary split on an ordered variable}
+% \label{sec:best-split-ordered-approx}
 
 %             + Binning
 %             + Subsampling
