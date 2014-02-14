@@ -853,30 +853,18 @@ with equality if and only
 if $p(c_k|t_L)=p(c_k|t_R)$ for $k=1,\dots,J$.
 \end{proof}
 
-To better understand Theorem~\ref{thm:reduction-impurity}, let us come back to
-our toy problem. Let us consider ...
-
 \begin{figure}
-\begin{minipage}[t]{0.49\textwidth}
-\includegraphics[width=\linewidth]{figures/ch3_toy_x1_gini.pdf}
-\end{minipage}
-\hspace{\fill}
-\begin{minipage}[t]{0.49\textwidth}
-\includegraphics[width=\linewidth]{figures/ch3_toy_x1_error.pdf}
-\end{minipage}
-
-\vspace*{0.5cm} % (or whatever vertical separation you prefer)
-\begin{minipage}[t]{0.49\textwidth}
-\includegraphics[width=\linewidth]{figures/ch3_toy_x2_gini.pdf}
-\end{minipage}
-\hspace{\fill}
-\begin{minipage}[t]{0.49\textwidth}
-\includegraphics[width=\linewidth]{figures/ch3_toy_x3_gini.pdf}
-\end{minipage}
-\vspace{-0.5cm}
-\caption{Splitting $t_0$ on $X_1$, $X_2$ or $X_3$.}
-\label{fig:3:toy:impurity}
+\centering
+\includegraphics[scale=0.75]{figures/ch3_toy_x1_gini.pdf}\\
+\vspace{1cm}
+\includegraphics[scale=0.75]{figures/ch3_toy_x1_error.pdf}
+\caption{Splitting $t_0$ on $X_1$, as evaluated by a strictly concave impurity function (above) and by the resubtitution estimate (below).}
+\label{fig:3:toy:impurity:x1}
 \end{figure}
+
+To better understand Theorem~\ref{thm:reduction-impurity}, let us come back to
+our toy problem.
+
 
 
 
