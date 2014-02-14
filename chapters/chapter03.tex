@@ -908,6 +908,13 @@ from $p(c_1|t)$.
 The most common impurity criteria used for classification trees are the Shannon
 entropy and the Gini index:
 
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{figures/ch3_impurity_comparison.pdf}
+\caption{Comparison of $i_E(t)$, $i_H(t)$ and $i_G(t)$.}
+\label{fig:3:toy:impurity:comparison}
+\end{figure}
+
 \begin{definition}
 The impurity function $i_H(t)$ based on the Shannon entropy~\citep{shannon:1949} is:
 \begin{equation}
@@ -921,15 +928,17 @@ i_G(t) = \sum_{k=1}^J p(c_k|t) (1 - p(c_k|t))
 \end{equation}
 \end{definition}
 
-Both $i_H(t)$ and $i_G(t)$ satisfy the requirements of Theorem~\ref{thm:reduction-impurity}
-and exhibit the properties that we are looking
-for. The entropy-based impurity $i_H(t)$ quantifies the uncertainty of $Y$
-within node $t$. With this criterion, the impurity decrease $\Delta i_H(s,t)$,
-also known as the \textit{information gain}, therefore represents the
-information learned about $Y$ by splitting $t$ into $t_L$ and $t_R$. The Gini-based
-impurity $i_G(t)$ measures how often a random chosen object $\mathbf{x}\in {\cal L}_t$
-would be incorrectly classified if it were randomly labeled by a class $c_k$
-according to the distribution $p(y|t)$.
+As illustrated on Figure~\ref{fig:3:toy:impurity:comparison}, both $i_H(t)$ and
+$i_G(t)$ satisfy the requirements of Theorem~\ref{thm:reduction-impurity} and
+exhibit the properties that we are looking for. The entropy-based impurity
+$i_H(t)$ quantifies the uncertainty of $Y$ within node $t$. With this
+criterion, the impurity decrease $\Delta i_H(s,t)$, also known as the
+\textit{information gain}, therefore represents the information learned about
+$Y$ by splitting $t$ into $t_L$ and $t_R$. The Gini-based impurity $i_G(t)$
+measures how often a randomly chosen object $\mathbf{x}\in {\cal L}_t$ would be
+incorrectly classified if it were randomly labeled by a class $c_k$ according
+to the distribution $p(y|t)$.
+
 
 
 

@@ -48,7 +48,12 @@ fig = plt.figure()
 ax = fig.add_subplot(111)
 
 x = np.linspace(0.0, 1.0, num=300)
-ax.plot(x, map(impurity, x, 1-x), label="entropy", color=blue)
+# ax.plot(x, map(impurity, x, 1-x), label="entropy", color=blue)
+ax.plot(x, map(impurity_error, x, 1-x), label="$i_E(t)$", color=gray)
+ax.plot(x, map(impurity_entropy, x, 1-x), label="$i_H(t)$", color=blue)
+ax.plot(x, map(impurity_gini, x, 1-x), label="$i_G(t)$", color=red)
+ax.legend(loc="best")
+plt.show()
 
 ax.plot(p_y_t[0], i_t, marker="o", color=red)
 ax.plot(p_y_t_L[0], i_t_L, marker="o", color=red)
