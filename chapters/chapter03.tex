@@ -395,8 +395,8 @@ the local generalization error with $1 - p(\widehat{y}_t | t)$ as done above, it
 \widehat{Err}_{\cal L}(\varphi) &= \sum_{t \in \widetilde{\varphi}} p(t) (1 - p(\widehat{y}_t | t)) \nonumber \\
     &= \sum_{t \in \widetilde{\varphi}} \frac{N_t}{N} (1 - \frac{N_{{\widehat{y}_t}t}}{N_t}) \nonumber \\
     &= \frac{1}{N} \sum_{t \in \widetilde{\varphi}} N_t - N_{{\widehat{y}_t}t} \nonumber \\
-    &= \frac{1}{N} \sum_{t \in \widetilde{\varphi}} \sum_{\mathbf{x}_i, y_i \in {\cal L}_t} 1(y_i \neq \widehat{y}_t) \nonumber \\
-    &= \frac{1}{N} \sum_{\mathbf{x}_i, y_i \in {\cal L}} 1(y_i \neq \varphi(t)) \nonumber \\
+    &= \frac{1}{N} \sum_{t \in \widetilde{\varphi}} \sum_{\mathbf{x}, y \in {\cal L}_t} 1(y \neq \widehat{y}_t) \nonumber \\
+    &= \frac{1}{N} \sum_{\mathbf{x}, y \in {\cal L}} 1(y \neq \varphi(t)) \nonumber \\
     &= \widehat{Err}_{\cal L}^\text{train}(\varphi) \label{eqn:train-error-tree}
 \end{align}
 Accordingly, approximating Equation~\ref{eqn:assignment-generalization}
@@ -460,13 +460,13 @@ Again, Equation~\ref{eqn:assignment-regression} cannot be solved
 without the probability distribution $P(X, Y)$. However, its solution can
 approximated using estimates of the local generalization error:
 \begin{align}\label{eqn:assignement-regression-approx}
-\widehat{y}_t   &= \argmin_{\widehat{y} \in {\cal L}} \frac{1}{N_t} \sum_{\mathbf{x}_i, y_i \in {\cal L}_t} (y_i - \widehat{y})^2 \nonumber \\
-                &= \frac{1}{N_t} \sum_{\mathbf{x}_i, y_i \in {\cal L}_t} y_i
+\widehat{y}_t   &= \argmin_{\widehat{y} \in {\cal L}} \frac{1}{N_t} \sum_{\mathbf{x}, y \in {\cal L}_t} (y - \widehat{y})^2 \nonumber \\
+                &= \frac{1}{N_t} \sum_{\mathbf{x}, y \in {\cal L}_t} y
 \end{align}
 
 As in classification, using $p(t)$ as estimate of $P(X \in {\cal X}_t)$ and approximating
-the local generalization error with $\tfrac{1}{N_t} \sum_{\mathbf{x}_i, y_i \in {\cal
-L}_t} (y_i - \widehat{y}_t)^2$ as done above, one can show that
+the local generalization error with $\tfrac{1}{N_t} \sum_{\mathbf{x}, y \in {\cal
+L}_t} (y - \widehat{y}_t)^2$ as done above, one can show that
 Equation~\ref{eqn:assignment-generalization} reduces to the resubstitution estimate of $\varphi$, thereby
 indicating that assignment rule~\ref{eqn:assignement-regression-approx}
 also minimizes the training error rather the true generalization error.
@@ -487,12 +487,12 @@ L}^\text{train}(\varphi^\prime)$$ with equality if $\widehat{y}_{t_L} = \widehat
 \begin{proof}
 \begin{align*}
 \widehat{Err}_{\cal L}^\text{train}(\varphi) &\geq \widehat{Err}_{\cal L}^\text{train}(\varphi^\prime)  \\
-\sum_{t \in \widetilde{\varphi}} p(t) (\frac{1}{N_t} \sum_{\mathbf{x}_i, y_i \in {\cal L}_t} (y_i - \widehat{y}_t)^2) &\geq \sum_{t \in \widetilde{\varphi^\prime}} p(t) (\frac{1}{N_t} \sum_{\mathbf{x}_i, y_i \in {\cal L}_t} (y_i - \widehat{y}_t)^2) \\
-\sum_{\mathbf{x}_i, y_i \in {\cal L}_t} (y_i - \widehat{y}_t)^2 &\geq \sum_{\mathbf{x}_i, y_i \in {\cal L}_{t_L}} (y_i - \widehat{y}_{t_L})^2 + \sum_{\mathbf{x}_i, y_i \in {\cal L}_{t_R}} (y_i - \widehat{y}_{t_R})^2 \\
+\sum_{t \in \widetilde{\varphi}} p(t) (\frac{1}{N_t} \sum_{\mathbf{x}, y \in {\cal L}_t} (y - \widehat{y}_t)^2) &\geq \sum_{t \in \widetilde{\varphi^\prime}} p(t) (\frac{1}{N_t} \sum_{\mathbf{x}, y \in {\cal L}_t} (y - \widehat{y}_t)^2) \\
+\sum_{\mathbf{x}, y \in {\cal L}_t} (y - \widehat{y}_t)^2 &\geq \sum_{\mathbf{x}, y \in {\cal L}_{t_L}} (y - \widehat{y}_{t_L})^2 + \sum_{\mathbf{x}, y \in {\cal L}_{t_R}} (y - \widehat{y}_{t_R})^2 \\
 N_t \widehat{y}_t^2 &\leq N_{t_L} \widehat{y}_{t_L}^2 + N_{t_R} \widehat{y}_{t_R}^2 \\
-\frac{1}{N_t} (\sum_{\mathbf{x}_i, y_i \in {\cal L}_{t}} y_i)^2 &\leq \frac{1}{N_{t_L}} (\sum_{\mathbf{x}_i, y_i \in {\cal L}_{t_L}} y_i)^2 + \frac{1}{N_{t_R}} (\sum_{\mathbf{x}_i, y_i \in {\cal L}_{t_R}} y_i)^2
+\frac{1}{N_t} (\sum_{\mathbf{x}, y \in {\cal L}_{t}} y)^2 &\leq \frac{1}{N_{t_L}} (\sum_{\mathbf{x}, y \in {\cal L}_{t_L}} y)^2 + \frac{1}{N_{t_R}} (\sum_{\mathbf{x}, y \in {\cal L}_{t_R}} y)^2
 \end{align*}
-For simplifying, let us denote $s(t) = \sum_{\mathbf{x}_i, y_i \in {\cal L}_{t}} y_i = N_t \widehat{y}_t$
+For simplifying, let us denote $s(t) = \sum_{\mathbf{x}, y \in {\cal L}_{t}} y = N_t \widehat{y}_t$
 the sum of the output values in $t$. Remark that $s(t) = s(t_L) + s(t_R)$. It comes:
 \begin{align*}
 \frac{s(t)^2}{N_t} &\leq \frac{s(t_L)^2}{N_{t_L}} + \frac{s(t_R)^2}{N_{t_R}} \\
@@ -949,7 +949,7 @@ the values assigned to the child nodes are different from the value at $t$.
 Contrary to classification, this only happens in rare circumstances in
 regression (i.e., when the mean output values at the child nodes coincide with the
 mean output value in $t$), hence making the resubstitution estimate sensitive to changes
-in the a posteriori distributions, even if they are only slight.  As a result, the
+in the a posteriori distributions, even if these are only slight.  As a result, the
 local resubstitution estimate does not exhibit the undesirable properties that
 we had in classification and in fact constitutes a good criterion for
 regression.
@@ -973,7 +973,7 @@ stated as a binary classification task where $c_1=0$ and $c_2=1$ or as a regress
 task where the goal is to predict the most accurate predictions $\widehat{y} \in {\cal Y} \subseteq \mathbb{R}$.
 Interestingly, regression trees built in this setting are in fact strictly
 equivalent to classification trees built using the Gini index $i_G(t)$ as
-impurity criterion. Indeed since $\widehat{y}_t = \tfrac{1}{N_t} \sum_{\mathbf{x}, y \in {\cal L}_t} y = p(c_2|t) = 1 - p(c_1|t)$,
+impurity criterion. Indeed since $\widehat{y}_t = \tfrac{1}{N_t} \sum_{\mathbf{x}, y \in {\cal L}_t} y = p(c_2|t) = 1 - p(c_1|t)$, it comes:
 \begin{align}
 i_R(t) &= \frac{1}{N_t} \sum_{\mathbf{x}, y \in {\cal L}_t} (y - \widehat{y}_t)^2 \nonumber \\
        &= \frac{1}{N_t} \sum_{\mathbf{x}, y \in {\cal L}_t} y - 2 y \widehat{y}_t + \widehat{y}_t^2 \nonumber \\
@@ -983,7 +983,7 @@ i_R(t) &= \frac{1}{N_t} \sum_{\mathbf{x}, y \in {\cal L}_t} (y - \widehat{y}_t)^
        &= \frac{1}{2} i_G(t)
 \end{align}
 From a practical point of view, this means that both classification and
-regression trees can be implemented using criterion~\ref{eqn:impurity:variance}.
+regression trees can be implemented using the single criterion~\ref{eqn:impurity:variance}.
 \end{remark}
 
 \subsubsection{Effects on the tree structure}
