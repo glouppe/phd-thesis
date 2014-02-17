@@ -467,7 +467,7 @@ approximated using estimates of the local generalization error:
 As in classification, using $p(t)$ as estimate of $P(X \in {\cal X}_t)$ and approximating
 the local generalization error with $\tfrac{1}{N_t} \sum_{\mathbf{x}_i, y_i \in {\cal
 L}_t} (y_i - \widehat{y}_t)^2$ as done above, one can show that
-Equation~\ref{eqn:assignment-generalization} reduces the resubstitution estimate of $\varphi$, thereby
+Equation~\ref{eqn:assignment-generalization} reduces to the resubstitution estimate of $\varphi$, thereby
 indicating that assignment rule~\ref{eqn:assignement-regression-approx}
 also minimizes the training error rather the true generalization error.
 
@@ -492,15 +492,15 @@ L}^\text{train}(\varphi^\prime)$$ with equality if $\widehat{y}_{t_L} = \widehat
 N_t \widehat{y}_t^2 &\leq N_{t_L} \widehat{y}_{t_L}^2 + N_{t_R} \widehat{y}_{t_R}^2 \\
 \frac{1}{N_t} (\sum_{\mathbf{x}_i, y_i \in {\cal L}_{t}} y_i)^2 &\leq \frac{1}{N_{t_L}} (\sum_{\mathbf{x}_i, y_i \in {\cal L}_{t_L}} y_i)^2 + \frac{1}{N_{t_R}} (\sum_{\mathbf{x}_i, y_i \in {\cal L}_{t_R}} y_i)^2
 \end{align*}
-For simplifying, let us denote $\sigma_t = \sum_{\mathbf{x}_i, y_i \in {\cal L}_{t}} y_i = N_t \widehat{y}_t$
-the sum of the output values in $t$. Remark that $\sigma_t = \sigma_{t_L} + \sigma_{t_R}$. It comes:
+For simplifying, let us denote $s(t) = \sum_{\mathbf{x}_i, y_i \in {\cal L}_{t}} y_i = N_t \widehat{y}_t$
+the sum of the output values in $t$. Remark that $s(t) = s(t_L) + s(t_R)$. It comes:
 \begin{align*}
-\frac{\sigma_t^2}{N_t} &\leq \frac{\sigma_{t_L}^2}{N_{t_L}} + \frac{\sigma_{t_R}^2}{N_{t_R}} \\
-\frac{(\sigma_{t_L} + \sigma_{t_R})^2}{N_{t_L} + N_{t_R}} &\leq \frac{\sigma_{t_L}^2}{N_{t_L}} + \frac{\sigma_{t_R}^2}{N_{t_R}} \\
-\frac{(\sigma_{t_L} N_{t_R} - \sigma_{t_R} N_{t_L})^2}{N_{t_L} N_{t_R} (N_{t_L} + N_{t_R})} &\geq 0
+\frac{s(t)^2}{N_t} &\leq \frac{s(t_L)^2}{N_{t_L}} + \frac{s(t_R)^2}{N_{t_R}} \\
+\frac{(s(t_L) + s(t_R))^2}{N_{t_L} + N_{t_R}} &\leq \frac{s(t_L)^2}{N_{t_L}} + \frac{s(t_R)^2}{N_{t_R}} \\
+\frac{(s(t_L) N_{t_R} - s(t_R) N_{t_L})^2}{N_{t_L} N_{t_R} (N_{t_L} + N_{t_R})} &\geq 0
 \end{align*}
 Which is necessary true since the numerator is non-negative and the denominator is
-strictly positive. Equality holds if $\sigma_{t_L} N_{t_R} = \sigma_{t_R} N_{t_L}$, that is if $\widehat{y}_{t_L} = \widehat{y}_{t_R}$.
+strictly positive. Equality holds if $s(t_L) N_{t_R} = s(t_R) N_{t_L}$, that is if $\widehat{y}_{t_L} = \widehat{y}_{t_R}$.
 \end{proof}
 
 As for Proposition~\ref{prop:any-split-reduce-classification}, a corollary of Proposition~\ref{prop:any-split-reduce-regression}
@@ -783,7 +783,7 @@ is:
 i_R(t) = 1 - p(\widehat{y}_t|t) =  1 - \max_{c \in {\cal Y}} p(c|t)
 \end{equation}
 \end{definition}
-With this criterion, selecting the best split would therefore amount to pick the split that most
+With this criterion, selecting the best split would amount to pick the split that most
 decreases training error. In spite of its natural attractiveness however,
 $i_R(t)$ has two serious defects:
 \begin{enumerate}
@@ -874,7 +874,7 @@ is maximum when when $t$ is heterogeneous in terms of class probabilities
 (i.e., at $p(c_1|t)=p(c_2|t)=\tfrac{1}{2}$) and then gets progressively smaller
 when $t$ gets more homogeneous towards one of the classes (i.e., as $p(c_1|t)$
 gets close to $0$ or $1$). As shown by Theorem~\ref{thm:reduction-impurity},
-$i(t)$ is necessarily larger than the weighted sum (illustrated by the gray
+$i(t)$ is also necessarily larger than the weighted sum (illustrated by the gray
 dot) of impurities of the child nodes. Visually, the further away $p(c_1|t_L)$
 and $p(c_1|t_R)$ from $p(c_1|t)$, the larger $\Delta i(s,t)$ (illustrated by
 the red line) and the better the split $s$. By contrast, when $s$ does not
@@ -933,14 +933,16 @@ $i_G(t)$ satisfy the requirements of Theorem~\ref{thm:reduction-impurity} and
 exhibit the properties that we are looking for. The entropy-based impurity
 $i_H(t)$ quantifies the uncertainty of $Y$ within node $t$. With this
 criterion, the impurity decrease $\Delta i_H(s,t)$, also known as the
-\textit{information gain}, therefore represents the information learned about
+\textit{information gain}, represents the information learned about
 $Y$ by splitting $t$ into $t_L$ and $t_R$. The Gini-based impurity $i_G(t)$
 measures how often a randomly chosen object $\mathbf{x}\in {\cal L}_t$ would be
-incorrectly classified if it were randomly labeled by a class $c_k$ according
+incorrectly classified if it were randomly labeled by a class $c\in{\cal Y}$ according
 to the distribution $p(y|t)$.
 
 \subsubsection{Regression}
 \label{sec:3:criteria:regression}
+
+
 
 % reduction of variance => error estimate is a good measure => amount to gini
 
