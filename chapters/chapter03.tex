@@ -481,7 +481,7 @@ For any non-empty split of a terminal node $t \in \widetilde{\varphi}$ into $t_L
 $t_R$, resulting in a new tree $\varphi^\prime$ where $\widehat{y}_{t_L}$ and $\widehat{y}_{t_R}$
 are assigned with rule~\ref{eqn:assignement-regression-approx}, $$\widehat{Err}_{\cal
 L}^\text{train}(\varphi) \geq \widehat{Err}_{\cal
-L}^\text{train}(\varphi^\prime)$$ with equality if $\widehat{y}_{t_L} = \widehat{y}_{t_R}$.
+L}^\text{train}(\varphi^\prime)$$ with equality if $\widehat{y}_{t_L} = \widehat{y}_{t_R} = \widehat{y}_t$.
 \end{proposition}
 
 \begin{proof}
@@ -777,8 +777,8 @@ the goodness of node $t$. Since our goal is to build the decision tree
 that minimizes generalization error, it seems natural to take as impurity
 measure $i(t)$ the local resubstitution estimate at node $t$:
 \begin{definition}
-The impurity function $i_R(t)$ based on the local resubstitution estimate
-is:
+In classification, the impurity function $i_R(t)$ based on the local resubstitution estimate
+defined on the zero-one loss is:
 \begin{equation}\label{eqn:impurity:error}
 i_R(t) = 1 - p(\widehat{y}_t|t) =  1 - \max_{c \in {\cal Y}} p(c|t)
 \end{equation}
@@ -942,7 +942,32 @@ to the distribution $p(y|t)$.
 \subsubsection{Regression}
 \label{sec:3:criteria:regression}
 
+When the output variable $Y$ is quantitative, Proposition~\ref{prop:any-split-reduce-regression}
+shows that splitting $t$ in any way reduces the
+resubstitution estimate. In particular, the reduction is positive as long as
+the mean output values in $t_L$ and $t_R$ are different from the mean output
+value in $t$. Contrary to classification however, this happens only in rare
+circumstances, making the training error sensitive to changes in a the
+posteriorio distribution, even if they are only slight.  As such, the local
+resubstitution estimate is in fact a good criterion that does not exhibit
+the undesirable properties that we had in classification.
 
+\begin{definition}
+In regression, the impurity function $i_R(t)$ based on the local resubstitution estimate
+defined on the square error loss is:
+\begin{equation}\label{eqn:impurity:variance}
+i_R(t) = \frac{1}{N_t} \sum_{\mathbf{x}_i, y_i \in {\cal L}_t} (y_i - \widehat{y}_t)^2
+\end{equation}
+\end{definition}
+
+Another way of looking at criterion~\ref{eqn:impurity:variance} is to notice
+that it corresponds to the within node variance of the output value in $t$.
+Accordingly, $s^*$ is the split that maximizes the reduction of variance
+$\Delta i(s, t)$ in the child nodes.
+
+\begin{remark}{Equivalence between classification and regression trees}
+
+\end{remark}
 
 % reduction of variance => error estimate is a good measure => amount to gini
 
