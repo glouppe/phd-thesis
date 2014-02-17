@@ -945,18 +945,20 @@ to the distribution $p(y|t)$.
 When the output variable $Y$ is quantitative, Proposition~\ref{prop:any-split-reduce-regression}
 shows that splitting $t$ in any way reduces the
 resubstitution estimate. In particular, the reduction is positive as long as
-the mean output values in $t_L$ and $t_R$ are different from the mean output
-value in $t$. Contrary to classification however, this happens only in rare
-circumstances, making the training error sensitive to changes in a the
-posteriorio distribution, even if they are only slight.  As such, the local
-resubstitution estimate is in fact a good criterion that does not exhibit
-the undesirable properties that we had in classification.
+the values assigned to the child nodes are different from the value at $t$.
+Contrary to classification, this only happens in rare circumstances in
+regression (i.e., when the mean output values at the child nodes coincide with the
+mean output value in $t$), hence making the resubstitution estimate sensitive to changes
+in the a posteriori distributions, even if they are only slight.  As a result, the
+local resubstitution estimate does not exhibit the undesirable properties that
+we had in classification and in fact constitutes a good criterion for
+regression.
 
 \begin{definition}
 In regression, the impurity function $i_R(t)$ based on the local resubstitution estimate
 defined on the square error loss is:
 \begin{equation}\label{eqn:impurity:variance}
-i_R(t) = \frac{1}{N_t} \sum_{\mathbf{x}_i, y_i \in {\cal L}_t} (y_i - \widehat{y}_t)^2
+i_R(t) = \frac{1}{N_t} \sum_{\mathbf{x}, y \in {\cal L}_t} (y - \widehat{y}_t)^2
 \end{equation}
 \end{definition}
 
@@ -966,10 +968,21 @@ Accordingly, $s^*$ is the split that maximizes the reduction of variance
 $\Delta i(s, t)$ in the child nodes.
 
 \begin{remark}{Equivalence between classification and regression trees}
-
+When ${\cal Y} = \{0, 1\}$, the learning problem can be either
+stated as a binary classification task where $c_1=0$ and $c_2=1$ or as a regression
+task where the goal is to predict the most accurate predictions $\widehat{y} \in {\cal Y} \subseteq \mathbb{R}$.
+Interestingly, regression trees built in this setting are in fact strictly
+equivalent to classification trees built using the Gini index $i_G(t)$ as
+impurity criterion. Indeed since $\widehat{y}_t = \tfrac{1}{N_t} \sum_{\mathbf{x}, y \in {\cal L}_t} y = p(c_2|t) = 1 - p(c_1|t)$,
+\begin{align}
+i_R(t) &= \frac{1}{N_t} \sum_{\mathbf{x}, y \in {\cal L}_t} (y - \widehat{y}_t)^2 \nonumber \\
+       &= \frac{1}{N_t} \sum_{\mathbf{x}, y \in {\cal L}_t} y - 2 y \widehat{y}_t + \widehat{y}_t^2 \nonumber \\
+       &= \widehat{y}_t - 2 \widehat{y}_t^2 + \widehat{y}_t^2 \nonumber \\
+       &= \widehat{y}_t (1 - \widehat{y}_t) \nonumber \\
+       &= p(c_2|t) (1 - p(c_2|t)) \nonumber \\
+       &= \frac{1}{2} i_G(t)
+\end{align}
 \end{remark}
-
-% reduction of variance => error estimate is a good measure => amount to gini
 
 \subsubsection{Effects on the tree structure}
 
