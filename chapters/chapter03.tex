@@ -939,6 +939,15 @@ measures how often a randomly chosen object $\mathbf{x}\in {\cal L}_t$ would be
 incorrectly classified if it were randomly labeled by a class $c\in{\cal Y}$ according
 to the distribution $p(y|t)$.
 
+%             End-cut preference (CART 11.8)
+%             Normalisation par l'entropy (cf. Vincent, Louis)
+%             Effet sur la structure des arbres générés
+                % Zighedh chap 9 intro:
+                % le choix du split a une forte influence sur la structure du graphe,
+                % mais finalement peu sur la qualité des prédictions
+                % citer http://www.ise.bgu.ac.il/faculty/liorr/hbchap9.pdf  pour une comparaison des critères The Data Mining and Knowledge Discovery Handbook
+                % On Uncertainty Measures Used for Decision Tree Induction
+
 \subsubsection{Regression}
 \label{sec:3:criteria:regression}
 
@@ -968,7 +977,7 @@ Accordingly, $s^*$ is the split that maximizes the reduction of variance
 $\Delta i(s, t)$ in the child nodes.
 
 \begin{remark}{Equivalence between classification and regression trees}
-When ${\cal Y} = \{0, 1\}$, the learning problem can be either
+When ${\cal Y} = \{0, 1\}$, the learning problem can either be
 stated as a binary classification task where $c_1=0$ and $c_2=1$ or as a regression
 task where the goal is to predict the most accurate predictions $\widehat{y} \in {\cal Y} \subseteq \mathbb{R}$.
 Interestingly, regression trees built in this setting are in fact strictly
@@ -985,17 +994,6 @@ i_R(t) &= \frac{1}{N_t} \sum_{\mathbf{x}, y \in {\cal L}_t} (y - \widehat{y}_t)^
 From a practical point of view, this means that both classification and
 regression trees can be implemented using the single criterion~\ref{eqn:impurity:variance}.
 \end{remark}
-
-\subsubsection{Effects on the tree structure}
-
-%             End-cut preference (CART 11.8)
-%             Normalisation par l'entropy (cf. Vincent, Louis)
-%             Effet sur la structure des arbres générés
-                % Zighedh chap 9 intro:
-                % le choix du split a une forte influence sur la structure du graphe,
-                % mais finalement peu sur la qualité des prédictions
-                % citer http://www.ise.bgu.ac.il/faculty/liorr/hbchap9.pdf  pour une comparaison des critères The Data Mining and Knowledge Discovery Handbook
-                % On Uncertainty Measures Used for Decision Tree Induction
 
 \subsection{Finding the best binary split}
 \subsubsection{On a categorical variable}
