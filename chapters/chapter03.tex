@@ -610,6 +610,7 @@ decrease $\Delta i(s^*, t)$ (Line~\ref{algo:induction:split} of
 Algorithm~\ref{algo:induction}).
 
 \subsection{Families ${\cal Q}$ of splitting rules}
+\label{sec:3:splitting-rules:families}
 
 As introduced in Section~\ref{sec:3:tree-structured-models}, a
 split $s$ of node $t$ is  a question that divides the space ${\cal X}_t$ into
@@ -1009,12 +1010,15 @@ regression trees could be implemented using the single criterion~\ref{eqn:impuri
 \subsection{Finding the best binary split}
 
 Now that we have described families ${\cal Q}$ of splitting rules and impurity
-criteria to evaluate their respective goodness, the last thing which is missing to have
-fully specified the induction procedure is an efficient optimization procedure
-for finding the best split $s^* \in {\cal Q}$.
+criteria to evaluate their respective goodness, the last thing which is missing
+to have a complete specification of the induction
+algorithm~\ref{algo:induction} is an efficient optimization procedure for
+finding the best split $s^* \in {\cal Q}$.
 
-% on se limite à du binaire
-% décomposition variable-wise
+Assuming that ${\cal Q}$ is the set of binary univariate splits, we showed in
+Section~\ref{sec:3:splitting-rules:families} that $s^*$ is the best of the best
+binary splits defined on each input variable. In this framework, finding $s^*$
+therefore simply reduces to finding $s^*_j$ for all variables $X_j$.
 
 \subsubsection{On an ordered variable}
 \label{sec:best-split-ordered}
