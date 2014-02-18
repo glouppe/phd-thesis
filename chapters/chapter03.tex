@@ -944,8 +944,8 @@ While the Shannon entropy~\ref{eqn:impurity:shannon} and the Gini
 index~\ref{eqn:impurity:gini} are robust and reliable impurity functions
 usually producing accurate decision trees, they are not exempt of defects. One
 of the most well-known issues is end-cut
-preference~\citep{morgan:1973,breiman:1984}, that is the tendency to favor
-splits in which $p_L$ is close to zero or one, resulting in deep and unbalanced
+preference~\citep{morgan:1973,breiman:1984}, that is the tendency to favor unbalanced
+splits in which $p_L$ is close to zero or one,  often resulting in deep and uninterpretable
 decision trees. Another defect is the propensity of preferring splits based on
 input variables with many outcomes rather than selecting input variables
 without bias with respect to their
@@ -1023,7 +1023,12 @@ therefore simply reduces to finding $s^*_j$ for all variables $X_j$.
 \subsubsection{On an ordered variable}
 \label{sec:best-split-ordered}
 
+Let $X_j$ be an ordered variable and let ${\cal Q}(X_j)$ be the set of all
+binary non-crossing partitions of ${\cal X}_j$, as defined in
+Equation~\ref{eqn:q:ordered}.
+
 % choix du seuil intermédiaire
+% figure
 
 % \subsection{Approximately best binary split on an ordered variable}
 % \label{sec:best-split-ordered-approx}
