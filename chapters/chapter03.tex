@@ -917,13 +917,13 @@ entropy and the Gini index:
 
 \begin{definition}
 The impurity function $i_H(t)$ based on the Shannon entropy~\citep{shannon:1949} is:
-\begin{equation}
+\begin{equation}\label{eqn:impurity:shannon}
 i_H(t) = - \sum_{k=1}^J p(c_k|t) \log_2 (p(c_k|t))
 \end{equation}
 \end{definition}
 \begin{definition}
 The impurity function $i_G(t)$ based on the Gini index~\citep{gini:1912} is:
-\begin{equation}
+\begin{equation}\label{eqn:impurity:gini}
 i_G(t) = \sum_{k=1}^J p(c_k|t) (1 - p(c_k|t))
 \end{equation}
 \end{definition}
@@ -939,14 +939,26 @@ measures how often a randomly chosen object $\mathbf{x}\in {\cal L}_t$ would be
 incorrectly classified if it were randomly labeled by a class $c\in{\cal Y}$ according
 to the distribution $p(y|t)$.
 
-%             End-cut preference (CART 11.8)
-%             Normalisation par l'entropy (cf. Vincent, Louis)
-%             Effet sur la structure des arbres générés
-                % Zighedh chap 9 intro:
-                % le choix du split a une forte influence sur la structure du graphe,
-                % mais finalement peu sur la qualité des prédictions
-                % citer http://www.ise.bgu.ac.il/faculty/liorr/hbchap9.pdf  pour une comparaison des critères The Data Mining and Knowledge Discovery Handbook
-                % On Uncertainty Measures Used for Decision Tree Induction
+While the Shannon entropy~\ref{eqn:impurity:shannon} and the Gini
+index~\ref{eqn:impurity:gini} are robust and reliable impurity functions
+usually producing accurate decision trees, they are not exempt of defects. One
+of the most well-known issues is end-cut
+preference~\citep{morgan:1973,breiman:1984}, that is the tendency to favor
+splits in which $p_L$ is close to zero or one, resulting in deep and unbalanced
+decision trees. Another defect is the propensity of preferring splits based on
+input variables with many outcomes rather than selecting input variables
+without bias with respect to their
+cardinality~\citep{quinlan:1986,strobl:2007}. Intuitively, if $|{\cal X}_1| >
+|{\cal X}_2|$ and that both $X_1$ and $X_2$ are independent of $Y$, then $X_1$
+is indeed more likely to be selected than $X_2$  because of chance. To overcome
+this issues, numerous variants of impurity measures have been proposed in the
+literature, including normalization techniques, distance-based measures or
+causality-based impurity functions (see \citep{wehenkel:1996,zighed:2000,maimon:2005} for
+reviews on the topic). From an empirical point of view however,  several
+studies~\citep{mingers:1989b,miyakawa:1989,mantaras:1991} have shown that,
+while the impurity function may have a significant impact on the structure of
+the decision tree, improvements in terms of classification accuracy are
+usually not that significant.
 
 \subsubsection{Regression}
 \label{sec:3:criteria:regression}
@@ -981,8 +993,7 @@ When ${\cal Y} = \{0, 1\}$, the learning problem can either be
 stated as a binary classification task where $c_1=0$ and $c_2=1$ or as a regression
 task where the goal is to predict the most accurate predictions $\widehat{y} \in {\cal Y} \subseteq \mathbb{R}$.
 Interestingly, regression trees built in this setting are in fact strictly
-equivalent to classification trees built using the Gini index $i_G(t)$ as
-impurity criterion. Indeed since $\widehat{y}_t = \tfrac{1}{N_t} \sum_{\mathbf{x}, y \in {\cal L}_t} y = p(c_2|t) = 1 - p(c_1|t)$, it comes:
+equivalent to classification trees built using the Gini index $i_G(t)$. Indeed since $\widehat{y}_t = \tfrac{1}{N_t} \sum_{\mathbf{x}, y \in {\cal L}_t} y = p(c_2|t) = 1 - p(c_1|t)$, it comes:
 \begin{align}
 i_R(t) &= \frac{1}{N_t} \sum_{\mathbf{x}, y \in {\cal L}_t} (y - \widehat{y}_t)^2 \nonumber \\
        &= \frac{1}{N_t} \sum_{\mathbf{x}, y \in {\cal L}_t} y - 2 y \widehat{y}_t + \widehat{y}_t^2 \nonumber \\
