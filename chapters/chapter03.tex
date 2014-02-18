@@ -951,7 +951,7 @@ without bias with respect to their
 cardinality~\citep{quinlan:1986,strobl:2007}. Intuitively, if $|{\cal X}_1| >
 |{\cal X}_2|$ and that both $X_1$ and $X_2$ are independent of $Y$, then $X_1$
 is indeed more likely to be selected than $X_2$  because of chance. To overcome
-this issues, numerous variants of impurity measures have been proposed in the
+these issues, numerous variants of impurity measures have been proposed in the
 literature, including normalization techniques, distance-based measures or
 causality-based impurity functions (see \citep{wehenkel:1996,zighed:2000,maimon:2005} for
 reviews on the topic). From an empirical point of view however,  several
@@ -1003,18 +1003,31 @@ i_R(t) &= \frac{1}{N_t} \sum_{\mathbf{x}, y \in {\cal L}_t} (y - \widehat{y}_t)^
        &= \frac{1}{2} i_G(t)
 \end{align}
 From a practical point of view, this means that both classification and
-regression trees can be implemented using the single criterion~\ref{eqn:impurity:variance}.
+regression trees could be implemented using the single criterion~\ref{eqn:impurity:variance}.
 \end{remark}
 
 \subsection{Finding the best binary split}
-\subsubsection{On a categorical variable}
-\label{sec:best-split-categorical}
+
+Now that we have described families ${\cal Q}$ of splitting rules and impurity
+criteria to evaluate their respective goodness, the last thing which is missing to have
+fully specified the induction procedure is an efficient optimization procedure
+for finding the best split $s^* \in {\cal Q}$.
+
+% on se limite à du binaire
+% décomposition variable-wise
 
 \subsubsection{On an ordered variable}
 \label{sec:best-split-ordered}
+
+% choix du seuil intermédiaire
 
 % \subsection{Approximately best binary split on an ordered variable}
 % \label{sec:best-split-ordered-approx}
 
 %             + Binning
 %             + Subsampling
+
+
+\subsubsection{On a categorical variable}
+\label{sec:best-split-categorical}
+
