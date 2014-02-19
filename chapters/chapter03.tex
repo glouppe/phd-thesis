@@ -160,11 +160,11 @@ Prediction of the output value $\widehat{y} =\varphi(\mathbf{x})$ in a decision 
 \textnormal{
 \begin{algorithmic}[1]
 \Function{Predict}{$\varphi, \mathbf{x}$}
-    \State $t \gets t_0$;
+    \State $t \gets t_0$
     \While{$t$ is not a terminal node}
-        \State $t \gets$ the child node $t'$ of $t$ such that $\mathbf{x} \in {\cal X}_{t'}$;
+        \State $t \gets$ the child node $t'$ of $t$ such that $\mathbf{x} \in {\cal X}_{t'}$
     \EndWhile
-    \State \Return $\widehat{y}_t$;
+    \State \Return $\widehat{y}_t$
 \EndFunction
 \end{algorithmic}
 }
@@ -295,23 +295,23 @@ Greedy induction of a binary decision tree.
 \textnormal{
 \begin{algorithmic}[1]
 \Function{BuildDecisionTree}{${\cal L}$}
-    \State Create a decision tree $\varphi$ with root node $t_0$;
-    \State Create an empty stack $S$ of \emph{open} nodes $(t, {\cal L}_t)$ ;
+    \State Create a decision tree $\varphi$ with root node $t_0$
+    \State Create an empty stack $S$ of \emph{open} nodes $(t, {\cal L}_t)$
     \State $S$\Call{.push}{($t_0, {\cal L}$)}
     \While{$S$ is not empty}
         \State $t, {\cal L}_t \gets$ $S$\Call{.pop}{~}
         \If{the stopping criterion is met for $t$}\label{algo:induction:stop}
-            \State $\widehat{y}_{t} \gets$ some constant value;\label{algo:induction:terminal}
+            \State $\widehat{y}_{t} \gets$ some constant value\label{algo:induction:terminal}
         \Else
-            \State Find the split on ${\cal L}_t$ that maximizes impurity decrease $$s^* = \argmax_{s \in {\cal Q}} \Delta i(s, t);$$ \label{algo:induction:split}
-            \State Partition ${\cal L}_t$ into ${\cal L}_{t_L} \cup {\cal L}_{t_R}$ according to $s^*$;
-            \State Create the left child node $t_L$ of $t$;
-            \State Create the right child node $t_R$ of $t$;
-            \State $S$\Call{.push}{($t_R, {\cal L}_{t_R}$)};
-            \State $S$\Call{.push}{($t_L, {\cal L}_{t_L}$)};
+            \State Find the split on ${\cal L}_t$ that maximizes impurity decrease $$s^* = \argmax_{s \in {\cal Q}} \Delta i(s, t)$$ \label{algo:induction:split}
+            \State Partition ${\cal L}_t$ into ${\cal L}_{t_L} \cup {\cal L}_{t_R}$ according to $s^*$
+            \State Create the left child node $t_L$ of $t$
+            \State Create the right child node $t_R$ of $t$
+            \State $S$\Call{.push}{($t_R, {\cal L}_{t_R}$)}
+            \State $S$\Call{.push}{($t_L, {\cal L}_{t_L}$)}
         \EndIf
     \EndWhile
-    \State \Return $\varphi$;
+    \State \Return $\varphi$
 \EndFunction
 \end{algorithmic}
 }
@@ -1025,15 +1025,15 @@ Find the best split $s^*$ that partitions ${\cal L}_t$.
 \textnormal{
 \begin{algorithmic}[1]
 \Function{FindBestSplit}{${\cal L}_t$}
-    \State $\Delta = -\infty$;
+    \State $\Delta = -\infty$
     \For{$j=1, \dots, p$}
-        \State $s^*_j =$ \Call{FindBestSplit}{${\cal L}_t$, $X_j$};
+        \State $s^*_j =$ \Call{FindBestSplit}{${\cal L}_t$, $X_j$}
         \If{$\Delta i(s^*_j, t) > \Delta$}
-            \State $\Delta \gets \Delta i(s^*_j, t)$;
-            \State $s^* \gets s^*_j$;
+            \State $\Delta \gets \Delta i(s^*_j, t)$
+            \State $s^* \gets s^*_j$
         \EndIf
     \EndFor
-    \State \Return $s^*$;
+    \State \Return $s^*$
 \EndFunction
 \end{algorithmic}
 }
