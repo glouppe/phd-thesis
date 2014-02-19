@@ -30,8 +30,8 @@ s2 = (X[5] + X[6]) / 2.0
 
 plt.plot([s1,s1], [0.00003, -0.00003], '-', color='k')
 plt.text(s1, 0.000035, "$v$", fontsize=15, horizontalalignment='center')
-plt.text((s1+(-3)) / 2.0, -0.00003, "$t_L (X_j \leq v)$", fontsize=15, horizontalalignment='center')
-plt.text((s1+3) / 2.0, -0.00003, "$t_R (X_j > v)$", fontsize=15, horizontalalignment='center')
+plt.text((s1+(-3)) / 2.0, -0.00002, "${\cal L}^v_{t_L}$", fontsize=15, horizontalalignment='center')
+plt.text((s1+3) / 2.0, -0.00002, "${\cal L}^v_{t_R}$", fontsize=15, horizontalalignment='center')
 
 #plt.plot([s2,s2], [0.00003, -0.00003], '-', color='k')
 

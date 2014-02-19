@@ -1044,7 +1044,12 @@ Find the best split $s^*$ that partitions ${\cal L}_t$.
 
 Let $X_j$ be an ordered variable and let ${\cal Q}(X_j)$ be the set of all
 binary non-crossing partitions of ${\cal X}_j$, as defined in
-Equation~\ref{eqn:q:ordered}.
+Equation~\ref{eqn:q:ordered}. The best split $s^*_j$ on $X_j$ is the best
+binary partition $s^v$ of ${\cal L}_t$ into two non-empty subsets:
+\begin{align*}
+{\cal L}^v_{t_L} &= \{(\mathbf{x}, y)|(\mathbf{x}, y)\in {\cal L}_t, x_j \leq v\}\\
+{\cal L}^v_{t_R} &= \{(\mathbf{x}, y)|(\mathbf{x}, y)\in {\cal L}_t, x_j > v\}
+\end{align*}
 
 \begin{figure}
     \centering
@@ -1052,6 +1057,19 @@ Equation~\ref{eqn:q:ordered}.
     \caption{Binary partitions of ${\cal L}_t$ on the ordered variable $X_j$.}
     \label{fig:3:split-ordered}
 \end{figure}
+
+As illustrated on Figure~\ref{fig:3:split-ordered}, if $X_j$ counts $|{\cal
+X}_{j|t}|$ unique values within the node samples in $t$, then there exists
+$|{\cal X}_{j|t}|-1$ possible partitions of ${\cal L}_t$ into two such subsets.
+Most importantly, the goodness $\Delta i(s^v, t)$ (for $v \in {\cal X}_{j|t}$) of all these partitions
+can computed efficiently by noticing that $\Delta i(s^v, t)$ can be evaluated
+from $\Delta i(s^{v^\prime}, t)$ in a limited number of operations.
+
+
+
+
+
+
 
 
 % choix du seuil intermédiaire
