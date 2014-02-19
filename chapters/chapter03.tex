@@ -1014,11 +1014,30 @@ criteria to evaluate their respective goodness, the last thing which is missing
 to have a complete specification of the induction
 algorithm~\ref{algo:induction} is an efficient optimization procedure for
 finding the best split $s^* \in {\cal Q}$.
-
 Assuming that ${\cal Q}$ is the set of binary univariate splits, we showed in
 Section~\ref{sec:3:splitting-rules:families} that $s^*$ is the best of the best
 binary splits defined on each input variable. In this framework, finding $s^*$
-therefore simply reduces to finding $s^*_j$ for all variables $X_j$.
+therefore simply reduces to finding $s^*_j$ for all variables $X_j$:
+
+
+\begin{algorithm}\label{algo:findsplit}
+Find the best split $s^*$ that partitions ${\cal L}_t$.
+\textnormal{
+\begin{algorithmic}[1]
+\Function{FindBestSplit}{${\cal L}_t$}
+    \State $\Delta = -\infty$;
+    \For{$j=1, \dots, p$}
+        \State $s^*_j =$ \Call{FindBestSplit}{${\cal L}_t$, $X_j$};
+        \If{$\Delta i(s^*_j, t) > \Delta$}
+            \State $\Delta \gets \Delta i(s^*_j, t)$;
+            \State $s^* \gets s^*_j$;
+        \EndIf
+    \EndFor
+    \State \Return $s^*$;
+\EndFunction
+\end{algorithmic}
+}
+\end{algorithm}
 
 \subsubsection{On an ordered variable}
 \label{sec:best-split-ordered}
