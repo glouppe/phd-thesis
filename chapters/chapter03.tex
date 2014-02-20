@@ -1077,7 +1077,7 @@ In practice, this is indeed a good-enough heuristic on most problems.
 
 In this framework, finding the best split $s^*_j$ therefore amounts to examine
 all partitions $\smash{s^{v^\prime_k}_j}$ and pick the one that maximizes
-impurity decrease. Computationally, the exhaustive evaluation of the splits can
+impurity decrease. Computationally, the exhaustive evaluation of these splits can
 be carried out efficiently when done iteratively by remarking that
 $\smash{\Delta i(s^{v^\prime_{k+1}}_j, t)}$ can be computed  from
 $\smash{\Delta i(s^{v^\prime_{k}}_j, t)}$ in a limited number of operations.
@@ -1094,13 +1094,36 @@ $\smash{\Delta i(s^{v^\prime_{k}}_j, t)}$ in a limited number of operations.
       The four other statistics can be computed iteratively, from
       $\smash{s^{v_k^\prime}_j}$ to $\smash{s^{v_{k+1}^\prime}_j}$:
       \begin{align}
-      N_{t_L}^{v^\prime_{k+1}} &= N_{t_L}^{v^\prime_{k}} + |\{ (\mathbf{x},y) | (\mathbf{x},y) \in {\cal L}^{v^\prime_{k+1}}_{t_L} \cap {\cal L}^{v^\prime_{k}}_{t_R} \}| \\
+      N_{t_L}^{v^\prime_{k+1}} &= N_{t_L}^{v^\prime_{k}} + |\{ (\mathbf{x},y) | (\mathbf{x},y) \in {\cal L}^{v^\prime_{k+1}}_{t_L} \cap {\cal L}^{v^\prime_{k}}_{t_R} \}| \label{eqn:criterion:n_tl} \\
       N_{ct_L}^{v^\prime_{k+1}} &= N_{ct_L}^{v^\prime_{k}} + |\{ (\mathbf{x},y) | (\mathbf{x},y) \in {\cal L}^{v^\prime_{k+1}}_{t_L} \cap {\cal L}^{v^\prime_{k}}_{t_R}, y=c \}| \\
-      N_{t_R}^{v^\prime_{k+1}} &= N_{t_R}^{v^\prime_{k}} - |\{ (\mathbf{x},y) | (\mathbf{x},y) \in {\cal L}^{v^\prime_{k+1}}_{t_L} \cap {\cal L}^{v^\prime_{k}}_{t_R} \}| \\
+      N_{t_R}^{v^\prime_{k+1}} &= N_{t_R}^{v^\prime_{k}} - |\{ (\mathbf{x},y) | (\mathbf{x},y) \in {\cal L}^{v^\prime_{k+1}}_{t_L} \cap {\cal L}^{v^\prime_{k}}_{t_R} \}| \label{eqn:criterion:n_tr} \\
       N_{ct_R}^{v^\prime_{k+1}} &= N_{ct_R}^{v^\prime_{k}} - |\{ (\mathbf{x},y) | (\mathbf{x},y) \in {\cal L}^{v^\prime_{k+1}}_{t_L} \cap {\cal L}^{v^\prime_{k}}_{t_R}, y=c \}|
       \end{align}
-      where ${\cal L}^{v^\prime_{k+1}}_{t_L} \cap {\cal L}^{v^\prime_{k}}_{t_R}$ are the node samples going from the right child node to the left child node when
-      switching from $\smash{s^{v_k^\prime}_j}$ to $\smash{s^{v_{k+1}^\prime}_j}$.
+      where ${\cal L}^{v^\prime_{k+1}}_{t_L} \cap {\cal
+      L}^{v^\prime_{k}}_{t_R}$ are the node samples going from the right child
+      node to the left child node when switching from
+      $\smash{s^{v_k^\prime}_j}$ to $\smash{s^{v_{k+1}^\prime}_j}$.
+
+\item In regression, $i_R(t)$ can be reexpressed as the mean of the squared output values and the square of the mean output value, that is
+      \begin{equation}
+      i_R(t) = \frac{\Sigma_{t^2}}{N_t} - (\frac{\Sigma_t}{N_t})^2
+      \end{equation}
+      where $\Sigma_t = \sum_{\mathbf{x}, y \in {\cal L}_t} y$ and $\Sigma_{t^2}
+      = \sum_{\mathbf{x}, y \in {\cal L}_t} y^2$. In this form, the necessary
+      statistics for computing $\Delta i_R(s, t)$ are $\Sigma_t$, $\Sigma_{t^2}$,
+      $\Sigma_{t_L}$, $\Sigma_{t_L^2}$, $\Sigma_{t_R}$ and $\Sigma_{t_R^2}$, along with the total numbers
+      $N_t$, $N_{t_L}$ and $N_{t_R}$ of samples in $t$, $t_L$ and $t_R$. As in classification,
+      $\Sigma_t$, $\Sigma_{t^2}$ and $N_t$ can be computed once for all splits, while $N_{t_L}$ and $N_{t_R}$
+      can be computed from one split to another using Equations~\ref{eqn:criterion:n_tl} and \ref{eqn:criterion:n_tr}.
+      The four other statistics can be computed iteratively, from
+      $\smash{s^{v_k^\prime}_j}$ to $\smash{s^{v_{k+1}^\prime}_j}$:
+      \begin{align}
+      \Sigma_{t_L}^{v^\prime_{k+1}} &= \Sigma_{t_L}^{v^\prime_{k}} + \sum_{(\mathbf{x},y) \in {\cal L}^{v^\prime_{k+1}}_{t_L} \cap {\cal L}^{v^\prime_{k}}_{t_R}} y \\
+      \Sigma_{t_L^2}^{v^\prime_{k+1}} &= \Sigma_{t_L^2}^{v^\prime_{k}} + \sum_{(\mathbf{x},y) \in {\cal L}^{v^\prime_{k+1}}_{t_L} \cap {\cal L}^{v^\prime_{k}}_{t_R}} y^2 \\
+      \Sigma_{t_R}^{v^\prime_{k+1}} &= \Sigma_{t_R}^{v^\prime_{k}} - \sum_{(\mathbf{x},y) \in {\cal L}^{v^\prime_{k+1}}_{t_L} \cap {\cal L}^{v^\prime_{k}}_{t_R}} y \\
+      \Sigma_{t_R^2}^{v^\prime_{k+1}} &= \Sigma_{t_R^2}^{v^\prime_{k}} - \sum_{(\mathbf{x},y) \in {\cal L}^{v^\prime_{k+1}}_{t_L} \cap {\cal L}^{v^\prime_{k}}_{t_R}} y^2
+      \end{align}
+
 \end{itemize}
 
 
