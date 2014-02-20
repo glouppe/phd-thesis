@@ -1053,18 +1053,18 @@ $s^v_j \in {\cal Q}(X_j)$ of ${\cal L}_t$ into two non-empty subsets:
 where $v$ is the decision threshold of the split. As illustrated in
 Figure~\ref{fig:3:split-ordered}, there exist exactly $|{\cal X}_{j|{\cal
 L}_t}|-1$ partitions of ${\cal L}_t$ into two such non-empty subsets, that is
-one for each value $v_k \in {\cal X}_{j|{\cal L}_t}$ (except for the last one
-which leads to an invalid partition). In particular, if $X_j$ is locally
-constant in $t$, then $|{\cal X}_{j|{\cal L}_t}|=1$ and $X_j$ cannot be used to
-partition $t$. More importantly, there usually exist several thresholds $v$
+one for each value $v_k \in {\cal X}_{j|{\cal L}_t}$, except for the last one
+which leads to an invalid partition. In particular, if $X_j$ is locally
+constant in $t$ (i.e., if all dots overlap in Figure~\ref{fig:3:split-ordered}), then $|{\cal X}_{j|{\cal L}_t}|=1$ and $X_j$ cannot be used to
+partition $t$. Additionally, there usually exist several thresholds $v$
 producing the same partition of the node samples. If $v_k$ and $v_{k+1}$ are
 two immediately consecutive values in  ${\cal X}_{j|{\cal L}_t}$, then all
-splits $s^{v}_j$ for $v \in [v^k, v^{k+1}[$ actually produce the same partition
+splits $s^{v}_j$ for $v \in [v^k, v^{k+1}[$ indeed produce the same partition
 of ${\cal L}_t$ as $s^{v_k}_j$ does. In terms of impurity decrease $\Delta i$,
 all of them are thus equivalent when evaluated on ${\cal L}_t$. In
 generalization however, these splits may not be strictly the same since they do
 not produce the same partition of ${\cal X}_t$. As a compromise, the decision
-thresholds that are usually chosen to define the splits are the mid-cut-points
+thresholds that are thus usually chosen are the mid-cut-points
 $v^\prime_k=\tfrac{v_k+v_{k+1}}{2}$ between consecutive values of the variable.
 In practice, this is indeed a good-enough heuristic on most problems.
 
@@ -1126,9 +1126,9 @@ $\smash{\Delta i(s^{v^\prime_{k}}_j, t)}$ in a limited number of operations.
 
 \end{itemize}
 
-Using these update equations, the search of the best split on $X_j$ can be
+Using these update equations, the search of the best split $s^*_j$ on $X_j$ can be
 efficiently implemented as described in Algorithm~\ref{algo:findsplit:x_j},
-which finally completes the specification of the tree induction algorithm.
+which finally completes our specification of the tree induction algorithm.
 
 \begin{algorithm}\label{algo:findsplit:x_j}
 Find the best split $s^*_j$ on $X_j$ that partitions ${\cal L}_t$.
