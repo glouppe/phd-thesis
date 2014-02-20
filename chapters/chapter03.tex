@@ -1104,7 +1104,7 @@ $\smash{\Delta i(s^{v^\prime_{k}}_j, t)}$ in a limited number of operations.
       node to the left child node when switching from
       $\smash{s^{v_k^\prime}_j}$ to $\smash{s^{v_{k+1}^\prime}_j}$.
 
-\item In regression, $i_R(t)$ can be reexpressed as the mean of the squared output values and the square of the mean output value, that is
+\item In regression, $i_R(t)$ can be reexpressed as the difference between the mean of the squared output values and the square of the mean output value, that is
       \begin{equation}
       i_R(t) = \frac{\Sigma_{t^2}}{N_t} - (\frac{\Sigma_t}{N_t})^2
       \end{equation}
@@ -1126,23 +1126,26 @@ $\smash{\Delta i(s^{v^\prime_{k}}_j, t)}$ in a limited number of operations.
 
 \end{itemize}
 
+Using these update equations, the search of the best split on $X_j$ can be
+efficiently implemented as described in Algorithm~\ref{algo:findsplit:x_j},
+which finally completes the specification of the tree induction algorithm.
+
+\begin{algorithm}\label{algo:findsplit:x_j}
+Find the best split $s^*_j$ on $X_j$ that partitions ${\cal L}_t$.
+\textnormal{
+\begin{algorithmic}[1]
+\Function{FindBestSplit}{${\cal L}_t$, $X_j$}
+    \State $\Delta = -\infty$
+    \State \Return $s^*_j$
+\EndFunction
+\end{algorithmic}
+}
+\end{algorithm}
 
 
 
-% the goodness $\Delta i(s^v, t)$ (for $v \in
-% {\cal X}_{j|t}$) of all these partitions can computed efficiently by noticing
-% that $\Delta i(s^v, t)$ can be evaluated from $\Delta i(s^{v^\prime}, t)$ in a
-% limited number of operations.
 
 
-
-
-
-
-
-
-% choix du seuil intermédiaire
-% figure
 
 % \subsection{Approximately best binary split on an ordered variable}
 % \label{sec:best-split-ordered-approx}
