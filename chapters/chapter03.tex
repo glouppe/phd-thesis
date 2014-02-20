@@ -1044,12 +1044,31 @@ Find the best split $s^*$ that partitions ${\cal L}_t$.
 
 Let $X_j$ be an ordered variable and let ${\cal Q}(X_j)$ be the set of all
 binary non-crossing partitions of ${\cal X}_j$, as defined in
-Equation~\ref{eqn:q:ordered}. The best split $s^*_j$ on $X_j$ is the best
-binary partition $s^v$ of ${\cal L}_t$ into two non-empty subsets:
+Equation~\ref{eqn:q:ordered}. Let also ${\cal X}_{j|{\cal L}_t} = \{ x_j | \mathbf{x},y
+\in {\cal L}_t \}$ denotes the set of unique values of $X_j$ within the node
+samples in $t$.  The best split on $X_j$ is the best binary partition
+$s^v_j$ of ${\cal L}_t$ into two non-empty subsets:
 \begin{align*}
 {\cal L}^v_{t_L} &= \{(\mathbf{x}, y)|(\mathbf{x}, y)\in {\cal L}_t, x_j \leq v\}\\
 {\cal L}^v_{t_R} &= \{(\mathbf{x}, y)|(\mathbf{x}, y)\in {\cal L}_t, x_j > v\}
 \end{align*}
+where $v$ is the decision threshold of the split. As illustrated in
+Figure~\ref{fig:3:split-ordered}, there exist exactly $|{\cal X}_{j|{\cal
+L}_t}|-1$ partitions of ${\cal L}_t$ into two such non-empty subsets, that is
+one for each value $v_k \in {\cal X}_{j|{\cal L}_t}$, except for the last one
+which leads to an invalid partition. In particular, if $X_j$ is locally
+constant in $t$, then $|{\cal X}_{j|{\cal L}_t}|=1$ and $X_j$ cannot be used to
+partition $t$. More importantly, there usually exist several threholds $v$
+producing the same partition of the node samples. If $v_k$ and $v_{k+1}$ are
+two immediately consecutives values in  ${\cal X}_{j|{\cal L}_t}$, then all
+splits $s^{v}_j$ for $v \in [v^k, v^{k+1}[$ actually produce the same partition
+of ${\cal L}_t$ as $s^{v_k}_j$ does. In terms of impurity decrease $\Delta i$,
+all of them are thus equivalent when evaluated on ${\cal L}_t$. In
+generalization however, these splits may not be strictly the same since they do
+not produce the same partition of ${\cal X}_t$. As a result, the decision
+thresholds that are usually chosen to define the splits are the mid-cutpoints
+$v^\prime_k=\tfrac{v_k+v_{k+1}}{2}$ between consecutive values of the variable.
+In practice, this is often a good-enough heuristic.
 
 \begin{figure}
     \centering
@@ -1058,12 +1077,20 @@ binary partition $s^v$ of ${\cal L}_t$ into two non-empty subsets:
     \label{fig:3:split-ordered}
 \end{figure}
 
-As illustrated on Figure~\ref{fig:3:split-ordered}, if $X_j$ counts $|{\cal
-X}_{j|t}|$ unique values within the node samples in $t$, then there exists
-$|{\cal X}_{j|t}|-1$ possible partitions of ${\cal L}_t$ into two such subsets.
-Most importantly, the goodness $\Delta i(s^v, t)$ (for $v \in {\cal X}_{j|t}$) of all these partitions
-can computed efficiently by noticing that $\Delta i(s^v, t)$ can be evaluated
-from $\Delta i(s^{v^\prime}, t)$ in a limited number of operations.
+In this framework, finding the best split $s^*_j$ therefore amounts to examine
+all partitions $\smash{s^{v^\prime_k}_j}$ and pick the one that maximizes
+impurity decrease. Computationally, this exhaustive evaluation of all possible
+splits can be done efficiently by remarking that $\smash{\Delta
+i(s^{v^\prime_{k+1}}_j, t)}$ can be computed in a limited number of operations
+from $\smash{\Delta i(s^{v^\prime_{k}}_j, t)}$.
+
+
+
+
+% the goodness $\Delta i(s^v, t)$ (for $v \in
+% {\cal X}_{j|t}$) of all these partitions can computed efficiently by noticing
+% that $\Delta i(s^v, t)$ can be evaluated from $\Delta i(s^{v^\prime}, t)$ in a
+% limited number of operations.
 
 
 
