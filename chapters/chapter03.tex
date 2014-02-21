@@ -1041,6 +1041,13 @@ Find the best split $s^*$ that partitions ${\cal L}_t$.
 \subsubsection{On an ordered variable}
 \label{sec:best-split-ordered}
 
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/ch3_split_ordered.pdf}
+    \caption{Binary partitions of ${\cal L}_t$ on the ordered variable $X_j$.}
+    \label{fig:3:split-ordered}
+\end{figure}
+
 Let $X_j$ be an ordered variable and let ${\cal Q}(X_j)$ be the set of all
 binary non-crossing partitions of ${\cal X}_j$, as defined in
 Equation~\ref{eqn:q:ordered}. Let also ${\cal X}_{j|{\cal L}_t} = \{ x_j | \mathbf{x},y
@@ -1052,7 +1059,7 @@ $s^v_j \in {\cal Q}(X_j)$ of ${\cal L}_t$ into two non-empty subsets:
 {\cal L}^v_{t_R} &= \{(\mathbf{x}, y)|(\mathbf{x}, y)\in {\cal L}_t, x_j > v\}
 \end{align*}
 where $v$ is the decision threshold of the split. As illustrated in
-Figure~\ref{fig:3:split-ordered}, there exist exactly $|{\cal X}_{j|{\cal
+Figure~\ref{fig:3:split-ordered}, there exist $|{\cal X}_{j|{\cal
 L}_t}|-1$ partitions of ${\cal L}_t$ into two such non-empty subsets, i.e., one
 for each value $v_k \in {\cal X}_{j|{\cal L}_t}$, except for the last one which
 leads to an invalid partition. In particular, if $X_j$ is locally constant in
@@ -1071,16 +1078,9 @@ between consecutive values of the variable, as shown by the dotted line in
 Figure~\ref{fig:3:split-ordered}. In practice, this is indeed a good-enough
 heuristic on most problems.
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.9\textwidth]{figures/ch3_split_ordered.pdf}
-    \caption{Binary partitions of ${\cal L}_t$ on the ordered variable $X_j$.}
-    \label{fig:3:split-ordered}
-\end{figure}
-
 In this framework, the best split $s^*_j$ is the split
 $\smash{s^{v^\prime_k}_j}$ that maximizes impurity decrease. Computationally,
-the exhaustive evaluation of all of these splits can be carried out efficiently when
+the exhaustive evaluation of all these splits can be carried out efficiently when
 considering decision thresholds $v^\prime_k$ in sorted order, by remarking that
 $\smash{\Delta i(s^{v^\prime_{k+1}}_j, t)}$ can be computed  from
 $\smash{\Delta i(s^{v^\prime_{k}}_j, t)}$ in a limited number of operations.
@@ -1130,9 +1130,9 @@ $\smash{\Delta i(s^{v^\prime_{k}}_j, t)}$ in a limited number of operations.
 
 \end{itemize}
 
-Using these update equations, the search of the best split $s^*_j$ on $X_j$ can be
-efficiently implemented as described in Algorithm~\ref{algo:findsplit:x_j},
-which finally completes our specification of the tree induction algorithm.
+Using these update equations, the search of the best split $s^*_j$ on $X_j$ can
+be efficiently implemented as described in Algorithm~\ref{algo:findsplit:x_j}
+and further illustrated in Figure~\ref{fig:3:split:invariant}.
 
 \begin{algorithm}\label{algo:findsplit:x_j}
 Find the best split $s^*_j$ on $X_j$ that partitions ${\cal L}_t$.
@@ -1168,7 +1168,12 @@ Find the best split $s^*_j$ on $X_j$ that partitions ${\cal L}_t$.
 }
 \end{algorithm}
 
-
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/ch3_split_ordered_invariant.pdf}
+    \caption{Loop invariant of Algorithm~\ref{algo:findsplit:x_j}.}
+    \label{fig:3:split:invariant}
+\end{figure}
 
 
 
