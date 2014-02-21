@@ -186,6 +186,15 @@ nodes to be both divided and recombined.
     \label{fig:3:tree}
 \end{figure}
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/ch3_partition.pdf}
+    \caption{Partition of ${\cal X}$ induced by the decision tree $\varphi$ into homogeneous subspaces.
+             Blue dots correspond to objects of class $c_1$ while red dots correspond
+             to objects of class $c_2$. (Figure inspired from \citet{breiman:1984}.)}
+    \label{fig:3:partition}
+\end{figure}
+
 As an example, Figure~\ref{fig:3:tree} illustrates a decision tree $\varphi$
 made of five nodes and partitioning the input space ${\cal X} = {\cal X}_1
 \times {\cal X}_2 = [0;1] \times [0; 1]$ for a binary classification problem
@@ -218,16 +227,6 @@ Predictions are made by propagating instances through the tree and using as
 output value the value labeling the terminal nodes in which they fall
 into. For example, an object $\mathbf{x}=(x_1=0.2, x_2=0.7)$ falls into $t_4$
 and therefore $\varphi(\mathbf{x}) = \widehat{y}_{t_4} = c_1$.
-
-\begin{figure}
-    \centering
-    \includegraphics[scale=0.5]{figures/ch3_partition.pdf}
-    \caption{Partition of ${\cal X}$ induced by the decision tree $\varphi$.
-             Blue dots correspond to objects of class $c_1$ while red dots correspond
-             to objects of class $c_2$. (Figure inspired from \citet{breiman:1984}.)}
-    \label{fig:3:partition}
-\end{figure}
-
 
 \section{Induction of decision trees}
 \label{sec:3:induction}
@@ -860,9 +859,9 @@ if $p(c_k|t_L)=p(c_k|t_R)$ for $k=1,\dots,J$.
 
 \begin{figure}
 \centering
-\includegraphics[scale=0.7]{figures/ch3_toy_x1_gini.pdf}\\
+\includegraphics[width=0.9\textwidth]{figures/ch3_toy_x1_gini.pdf}\\
 \vspace{1cm}
-\includegraphics[scale=0.7]{figures/ch3_toy_x3_gini.pdf}
+\includegraphics[width=0.9\textwidth]{figures/ch3_toy_x3_gini.pdf}
 \caption{Splitting $t_0$ on $X_1$ (above) versus splitting $t_0$ on $X_3$ (below), as evaluated by a strictly concave impurity function.}
 \label{fig:3:toy:impurity:gini}
 \end{figure}
@@ -891,7 +890,7 @@ $\Delta i(s,t)=0$.
 
 \begin{figure}
 \centering
-\includegraphics[scale=0.7]{figures/ch3_toy_x1_error.pdf}
+\includegraphics[width=0.9\textwidth]{figures/ch3_toy_x1_error.pdf}
 \caption{Splitting $t_0$ on $X_1$ as evaluated by the resubstitution estimate $i_R(t)$.}
 \label{fig:3:toy:impurity:error}
 \end{figure}
@@ -908,13 +907,6 @@ from $p(c_1|t)$.
 
 The most common impurity criteria used for classification trees are the Shannon
 entropy and the Gini index:
-
-\begin{figure}
-\centering
-\includegraphics[scale=0.7]{figures/ch3_impurity_comparison.pdf}
-\caption{Comparison of $i_E(t)$, $i_H(t)$ and $i_G(t)$.}
-\label{fig:3:toy:impurity:comparison}
-\end{figure}
 
 \begin{definition}
 The impurity function $i_H(t)$ based on the Shannon entropy~\citep{shannon:1949} is:
@@ -939,6 +931,13 @@ $Y$ by splitting $t$ into $t_L$ and $t_R$. The Gini-based impurity $i_G(t)$
 measures how often a randomly chosen object $\mathbf{x}\in {\cal L}_t$ would be
 incorrectly classified if it were randomly labeled by a class $c\in{\cal Y}$ according
 to the distribution $p(y|t)$.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{figures/ch3_impurity_comparison.pdf}
+\caption{Comparison of $i_E(t)$, $i_H(t)$ and $i_G(t)$.}
+\label{fig:3:toy:impurity:comparison}
+\end{figure}
 
 While the Shannon entropy~\ref{eqn:impurity:shannon} and the Gini
 index~\ref{eqn:impurity:gini} are robust and reliable impurity functions
@@ -1052,11 +1051,11 @@ $s^v_j \in {\cal Q}(X_j)$ of ${\cal L}_t$ into two non-empty subsets:
 \end{align*}
 where $v$ is the decision threshold of the split. As illustrated in
 Figure~\ref{fig:3:split-ordered}, there exist exactly $|{\cal X}_{j|{\cal
-L}_t}|-1$ partitions of ${\cal L}_t$ into two such non-empty subsets, that is
+L}_t}|-1$ partitions of ${\cal L}_t$ into two such non-empty subsets, i.e.,
 one for each value $v_k \in {\cal X}_{j|{\cal L}_t}$, except for the last one
 which leads to an invalid partition. In particular, if $X_j$ is locally
 constant in $t$ (i.e., if all dots overlap in Figure~\ref{fig:3:split-ordered}), then $|{\cal X}_{j|{\cal L}_t}|=1$ and $X_j$ cannot be used to
-partition $t$. Additionally, there usually exist several thresholds $v$
+partition $t$. More importantly, there usually exist several thresholds $v$
 producing the same partition of the node samples. If $v_k$ and $v_{k+1}$ are
 two immediately consecutive values in  ${\cal X}_{j|{\cal L}_t}$, then all
 splits $s^{v}_j$ for $v \in [v^k, v^{k+1}[$ indeed produce the same partition
@@ -1065,12 +1064,12 @@ all of them are thus equivalent when evaluated on ${\cal L}_t$. In
 generalization however, these splits may not be strictly the same since they do
 not produce the same partition of ${\cal X}_t$. As a compromise, the decision
 thresholds that are thus usually chosen are the mid-cut-points
-$v^\prime_k=\tfrac{v_k+v_{k+1}}{2}$ between consecutive values of the variable.
+$v^\prime_k=\tfrac{v_k+v_{k+1}}{2}$ between consecutive values of the variable, as shown by the dotted line in Figure~\ref{fig:3:split-ordered}.
 In practice, this is indeed a good-enough heuristic on most problems.
 
 \begin{figure}
     \centering
-    \includegraphics[scale=0.7]{figures/ch3_split_ordered.pdf}
+    \includegraphics[width=0.9\textwidth]{figures/ch3_split_ordered.pdf}
     \caption{Binary partitions of ${\cal L}_t$ on the ordered variable $X_j$.}
     \label{fig:3:split-ordered}
 \end{figure}
