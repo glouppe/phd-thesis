@@ -1132,21 +1132,23 @@ $\smash{\Delta i(s^{v^\prime_{k}}_j, t)}$ in a limited number of operations.
 
 Using these update equations, the search of the best split $s^*_j$ on $X_j$ can
 be efficiently implemented as described in Algorithm~\ref{algo:findsplit:x_j}
-and further illustrated in Figure~\ref{fig:3:split:invariant}.
+and further illustrated in Figure~\ref{fig:3:split:invariant}, which completes
+our specification of the tree induction procedure.
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.9\textwidth]{figures/ch3_split_ordered_invariant.pdf}
-    \caption{Loop invariant of Algorithm~\ref{algo:findsplit:x_j}.}
-    \label{fig:3:split:invariant}
-\end{figure}
+As we will see later in Chapter~\ref{ch:complexity}, the complexity of
+Algorithm~\ref{algo:findsplit:x_j} is upper bounded by the complexity of the
+sorting operation. In the context of randomized decision trees however, where
+finding the very best split $s^*_j$ is not as crucial, we will show that
+approximation techniques based on subsampling of the node samples or on the
+discretization of the variable $X_j$ can help reduce the computational
+complexity of procedure without significant impact on accuracy.
 
 \begin{algorithm}\label{algo:findsplit:x_j}
 Find the best split $s^*_j$ on $X_j$ that partitions ${\cal L}_t$.
 \textnormal{
 \begin{algorithmic}[1]
 \Function{FindBestSplit}{${\cal L}_t$, $X_j$}
-    \State $\Delta = -\infty$
+    \State $\Delta = 0$
     \State $k \gets 0$
     \State $v^\prime_k = -\infty$
     \State Compute the necessary statistics for $i(t)$
@@ -1175,14 +1177,16 @@ Find the best split $s^*_j$ on $X_j$ that partitions ${\cal L}_t$.
 }
 \end{algorithm}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/ch3_split_ordered_invariant.pdf}
+    \caption{Loop invariant of Algorithm~\ref{algo:findsplit:x_j}. At the end of each
+    iteration, $\smash{\Delta i(s^{v^\prime_k}_j, t)}$ has been computed from the
+    statistics of the previous split at $v^\prime_{k-1}$  and compared to the best reduction in impurity $\Delta$ found so far within the splits at $v^\prime_{0}=-\infty$ to $v^\prime_{k-1}$.}
+    \label{fig:3:split:invariant}
+\end{figure}
 
-As we will see later in Chapter~\ref{ch:complexity}, the complexity of
-Algorithm~\ref{algo:findsplit:x_j} is upper bounded by the complexity of the
-sorting operation. In the context of randomized decision trees however, where
-finding the very best split $s^*_j$ is not as crucial, we will show that
-approximation techniques based on subsampling of the node samples or on the
-discretization of the variable $X_j$ can help reduce the computational
-complexity of the induction procedure.
+
 
 
 % \subsection{Approximately best binary split on an ordered variable}
