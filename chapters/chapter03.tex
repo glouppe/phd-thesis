@@ -670,22 +670,22 @@ in non-empty subsets of ${\cal L}_t$:
 {\cal Q} = \{s | s \in \bigcup_{j=1}^p {\cal Q}(X_j), {\cal L}_{t_L} \neq \phi, {\cal L}_{t_R} \neq \phi \}
 \end{equation}
 \begin{itemize}
-\item If $X_j$ is an ordered variable, then the set of binary splits on $X_j$ is the set
+\item If $X_j$ is an ordered variable taking values in ${\cal X}_j$, then the set of binary splits on $X_j$ is the set
 of all binary non-crossing partitions of ${\cal X}_j$:
 \begin{align}
-{\cal Q}(X_j) = \{ (&\{ \mathbf{x} | \mathbf{x} \in {\cal X}_t, x_j \leq v \}, \nonumber \\
-                    &\{ \mathbf{x} | \mathbf{x} \in {\cal X}_t, x_j > v \}) | v \in {\cal X}_j \} \label{eqn:q:ordered}
+{\cal Q}(X_j) = \{ (\{ \mathbf{x} | x_j \leq v \}, \{ \mathbf{x} | x_j > v \}) | v \in {\cal X}_j \} \label{eqn:q:ordered}
 \end{align}
 From a geometrical point of view, splits of this form partition the input space
 ${\cal X}$ with axis-parallel hyperplanes, as previously illustrated on
 Figure~\ref{fig:3:partition}. Accordingly, the decision threshold $v$ thus
 corresponds to the distance of the separating hyperplane from the origin.
-\item If $X_j$ is a categorical variable, then the set of binary splits on
-$X_j$ is the set of all binary partitions of ${\cal X}_j$:
+\item If $X_j$ is a categorical variable taking values in ${\cal X}_j = \{ b_1, \dots, b_L \}$, then the set of binary splits on
+$X_j$ is the set of all binary  non-empty partitions of ${\cal X}_j$:
 \begin{align}\label{eqn:q:categorical-cart}
-{\cal Q}(X_j) = \{ ({\cal X}_{t_L}, {\cal X}_{t_R}) |& {\cal X}_{t_L}, {\cal X}_{t_R} \subset {\cal X}_j, \nonumber \\
-                                             & {\cal X}_{t_L} \cup {\cal X}_{t_R} = {\cal X}_j, {\cal X}_{t_L} \cap {\cal X}_{t_R} = \phi \}
+{\cal Q}(X_j) = \{ (\{\mathbf{x} | x_j \in {\cal B} \}, \{\mathbf{x} | x_j \in \overline{\cal B}\}) | &{\cal B} \in {\cal P}(\{ b_1, \dots, b_L \}), \nonumber \\
+                                                                                                      &1 \leq |{\cal B}| < L \}
 \end{align}
+where ${\cal P}(\{ b_1, \dots, b_L \})$ is the power set of $\{ b_1, \dots, b_L \}$ and $\overline{\cal B} = \{ b_1, \dots, b_L \} \setminus {\cal B}$ is the complementary set of ${\cal B}$.
 \end{itemize}
 
 Given decomposition \ref{eqn:q:single-variables} into subsets ${\cal Q}(X_j)$,
@@ -797,13 +797,6 @@ $i_R(t)$ has two serious defects:
       $\Delta i(s, t_0) = 0$ for all three possible splits, as if they were
       equally bad, or as if no further improvement could be achieved.
 
-\begin{figure}
-    \centering
-    \includegraphics[scale=1.0]{figures/ch3_goodness.pdf}
-    \caption{Splitting on $X_1$ versus splitting on $X_3$.}
-    \label{fig:3:goodness}
-\end{figure}
-
 \item It does not sensitively account for changes in the a posteriori class
       distributions $p(y|t_L)$ and $p(y|t_R)$.
 
@@ -816,6 +809,13 @@ $i_R(t)$ has two serious defects:
       divided further.  Splitting on $X_1$ should therefore be preferred, even
       if it does not reduce immediately the training error.
 \end{enumerate}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=1.0]{figures/ch3_goodness.pdf}
+    \caption{Splitting on $X_1$ versus splitting on $X_3$.}
+    \label{fig:3:goodness}
+\end{figure}
 
 In fact, these issues are largely due to the fact that the tree growing
 algorithm~\ref{algo:induction} is based on a one-step optimization procedure. A
@@ -1196,8 +1196,6 @@ Find the best split $s^*_j$ on $X_j$ that partitions ${\cal L}_t$.
 
 \subsubsection{On a categorical variable}
 \label{sec:best-split-categorical}
-
-% TODO: redéfinir plus formellement Q(X_j)
 
 % encoder la variable catégorique comme une variable numérique
 % si classification:
