@@ -1133,7 +1133,7 @@ $\smash{\Delta i(s^{v^\prime_{k}}_j, t)}$ in a limited number of operations.
 Using these update equations, the search of the best split $s^*_j$ on $X_j$ can
 be efficiently implemented as described in Algorithm~\ref{algo:findsplit:x_j}
 and further illustrated in Figure~\ref{fig:3:split:invariant}, which completes
-our specification of the tree induction procedure.
+our specification of the tree induction procedure for numerical variables.
 
 As we will see later in Chapter~\ref{ch:complexity}, the complexity of
 Algorithm~\ref{algo:findsplit:x_j} is upper bounded by the complexity of the
@@ -1182,12 +1182,10 @@ Find the best split $s^*_j$ on $X_j$ that partitions ${\cal L}_t$.
     \includegraphics[width=0.9\textwidth]{figures/ch3_split_ordered_invariant.pdf}
     \caption{Loop invariant of Algorithm~\ref{algo:findsplit:x_j}. At the end of each
     iteration, $\smash{\Delta i(s^{v^\prime_k}_j, t)}$ has been computed from the
-    statistics of the previous split at $v^\prime_{k-1}$  and compared to the best reduction in impurity $\Delta$ found so far within the splits at $v^\prime_{0}=-\infty$ to $v^\prime_{k-1}$.}
+    statistics of the previous split at $v^\prime_{k-1}$  and compared to the
+    best reduction in impurity $\Delta$ found so far within the splits at $v^\prime_{0}=-\infty$ to $v^\prime_{k-1}$.}
     \label{fig:3:split:invariant}
 \end{figure}
-
-
-
 
 % \subsection{Approximately best binary split on an ordered variable}
 % \label{sec:best-split-ordered-approx}
@@ -1198,4 +1196,13 @@ Find the best split $s^*_j$ on $X_j$ that partitions ${\cal L}_t$.
 
 \subsubsection{On a categorical variable}
 \label{sec:best-split-categorical}
+
+% TODO: redéfinir plus formellement Q(X_j)
+
+% encoder la variable catégorique comme une variable numérique
+% si classification:
+%   si J=2: théorème
+%   si J>2: recherche exhaustive des splits dans les partitions de {1, ..., L}
+%           si L>10, recherche aléatoire (car 2^L-1 devient trop grand)
+% si régression: remplacer les valeurs de la catégorie par p(y|x=l)
 
