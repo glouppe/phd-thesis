@@ -682,10 +682,9 @@ corresponds to the distance of the separating hyperplane from the origin.
 \item If $X_j$ is a categorical variable taking values in ${\cal X}_j = \{ b_1, \dots, b_L \}$, then the set of binary splits on
 $X_j$ is the set of all binary  non-empty partitions of ${\cal X}_j$:
 \begin{align}\label{eqn:q:categorical-cart}
-{\cal Q}(X_j) = \{ (\{\mathbf{x} | x_j \in {\cal B} \}, \{\mathbf{x} | x_j \in \overline{\cal B}\}) | &{\cal B} \in {\cal P}(\{ b_1, \dots, b_L \}), \nonumber \\
-                                                                                                      &1 \leq |{\cal B}| < L \}
+{\cal Q}(X_j) = \{ (\{\mathbf{x} | x_j \in {\cal B} \}, \{\mathbf{x} | x_j \in \overline{\cal B}\}) | &{\cal B} \subset \{ b_1, \dots, b_L \} \}
 \end{align}
-where ${\cal P}(\{ b_1, \dots, b_L \})$ is the power set of $\{ b_1, \dots, b_L \}$ and $\overline{\cal B} = \{ b_1, \dots, b_L \} \setminus {\cal B}$ is the complementary set of ${\cal B}$.
+where $\overline{\cal B} = \{ b_1, \dots, b_L \} \setminus {\cal B}$ is the complementary set of ${\cal B}$.
 \end{itemize}
 
 Given decomposition \ref{eqn:q:single-variables} into subsets ${\cal Q}(X_j)$,
@@ -1131,7 +1130,7 @@ $\smash{\Delta i(s^{v^\prime_{k}}_j, t)}$ in a limited number of operations.
 \end{itemize}
 
 Starting from the initial partition $v^\prime_0=-\infty$, that is where $t_L$
-is empty and $t_R$ corresponds to $t$, and using these update equations to
+is empty and $t_R$ corresponds to $t$, and using the above update equations to
 switch from $\smash{v^\prime_k}$ to $\smash{ v^\prime_{k+1}}$, the search of
 best split $s^*_j$ on $X_j$ can be implemented as described in
 Algorithm~\ref{algo:findsplit:x_j} and further illustrated in
@@ -1196,6 +1195,37 @@ Find the best split $s^*_j$ on $X_j$ that partitions ${\cal L}_t$.
 
 \subsubsection{On a categorical variable}
 \label{sec:best-split-categorical}
+
+Let $X_j$ be a categorical variable and let ${\cal Q}(X_j)$ be the set of all
+binary partitions of ${\cal X}_j= \{ b_1, \dots, b_L \}$, as defined in
+Equation~\ref{eqn:q:categorical-cart}. The number of non-empty binary
+partitions in this set is $2^{L-1}-1$, which may quickly become highly probihitive to
+exhaustively explore as soon as $X_j$ counts a high number $L$ of categories.
+
+Fortunately, in binary classification, this exponential complexity can be reduced from looking at
+$2^{L-1}-1$ partitions to $L-1$ partitions, thanks a theoretical result due to
+\citet{fisher:1958} and \citet{breiman:1984}:
+\begin{theorem}
+Let reorder the categories of $X_j$ such that
+$$p(c_1|t,X=b_{l_1}) \leq p(c_1|t,X=b_{l_2}) \leq \dots \leq p(c_1|t,X=b_{l_L}).$$
+If the impurity function $i(t)$ satisfies the requirements of Theorem~\ref{thm:reduction-impurity}, then one
+of the $L-1$ subsets ${\cal B}=\{b_{l_1}, \dots, b_{l_h}\}, h=1, \dots, L-1$ defines
+a binary partition of the node samples into
+\begin{align*}
+{\cal L}^{\cal B}_{t_L} &= \{(\mathbf{x}, y)|(\mathbf{x}, y)\in {\cal L}_t, x_j \in {\cal B}\}\\
+{\cal L}^{\cal B}_{t_R} &= \{(\mathbf{x}, y)|(\mathbf{x}, y)\in {\cal L}_t, x_j \in \overline{{\cal B}}\}
+\end{align*}
+which maximizes $\Delta i(s, t)$, for $s \in {\cal Q}(X_j)$.
+\end{theorem}
+Intuitively, this result indicates that all those categories $b_l$
+leading to high probabilities of being of class $c_1$ should be put together into
+one node and the categories leading to lower probabilities into the other.
+In practice, this also means that the search of the best binary split can be
+performed as if $X_j$ was an ordered variable, by virtually replacing categorical values
+$b_l$ with $p(c_1|t,X=b_l)$ and using Algorithm~\ref{algo:findsplit:x_j} to
+find the best binary split on these ordered values.
+
+
 
 % encoder la variable catégorique comme une variable numérique
 % si classification:
