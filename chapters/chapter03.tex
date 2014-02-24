@@ -1199,12 +1199,13 @@ Find the best split $s^*_j$ on $X_j$ that partitions ${\cal L}_t$.
 Let $X_j$ be a categorical variable and let ${\cal Q}(X_j)$ be the set of all
 binary partitions of ${\cal X}_j= \{ b_1, \dots, b_L \}$, as defined in
 Equation~\ref{eqn:q:categorical-cart}. The number of non-empty binary
-partitions in this set is $2^{L-1}-1$, which may quickly become highly probihitive to
-exhaustively explore as soon as $X_j$ counts a high number $L$ of categories.
+partitions in this set is $2^{L-1}-1$, which may quickly become highly
+probihitive to  explore exhaustively as soon as $X_j$ counts a high number $L$
+of categories.
 
-Fortunately, in binary classification, this exponential complexity can be reduced from looking at
-$2^{L-1}-1$ partitions to $L-1$ partitions, thanks a theoretical result due to
-\citet{fisher:1958} and \citet{breiman:1984}:
+Fortunately, in binary classification, this exponential complexity can be
+reduced from looking at $2^{L-1}-1$ partitions to $L-1$ partitions, thanks a
+theoretical result due to \citet{fisher:1958} and \citet{breiman:1984}:
 \begin{theorem}\label{thm:categorical-simplification}
 Let reorder the categories of $X_j$ such that
 $$p(c_1|t,X_j=b_{l_1}) \leq p(c_1|t,X_j=b_{l_2}) \leq \dots \leq p(c_1|t,X_j=b_{l_L}).$$
@@ -1217,13 +1218,13 @@ a binary partition of the node samples into
 \end{align*}
 which maximizes $\Delta i(s, t)$, for $s \in {\cal Q}(X_j)$.
 \end{theorem}
-Intuitively, this result indicates that all those categories $b_l$
-leading to high probabilities of being of class $c_1$ should be put together into
-one node and the categories leading to lower probabilities into the other.
-In practice, this also means that the search of the best binary split can be
-performed as if $X_j$ was an ordered variable, by virtually replacing categorical values
-$b_l$ with $p(c_1|t,X_j=b_l)$ and using Algorithm~\ref{algo:findsplit:x_j} to
-find the best binary split on these ordered values.
+Intuitively, this result indicates that all those categories $b_l$ leading to
+high probabilities of being of class $c_1$ should be put together into one node
+and the categories leading to lower probabilities into the other. In practice,
+this also means that the search of the best binary split can be performed as if
+$X_j$ was an ordered variable, by virtually replacing categorical values $b_l$
+with $p(c_1|t,X_j=b_l)$ and using Algorithm~\ref{algo:findsplit:x_j} to find
+the best binary split on these ordered values.
 
 Unfortunately, Theorem~\ref{thm:categorical-simplification} does not extend to
 multiclass classification (i.e., when $J > 2$). In this case, an exhaustive
@@ -1231,10 +1232,10 @@ exploration of all $2^{L-1}-1$ splits must therefore to be performed in order
 to find the best split.  When the number $L$ of categories is small, this can
 usually be done  within reasonable time. However, as $L$ gets larger, this
 quickly becomes infeasible in practice. As an approximation, the usual
-strategy~\citep{liaw:2002} consists in exhaustively evaluating all splits when $L
-\leq 10$ and then switch to random sampling of the subsets ${\cal B} \subset \{
-b_1, \dots, b_L \}$ when $L > 10$. In that case, $512$ random subsets ${\cal B}$
-are typically drawn and evaluated.
+strategy~\citep{liaw:2002} consists in exhaustively evaluating all splits when
+$L \leq 10$ and then switch to random sampling of the subsets ${\cal B} \subset
+\{ b_1, \dots, b_L \}$ when $L > 10$. In that case, $512$ random subsets ${\cal
+B}$ are typically drawn and evaluated.
 
 In regression, given the equivalence of $i_R(t)$ with the Gini index, the same
 algorithmical trick can be applied as in binary classification. In this case,
@@ -1243,13 +1244,4 @@ categorical values $b_l$ with the mean output value at $b_l$, i.e.,
 $\tfrac{1}{N_{l,t}} \sum_{\mathbf{x}, y \in {\cal L}_t, x_j = b_l} y$, on which
 Algorithm~\ref{algo:findsplit:x_j} is then applied to find the best binary
 split on these ordered values.
-
-
-
-% encoder la variable catégorique comme une variable numérique
-% si classification:
-%   si J=2: théorème
-%   si J>2: recherche exhaustive des splits dans les partitions de {1, ..., L}
-%           si L>10, recherche aléatoire (car 2^L-1 devient trop grand)
-% si régression: remplacer les valeurs de la catégorie par p(y|x=l)
 
