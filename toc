@@ -116,6 +116,15 @@ Part I: Growing random forests
        + How to evaluate multiple candidate thresholds cheaply for
          a given feature (algorithm, f-ordered)
        + Sorting algorithms
+       + Approximately best splits
+            + Binning
+            + Subsampling
+    - Shared computations
+        > Splitters
+            - (Independent splitters)
+            - Pre-sorting + data reorganization (Breiman's strategy)
+            - Pre-sorting + sample_mask
+        > Multi-threading
 * Overall complexity
     - Best cases => Master theorem and/or Akra Bazzi method
         RF: O(n log^2 n)

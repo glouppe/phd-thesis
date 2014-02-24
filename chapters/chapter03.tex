@@ -9,7 +9,7 @@ presentation, introducing all necessary concepts and notations. The general
 learning algorithm is then presented in Section~\ref{sec:3:induction} while
 specific parts of the algorithm are discussed in finer details in
 Sections~\ref{sec:3:assignment}, \ref{sec:3:stop}, \ref{sec:3:splitting-rules}.
-As such, specific algorithms (e.g., CART, ID3 or C4.5) are described as
+As such, specific decision tree algorithms (e.g., CART, ID3 or C4.5) are described as
 specializations of the general framework presented here.
 \end{remark}
 
@@ -53,13 +53,13 @@ by several factors that make them quite attractive in practice:
 \item Decision trees are easily interpretable, even for non-statistically oriented users.
 \end{itemize}
 
-Most importantly, decision trees are at the foundation of
-many modern and state-of-the-art algorithms, including forests of randomized
-trees (on which this work is about, see Chapter~\ref{ch:forest}) or
-boosting methods~\citep{freund:1995,friedman:2001}, where they are used
-as building blocks for composing larger models. Understanding all algorithmic
-details of single decision trees is therefore an expected prerequisite
-for an in-depth analysis of these methods.
+Most importantly, decision trees are at the foundation of many modern and
+state-of-the-art algorithms, including forests of randomized trees (on which
+this work is about, see Chapter~\ref{ch:forest}) or boosting
+methods~\citep{freund:1995,friedman:2001}, where they are used as building
+blocks for composing larger models. Understanding all algorithmic details of
+single decision trees is therefore an mandatory prerequisite for an in-depth
+analysis of these methods.
 
 
 \section{Tree structured models}
@@ -239,7 +239,7 @@ learning set ${\cal L}$ as best as possible. Among all decision trees $\varphi
 \in {\cal H}$ however, there may exist several of them that explain ${\cal L}$
 equally best. Following Occam's Razor principles~\citep{blumer:1987} of preferring the explanation
 which makes as few assumptions as possible, that is to favor the simplest
-solution that fits the data, learning a decision tree from ${\cal L}$ is then
+solution that fits the data, learning a decision tree from ${\cal L}$ is
 usually restated as finding the smallest tree $\varphi^*$ (in terms of internal nodes) minimizing its
 resubstitution estimate $\overline{E}(\varphi^*, {\cal L})$. While this
 assumption makes sense from a generalization point of view, it also makes
@@ -253,13 +253,14 @@ algorithm for finding $\varphi^*$, thereby suggesting that finding efficient heu
 for constructing near-optimal decision trees is the best solution to keep computation
 requirements within realistic boundaries.
 
-Following the framework of \citet{breiman:1984}, let us broadly define an \textit{impurity} measure $i(t)$ as a
-non-negative function that evaluates the goodness of any node $t$. Let assume that
-the smaller $i(t)$, the \textit{purer} the node and the better the predictions
-$\widehat{y}_t(\mathbf{x})$ for all $\mathbf{x} \in {\cal L}_t$, where ${\cal
-L}_t$ is the subset of learning samples falling into $t$, that is all
-$(\mathbf{x}, y) \in {\cal L}$ such that $\mathbf{x} \in {\cal X}_t$.
-
+Following the framework of \citet{breiman:1984}, let us broadly define an
+\textit{impurity} measure $i(t)$ as a function that evaluates the goodness of
+any node $t$ (we delay to Section~\ref{sec:3:splitting-rules} for a more
+precise definition). Let assume that the smaller $i(t)$, the \textit{purer} the
+node and the better the predictions $\widehat{y}_t(\mathbf{x})$ for all
+$\mathbf{x} \in {\cal L}_t$, where ${\cal L}_t$ is the subset of learning
+samples falling into $t$, that is all $(\mathbf{x}, y) \in {\cal L}$ such that
+$\mathbf{x} \in {\cal X}_t$.
 Starting from a single node representing the whole learning set  ${\cal L}$,
 near-optimal decision trees can then be grown greedily by iteratively dividing
 nodes into purer nodes. That is, by iteratively  dividing into smaller subsets the
@@ -270,7 +271,6 @@ seeking for good generalization, is then to divide each node $t$ using the
 split $s^*$ that locally maximizes the decrease of impurity of the resulting child nodes.
 
 Formally, the decrease of impurity of a binary split $s$ is defined as follows:
-
 \begin{definition}\label{def:impurity-decrease}
 The \emph{impurity decrease} of a binary split $s \in {\cal Q}$ dividing node $t$ into
 a left node $t_L$ and a right node $t_R$ is
@@ -324,7 +324,7 @@ Section~\ref{sec:3:stop} outlines stopping criteria for deciding when a node
 becomes terminal (Line~\ref{algo:induction:stop} of
 Algorithm~\ref{algo:induction}). Section~\ref{sec:3:splitting-rules} then
 presents families ${\cal Q}$ of splitting rules, impurity criteria $i(t)$ to
-evaluate the goodness of splits and exact and approximate strategies for
+evaluate the goodness of splits and strategies for
 finding the best split $s^* \in {\cal Q}$ (Line~\ref{algo:induction:split} of
 Algorithm~\ref{algo:induction}). As we will see, the crux of the problem is in
 finding good splits and in knowing when to stop splitting.
@@ -655,7 +655,7 @@ kind~\citep{knuth:1992}
 \begin{equation}
 S(N_t, k) = \frac{1}{k!} \sum_{j=0}^k (-1)^{k-j} {k\choose j} j^{N_t},
 \end{equation}
-which reduces to $2^{N_t}-1$ for binary partitions. Given the exponential
+which reduces to $2^{N_t-1}-1$ for binary partitions. Given the exponential
 growth in the number of partitions, the naive strategy of enumerating all
 possible partitions and picking the best of them is clearly computationally
 intractable. For this reason, simplifying  assumptions must be made on the best
@@ -688,7 +688,7 @@ where $\overline{\cal B} = \{ b_1, \dots, b_L \} \setminus {\cal B}$ is the comp
 \end{itemize}
 
 Given decomposition \ref{eqn:q:single-variables} into subsets ${\cal Q}(X_j)$,
-split $s^* \in {\cal Q}$ is the best of the best splits defined on each input
+the split $s^* \in {\cal Q}$ is the best of the best splits defined on each input
 variable. That is,
 \begin{align}
 s^* &= \argmax_{\substack{s^*_j\\ j=1, \dots, p}} \Delta i(s^*_j, t) \label{eqn:best-best-split}\\
@@ -772,10 +772,10 @@ into two subsets
 
 As introduced in Section~\ref{sec:3:induction}, our objective is to partition
 $t_0$ using the split $s^*$ that maximizes the impurity decrease $$\Delta i(s,
-t) = i(t) - p_L i(t_L) - p_R i(t_R),$$ where the impurity function $i(t)$ evaluates
-the goodness of node $t$. Since our goal is to build the decision tree
-that minimizes generalization error, it seems natural to take as impurity
-measure $i(t)$ the local resubstitution estimate at node $t$:
+t) = i(t) - p_L i(t_L) - p_R i(t_R),$$ where the impurity function $i(t)$
+evaluates the goodness of node $t$. Since our goal is to build the decision
+tree that minimizes generalization error, it seems natural to take as proxy
+$i(t)$ the local resubstitution estimate at node $t$:
 \begin{definition}
 In classification, the impurity function $i_R(t)$ based on the local resubstitution estimate
 defined on the zero-one loss is:
@@ -897,13 +897,12 @@ $\Delta i(s,t)=0$.
 
 Graphically, it also becomes obvious when comparing
 Figure~\ref{fig:3:toy:impurity:gini} with Figure~\ref{fig:3:toy:impurity:error}
-to understand why the resubstitution estimate $i_R(t)$ is not an appropriate impurity
-function. As long as the majority class within the child nodes $t_L$ and $t_R$
-is the same as in $t$, the three red dots remain aligned in a perfect line
-(since the resubstitution is not strictly concave) and therefore the gray dot
-overlap with $i(t)$. As a result, $\Delta i(s,t)$ is necessarily null no matter
-the a posteriori class distributions induced by the split, be them close or far
-from $p(c_1|t)$.
+to understand why the resubstitution estimate $i_R(t)$ is not an appropriate
+impurity function. As long as the majority class within the child nodes $t_L$
+and $t_R$ is the same as in $t$, the three red dots remain aligned in a perfect
+line and the gray dot overlap with $i(t)$. As a result, $\Delta i(s,t)$ is
+necessarily null no matter the a posteriori class distributions induced by the
+split, be them close or far from $p(c_1|t)$.
 
 The most common impurity criteria used for classification trees are the Shannon
 entropy and the Gini index:
@@ -968,10 +967,10 @@ When the output variable $Y$ is quantitative, Proposition~\ref{prop:any-split-re
 shows that splitting $t$ in any way reduces the
 resubstitution estimate. In particular, the reduction is positive as long as
 the values assigned to the child nodes are different from the value at $t$.
-Contrary to classification, this only happens in rare circumstances in
-regression (i.e., when the mean output values at the child nodes coincide with the
-mean output value in $t$), hence making the resubstitution estimate sensitive to changes
-in the a posteriori distributions, even if these are only slight.  As a result, the
+Contrary to classification, this only happens in rare circumstances (i.e., when
+the mean output values at the child nodes coincide with the mean output value
+in $t$), hence making the resubstitution estimate sensitive to changes in the a
+posteriori distributions, even if these are only slight.  As a result, the
 local resubstitution estimate does not exhibit the undesirable properties that
 we had in classification and in fact constitutes a good criterion for
 regression.
@@ -1088,7 +1087,7 @@ $\smash{\Delta i(s^{v^\prime_{k}}_j, t)}$ in a limited number of operations.
 
 \item In classification, evaluating either $\Delta i_H(s, t)$ or $\Delta i_G(s, t)$
       boils down to the computation of $p(c|t)$, $p(c|t_L)$ and $p(c|t_R)$
-      for all classes $c \in {\cal Y}$. The necessary stastitics for computing
+      for all classes $c \in {\cal Y}$. The necessary statistics for computing
       these probabilities are the numbers $N_{ct}$, $N_{ct_L}$ and $N_{ct_R}$
       of samples of class $c$ in $t$, $t_L$ and $t_R$, along with the total numbers
       $N_t$, $N_{t_L}$ and $N_{t_R}$ of samples in $t$, $t_L$ and $t_R$.
@@ -1106,7 +1105,7 @@ $\smash{\Delta i(s^{v^\prime_{k}}_j, t)}$ in a limited number of operations.
       node to the left child node when switching from
       $\smash{s^{v_k^\prime}_j}$ to $\smash{s^{v_{k+1}^\prime}_j}$.
 
-\item In regression, $i_R(t)$ can be reexpressed as the difference between the
+\item In regression, $i_R(t)$ can be re-expressed as the difference between the
       mean of the squared output values and the square of the mean output value, that is
       \begin{equation}
       i_R(t) = \frac{\Sigma_{t^2}}{N_t} - (\frac{\Sigma_t}{N_t})^2
@@ -1134,13 +1133,7 @@ is empty and $t_R$ corresponds to $t$, and using the above update equations to
 switch from $\smash{v^\prime_k}$ to $\smash{ v^\prime_{k+1}}$, the search of
 best split $s^*_j$ on $X_j$ can be implemented as described in
 Algorithm~\ref{algo:findsplit:x_j} and further illustrated in
-Figure~\ref{fig:3:split:invariant}. As we will see later in
-Chapter~\ref{ch:complexity}, the algorithm complexity is upper bounded by the
-complexity of the sorting operation. In the context of randomized decision
-trees however, where finding the very best split $s^*_j$ is not as crucial, we
-will show that approximation techniques based on subsampling of the node
-samples or on the discretization of the variable $X_j$ can help reduce the
-computational complexity of procedure without significant impact on accuracy.
+Figure~\ref{fig:3:split:invariant}.
 
 \begin{algorithm}\label{algo:findsplit:x_j}
 Find the best split $s^*_j$ on $X_j$ that partitions ${\cal L}_t$.
@@ -1186,6 +1179,14 @@ Find the best split $s^*_j$ on $X_j$ that partitions ${\cal L}_t$.
     \label{fig:3:split:invariant}
 \end{figure}
 
+As we will see later in
+Chapter~\ref{ch:complexity}, the algorithm complexity is upper bounded by the
+complexity of the sorting operation. In the context of randomized decision
+trees however, where finding the very best split $s^*_j$ is not as crucial, we
+will show that approximation techniques based on sub-sampling of the node
+samples or on the discretization of the variable $X_j$ can help reduce the
+computational complexity of procedure without significant impact on accuracy.
+
 % \subsection{Approximately best binary split on an ordered variable}
 % \label{sec:best-split-ordered-approx}
 
@@ -1200,7 +1201,7 @@ Let $X_j$ be a categorical variable and let ${\cal Q}(X_j)$ be the set of all
 binary partitions of ${\cal X}_j= \{ b_1, \dots, b_L \}$, as defined in
 Equation~\ref{eqn:q:categorical-cart}. The number of non-empty binary
 partitions in this set is $2^{L-1}-1$, which may quickly become highly
-probihitive to  explore exhaustively as soon as $X_j$ counts a high number $L$
+prohibitive to  explore exhaustively when $X_j$ counts a high number $L$
 of categories.
 
 Fortunately, in binary classification, this exponential complexity can be
@@ -1227,8 +1228,8 @@ with $p(c_1|t,X_j=b_l)$ and using Algorithm~\ref{algo:findsplit:x_j} to find
 the best binary split on these ordered values.
 
 Unfortunately, Theorem~\ref{thm:categorical-simplification} does not extend to
-multiclass classification (i.e., when $J > 2$). In this case, an exhaustive
-exploration of all $2^{L-1}-1$ splits must therefore to be performed in order
+multi-class classification (i.e., when $J > 2$). In this case, an exhaustive
+exploration of all $2^{L-1}-1$ splits must be performed in order
 to find the best split.  When the number $L$ of categories is small, this can
 usually be done  within reasonable time. However, as $L$ gets larger, this
 quickly becomes infeasible in practice. As an approximation, the usual
@@ -1238,10 +1239,10 @@ $L \leq 10$ and then switch to random sampling of the subsets ${\cal B} \subset
 B}$ are typically drawn and evaluated.
 
 In regression, given the equivalence of $i_R(t)$ with the Gini index, the same
-algorithmical trick can be applied as in binary classification. In this case,
+algorithmic trick can be applied as in binary classification. In this case,
 $X_j$ is transformed into an ordered variable by virtually replacing
 categorical values $b_l$ with the mean output value at $b_l$, i.e.,
-$\tfrac{1}{N_{l,t}} \sum_{\mathbf{x}, y \in {\cal L}_t, x_j = b_l} y$, on which
+$\tfrac{1}{N_{lt}} \sum_{\mathbf{x}, y \in {\cal L}_t, x_j = b_l} y$, on which
 Algorithm~\ref{algo:findsplit:x_j} is then applied to find the best binary
 split on these ordered values.
 
