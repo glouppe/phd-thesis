@@ -1205,9 +1205,9 @@ exhaustively explore as soon as $X_j$ counts a high number $L$ of categories.
 Fortunately, in binary classification, this exponential complexity can be reduced from looking at
 $2^{L-1}-1$ partitions to $L-1$ partitions, thanks a theoretical result due to
 \citet{fisher:1958} and \citet{breiman:1984}:
-\begin{theorem}
+\begin{theorem}\label{thm:categorical-simplification}
 Let reorder the categories of $X_j$ such that
-$$p(c_1|t,X=b_{l_1}) \leq p(c_1|t,X=b_{l_2}) \leq \dots \leq p(c_1|t,X=b_{l_L}).$$
+$$p(c_1|t,X_j=b_{l_1}) \leq p(c_1|t,X_j=b_{l_2}) \leq \dots \leq p(c_1|t,X_j=b_{l_L}).$$
 If the impurity function $i(t)$ satisfies the requirements of Theorem~\ref{thm:reduction-impurity}, then one
 of the $L-1$ subsets ${\cal B}=\{b_{l_1}, \dots, b_{l_h}\}, h=1, \dots, L-1$ defines
 a binary partition of the node samples into
@@ -1222,8 +1222,27 @@ leading to high probabilities of being of class $c_1$ should be put together int
 one node and the categories leading to lower probabilities into the other.
 In practice, this also means that the search of the best binary split can be
 performed as if $X_j$ was an ordered variable, by virtually replacing categorical values
-$b_l$ with $p(c_1|t,X=b_l)$ and using Algorithm~\ref{algo:findsplit:x_j} to
+$b_l$ with $p(c_1|t,X_j=b_l)$ and using Algorithm~\ref{algo:findsplit:x_j} to
 find the best binary split on these ordered values.
+
+Unfortunately, Theorem~\ref{thm:categorical-simplification} does not extend to
+multiclass classification (i.e., when $J > 2$). In this case, an exhaustive
+exploration of all $2^{L-1}-1$ splits must therefore to be performed in order
+to find the best split.  When the number $L$ of categories is small, this can
+usually be done  within reasonable time. However, as $L$ gets larger, this
+quickly becomes infeasible in practice. As an approximation, the usual
+strategy~\citep{liaw:2002} consists in exhaustively evaluating all splits when $L
+\leq 10$ and then switch to random sampling of the subsets ${\cal B} \subset \{
+b_1, \dots, b_L \}$ when $L > 10$. In that case, $512$ random subsets ${\cal B}$
+are typically drawn and evaluated.
+
+In regression, given the equivalence of $i_R(t)$ with the Gini index, the same
+algorithmical trick can be applied as in binary classification. In this case,
+$X_j$ is transformed into an ordered variable by virtually replacing
+categorical values $b_l$ with the mean output value at $b_l$, i.e.,
+$\tfrac{1}{N_{l,t}} \sum_{\mathbf{x}, y \in {\cal L}_t, x_j = b_l} y$, on which
+Algorithm~\ref{algo:findsplit:x_j} is then applied to find the best binary
+split on these ordered values.
 
 
 
