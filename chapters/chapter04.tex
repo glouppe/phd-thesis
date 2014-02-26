@@ -1,4 +1,4 @@
-\chapter{Forests of randomized trees}\label{ch:forest}
+\chapter{Random Forests}\label{ch:forest}
 
 \begin{remark}{Outline}
 In this chapter, ...
@@ -7,23 +7,41 @@ In this chapter, ...
 \section{Bias-variance tradeoff}
 
 % décomposition de l'erreur
+% geurts, 2006, appendix E => est-ce que ça tient la route en termes de correlation effect???
 
 \section{Bagging}
 
-    % > Subsampling (with/without replacement) => bagging
-    %   > effet sur la variance
-    %   > mais correlation effect
+    % > Subsampling with replacement => bagging
+    %   > effet sur la variance (why bagging works, breiman 1996)
+    %   > mais correlation effect (hastie)
+
     % Aggregation
     % > consensus vote
     % > average probability (Hastie, 283+)
     % > average output values
 
-\section{Ensemble of randomized trees}
+    % Issues tackled by ensemble
+    %   Ensemble methods in ML, Dietterich
+    %   - stat
+    %   - computational
+    %   - representational
 
-    % Randomization
-    %   bagging
-    %   splitting nodes (best spits among max_features; random thresholds)
+\section{Ensembles of randomized trees}
+
+    % Use the term "random forest" as a global algorithm, as breiman does in RF paper
+    % incluant:
+
+    % - Bagging
+    % - Random features (Kwok & carter (1990), dietterich 1998 (see rf), breiman)
+    % - Random thresholds (geurts)
+    % => discuter sur un exemple les aspects stat/comput/repres
+
+    % Pq la randomization marche mieux que le bagging seul? (decorrelation)
     % Variance reduction and de-correlation effect due to max_features <= p
+    %   aim at low correlation between residuals and low error trees
+
+    % RF do not overfit (theorem 2.3)
+
     % OOB estimates
 
 \section{Consistency}
