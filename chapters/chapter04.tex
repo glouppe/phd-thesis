@@ -8,22 +8,23 @@ In this chapter, ...
 
 % décomposition de l'erreur
 
-\section{Ensemble of decision trees}
+\section{Bagging}
 
+    % > Subsampling (with/without replacement) => bagging
+    %   > effet sur la variance
+    %   > mais correlation effect
     % Aggregation
     % > consensus vote
     % > average probability (Hastie, 283+)
     % > average output values
+
+\section{Ensemble of randomized trees}
+
+    % Randomization
+    %   bagging
+    %   splitting nodes (best spits among max_features; random thresholds)
+    % Variance reduction and de-correlation effect due to max_features <= p
     % OOB estimates
-    % décomposition de l'erreur
-
-\section{Randomization}
-
-    % > Subsampling (with/without replacement) => bagging
-    %     - Sample weighting
-    % > Splitting nodes
-    %     - Best splits (among max_features)
-    %     - Random splits (random threshold, random index)
 
 \section{Consistency}
 
