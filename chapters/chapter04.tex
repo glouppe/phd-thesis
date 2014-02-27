@@ -6,12 +6,16 @@ In this chapter, ...
 
 \section{Bias-variance tradeoff}
 
-% décomposition de l'erreur
+% décomposition de l'erreur en bias+variance/noise
 % geurts, 2006, appendix E => est-ce que ça tient la route en termes de correlation effect???
 
 \section{Bagging}
 
+% Décomposition biais-variance
+% Geman, Stuart, Elie Bienenstock, and René Doursat. "Neural networks and the bias/variance dilemma." Neural computation 4.1 (1992): 1-58.
+
     % > Subsampling with replacement => bagging
+    % > Deriver l'erreur et montrer qu'on réduit agit sur la variance, biais reste le même
     %   > effet sur la variance (why bagging works, breiman 1996)
     %   > mais correlation effect (hastie)
 
@@ -19,12 +23,6 @@ In this chapter, ...
     % > consensus vote
     % > average probability (Hastie, 283+)
     % > average output values
-
-    % Issues tackled by ensemble
-    %   Ensemble methods in ML, Dietterich
-    %   - stat
-    %   - computational
-    %   - representational
 
 \section{Ensembles of randomized trees}
 
@@ -34,11 +32,18 @@ In this chapter, ...
     % - Bagging
     % - Random features (Kwok & carter (1990), dietterich 1998 (see rf), breiman)
     % - Random thresholds (geurts)
+    % - +other kinds of forests (see state-of-the-art in geurts)
     % => discuter sur un exemple les aspects stat/comput/repres
 
     % Pq la randomization marche mieux que le bagging seul? (decorrelation)
     % Variance reduction and de-correlation effect due to max_features <= p
     %   aim at low correlation between residuals and low error trees
+
+    % Issues tackled by ensemble
+    %   Ensemble methods in ML, Dietterich
+    %   - stat
+    %   - computational
+    %   - representational
 
     % RF do not overfit (theorem 2.3)
 
