@@ -1,15 +1,25 @@
 \chapter{Random Forests}\label{ch:forest}
 
 \begin{remark}{Outline}
-In this chapter, ...
+In this chapter, we present a family of ensemble methods known as \textit{Random
+Forests}. In Section~\ref{sec:4:bias-variance}, we first describe the
+bias-variance decomposition of the prediction error and then present, in
+Section~\ref{sec:4:bagging}, how the Bagging ensemble method can help reduce
+the prediction error by decreasing variance. In Section~\ref{sec:4:ensemble},
+we study Random Forests, Extremely Randomized Trees, and other variants, which
+all introduce even more randomness into the learning algorithm to further
+reduce the prediction error of the resulting model. Finally, the consistency of
+these methods is explored in Section~\ref{sec:4:consistency}.
 \end{remark}
 
 \section{Bias-variance tradeoff}
+\label{sec:4:bias-variance}
 
 % décomposition de l'erreur en bias+variance/noise
 % geurts, 2006, appendix E => est-ce que ça tient la route en termes de correlation effect???
 
 \section{Bagging}
+\label{sec:4:bagging}
 
 % Décomposition biais-variance
 % Geman, Stuart, Elie Bienenstock, and René Doursat. "Neural networks and the bias/variance dilemma." Neural computation 4.1 (1992): 1-58.
@@ -25,6 +35,7 @@ In this chapter, ...
     % > average output values
 
 \section{Ensembles of randomized trees}
+\label{sec:4:ensemble}
 
     % Use the term "random forest" as a global algorithm, as breiman does in RF paper
     % incluant:
@@ -50,6 +61,7 @@ In this chapter, ...
     % OOB estimates
 
 \section{Consistency}
+\label{sec:4:consistency}
 
     % > Mise au point
     % > Preuve de consistence des extra-trees?
