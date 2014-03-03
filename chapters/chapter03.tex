@@ -650,7 +650,7 @@ take infinitely many values. For instance, if ${\cal X}_t = \mathbb{R}$, then
 there exists infinitely many ways of partitioning ${\cal X}_t$ into two (or
 more) subsets. Among all of them however, only those that yield a partition of
 ${\cal L}_t$ into non-empty subsets are worth considering. For example, in the
-binary case, splits resulting in of the two children being empty (i.e., such
+binary case, splits resulting in one of the two children being empty (i.e., such
 that either ${\cal L}_{t_L}$ or ${\cal L}_{t_R}$ is empty) are not considered
 because their goodness cannot be evaluated on the learning set. As such, the
 optimization problem of finding the best split $s^*$ of ${\cal X}_t$ can be
@@ -721,10 +721,10 @@ recently, several authors (e.g., \citep{gama:2004}, \citep{criminisi:2013} or
 defined as multi-variate functions, thereby revisiting separating hyperplanes
 like in oblique trees or investigating more advanced models like quadratic
 surfaces or decision trees inside decision trees. Finally, in an another
-direction, \citet{olaru:2003} propose in soft decision trees to redefine the
-notion of split as overlapping fuzzy sets (instead of disjoint subsets), hence
-allowing samples close to the decision threshold $v$ to propagate into both
-child nodes.
+direction, several authors, including \citet{olaru:2003}, propose in soft
+decision trees to redefine the notion of split as overlapping fuzzy sets
+(instead of disjoint subsets), hence allowing samples close to the decision
+threshold $v$ to propagate into both child nodes.
 
 \subsection{Goodness of split}
 \label{sec:3:criteria}
