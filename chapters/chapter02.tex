@@ -52,8 +52,9 @@ qualitative variables whose values are symbolic, such as gender or condition.
 Formally, we define them as follows:
 
 \begin{definition}
-A variable $X_j$ is \emph{numerical} or \emph{ordered} if ${\cal X}_j$ is a
-totally ordered set.
+A variable $X_j$ is \emph{ordered} if ${\cal X}_j$ is a
+totally ordered set. In particular, $X_j$ is said to be \emph{numerical} if
+${\cal X}_j = \mathbb{R}$.
 \end{definition}
 
 \begin{definition}
@@ -160,7 +161,7 @@ are \textit{random variables} taking jointly their values from ${\cal X} \times
 $X$ denotes the random vector $(X_1, ..., X_p)$. That is, $P(X=\mathbf{x},
 Y=y)$ is the probability that random variables $X$ and $Y$ take values
 $\mathbf{x}$ and $y$ from ${\cal X}$ and ${\cal Y}$ when drawing an object
-uniformly at random from $\Omega$.
+uniformly at random from the universe $\Omega$.
 
 Accordingly, using an algorithm ${\cal A}$ for learning a model $\varphi$ whose
 predictions are as good as possible can be stated as finding a model $\varphi$
@@ -180,13 +181,14 @@ function measuring the discrepancy between its two
 arguments~\citep{geurts:2002}.
 \end{definition}
 
-Equation~\ref{eqn:generalization-error} basically measures the prediction error of $\varphi$ over all
-possible couples $(\mathbf{x}, y)\in {\cal X}\times{\cal Y}$, including the
-observed couples from the learning set ${\cal L}$ but also all the
-\textit{unseen} ones from ${\cal X}\times{\cal Y} \setminus {\cal L}$. Indeed,
-the goal is not in fact to make the very-most accurate predictions over the
-subset ${\cal L}$ of known data, but rather to learn a model which is correct
-and reliable on all possible data.
+Equation~\ref{eqn:generalization-error} basically measures the prediction error
+of $\varphi$ over all possible objects in $\Omega$ (each represented by a couple
+$(\mathbf{x}, y)\in {\cal X}\times{\cal Y}$), including the observed couples
+from the learning set ${\cal L}$ but also all the \textit{unseen} ones from
+${\cal X}\times{\cal Y} \setminus {\cal L}$. Indeed, the goal is not in fact to
+make the very-most accurate predictions over the subset ${\cal L}$ of known
+data, but rather to learn a model which is correct and reliable on all possible
+data.
 
 For classification, the most common loss function is the \textit{zero-one} loss
 function\footnote{$1(\text{\textit{condition}})$ denotes the unit function. It
@@ -264,7 +266,7 @@ As a rule-of-thumb,
 ${\cal L}_\text{train}$ is usually taken as $70\%$ of the samples in
 ${\cal L}$ and ${\cal L}_\text{test}$ as the remaining $30\%$, though
 theoretical work~\citep{guyon:1997} suggests to progressively reduce the size of test set as
-the size of ${\cal L}$ increases. In any case, care must taken when splitting ${\cal
+the size of ${\cal L}$ increases. In any case, care must be taken when splitting ${\cal
 L}$ into two subsets, so that samples from ${\cal L}_\text{train}$ can be
 considered independent from those in ${\cal L}_\text{test}$ and drawn from the
 same distribution. This is however usually guaranteed by drawing ${\cal
@@ -315,7 +317,7 @@ Equation~\ref{eqn:generalization-error}.
 \subsection{Bayes model and residual error}
 \label{sec:2:bayes-model}
 
-When the probability distribution $P(X, Y)$ is known, the best possible model,
+In theory, when the probability distribution $P(X, Y)$ is known, the best possible model,
 i.e., the model $\varphi_B$ which minimizes the generalization error of
 Equation~\ref{eqn:generalization-error}, can be derived analytically and
 independently of any learning set ${\cal L}$.
@@ -677,7 +679,7 @@ therefore includes all models $\varphi$ of the form
 As for linear methods, learning a neural network  amounts to estimate the
 weights $w_{ij}$ that minimize some specific loss function, using some specific
 optimization procedure. Among all of them, the most famous is the
-\textit{backpropagation algorithm}.
+\textit{backpropagation algorithm}~\citep{bryson:1975}.
 
 Recent advances on neural networks, now themed as \textit{deep learning}, have
 recently shown the capability of these models to autonomously learn high-level
