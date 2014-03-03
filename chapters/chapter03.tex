@@ -20,7 +20,7 @@ Since always, artificial intelligence has been driven by the ambition to
 understand and uncover complex relations in data. That is, to find models that
 can not only produce accurate predictions, but also be used to extract
 knowledge in an intelligible way. Guided with this twofold objective, research
-in machine learning has given rise to extensive bodies works in a myriad of
+in machine learning has given rise to extensive bodies of works in a myriad of
 directions. Among all of them however, tree-based methods stand as one of
 the most effective and useful method, capable to produce both reliable and
 understandable results, on mostly any kind of data.
@@ -58,7 +58,7 @@ state-of-the-art algorithms, including forests of randomized trees (on which
 this work is about, see Chapter~\ref{ch:forest}) or boosting
 methods~\citep{freund:1995,friedman:2001}, where they are used as building
 blocks for composing larger models. Understanding all algorithmic details of
-single decision trees is therefore an mandatory prerequisite for an in-depth
+single decision trees is therefore a mandatory prerequisite for an in-depth
 analysis of these methods.
 
 
@@ -67,44 +67,52 @@ analysis of these methods.
 
 When the output space is a finite set of values, like in classification where
 ${\cal Y} = \{c_1, c_2, ..., c_J\}$, another way of looking at a supervised
-learning problem is to notice that $Y$ defines a partition over the input space ${\cal X}$, that
-is
+learning problem is to notice that $Y$ defines a partition over the universe
+$\Omega$, that is
 \begin{equation}
-{\cal X} = {\cal X}_{c_1} \cup {\cal X}_{c_2} \cup ... \cup {\cal X}_{c_J},
+\Omega = \Omega_{c_1} \cup \Omega_{c_2} \cup \dots \cup \Omega_{c_J},
 \end{equation}
-where ${\cal X}_{c_k}$ is the set of objects $\mathbf{x}$ for which
-$Y$ has value $c_k$. Similarly, a classifier $\varphi$ can also be
-regarded as a partition of the input space
-${\cal X}$ since it defines an approximation $\widehat{Y}$ of $Y$, which in
-turn partitions ${\cal X}$, that is
+where $\Omega_{c_k}$ is the of set objects for which $Y$ has value $c_k$.
+Similarly, a classifier $\varphi$ can also be regarded as a partition of the
+universe $\Omega$ since it defines an approximation $\widehat{Y}$ of $Y$.
+This partition however is defined on the input space ${\cal X}$ rather
+that directly on $\Omega$, that is
 \begin{equation}\label{eqn:3:partition}
-{\cal X} = \widehat{{\cal X}_{c_1}} \cup \widehat{{\cal X}_{c_2}} \cup ... \cup \widehat{{\cal X}_{c_J}},
+{\cal X} = {\cal X}^\varphi_{c_1} \cup {\cal X}^\varphi_{c_2} \cup ... \cup {\cal X}^\varphi_{c_J},
 \end{equation}
 where
-$\widehat{{\cal X}_{c_k}}$ is the set of objects $\mathbf{x}$ such that
-$\varphi(\mathbf{x}) = c_k$. Accordingly, learning a classifier can thus
+${\cal X}^\varphi_{c_k}$ is the set of description vectors $\mathbf{x} \in {\cal X}$ such that
+$\varphi(\mathbf{x}) = c_k$. Accordingly, learning a classifier can
 be restated as learning a partition of ${\cal X}$ matching as closely as
-possible the (true) partition engendered by $Y$ over ${\cal X}$.
+possible the best possible partition, i.e., the one engendered by the Bayes model $\varphi_B$ over ${\cal X}$:
+\begin{equation}\label{eqn:3:partition}
+{\cal X} = {\cal X}^{\varphi_B}_{c_1} \cup {\cal X}^{\varphi_B}_{c_2} \cup ... \cup {\cal X}^{\varphi_B}_{c_J}.
+\end{equation}
 
 \begin{remark}{Partitioning with noise}
 Notice that when $Y$ cannot be univocally determined given $X=\mathbf{x}$,
-e.g., when there is noise on $Y$, then the subsets ${\cal X}_{c_k}$ are not
-necessarily disjoints. There may exist two distinct objects from the universe $\Omega$ such
+e.g., when there is noise on $Y$, then there may exist two distinct objects from the universe $\Omega$ such
 that their representations $\mathbf{x}_1$ and $\mathbf{x}_2$ in the input space
 are equal, yet such that the corresponding output values $y_1$ and $y_2$ are different.
+In other words, the subsets
+\begin{equation}
+{\cal X}^\Omega_{c_k} = \{ \mathbf{x}_i | i \in \Omega, Y=c_k \}
+\end{equation}
+may not be disjoints.
 By contrast, since $\varphi$ defines a function from ${\cal X}$ to ${\cal Y}$,
 any input $\mathbf{x} \in {\cal X}$ is mapped to exactly one output value $y \in
-{\cal Y}$ and the subsets $\widehat{{\cal X}_{c_k}}$ are therefore necessarily
+{\cal Y}$ and the subsets ${\cal X}^\varphi_{c_k}$ are therefore necessarily
 disjoints, which means that no model will ever perfectly predict the true output
 value in all cases. As discussed in Section~\ref{sec:2:bayes-model}, this
 limitation is unavoidable and can in fact be viewed as the cause of the residual error.
 \end{remark}
 
 From a geometrical point of view, the principle of tree structured models is
-beautifully simple. It consists in recursively partitioning the input space
-${\cal X}$ into subspaces and then assign constant prediction values
-$\widehat{y}\in{\cal Y}$ to all objects $\mathbf{x}$ within each terminal
-subspace. To make things clearer, let us first define the following concepts:
+beautifully simple. It consists in approximating the partition of the Bayes
+model by recursively partitioning the input space ${\cal X}$ into subspaces and
+then assign constant prediction values $\widehat{y}\in{\cal Y}$ to all objects
+$\mathbf{x}$ within each terminal subspace. To make things clearer, let us
+first define the following concepts:
 
 \begin{definition}
 A \emph{tree} is a graph $G=(V,E)$ in which any two vertices (or \emph{nodes})
@@ -170,13 +178,6 @@ Prediction of the output value $\widehat{y} =\varphi(\mathbf{x})$ in a decision 
 }
 \end{algorithm}
 
-\begin{remark}{Induction graphs}
-From a graph theory point of view, decision trees belong to a larger family
-of methods known as \textit{induction graphs}~\citep{zighed:2000}. In this more
-general framework, the structure is a directed acyclic graph, which allows for
-nodes to be both divided and recombined.
-\end{remark}
-
 \begin{figure}
     \centering
     \includegraphics[scale=1.0]{figures/ch3_tree.pdf}
@@ -227,6 +228,12 @@ Predictions are made by propagating instances through the tree and using as
 output value the value labeling the terminal nodes in which they fall
 into. For example, an object $\mathbf{x}=(x_1=0.2, x_2=0.7)$ falls into $t_4$
 and therefore $\varphi(\mathbf{x}) = \widehat{y}_{t_4} = c_1$.
+
+Finally, let us note that from a graph theory point of view, decision trees
+belong to a larger family of methods known as \textit{induction
+graphs}~\citep{zighed:2000}. In this more general framework, the structure is a
+directed acyclic graph, which allows for nodes to be both divided and
+recombined.
 
 \section{Induction of decision trees}
 \label{sec:3:induction}
@@ -554,7 +561,7 @@ are formulated as follows:
 \item Set $t$ as a terminal node if it contains less than $N_\text{min}$ samples.
 ($N_\text{min}$ is also known as \texttt{min\_samples\_split}.)
 
-\item Set $t$ as a terminal node if it its depth $d_t$ is greater or equal to a threshold $d_\text{max}$.
+\item Set $t$ as a terminal node if its depth $d_t$ is greater or equal to a threshold $d_\text{max}$.
 ($d_\text{max}$ is also known as \texttt{max\_depth}.)
 
 \item Set $t$ as a terminal node if the maximum decrease in impurity is less than
@@ -804,7 +811,7 @@ $i_R(t)$ has two serious defects:
       root node had been split on $X_3$.  As shown in
       Figure~\ref{fig:3:goodness}, splitting on $X_1$ indeed produces a child
       node that is already terminal and for which no further work is required.
-      By contrast, splitting on $X_3$ results in child nodes that still have be
+      By contrast, splitting on $X_3$ results in child nodes that still have to be
       divided further.  Splitting on $X_1$ should therefore be preferred, even
       if it does not reduce immediately the training error.
 \end{enumerate}
@@ -1149,7 +1156,7 @@ Find the best split $s^*_j$ on $X_j$ that partitions ${\cal L}_t$.
     \State Sort the node samples ${\cal L}_t$ such that $x_{1,j} \leq x_{2, j} \leq \dots \leq x_{N_t,j}$
     \State $i \gets 1$
     \While{$i \leq N_t$}
-        \While{$i + 1 \leq N_t$ and $x_{i+1,j} \leq x_{i,j}$}
+        \While{$i + 1 \leq N_t$ and $x_{i+1,j} = x_{i,j}$}
             \State $i \gets i + 1$
         \EndWhile{}
         \State $i \gets i + 1$
