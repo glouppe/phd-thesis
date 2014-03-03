@@ -23,7 +23,7 @@ for i in range(len(X_) - 1):
     s = (X_[i]+X_[i+1]) / 2.0
     plt.plot([s,s], [0.00001, 0], ':', color=gray)
 
-y_ = y[indices]
+y = y[indices]
 
 def gini(p):
     p1 = 1.0 * np.sum(p) / len(p)
@@ -73,7 +73,7 @@ plt.annotate(
     xytext = (3, -0.0000015), textcoords = 'data',
     arrowprops = {'arrowstyle':'<->'})
 
-plt.annotate("$\Delta$", xy=(s[4], delta[4]), xycoords='data', xytext=(s[4]-0.5, delta[4]-0.000001), textcoords='data', arrowprops={'arrowstyle':'->'})
+plt.annotate("$\Delta$", xy=(s[3], delta[3]), xycoords='data', xytext=(s[3]-0.5, delta[3]-0.000001), textcoords='data', arrowprops={'arrowstyle':'->'})
 
 plt.text(3, -0.000003, "$X_j$", fontsize=15)
 
