@@ -163,26 +163,28 @@ Y=y)$ is the probability that random variables $X$ and $Y$ take values
 $\mathbf{x}$ and $y$ from ${\cal X}$ and ${\cal Y}$ when drawing an object
 uniformly at random from the universe $\Omega$.
 
-Accordingly, using an algorithm ${\cal A}$ for learning a model $\varphi$ whose
-predictions are as good as possible can be stated as finding a model $\varphi$
-which minimizes its expected prediction error, defined as follows:
+Accordingly, using an algorithm ${\cal A}$ for learning a model $\varphi_{\cal
+L}$\footnote{Unless it is clear from the context, models are now denoted
+$\varphi_{\cal L}$ to emphasize that they are built from the learning set
+${\cal L}$.} whose predictions are as good as possible can be stated as finding
+a model which minimizes its expected prediction error, defined as follows:
 
 \begin{definition}
 The \emph{expected prediction error}, also known as \emph{generalization
-error} or \emph{test error}, of the model $\varphi$ is\footnote{$\mathbb{E}_X \{f(X)\}$ denotes the expected value of $f(x)$
+error} or \emph{test error}, of the model $\varphi_{\cal L}$ is\footnote{$\mathbb{E}_X \{f(X)\}$ denotes the expected value of $f(x)$
 (for $x \in {\cal X}$) with respect to the probability distribution of the
 random variable $X$. It is defined as $$\mathbb{E}_X \{f(X)\} = \sum_{x \in {\cal
 X}} P(X=x) f(x).$$}
 \begin{equation}\label{eqn:generalization-error}
-Err_{{\cal L}}(\varphi) = \mathbb{E}_{X, Y}\{ L(Y, \varphi(X)) | {\cal L} \},
+Err(\varphi_{\cal L}) = \mathbb{E}_{X, Y}\{ L(Y, \varphi_{\cal L}(X)) \},
 \end{equation}
-where ${\cal L}$ is the learning set used to build $\varphi$ and $L$ is a loss
+where ${\cal L}$ is the learning set used to build $\varphi_{\cal L}$ and $L$ is a loss
 function measuring the discrepancy between its two
 arguments~\citep{geurts:2002}.
 \end{definition}
 
 Equation~\ref{eqn:generalization-error} basically measures the prediction error
-of $\varphi$ over all possible objects in $\Omega$ (each represented by a couple
+of $\varphi_{\cal L}$ over all possible objects in $\Omega$ (each represented by a couple
 $(\mathbf{x}, y)\in {\cal X}\times{\cal Y}$), including the observed couples
 from the learning set ${\cal L}$ but also all the \textit{unseen} ones from
 ${\cal X}\times{\cal Y} \setminus {\cal L}$. Indeed, the goal is not in fact to
@@ -198,28 +200,28 @@ $$1(\text{\textit{condition}}) =
 1 & \text{if \textit{condition} is true}\\
 0 & \text{if \textit{condition} is false}
 \end{cases}.
-$$} $L(Y, \varphi(X)) = 1(Y \neq \varphi(X))$, where all
+$$} $L(Y, \varphi_{\cal L}(X)) = 1(Y \neq \varphi_{\cal L}(X))$, where all
 misclassifications are equally penalized. In this case, the generalization
-error of $\varphi$ becomes the probability of misclassification of the model:
+error of $\varphi_{\cal L}$ becomes the probability of misclassification of the model:
 \begin{equation}
-Err_{\cal L}(\varphi) = \mathbb{E}_{X, Y}\{ 1(Y \neq \varphi(X)) | {\cal L} \} = P(Y \neq \varphi(X)|{\cal L})
+Err(\varphi_{\cal L}) = \mathbb{E}_{X, Y}\{ 1(Y \neq \varphi_{\cal L}(X)) \} = P(Y \neq \varphi_{\cal L}(X))
 \end{equation}
 
 Similarly, for regression, the most used loss function is the \textit{squared
-error} loss $L(Y, \varphi(X)) = (Y - \varphi(X))^2$, where large differences
+error} loss $L(Y, \varphi_{\cal L}(X)) = (Y - \varphi_{\cal L}(X))^2$, where large differences
 between the true values and the predicted values are penalized more heavily
 than small ones. With this loss, the generalization error of the model becomes:
 \begin{equation}
-Err_{\cal L}(\varphi) = \mathbb{E}_{X, Y}\{ (Y - \varphi(X))^2 | {\cal L} \}
+Err(\varphi_{\cal L}) = \mathbb{E}_{X, Y}\{ (Y - \varphi_{\cal L}(X))^2  \}
 \end{equation}
 
-\subsection{Estimating $Err_{\cal L}(\varphi)$}
+\subsection{Estimating $Err(\varphi_{\cal L})$}
 \label{sec:2:estimating-generalization-error}
 
 In practice, the probability distribution $P(X, Y)$ is usually unknown, making
-the direct evaluation of $Err_{\cal L}(\varphi)$ infeasible. Equivalently, it
+the direct evaluation of $Err(\varphi_{\cal L})$ infeasible. Equivalently, it
 is often not possible to draw additional data, thereby making infeasible the
-empirical estimation of $Err_{\cal L}(\varphi)$ on a (virtually infinite) set
+empirical estimation of $Err(\varphi_{\cal L})$ on a (virtually infinite) set
 ${\cal L}'$ drawn independently from ${\cal L}$. In most problems, ${\cal L}$
 constitutes the only data available, on which both the model needs to be
 learned and its generalization error estimated. As reviewed and described on
@@ -228,27 +230,27 @@ authors~\citep{toussaint:1974,stone:1978,breiman:1984,kohavi:1995,nadeau:2003,ha
 the generalization error in Equation~\ref{eqn:generalization-error} can however
 be estimated in several ways.
 
-To make notations clearer, let us first define $\overline{E}(\varphi^\prime, {\cal
-L}^\prime)$ as the average prediction error of the model $\varphi^\prime$ over the set
-${\cal L}^\prime$ (possibly different from the learning set used to produce
-$\varphi^\prime$), that is:
+To make notations clearer, let us first define $\overline{E}(\varphi_{\cal L}, {\cal
+L}^\prime)$ as the average prediction error of the model $\varphi_{\cal L}$ over the set
+${\cal L}^\prime$ (possibly different from the learning set ${\cal L}$ used to produce
+$\varphi_{\cal L}$), that is:
 \begin{equation}
-\overline{E}(\varphi^\prime, {\cal L}^\prime) = \frac{1}{N^\prime} \sum_{(\mathbf{x_i}, y_i) \in {\cal L}^\prime} L(y_i, \varphi^\prime(\mathbf{x_i}))
+\overline{E}(\varphi_{\cal L}, {\cal L}^\prime) = \frac{1}{N^\prime} \sum_{(\mathbf{x_i}, y_i) \in {\cal L}^\prime} L(y_i, \varphi_{\cal L}(\mathbf{x_i}))
 \end{equation}
 where $N^\prime$ is the size of the set ${\cal L}^\prime$.
 
 The first and simplest estimate of the generalization error is the
 \textit{resubstitution estimate} or \textit{training sample estimate}. It
-consists in empirically estimating $Err_{\cal L}(\varphi)$ on the same data as
-the learning set ${\cal L}$ used to build $\varphi$, that is:
+consists in empirically estimating $Err(\varphi_{\cal L})$ on the same data as
+the learning set ${\cal L}$ used to build $\varphi_{\cal L}$, that is:
 \begin{equation}\label{eqn:training-error}
-\widehat{Err}_{\cal L}^\text{train}(\varphi) = \overline{E}(\varphi, {\cal L})
+\widehat{Err}^\text{train}(\varphi_{\cal L}) = \overline{E}(\varphi_{\cal L}, {\cal L})
 \end{equation}
-In general, the resubstitution error is a poor estimate of $Err_{\cal
-L}(\varphi)$. In particular, since most machine learning algorithms aim at
+In general, the resubstitution error is a poor estimate of $Err(\varphi_{\cal L})$.
+In particular, since most machine learning algorithms aim at
 precisely minimizing Equation~\ref{eqn:training-error} (either directly or
 indirectly), it typically results in an overly optimistic estimate of the
-generalization error -- which accounts for all couples $(\mathbf{x}, y)$, i.e.,
+generalization error, which accounts for all couples $(\mathbf{x}, y)$, i.e.,
 not only those from ${\cal L}$.
 
 The second approach is the \textit{test sample estimate}. It consists in
@@ -256,11 +258,11 @@ dividing the learning set ${\cal L}$ into two disjoint sets ${\cal
 L}_\text{train}$ and ${\cal L}_\text{test}$, called \textit{training set} and
 \textit{test set}, and then to use each part respectively for learning a model
 and estimating its generalization error. The test sample estimate of the
-generalization error of the model $\varphi$ that would be obtained from ${\cal
+generalization error of the model $\varphi_{\cal L}$ that would be obtained from ${\cal
 L}$ is then given as the average prediction error over ${\cal L}_\text{test}$
-of the model $\varphi^\prime$ built on ${\cal L}_\text{train}$:
+of the model $\varphi_{{\cal L}_\text{train}}$ built on ${\cal L}_\text{train}$:
 \begin{equation}\label{eqn:test-error}
-\widehat{Err}_{\cal L}^\text{test}(\varphi) = \overline{E}(\varphi^\prime, {\cal L}_\text{test})
+\widehat{Err}^\text{test}(\varphi_{\cal L}) = \overline{E}(\varphi_{{\cal L}_\text{train}}, {\cal L}_\text{test})
 \end{equation}
 As a rule-of-thumb,
 ${\cal L}_\text{train}$ is usually taken as $70\%$ of the samples in
@@ -271,44 +273,43 @@ L}$ into two subsets, so that samples from ${\cal L}_\text{train}$ can be
 considered independent from those in ${\cal L}_\text{test}$ and drawn from the
 same distribution. This is however usually guaranteed by drawing ${\cal
 L}_\text{train}$ and ${\cal L}_\text{test}$ simply at random from ${\cal L}$.
-While being an unbiased estimate of $Err_{\cal L}(\varphi)$, the test sample
+While being an unbiased estimate of $Err(\varphi_{\cal L})$, the test sample
 estimate has the drawback that it reduces the
-effective sample size on which the model $\varphi^\prime$ is learned. If ${\cal L}$ is large,
+effective sample size on which the model $\varphi_{{\cal L}_\text{train}}$ is learned. If ${\cal L}$ is large,
 then this is usually not an issue, but if ${\cal L}$ only contains a few dozens
 of samples, then this strategy might not correctly approximate the true
 generalization error of the model that would have been learned on the entire learning set.
 
 When ${\cal L}$ is small, the \textit{$K$-fold cross-validation estimate} is
 usually preferred over the test sample estimate. It consists in randomly
-dividing the learning set ${\cal L}$ into $K$ disjoint subsets, denoted  ${\cal
-L}_1, ..., {\cal L}_K$, and then to estimate the generalization error $Err_{\cal
-L}(\varphi)$ as the average prediction error over the folds ${\cal L}_k$ of the
-models $\varphi_k$  learned on the remaining data ${\cal L}\setminus{\cal
-L}_k$:
+dividing the learning set ${\cal L}$ into $K$ disjoint subsets, ${\cal
+L}_1, ..., {\cal L}_K$, and then to estimate the generalization error as the average prediction error over the folds ${\cal
+L}_k$ of the models $\varphi_{{\cal L}\setminus {\cal L}_k}$  learned on the
+remaining data:
 \begin{equation}\label{eqn:cv-error}
-\widehat{Err}_{\cal L}^{CV}(\varphi) = \frac{1}{K} \sum_{k=1}^K  \overline{E}(\varphi_k, {\cal L}_k)
+\widehat{Err}^{CV}(\varphi_{\cal L}) = \frac{1}{K} \sum_{k=1}^K  \overline{E}(\varphi_{{\cal L}\setminus{\cal L}_k}, {\cal L}_k)
 \end{equation}
-The assumption behind this approach is that since each model $\varphi_k$ is
+The assumption behind this approach is that since each model $\varphi_{{\cal L}\setminus{\cal L}_k}$ is
 built using almost all ${\cal L}$, they should all be close to the model
-$\varphi$ learned on the entire set ${\cal L}$. As a result the unbiased
-estimates $\overline{E}(\varphi_k, {\cal L}_k)$ should also all be close to
-$Err_{\cal L}(\varphi)$. While more computationally intensive, the $K$-fold
+$\varphi_{\cal L}$ learned on the entire set. As a result the unbiased
+estimates $\overline{E}(\varphi_{{\cal L}\setminus{\cal L}_k}, {\cal L}_k)$ should also all be close to
+$Err(\varphi_{\cal L})$. While more computationally intensive, the $K$-fold
 cross-validation estimate has the advantage that every couple $(\mathbf{x}, y)
-\in {\cal L}$ is used for estimating the generalization error of $\varphi$. In
+\in {\cal L}$ is used for estimating the generalization error of $\varphi_{\cal L}$. In
 a typical setting, $K$ is usually fixed to $10$, a value often yielding stable
 and reliable estimates~\citep{kohavi:1995}.
 
 \begin{remark}{Expected generalization error}
-As we have shown, our goal is to estimate the generalization error $Err_{\cal
-L}(\varphi)$ conditional on the learning set ${\cal L}$. A related quantity
-is the \textit{expected} generalization error
+As we have shown, our goal is to estimate the generalization error
+$Err(\varphi_{\cal L})$ conditional on the learning set ${\cal L}$. A related
+quantity is the \textit{expected} generalization error
 \begin{equation}\label{eqn:expected-generalization-error}
-Err = \mathbb{E}_{\cal L} \{ Err_{\cal L}(\varphi) \},
+\mathbb{E}_{\cal L} \{ Err(\varphi_{\cal L}) \},
 \end{equation}
 averaging over everything which is random, including the randomness in the
-learning set ${\cal L}$ used to produce $\varphi$. As discussed by
-\citet{hastie:2005}, this quantity is close, yet different from $Err_{\cal
-L}(\varphi)$. The authors point out that most estimates, including $K$-fold
+learning set ${\cal L}$ used to produce $\varphi_{\cal L}$. As discussed by
+\citet{hastie:2005}, this quantity is close, yet different from
+$Err(\varphi_{\cal L})$. The authors point out that most estimates, including $K$-fold
 cross-validation, effectively estimate
 Equation~\ref{eqn:expected-generalization-error} rather than
 Equation~\ref{eqn:generalization-error}.
@@ -321,7 +322,6 @@ In theory, when the probability distribution $P(X, Y)$ is known, the best possib
 i.e., the model $\varphi_B$ which minimizes the generalization error of
 Equation~\ref{eqn:generalization-error}, can be derived analytically and
 independently of any learning set ${\cal L}$.
-
 By conditioning on $X$, the generalization error of this model can be rewritten as:
 \begin{equation}\label{eqn:generalization-error-conditionned}
 \mathbb{E}_{X, Y}\{ L(Y, \varphi_B(X)) \} = \mathbb{E}_{X}\{ \mathbb{E}_{Y|X} \{ L(Y, \varphi_B(X)) \} \}
@@ -339,7 +339,7 @@ the irreducible error purely due to random deviations in the data.
 
 \begin{definition}
 A model $\varphi_B$ is a \emph{Bayes model} if, for any model $\varphi$ built from any
-learning set ${\cal L}$, $Err(\varphi_B) \leq Err_{\cal L}(\varphi)$.
+learning set ${\cal L}$, $Err(\varphi_B) \leq Err(\varphi_{\cal L})$.
 \end{definition}
 
 In classification, when $L$ is the zero-one loss, the Bayes model is:
@@ -361,41 +361,41 @@ In other words, the best possible regressor consists in systematically predictin
 the average value of $Y$ at $X=\mathbf{x}$.
 
 For practical problems, $P(X, Y)$ is unknown and the Bayes model cannot be
-derived analytically. In this context, the effectiveness of a model $\varphi$
-may be difficult to evaluate since (estimates of) $Err_{\cal L}(\varphi)$ may
-not be very indicative of the goodness of $\varphi$ if the lowest attainable
+derived analytically. In this context, the effectiveness of a model $\varphi_{\cal L}$
+may be difficult to evaluate since (estimates of) $Err(\varphi_{\cal L})$ may
+not be very indicative of the goodness of $\varphi_{\cal L}$ if the lowest attainable
 error $Err(\varphi_B)$ is unknown. On simulated data however, where the
 distribution is known, deriving $\varphi_B$ and $Err(\varphi_B)$ is feasible.
 This is beneficial as $Err(\varphi_B)$ can now be used for comparing the test
-set error of $\varphi$ and thereby evaluate the actual effectiveness of
-$\varphi$ with respect to the best model one can possibly build.
+set error of $\varphi_{\cal L}$ and thereby evaluate the actual effectiveness of
+$\varphi_{\cal L}$ with respect to the best model one can possibly build.
 
 From a theoretical point of view, the concepts of Bayes model and residual
 error are also useful to study the learning capabilities of an algorithm. In
 particular, as ${\cal L}$ gets arbitrarily large, a fundamental question is to
-know whether it is possible to produce a model $\varphi$ which is
+know whether it is possible to produce a model $\varphi_{\cal L}$ which is
 \textit{consistent}, that is such that its generalization error gets
 arbitrarily close to the lowest possible generalization error $Err(\varphi_B)$.
 Formally, consistency is defined as follows~\citep{devroye:1996}:
 
 \begin{definition}
 A learning algorithm ${\cal A}$ is said to be \emph{consistent} for a certain distribution
-$P(X, Y)$ if $\mathbf{E}_{\cal L} \{ Err_{\cal L}(\varphi) \} \to Err(\varphi_B)$
-as the size $N$ of the learning set ${\cal L}$ used to build $\varphi$ using ${\cal A}$ tends
+$P(X, Y)$ if $\mathbf{E}_{\cal L} \{ Err(\varphi_{\cal L}) \} \to Err(\varphi_B)$
+as the size $N$ of the learning set ${\cal L}$ used to build $\varphi_{\cal L}$ using ${\cal A}$ tends
 to infinity.
 \end{definition}
 
 \begin{definition}
 A learning algorithm ${\cal A}$ is said to be \emph{strongly consistent} for a certain distribution
-$P(X, Y)$ if $Err_{\cal L}(\varphi) \to Err(\varphi_B)$ almost surely
-as the size $N$ of the learning set ${\cal L}$ used to build $\varphi$ using ${\cal A}$ tends
+$P(X, Y)$ if $Err(\varphi_{\cal L}) \to Err(\varphi_B)$ almost surely
+as the size $N$ of the learning set ${\cal L}$ used to build $\varphi_{\cal L}$ using ${\cal A}$ tends
 to infinity.
 \end{definition}
 
 Note that the definition of consistency depends on the distribution $P(X, Y)$.
-In general, a model $\varphi$ can be proven to be consistent for some
+In general, a learning algorithm ${\cal A}$ can be proven to be consistent for some
 classes of distributions, but not for others. If consistency can be proven
-for any distribution $P(X, Y)$, then $\varphi$ is said to be \textit{universally}
+for any distribution $P(X, Y)$, then ${\cal A}$ is said to be \textit{universally}
 (strongly) consistent.
 
 
@@ -414,7 +414,7 @@ $P(Y|X)$~\citep{geurts:2002}.
 \subsection{Selecting the (approximately) best model}
 
 To make supervised learning work in high-dimensional input spaces with learning
-sets of moderate sizes, simplifying or restrictive assumptions must be made on
+sets of moderate sizes, simplifying assumptions must be made on
 the structure of the best model $\varphi_B$. More specifically, a supervised
 learning algorithm assumes that $\varphi_B$ -- or at least a good enough approximation
 -- lives in a family ${\cal H}$ of candidate models, also known as
@@ -431,8 +431,6 @@ models in ${\cal H}$ can approximate the optimal model $\varphi_B$:
 \begin{equation}
 Err({\cal H}) = \min_{\varphi \in {\cal H}} \{ Err(\varphi) \} - Err(\varphi_B)
 \end{equation}
-where $Err(\varphi)$ is the generalization error of $\varphi$ (independently
-of any learning set ${\cal L})$.
 \end{remark}
 
 To be more specific, let $\theta$ be the vector of hyper-parameters values
@@ -441,10 +439,10 @@ of ${\cal A}$ with parameters $\theta$ on the learning set ${\cal L}$ is a
 deterministic\footnote{If ${\cal A}$ makes use of a pseudo-random generator to
 mimic a stochastic process, then we assume that the corresponding random seed is
 part of $\theta$.} process yielding a model ${\cal A}(\theta, {\cal L}) =
-\varphi \in {\cal H}$. As such, our goal is to find the vector of hyper-parameters values
+\varphi_{\cal L} \in {\cal H}$. As such, our goal is to find the vector of hyper-parameters values
 yielding to the best model possibly learnable in ${\cal H}$ from ${\cal L}$:
 \begin{equation}
-\theta^* = \argmin_{\theta} Err_{\cal L}({\cal A}(\theta, {\cal L}))
+\theta^* = \argmin_{\theta} Err({\cal A}(\theta, {\cal L}))
 \end{equation}
 Again, this problem cannot (usually) be solved exactly in practice since
 it requires the true generalization error of a model to be computable. However
@@ -454,7 +452,7 @@ When ${\cal L}$ is large, the easiest way to find $\widehat{\theta}^*$ is to
 use test sample estimates (as defined by Equation~\ref{eqn:test-error}) to
 guide the search of the hyper-parameter values, that is:
 \begin{align}
-\widehat{\theta}^* &= \argmin_{\theta} \widehat{Err}^\text{test}_{\cal L}({\cal A}(\theta, {\cal L})) \\
+\widehat{\theta}^* &= \argmin_{\theta} \widehat{Err}^\text{test}({\cal A}(\theta, {\cal L})) \\
                    &= \argmin_{\theta} \overline{E}({\cal A}(\theta, {\cal L}_\text{train}), {\cal L}_\text{test})
 \end{align}
 In practice, solving this later equation is also a difficult task but
@@ -518,8 +516,8 @@ is, having chosen a final model ${\cal A}(\widehat{\theta}^*, {\cal L})$, one
 wants to also estimate its generalization error.
 
 A naive assessment of the generalization error of the selected model might be
-to simply use the test sample estimate $\smash{\widehat{Err}^\text{test}_{\cal
-L}({\cal A}(\widehat{\theta}^*, {\cal L}))}$ (i.e., $\overline{E}({\cal
+to simply use the test sample estimate $\smash{\widehat{Err}^\text{test}
+({\cal A}(\widehat{\theta}^*, {\cal L}))}$ (i.e., $\overline{E}({\cal
 A}(\widehat{\theta}^*, {\cal L}_\text{train}), {\cal L}_\text{test})$) that was
 minimized during model selection. The issue with this estimate is that the
 learned model is not independent from ${\cal L}_\text{test}$ since its repeated
@@ -547,7 +545,7 @@ Train-Valid-Test set protocol for both model selection and evaluation.
 \item Perform model selection on ${\cal L}_\text{train} \cup {\cal L}_\text{valid}$
       using test sample estimates, i.e., find:
       \begin{align}
-      \widehat{\theta}^* &= \argmin_{\theta} \widehat{Err}_{{\cal L}_\text{train} \cup {\cal L}_\text{valid}}^\text{test}({\cal A}(\theta, {\cal L}_\text{train} \cup {\cal L}_\text{valid})) \\
+      \widehat{\theta}^* &= \argmin_{\theta} \widehat{Err}^\text{test}({\cal A}(\theta, {\cal L}_\text{train} \cup {\cal L}_\text{valid})) \\
                          &= \argmin_{\theta} \overline{E}({\cal A}(\theta, {\cal L}_\text{train}), {\cal L}_\text{valid});
       \end{align}
 \item Evaluate the (unbiased) generalization error of the final model as
@@ -568,7 +566,7 @@ Nested $K$-fold cross-validation protocol for both model selection and evaluatio
         \item Divide ${\cal L}\setminus{\cal L}_k = {\cal L}^{-k}$ into $K$ folds ${\cal L}_1^{-k}, ..., {\cal L}_K^{-k}$;
         \item Perform model selection on the subset ${\cal L}^{-k}$ using nested $K$-fold estimates, i.e., find:
         \begin{align}
-            \widehat{\theta}_k^* &= \argmin_{\theta} \widehat{Err}_{{\cal L}^{-k}}^{CV}({\cal A}(\theta, {\cal L}^{-k}))\\
+            \widehat{\theta}_k^* &= \argmin_{\theta} \widehat{Err}^{CV}({\cal A}(\theta, {\cal L}^{-k}))\\
                                  &= \argmin_{\theta} \frac{1}{K} \sum_{l=1}^K \overline{E}({\cal A}(\theta, {\cal L}^{-k} \setminus {\cal L}_l^{-k}), {\cal L}_l^{-k});
         \end{align}
         \item Evaluate the generalization error of the selected sub-model as
@@ -582,7 +580,7 @@ Nested $K$-fold cross-validation protocol for both model selection and evaluatio
 \end{equation}
 \item Perform model selection on the entire learning set ${\cal L}$ using $K$-fold cross-validation estimates, i.e., find:
 \begin{align}
-    \widehat{\theta}^* &= \argmin_{\theta} \widehat{Err}_{\cal L}^{CV}({\cal A}(\theta, {\cal L}))\\
+    \widehat{\theta}^* &= \argmin_{\theta} \widehat{Err}^{CV}({\cal A}(\theta, {\cal L}))\\
                        &= \argmin_{\theta} \frac{1}{K} \sum_{k=1}^K \overline{E}({\cal A}(\theta, {\cal L} \setminus {\cal L}_k), {\cal L}_k);
 \end{align}
 \item Learn the final model ${\cal A}(\widehat{\theta}^*, {\cal L})$ on the entire learning set.
