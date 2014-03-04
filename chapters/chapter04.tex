@@ -12,11 +12,45 @@ respect to Bagging. Finally, the consistency of forests of randomized trees is
 explored in Section~\ref{sec:4:consistency}.
 \end{remark}
 
-\section{Bias-variance tradeoff}
+\section{Bias-variance decomposition}
 \label{sec:4:bias-variance}
 
 % décomposition de l'erreur en bias+variance/noise
 % geurts, 2006, appendix E => est-ce que ça tient la route en termes de correlation effect???
+
+In section~\ref{sec:2:performance-evaluation}, we defined the generalization
+error of a model $\varphi_{\cal L}$ as its expected prediction error
+according to some loss function $L$
+\begin{equation}
+Err(\varphi_{\cal L}) = \mathbb{E}_{X,Y} \{ L(Y, \varphi_{\cal L}(X)) \}.
+\end{equation}
+Similarly, the expected prediction error of $\varphi_{\cal L}$ at $X=\mathbf{x}$
+can be expressed as
+\begin{equation}
+Err(\varphi_{\cal L}(\mathbf{x})) = \mathbb{E}_{Y|X=\mathbf{x}} \{ L(Y, \varphi_{\cal L}(\mathbf{x})) \}.
+\end{equation}
+
+\subsection{Regression error}
+
+In regression, assuming that $L$ is the squared error loss, the expected
+prediction error of a model $\varphi_{\cal L}$ at a given point $X=\mathbf{x}$
+can be reexpressed in terms of the Bayes model $\varphi_B$:
+\begin{align}
+Err(\varphi_{\cal L}(\mathbf{x})) &= \mathbb{E}_{Y|X=\mathbf{x}} \{ (Y - \varphi_{\cal L}(\mathbf{x}))^2 \} \nonumber \\
+                                  &= \mathbb{E}_{Y|X=\mathbf{x}} \{ (Y -\varphi_B(\mathbf{x}) + \varphi_B(\mathbf{x}) - \varphi_{\cal L}(\mathbf{x}))^2 \} \nonumber \\
+                                  &= \mathbb{E}_{Y|X=\mathbf{x}} \{ (Y -\varphi_B(\mathbf{x}))^2 + (\varphi_B(\mathbf{x}) - \varphi_{\cal L}(\mathbf{x}))^2 \nonumber \\
+                                  & \quad\quad\quad\quad\quad+ 2 (Y - \varphi_B(\mathbf{x}))(\varphi_B(\mathbf{x}) - \varphi_{\cal L}(\mathbf{x})) \} \nonumber \\
+                                  &= \mathbb{E}_{Y|X=\mathbf{x}} \{ (Y -\varphi_B(\mathbf{x}))^2 \} + \mathbb{E}_{Y|X=\mathbf{x}} \{ (\varphi_B(\mathbf{x}) - \varphi_{\cal L}(\mathbf{x}))^2 \} \label{eqn:4:decomp1}
+\end{align}
+since $\mathbb{E}_{Y|X=\mathbf{x}} \{ Y - \varphi_B(\mathbf{x}) \} =
+\mathbb{E}_{Y|X=\mathbf{x}} \{ Y \} - \varphi_B(\mathbf{x}) = 0$ by definition
+of the Bayes model in regression. In this form, the first term in
+Equation~\ref{eqn:4:decomp1} corresponds to the (irreducible) residual error
+$Err(\varphi_B(\mathbf{x}))$ at  $X=\mathbf{x}$ while the
+second term represents the discrepancy of $\varphi_{\cal L}$ from the
+Bayes model. The further from the Bayes model, the larger the error.
+
+\subsection{Classification error}
 
 \section{Bagging}
 \label{sec:4:bagging}

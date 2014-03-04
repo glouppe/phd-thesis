@@ -352,7 +352,7 @@ Put otherwise, the best possible classifier
 consists in systematically predicting the most likely class $y \in \{c_1, c_2, ..., c_J\}$
 given $X=\mathbf{x}$.
 
-Similarly, for regression with the square error loss, we have:
+Similarly, for regression with the squared error loss, we have:
 \begin{align}
 \varphi_B(\mathbf{x}) &= \argmin_{y \in {\cal Y}} \mathbb{E}_{Y|X=\mathbf{x}} \{ (Y - y)^2 \} \nonumber \\
                       &= \mathbb{E}_{Y|X=\mathbf{x}} \{ Y \} \label{eqn:bayes-model-regression}
