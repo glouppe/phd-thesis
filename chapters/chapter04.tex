@@ -2,14 +2,15 @@
 
 \begin{remark}{Outline}
 In this chapter, we present the well-known family of \textit{Random Forests}
-methods. In Section~\ref{sec:4:bias-variance}, we first describe the
-bias-variance decomposition of the prediction error and then present, in
-Section~\ref{sec:4:bagging}, how the Bagging ensemble method reduces it by decreasing
-the variance term of this decomposition. In Section~\ref{sec:4:ensemble}, we
-revisit Random Forests ant its variants and study how randomness introduced into
-the decision tree induction algorithm can further reduce the prediction error with
-respect to Bagging. Finally, the consistency of forests of randomized trees is
-explored in Section~\ref{sec:4:consistency}.
+methods. In Section~\ref{sec:4:bias-variance}, we first describe the bias-
+variance decomposition of the prediction error and then present, in
+Section~\ref{sec:4:bagging}, how the Bagging ensemble method reduces prediction
+error by decreasing the variance term of this decomposition. In
+Section~\ref{sec:4:ensemble}, we revisit Random Forests ant its variants and
+study how randomness introduced into the decision tree induction algorithm can
+further reduce the prediction error with respect to Bagging. Finally, the
+consistency of forests of randomized trees is explored in
+Section~\ref{sec:4:consistency}.
 \end{remark}
 
 \section{Bias-variance decomposition}
@@ -27,8 +28,14 @@ Err(\varphi_{\cal L}) = \mathbb{E}_{X,Y} \{ L(Y, \varphi_{\cal L}(X)) \}.
 Similarly, the expected prediction error of $\varphi_{\cal L}$ at $X=\mathbf{x}$
 can be expressed as
 \begin{equation}
-Err(\varphi_{\cal L}(\mathbf{x})) = \mathbb{E}_{Y|X=\mathbf{x}} \{ L(Y, \varphi_{\cal L}(\mathbf{x})) \}.
+Err(\varphi_{\cal L}(\mathbf{x})) = \mathbb{E}_{Y|X=\mathbf{x}} \{ L(Y, \varphi_{\cal L}(\mathbf{x})) \}.\label{eqn:4:generalization-error:x}
 \end{equation}
+
+In regression, this latter form of the expected prediction error additively
+decomposes into bias and variance terms which together constitute a very useful
+framework for diagnosing the error of a model. In classification
+however, a similar decomposition is more difficult to obtain, yet several
+bias and variance frameworks have been proposed to provide a similar analysis.
 
 \subsection{Regression error}
 
@@ -40,12 +47,13 @@ Err(\varphi_{\cal L}(\mathbf{x})) &= \mathbb{E}_{Y|X=\mathbf{x}} \{ (Y - \varphi
                                   &= \mathbb{E}_{Y|X=\mathbf{x}} \{ (Y -\varphi_B(\mathbf{x}) + \varphi_B(\mathbf{x}) - \varphi_{\cal L}(\mathbf{x}))^2 \} \nonumber \\
                                   &= \mathbb{E}_{Y|X=\mathbf{x}} \{ (Y -\varphi_B(\mathbf{x}))^2 + (\varphi_B(\mathbf{x}) - \varphi_{\cal L}(\mathbf{x}))^2 \nonumber \\
                                   & \quad\quad\quad\quad\quad+ 2 (Y - \varphi_B(\mathbf{x}))(\varphi_B(\mathbf{x}) - \varphi_{\cal L}(\mathbf{x})) \} \nonumber \\
-                                  &= \mathbb{E}_{Y|X=\mathbf{x}} \{ (Y -\varphi_B(\mathbf{x}))^2 \} + \mathbb{E}_{Y|X=\mathbf{x}} \{ (\varphi_B(\mathbf{x}) - \varphi_{\cal L}(\mathbf{x}))^2 \} \label{eqn:4:decomp1}
+                                  &= \mathbb{E}_{Y|X=\mathbf{x}} \{ (Y -\varphi_B(\mathbf{x}))^2 \} \nonumber \\
+                                  & \quad+ \mathbb{E}_{Y|X=\mathbf{x}} \{ (\varphi_B(\mathbf{x}) - \varphi_{\cal L}(\mathbf{x}))^2 \} \label{eqn:4:decomp1}
 \end{align}
 since $\mathbb{E}_{Y|X=\mathbf{x}} \{ Y - \varphi_B(\mathbf{x}) \} =
 \mathbb{E}_{Y|X=\mathbf{x}} \{ Y \} - \varphi_B(\mathbf{x}) = 0$ by definition
 of the Bayes model in regression. In this form, the first term in
-Equation~\ref{eqn:4:decomp1} corresponds to the (irreducible) residual error
+the last expression of Equation~\ref{eqn:4:decomp1} corresponds to the (irreducible) residual error
 $Err(\varphi_B(\mathbf{x}))$ at  $X=\mathbf{x}$ while the
 second term represents the discrepancy of $\varphi_{\cal L}$ from the
 Bayes model. The further from the Bayes model, the larger the error.
