@@ -1,15 +1,15 @@
 \chapter{Random Forests}\label{ch:forest}
 
 \begin{remark}{Outline}
-In this chapter, we present a family of ensemble methods known as
-\textit{Random Forests}. In Section~\ref{sec:4:bias-variance}, we first
-describe the bias-variance decomposition of the prediction error and then
-present, in Section~\ref{sec:4:bagging}, how the Bagging ensemble method
-reduces the variance term in this decomposition. In
-Section~\ref{sec:4:ensemble}, we study Random Forests ant its variants, which
-all introduce randomness into the decision tree induction algorithm
-to further reduce the prediction error. Finally, the consistency of forests of
-randomized trees is explored in Section~\ref{sec:4:consistency}.
+In this chapter, we present the well-known family of \textit{Random Forests}
+methods. In Section~\ref{sec:4:bias-variance}, we first describe the
+bias-variance decomposition of the prediction error and then present, in
+Section~\ref{sec:4:bagging}, how the Bagging ensemble method reduces it by decreasing
+the variance term of this decomposition. In Section~\ref{sec:4:ensemble}, we
+revisit Random Forests ant its variants and study how randomness introduced into
+the decision tree induction algorithm can further reduce the prediction error with
+respect to Bagging. Finally, the consistency of forests of randomized trees is
+explored in Section~\ref{sec:4:consistency}.
 \end{remark}
 
 \section{Bias-variance tradeoff}
