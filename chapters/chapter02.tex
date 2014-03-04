@@ -308,7 +308,7 @@ Err = \mathbb{E}_{\cal L} \{ Err_{\cal L}(\varphi) \},
 averaging over everything which is random, including the randomness in the
 learning set ${\cal L}$ used to produce $\varphi$. As discussed by
 \citet{hastie:2005}, this quantity is close, yet different from $Err_{\cal
-L}(\varphi)$. In particular, the authors point out that most estimates, including $K$-fold
+L}(\varphi)$. The authors point out that most estimates, including $K$-fold
 cross-validation, effectively estimate
 Equation~\ref{eqn:expected-generalization-error} rather than
 Equation~\ref{eqn:generalization-error}.
@@ -366,10 +366,9 @@ may be difficult to evaluate since (estimates of) $Err_{\cal L}(\varphi)$ may
 not be very indicative of the goodness of $\varphi$ if the lowest attainable
 error $Err(\varphi_B)$ is unknown. On simulated data however, where the
 distribution is known, deriving $\varphi_B$ and $Err(\varphi_B)$ is feasible.
-This is beneficial as $Err(\varphi_B)$ can now be used for comparing the
-test set error of $\varphi$ and thereby evaluate the
-actual effectiveness of $\varphi$ with respect the best model one can
-possibly build.
+This is beneficial as $Err(\varphi_B)$ can now be used for comparing the test
+set error of $\varphi$ and thereby evaluate the actual effectiveness of
+$\varphi$ with respect to the best model one can possibly build.
 
 From a theoretical point of view, the concepts of Bayes model and residual
 error are also useful to study the learning capabilities of an algorithm. In

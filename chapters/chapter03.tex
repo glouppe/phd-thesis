@@ -656,7 +656,7 @@ because their goodness cannot be evaluated on the learning set. As such, the
 optimization problem of finding the best split $s^*$ of ${\cal X}_t$ can be
 roughly restated as finding the best partition of the node samples ${\cal L}_t$.
 
-For a finite set ${\cal L}_t$, the number of partitions into $k$
+Assuming distinct input values for all $N_t$ node samples, the number of partitions of ${\cal L}_t$ into $k$
 non-empty subsets is given by the Stirling number of the second
 kind~\citep{knuth:1992}
 \begin{equation}
@@ -664,7 +664,7 @@ S(N_t, k) = \frac{1}{k!} \sum_{j=0}^k (-1)^{k-j} {k\choose j} j^{N_t},
 \end{equation}
 which reduces to $2^{N_t-1}-1$ for binary partitions. Given the exponential
 growth in the number of partitions, the naive strategy of enumerating all
-possible partitions and picking the best of them is clearly computationally
+possible partitions and picking the best of them is often computationally
 intractable. For this reason, simplifying  assumptions must be made on the best
 split $s^*$. More specifically, the induction algorithm usually assumes that
 $s^*$ -- or a least a good enough approximation -- lives in a family ${\cal Q}
@@ -701,8 +701,7 @@ variable. That is,
 s^* &= \argmax_{\substack{s^*_j\\ j=1, \dots, p}} \Delta i(s^*_j, t) \label{eqn:best-best-split}\\
 s^*_j &= \argmax_{\substack{s \in Q(X_j)\\ {\cal L}_{t_L}, {\cal L}_{t_R} \neq \phi}} \Delta i(s, t) \label{eqn:best-split-single}
 \end{align}
-In this framework, the crux of the problem for solving
-Line~\ref{algo:induction:split} of Algorithm~\ref{algo:induction} therefore
+In this framework, the crux of the problem therefore
 simply reduces to the implementation of Equation~\ref{eqn:best-split-single}.
 
 While partitions of form~\ref{eqn:q:ordered} and \ref{eqn:q:categorical-cart}
@@ -716,8 +715,8 @@ replace axis-parallel cutting hyperplanes with hyperplanes of any orientation,
 resulting into smaller, yet as accurate, decision trees. In this setting
 however, decomposition~\ref{eqn:best-best-split} no longer holds, hence making
 the search of the best split often more computationally intensive. More
-recently, several authors (e.g., \citep{gama:2004}, \citep{criminisi:2013} or
-\citep{botta:2013}) outlined more general frameworks in which splits are
+recently, several authors (e.g., \citep{gama:2004,criminisi:2013,botta:2013})
+outlined more general frameworks in which splits are
 defined as multi-variate functions, thereby revisiting separating hyperplanes
 like in oblique trees or investigating more advanced models like quadratic
 surfaces or decision trees inside decision trees. Finally, in an another
@@ -877,9 +876,9 @@ To better understand Theorem~\ref{thm:reduction-impurity}, let us consider a
 strictly concave function $\Phi$ that satisfies the requirements and let us
 evaluate on our toy problem the goodness of the split defined on $X_1$.  As
 illustrated in the first plot of Figure~\ref{fig:3:toy:impurity:gini},  $i(t)$
-is maximum when when $t$ is heterogeneous in terms of class probabilities
+is maximum when the uncertainty on the output value is the largest
 (i.e., at $p(c_1|t)=p(c_2|t)=\tfrac{1}{2}$) and then gets progressively smaller
-when $t$ gets more homogeneous towards one of the classes (i.e., as $p(c_1|t)$
+when certainty grows towards one of the classes (i.e., as $p(c_1|t)$
 gets close to $0$ or $1$). As shown by Theorem~\ref{thm:reduction-impurity},
 $i(t)$ is also necessarily larger than the weighted sum (illustrated by the gray
 dot) of impurities of the child nodes. Visually, the further away $p(c_1|t_L)$
@@ -972,11 +971,11 @@ not that significant.
 
 When the output variable $Y$ is quantitative, Proposition~\ref{prop:any-split-reduce-regression}
 shows that splitting $t$ in any way reduces the
-resubstitution estimate. In particular, the reduction is positive as long as
+square error loss on the training set. In particular, the reduction is positive as long as
 the values assigned to the child nodes are different from the value at $t$.
 Contrary to classification, this only happens in rare circumstances (i.e., when
 the mean output values at the child nodes coincide with the mean output value
-in $t$), hence making the resubstitution estimate sensitive to changes in the a
+in $t$), hence making the regression resubstitution estimate sensitive to changes in the a
 posteriori distributions, even if these are only slight.  As a result, the
 local resubstitution estimate does not exhibit the undesirable properties that
 we had in classification and in fact constitutes a good criterion for
