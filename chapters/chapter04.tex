@@ -93,8 +93,13 @@ This bias-variance decomposition of the generalization error is due to
 The first term, $\text{noise}(\mathbf{x})$, is the residual error. It is
 entirely independent of both the learning algorithm and the learning set and
 provides for any model a theoretical lower bound on its generalization error.
-The second term, $\text{bias}^2(\mathbf{x})$, ...
+The second term, $\text{bias}^2(\mathbf{x})$, measures the discrepancy between
+the average prediction and the prediction of the Bayes model. Finally, the
+third term, $\text{var}(\mathbf{x})$, measures the variability of the
+predictions at $X=\mathbf{x}$ over the models learned from all possible
+learning sets.
 
+% add figure
 % add example to explain overfitting
 
 \subsection{Classification error}
