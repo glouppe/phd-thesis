@@ -2,10 +2,10 @@
 
 \begin{remark}{Outline}
 In this chapter, we present the well-known family of \textit{Random Forests}
-methods. In Section~\ref{sec:4:bias-variance}, we first describe the bias-
-variance decomposition of the prediction error and then present, in
-Section~\ref{sec:4:bagging}, how the Bagging ensemble method reduces prediction
-error by decreasing the variance term of this decomposition. In
+methods. In Section~\ref{sec:4:bias-variance}, we first describe the
+bias-variance decomposition of the prediction error and then present, in
+Section~\ref{sec:4:bagging}, how aggregating models through Bagging reduces the prediction
+error by decreasing the variance term in this decomposition. In
 Section~\ref{sec:4:ensemble}, we revisit Random Forests ant its variants and
 study how randomness introduced into the decision tree induction algorithm can
 further reduce the prediction error with respect to Bagging. Finally, the
@@ -33,9 +33,11 @@ Err(\varphi_{\cal L}(\mathbf{x})) = \mathbb{E}_{Y|X=\mathbf{x}} \{ L(Y, \varphi_
 
 In regression, this latter form of the expected prediction error additively
 decomposes into bias and variance terms which together constitute a very useful
-framework for diagnosing the error of a model. In classification
-however, a similar decomposition is more difficult to obtain, yet several
-bias and variance frameworks have been proposed to provide a similar analysis.
+framework for diagnosing the prediction error of a model. In classification, a
+similar decomposition is more difficult to obtain. Yet, as we will see, the
+concepts of bias and variance can be transposed in several ways to
+classification, hence providing comparable frameworks for studying the prediction
+error of classifiers.
 
 \subsection{Regression error}
 
