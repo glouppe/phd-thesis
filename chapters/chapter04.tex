@@ -16,9 +16,6 @@ Section~\ref{sec:4:consistency}.
 \section{Bias-variance decomposition}
 \label{sec:4:bias-variance}
 
-% décomposition de l'erreur en bias+variance/noise
-% geurts, 2006, appendix E => est-ce que ça tient la route en termes de correlation effect???
-
 In section~\ref{sec:2:performance-evaluation}, we defined the generalization
 error of a model $\varphi_{\cal L}$ as its expected prediction error
 according to some loss function $L$
@@ -36,8 +33,8 @@ decomposes into bias and variance terms which together constitute a very useful
 framework for diagnosing the prediction error of a model. In classification, a
 similar decomposition is more difficult to obtain. Yet, as we will see, the
 concepts of bias and variance can be transposed in several ways to
-classification, hence providing comparable frameworks for studying the prediction
-error of classifiers.
+classification, thereby providing comparable frameworks for studying the
+prediction error of classifiers.
 
 \subsection{Regression error}
 
@@ -55,11 +52,11 @@ can be rewritten with respect to the Bayes model $\varphi_B$:
 \end{align}
 since $\mathbb{E}_{Y|X=\mathbf{x}} \{ Y - \varphi_B(\mathbf{x}) \} =
 \mathbb{E}_{Y|X=\mathbf{x}} \{ Y \} - \varphi_B(\mathbf{x}) = 0$ by definition
-of the Bayes model in regression. In this form, the first term in
-the last expression of Equation~\ref{eqn:4:decomp1} corresponds to the (irreducible) residual error
- at $X=\mathbf{x}$ while the
-second term represents the discrepancy of $\varphi_{\cal L}$ from the
-Bayes model. The further from the Bayes model, the larger the error.
+of the Bayes model in regression. In this form, the first term in the last
+expression of Equation~\ref{eqn:4:decomp1} corresponds to the (irreducible)
+residual error  at $X=\mathbf{x}$ while the second term represents the
+discrepancy of $\varphi_{\cal L}$ from the Bayes model. The further from the
+Bayes model, the more sub-optimal the model and the larger the error.
 
 If we further assume that the learning set ${\cal L}$ is itself a random
 variable, then the expected discrepancy with the Bayes model can further be
@@ -72,9 +69,12 @@ learning sets of size $N$:
 &= \mathbb{E}_{\cal L} \{ (\varphi_B(\mathbf{x}) - \mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} )^2 \} + \mathbb{E}_{\cal L} \{ (\mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} - \varphi_{\cal L}(\mathbf{x}))^2 \} \}\nonumber \\
 & \quad+ \mathbb{E}_{\cal L} \{ 2(\varphi_B(\mathbf{x}) - \mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \})(\mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} - \varphi_{\cal L}(\mathbf{x}))\} \nonumber \\
 &= \mathbb{E}_{\cal L} \{ (\varphi_B(\mathbf{x}) - \mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} )^2 \} + \mathbb{E}_{\cal L} \{ (\mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} - \varphi_{\cal L}(\mathbf{x}))^2 \} \}\nonumber \\
-&= (\varphi_B(\mathbf{x}) - \mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} )^2 + \mathbb{E}_{\cal L} \{ (\mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} - \varphi_{\cal L}(\mathbf{x}))^2 \} \}
+&= (\varphi_B(\mathbf{x}) - \mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} )^2 + \mathbb{E}_{\cal L} \{ (\mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} - \varphi_{\cal L}(\mathbf{x}))^2 \}
 \end{align}
-since $\mathbb{E}_{\cal L}\{ \mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} - \varphi_{\cal L}(\mathbf{x}) \} =  \mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} -  \mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} = 0$.
+since $\mathbb{E}_{\cal L}\{ \mathbb{E}_{\cal L} \{ \varphi_{\cal
+L}(\mathbf{x}) \} - \varphi_{\cal L}(\mathbf{x}) \} =  \mathbb{E}_{\cal L} \{
+\varphi_{\cal L}(\mathbf{x}) \} -  \mathbb{E}_{\cal L} \{ \varphi_{\cal
+L}(\mathbf{x}) \} = 0$.
 
 In summary, the expected generalization error at $X=\mathbf{x}$ additively
 decomposes as follows:
@@ -85,11 +85,17 @@ where
 \begin{align}
 \text{noise}(\mathbf{x}) &= Err(\varphi_B(\mathbf{x})) \\
 \text{bias}^2(\mathbf{x}) &= (\varphi_B(\mathbf{x}) - \mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} )^2 \\
-\text{var}(\mathbf{x}) &= \mathbb{E}_{\cal L} \{ (\mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} - \varphi_{\cal L}(\mathbf{x}))^2 \} \}
+\text{var}(\mathbf{x}) &= \mathbb{E}_{\cal L} \{ (\mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} - \varphi_{\cal L}(\mathbf{x}))^2 \}
 \end{align}
 
 This bias-variance decomposition of the generalization error is due to
 \citet{geman:1992} and was first proposed in the context of neural networks.
+The first term, $\text{noise}(\mathbf{x})$, is the residual error. It is
+entirely independent of both the learning algorithm and the learning set and
+provides for any model a theoretical lower bound on its generalization error.
+The second term, $\text{bias}^2(\mathbf{x})$, ...
+
+% add example to explain overfitting
 
 \subsection{Classification error}
 
