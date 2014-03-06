@@ -97,7 +97,17 @@ The second term, $\text{bias}^2(\mathbf{x})$, measures the discrepancy between
 the average prediction and the prediction of the Bayes model. Finally, the
 third term, $\text{var}(\mathbf{x})$, measures the variability of the
 predictions at $X=\mathbf{x}$ over the models learned from all possible
-learning sets.
+learning sets. All three terms are illustrated in Figure~\ref{fig:bias-variance}
+for a toy regression problem. Both $\text{noise}(\mathbf{x})$ and
+$\text{var}(\mathbf{x})$ measures the spread of the two densities while
+$\text{bias}^2(\mathbf{x})$ is the distance between their means.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/ch4_bias_variance.pdf}
+    \caption{Residual error, bias and variance in regression. (Figure inspired from \citep{geurts:2002}.)}
+    \label{fig:bias-variance}
+\end{figure}
 
 % add figure
 % add example to explain overfitting
