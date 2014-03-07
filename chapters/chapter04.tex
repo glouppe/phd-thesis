@@ -133,24 +133,24 @@ bias and variance, this translates into low variance but high bias as shown in
 the lower left plot of Figure~\ref{fig:overfitting}. Indeed, due to the low
 degree of the polynomials (i.e., due to the low model complexity), the
 resulting models are almost all identical and  the variability of the
-predictions from one model to another is therefore quite low. Because of this
-low variance however, none of them really fits the trend of the training
-points, even approximately, which implies that the average model is far from
-approximating the Bayes model. This results in high bias. By contrast,
-polynomials of degree $15$ (right) suffer from overfitting. In terms of bias
-and variance, the situation is the opposite. Predictions have low bias but high
-variance, as shown in the lower right plot of Figure~\ref{fig:overfitting}. The
-variability of the predictions is high because the high degree of the
-polynomials (i.e., the high model complexity) allows to capture noise in the
-learning set. Indeed, compare the gray line with the blue dots -- they almost
-all intersect. Put otherwise, small changes in the learning set result in large
-changes in the obtained model and therefore in its predictions. However, the
-average model is now quite close from the Bayes model, which results in low
-bias\footnote{Note however the Gibbs-like phenomenon resulting in both high
-variance and high bias at the boundaries of ${\cal X}$.}. Finally, polynomials
-of degree $5$ (middle) are neither too simple nor too complex. In terms of bias
-and variance, the trade-off is well-balanced between the two extreme
-situations. Bias and variance are neither too low nor too large.
+predictions from one model to another is therefore quite low. Also, because of
+low complexity, none of them really fits the trend of the training points, even
+approximately, which implies that the average model is far from approximating
+the Bayes model. This results in high bias. On the other hand, polynomials of
+degree $15$ (right) suffer from overfitting. In terms of bias and variance, the
+situation is the opposite. Predictions have low bias but high variance, as
+shown in the lower right plot of Figure~\ref{fig:overfitting}. The variability
+of the predictions is large because the high degree of the polynomials (i.e.,
+the high model complexity) allows to capture noise in the learning set. Indeed,
+compare the gray line with the blue dots -- they almost all intersect. Put
+otherwise, small changes in the learning set result in large changes in the
+obtained model and therefore in its predictions. However, the average model is
+now quite close from the Bayes model, which results in low bias\footnote{Note
+however the Gibbs-like phenomenon resulting in both high variance and high bias
+at the boundaries of ${\cal X}$.}. Finally, polynomials of degree $5$ (middle)
+are neither too simple nor too complex. In terms of bias and variance, the
+trade-off is well-balanced between the two extreme situations. Bias and
+variance are neither too low nor too large.
 
 
 
