@@ -92,8 +92,9 @@ for n, (name, estimator) in enumerate(estimators):
     plt.setp(ax, xticks=(), yticks=())
     plt.plot(X_test, f(X_test), color=blue)
     plt.plot(X_train[0], y_train[0], ".b")
+    plt.plot(X_test, y_predict[:, 0], color=gray)
 
-    for i in range(n_repeat):
+    for i in range(1, n_repeat):
         plt.plot(X_test, y_predict[:, i], color=red_alpha, alpha=0.05)
 
     plt.plot(X_test, np.mean(y_predict, axis=1), color=red,
@@ -101,7 +102,7 @@ for n, (name, estimator) in enumerate(estimators):
 
     plt.xlabel("x")
     plt.ylabel("y")
-    plt.xlim((0, 1))
+    plt.xlim((0., 1.0))
     plt.ylim((-2, 2))
     plt.title(name)
 
@@ -112,8 +113,8 @@ for n, (name, estimator) in enumerate(estimators):
     plt.plot(X_test, y_var, color=red, label="$var(x)$"),
     plt.plot(X_test, y_noise, color=green, label="$noise(x)$")
     plt.xlabel("x")
-    plt.xlim((0, 1))
-    plt.ylim((0, 0.75))
+    plt.xlim((0., 1.0))
+    plt.ylim((0, 2.0))
 
     if n == 0:
         plt.legend(loc="upper left", prop={"size": 11})
