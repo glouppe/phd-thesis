@@ -59,10 +59,10 @@ discrepancy of $\varphi_{\cal L}$ from the Bayes model. The further from the
 Bayes model, the more sub-optimal the model and the larger the error.
 
 If we further assume that the learning set ${\cal L}$ is itself a random
-variable, then the expected discrepancy with the Bayes model can further be
-re-expressed in terms of the average prediction $\mathbb{E}_{\cal L} \{
-\varphi_{\cal L}(\mathbf{x}) \}$ over the models learned from all possible
-learning sets of size $N$:
+variable and that the learning algorithm is deterministic, then the expected
+discrepancy with the Bayes model can further be re-expressed in terms of the
+average prediction $\mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \}$
+over the models learned from all possible learning sets of size $N$:
 \begin{align}
 & \mathbb{E}_{\cal L} \{ (\varphi_B(\mathbf{x}) - \varphi_{\cal L}(\mathbf{x}))^2 \}\nonumber \\
 &= \mathbb{E}_{\cal L} \{ (\varphi_B(\mathbf{x}) - \mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} + \mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} - \varphi_{\cal L}(\mathbf{x}))^2 \} \nonumber \\
@@ -109,7 +109,6 @@ $\text{bias}^2(\mathbf{x})$ is the distance between their means.
     \label{fig:bias-variance}
 \end{figure}
 
-% add figure
 % add example to explain overfitting
 
 \subsection{Classification error}
