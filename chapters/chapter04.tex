@@ -112,15 +112,16 @@ $\text{bias}^2(\mathbf{x})$ is the distance between their means.
 As a typical example, the bias-variance decomposition framework can be used as
 a tool for diagnosing underfitting and overfitting (as previously introduced in
 Section \ref{sec:2:model-selection}). The upper plots in
-Figure~\ref{fig:overfitting} illustrate in light red predictions
-$\varphi_{\cal L}(\mathbf{x})$ for polynomials of degree $1$, $5$ and $15$
-learned over random learning sets ${\cal L}$ sampled from a noisy cosinus
-function. Predictions $\mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \}$
-of the average model are represented by the thick red lines. Predictions for
-the model learned over the learning set represented by the blue dots
-are represented in gray. Predictions of the Bayes model are shown in blue and
-coincide with the unnoised cosinus function that defines the regression
-problem.
+Figure~\ref{fig:overfitting} illustrate in light red predictions $\varphi_{\cal
+L}(\mathbf{x})$ for polynomials of degree $1$, $5$ and $15$ learned over random
+learning sets ${\cal L}$ sampled from a noisy cosinus function. Predictions
+$\mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \}$ of the average model
+are represented by the thick red lines. Predictions for the model learned over
+the learning set represented by the blue dots are represented in gray.
+Predictions of the Bayes model are shown in blue and coincide with the unnoised
+cosinus function that defines the regression problem. The lower plots in the
+figure illustrate the bias-variance decomposition of the expected
+generalization error of the polynomials.
 
 \begin{figure}
     \hspace{-0.75cm}\includegraphics[width=1.1\textwidth]{figures/ch4_overfitting.pdf}
@@ -141,10 +142,10 @@ degree $15$ (right) suffer from overfitting. In terms of bias and variance, the
 situation is the opposite. Predictions have low bias but high variance, as
 shown in the lower right plot of Figure~\ref{fig:overfitting}. The variability
 of the predictions is large because the high degree of the polynomials (i.e.,
-the high model complexity) allows to capture noise in the learning set. Indeed,
+the high model complexity) captures noise in the learning set. Indeed,
 compare the gray line with the blue dots -- they almost all intersect. Put
 otherwise, small changes in the learning set result in large changes in the
-obtained model and therefore in its predictions. However, the average model is
+obtained model and therefore in its predictions. By contrast, the average model is
 now quite close from the Bayes model, which results in low bias\footnote{Note
 however the Gibbs-like phenomenon resulting in both high variance and high bias
 at the boundaries of ${\cal X}$.}. Finally, polynomials of degree $5$ (middle)
