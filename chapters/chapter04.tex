@@ -4,11 +4,11 @@
 In this chapter, we present the well-known family of \textit{Random Forests}
 methods. In Section~\ref{sec:4:bias-variance}, we first describe the
 bias-variance decomposition of the prediction error and then present, in
-Section~\ref{sec:4:bagging}, how aggregating models through Bagging reduces the prediction
-error by decreasing the variance term in this decomposition. In
-Section~\ref{sec:4:ensemble}, we revisit Random Forests ant its variants and
+Section~\ref{sec:4:ensemble}, how aggregating randomized models through ensembles reduces the prediction
+error by decreasing the variance term in this decomposition. In particular, we revisit
+Random Forests ant its variants and
 study how randomness introduced into the decision tree induction algorithm can
-further reduce the prediction error with respect to Bagging. Finally, the
+reduce prediction error by decorrelating the decision trees in the ensemble. Finally, the
 consistency of forests of randomized trees is explored in
 Section~\ref{sec:4:consistency}.
 \end{remark}
@@ -168,47 +168,36 @@ variance are neither too low nor too large.
 
 \subsection{Classification error}
 
-\section{Bagging}
-\label{sec:4:bagging}
 
-% Décomposition biais-variance
-% Geman, Stuart, Elie Bienenstock, and René Doursat. "Neural networks and the bias/variance dilemma." Neural computation 4.1 (1992): 1-58.
+\section{Ensembles of randomized trees}
+\label{sec:4:ensemble}
 
-    % > Subsampling with replacement => bagging
-    % > Deriver l'erreur et montrer qu'on réduit agit sur la variance, biais reste le même
-    %   > effet sur la variance (why bagging works, breiman 1996)
-    %   > mais correlation effect (hastie)
-
+% bias variance of randomized
+% bias variance of ensemble of randomized
     % Aggregation
     % > consensus vote
     % > average probability (Hastie, 283+)
     % > average output values
 
-\section{Ensembles of randomized trees}
-\label{sec:4:ensemble}
+% discussion on the correlation coefficient + increase of bias
 
-    % Use the term "random forest" as a global algorithm, as breiman does in RF paper
-    % incluant:
-
+% random forests algorithms
     % - Bagging
     % - Random features (Kwok & carter (1990), dietterich 1998 (see rf), breiman)
     % - Random thresholds (geurts)
     % - +other kinds of forests (see state-of-the-art in geurts)
     % => discuter sur un exemple les aspects stat/comput/repres
+    % Ex: correlation coeff example
 
-    % Pq la randomization marche mieux que le bagging seul? (decorrelation)
-    % Variance reduction and de-correlation effect due to max_features <= p
-    %   aim at low correlation between residuals and low error trees
+% Issues tackled by ensemble
+%   Ensemble methods in ML, Dietterich
+%   - stat
+%   - computational
+%   - representational
 
-    % Issues tackled by ensemble
-    %   Ensemble methods in ML, Dietterich
-    %   - stat
-    %   - computational
-    %   - representational
+% RF do not overfit (theorem 2.3)
 
-    % RF do not overfit (theorem 2.3)
-
-    % OOB estimates
+% OOB estimates
 
 \section{Consistency}
 \label{sec:4:consistency}
