@@ -36,7 +36,7 @@ concepts of bias and variance can be transposed in several ways to
 classification, thereby providing comparable frameworks for studying the
 prediction error of classifiers.
 
-\subsection{Regression error}
+\subsection{Regression}
 \label{sec:bias-variance:regression}
 
 In regression, assuming that $L$ is the squared error loss, the expected
@@ -158,15 +158,39 @@ are neither too simple nor too complex. In terms of bias and variance, the
 trade-off is well-balanced between the two extreme situations. Bias and
 variance are neither too low nor too large.
 
-\subsection{Classification error}
+\subsection{Classification}
 
-\todo{}
+In direct analogy with the bias-variance decomposition for the square error
+loss, similar decompositions have been proposed in the literature for the
+expected generalization error based on the zero-one loss, i.e., for
+$\mathbb{E}_{\cal L}\{ \mathbb{E}_{Y|X=\mathbf{x}} \{ 1(\varphi_{\cal L}(x)
+\neq Y) \} \} = P_{{\cal L},Y|X=\mathbf{x}}(\varphi_{\cal L}(\mathbf{x}) \neq
+Y)$. In particular, \citet{dietterich:1995}, \citet{breiman:1996}, \citet{kohavi:1996} and
+\citet{tibshirani:1996} have all developed additive decompositions similar to
+Theorem~\ref{thm:bias-variance} by redefining the concepts of bias and variance
+in the case of classification. While these efforts have all provided useful
+insight into the nature of classification error, none of them really have
+provided a seductively as simple and satisfactory framework as in regression
+(for reviews, see \citep{friedman:1997,geurts:2002,james:2003}).
 
-% seductively simple framework for regression
-% tentatives to derive an additive decomposition in direct analogy
-%   citer dietterich \citep{dietterich:1995} kohavi+wolper 1996 \citep{kohavi:1996}, breiman 1996 \citep{breiman:1996}, tibshirani 1996 \citep{tibshirani:1996}
-%   reviews geurts 2002 \citep{geurts:2002}, james 2003 \citep{james:2003}
-% pq c'est pas satisfactory?
+An interesting connection with Theorem~\ref{thm:bias-variance} however is to
+remark that classification algorithms often work by computing estimates
+\begin{equation}
+p_{\cal L}(Y=c|X=\mathbf{x})
+\end{equation}
+of the conditional class probability (e.g.,
+$p_{\cal L}(Y=c|X=\mathbf{x}) = p(c|t)$ in decision trees, where $t$ is the
+leaf reached by $\mathbf{x}$) and then deriving a classification rule by
+predicting the class that maximizes this estimate, that is:
+\begin{equation}\label{eqn:4:classificaton-rule}
+\varphi_{\cal L}(\mathbf{x}) = \argmax_{c \in {\cal Y}} p_{\cal L}(Y=c|X=\mathbf{x})
+\end{equation}
+As such, a direction for studying classification models is the relate the
+bias-variance decomposition of these numerical estimates to the expected
+misclassifcation error of classification rule~\ref{eqn:4:classificaton-rule}.
+
+
+\todo{Develop results of \citep{friedman:1997}.}
 
 % estimates of class probabilities + connection with misclassification error, friedman 1997 \citep{friedman:1997}
 
