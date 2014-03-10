@@ -37,6 +37,7 @@ classification, thereby providing comparable frameworks for studying the
 prediction error of classifiers.
 
 \subsection{Regression error}
+\label{sec:bias-variance:regression}
 
 In regression, assuming that $L$ is the squared error loss, the expected
 prediction error of a model $\varphi_{\cal L}$ at a given point $X=\mathbf{x}$
@@ -80,15 +81,15 @@ decomposes as formulated in Theorem~\ref{thm:bias-variance}.
 \begin{theorem}\label{thm:bias-variance}
 The bias-variance decomposition of the expected generalization error
 $\mathbb{E}_{\cal L} \{ Err(\varphi_{\cal L}(\mathbf{x})) \}$ at $X=\mathbf{x}$
-is:
+is
 \begin{equation}
-\mathbb{E}_{\cal L} \{ Err(\varphi_{\cal L}(\mathbf{x})) \} = \text{noise}(\mathbf{x}) + \text{bias}^2(\mathbf{x}) + \text{var}(\mathbf{x})
+\mathbb{E}_{\cal L} \{ Err(\varphi_{\cal L}(\mathbf{x})) \} = \text{noise}(\mathbf{x}) + \text{bias}^2(\mathbf{x}) + \text{var}(\mathbf{x}),
 \end{equation}
 where
 \begin{align}
-\text{noise}(\mathbf{x}) &= Err(\varphi_B(\mathbf{x})) \\
-\text{bias}^2(\mathbf{x}) &= (\varphi_B(\mathbf{x}) - \mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} )^2 \\
-\text{var}(\mathbf{x}) &= \mathbb{E}_{\cal L} \{ (\mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} - \varphi_{\cal L}(\mathbf{x}))^2 \}
+\text{noise}(\mathbf{x}) &= Err(\varphi_B(\mathbf{x})), \\
+\text{bias}^2(\mathbf{x}) &= (\varphi_B(\mathbf{x}) - \mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} )^2, \\
+\text{var}(\mathbf{x}) &= \mathbb{E}_{\cal L} \{ (\mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} - \varphi_{\cal L}(\mathbf{x}))^2 \}.
 \end{align}
 \end{theorem}
 
@@ -161,9 +162,39 @@ variance are neither too low nor too large.
 
 \todo{}
 
-\subsection{Randomized algorithm}
+\subsection{Randomized algorithms}
 
-% bias variance of randomized
+Given a learning set ${\cal L}$, a learning algorithm ${\cal A}$
+deterministically produces a model $\varphi_{{\cal L},\theta} = {\cal
+A}(\theta, {\cal L})$, where $\theta$ are hyper-parameters controlling the
+execution of ${\cal A}$. If $\theta$ includes a random seed parameter for
+mimicking a stochastic behaviour in ${\cal A}$, then the bias-variance
+decomposition can be extended to account for everything that is random, hence
+considering both ${\cal L}$ and $\theta$ as random variables\footnote{Without
+loss of generality, we assume that the random variable $\theta$ only controls
+the randomness of the learning algorithm. Expectations denoted
+$\mathbb{E}_\theta$ are therefore only defined with respect to the random seed
+parameter, i.e., not with respect to the other hyper-parameters.}.
+
+Formally, results from Section~\ref{sec:bias-variance:regression} can readily
+be extended to the expected generalization error $\mathbb{E}_{{\cal L},\theta} \{
+\varphi_{{\cal L},\theta}(\mathbf{x}) \}$ of the randomized model
+$\varphi_{{\cal L},\theta}$, as summarized in Theorem~\ref{thm:bias-variance:randomized}.
+
+\begin{theorem}\label{thm:bias-variance:randomized}
+The bias-variance decomposition of the expected generalization error
+$\mathbb{E}_{{\cal L},\theta} \{ Err(\varphi_{{\cal L},\theta}(\mathbf{x})) \}$ at $X=\mathbf{x}$
+is
+\begin{equation}
+\mathbb{E}_{{\cal L},\theta} \{ Err(\varphi_{{\cal L},\theta}(\mathbf{x})) \} = \text{noise}(\mathbf{x}) + \text{bias}^2(\mathbf{x}) + \text{var}(\mathbf{x}),
+\end{equation}
+where
+\begin{align}
+\text{noise}(\mathbf{x}) &= Err(\varphi_B(\mathbf{x})), \\
+\text{bias}^2(\mathbf{x}) &= (\varphi_B(\mathbf{x}) - \mathbb{E}_{{\cal L},\theta} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} )^2,\\
+\text{var}(\mathbf{x}) &= \mathbb{E}_{{\cal L},\theta} \{ (\mathbb{E}_{{\cal L},\theta} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} - \varphi_{{\cal L},\theta}(\mathbf{x}))^2 \}.
+\end{align}
+\end{theorem}
 
 \section{Ensembles of randomized trees}
 \label{sec:4:ensemble}
