@@ -74,10 +74,13 @@ over the models learned from all possible learning sets of size $N$:
 since $\mathbb{E}_{\cal L}\{ \mathbb{E}_{\cal L} \{ \varphi_{\cal
 L}(\mathbf{x}) \} - \varphi_{\cal L}(\mathbf{x}) \} =  \mathbb{E}_{\cal L} \{
 \varphi_{\cal L}(\mathbf{x}) \} -  \mathbb{E}_{\cal L} \{ \varphi_{\cal
-L}(\mathbf{x}) \} = 0$.
+L}(\mathbf{x}) \} = 0$. In summary, the expected generalization error additively
+decomposes as formulated in Theorem~\ref{thm:bias-variance}.
 
-In summary, the expected generalization error at $X=\mathbf{x}$ additively
-decomposes as follows:
+\begin{theorem}\label{thm:bias-variance}
+The bias-variance decomposition of the expected generalization error
+$\mathbb{E}_{\cal L} \{ Err(\varphi_{\cal L}(\mathbf{x})) \}$ at $X=\mathbf{x}$
+is:
 \begin{equation}
 \mathbb{E}_{\cal L} \{ Err(\varphi_{\cal L}(\mathbf{x})) \} = \text{noise}(\mathbf{x}) + \text{bias}^2(\mathbf{x}) + \text{var}(\mathbf{x})
 \end{equation}
@@ -87,6 +90,7 @@ where
 \text{bias}^2(\mathbf{x}) &= (\varphi_B(\mathbf{x}) - \mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} )^2 \\
 \text{var}(\mathbf{x}) &= \mathbb{E}_{\cal L} \{ (\mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} - \varphi_{\cal L}(\mathbf{x}))^2 \}
 \end{align}
+\end{theorem}
 
 This bias-variance decomposition of the generalization error is due to
 \citet{geman:1992} and was first proposed in the context of neural networks.
