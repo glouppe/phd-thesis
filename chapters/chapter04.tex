@@ -165,16 +165,17 @@ loss, similar decompositions have been proposed in the literature for the
 expected generalization error based on the zero-one loss, i.e., for
 $\mathbb{E}_{\cal L}\{ \mathbb{E}_{Y|X=\mathbf{x}} \{ 1(\varphi_{\cal L}(x)
 \neq Y) \} \} = P_{{\cal L},Y|X=\mathbf{x}}(\varphi_{\cal L}(\mathbf{x}) \neq
-Y)$. In particular, \citet{dietterich:1995}, \citet{breiman:1996}, \citet{kohavi:1996} and
-\citet{tibshirani:1996} have all developed additive decompositions similar to
-Theorem~\ref{thm:bias-variance} by redefining the concepts of bias and variance
-in the case of classification. While these efforts have all provided useful
-insight into the nature of classification error, none of them really have
-provided a seductively as simple and satisfactory framework as in regression
-(for reviews, see \citep{friedman:1997,geurts:2002,james:2003}).
+Y)$. Most notably, \citet{dietterich:1995}, \citet{breiman:1996},
+\citet{kohavi:1996} and \citet{tibshirani:1996} have all developed additive
+decompositions similar to Theorem~\ref{thm:bias-variance} by redefining the
+concepts of bias and variance in the case of classification. While these
+efforts have all provided useful insight into the nature of classification
+error, none of them really have provided a seductively as simple and
+satisfactory framework as in regression (for reviews, see
+\citep{friedman:1997,geurts:2002,james:2003}).
 
 An interesting connection with Theorem~\ref{thm:bias-variance} however is to
-remark that classification algorithms often work by computing estimates
+remark that classification algorithms usually work by computing estimates
 \begin{equation}
 p_{\cal L}(Y=c|X=\mathbf{x})
 \end{equation}
@@ -189,13 +190,42 @@ As such, a direction for studying classification models is the relate the
 bias-variance decomposition of these numerical estimates to the expected
 misclassifcation error of classification rule~\ref{eqn:4:classificaton-rule}.
 
+We now reproduce the results of \citet{friedman:1997} who made this connection
+explicit for the case of binary classification. Let us first decompose the
+expected classification error into an irreducible part associated with the
+random nature of the output $Y$ and a reducible part that depends on
+$\varphi_{\cal L}(\mathbf{x})$ in analogy with Equation~\ref{eqn:4:decomp1} for
+the square error loss. (Note that, to simplify notations, we assume that all probabilities
+based on the random variable $Y$ is with respect to the distribution of $Y$ at $X=\mathbf{x}$.)
+\begin{align}
+& \mathbb{E}_{\cal L}\{ \mathbb{E}_{Y|X=\mathbf{x}} \{ 1(\varphi_{\cal L}(x) \neq Y) \} \}  \\
+&= P_{{\cal L}}(\varphi_{\cal L}(\mathbf{x}) \neq Y) \nonumber \\
+&= \begin{aligned}[t]
+    1 &- P_{\cal L}(\varphi_{\cal L}(\mathbf{x}) = \varphi_B(\mathbf{x})) P(\varphi_B(\mathbf{x})=Y) \nonumber \\
+      &- P_{\cal L}(\varphi_{\cal L}(\mathbf{x}) \neq \varphi_B(\mathbf{x})) P(\varphi_B(\mathbf{x})\neq Y) \nonumber
+   \end{aligned}\nonumber \\
+&= \begin{aligned}[t]
+    &P(\varphi_B(\mathbf{x})\neq Y) + P_{\cal L}(\varphi_{\cal L}(\mathbf{x})\neq \varphi_B(\mathbf{x})) \nonumber \\
+    &- 2 P_{\cal L}(\varphi_{\cal L}(\mathbf{x})\neq \varphi_B(\mathbf{x})) P(\varphi_B(\mathbf{x})\neq Y)  \nonumber \\
+   \end{aligned}\nonumber \\
+&= P(\varphi_B(\mathbf{x})\neq Y) + P_{\cal L}(\varphi_{\cal L}(\mathbf{x})\neq \varphi_B(\mathbf{x}))(2 P(\varphi_B(\mathbf{x}) = Y) - 1) \nonumber
+\end{align}
 
-\todo{Develop results of \citep{friedman:1997}.}
+In this form, the first term is the irreducible error of the Bayes model. The
+second term is the increased error due to the misestimation of the optimal
+decision boundary. The probability $P_{\cal L}(\varphi_{\cal L}(\mathbf{x})\neq
+\varphi_B(\mathbf{x}))$  is the probability for the model of making a decision
+which is different from the decision of the Bayes model. This happens
+when the estimate $p_{\cal L}(Y=\varphi_B(\mathbf{x}))$ is lower
+than $0.5$, that is:
+\begin{equation}\label{eqn:4:prob-diff-from-bayes}
+P_{\cal L}(\varphi_{\cal L}(\mathbf{x})\neq \varphi_B(\mathbf{x})) = P_{\cal L}(p_{\cal L}(Y=\varphi_B(\mathbf{x})) < 0.5)
+\end{equation}
+Probability~\ref{eqn:4:prob-diff-from-bayes} therefore corresponds to the tail
+area of the estimate distribution on the left side of the decision threshold
+at $0.5$.
 
-% estimates of class probabilities + connection with misclassification error, friedman 1997 \citep{friedman:1997}
 
-% in the rest of this chapter, we only discuss algorithm with respect to
-% regression error
 
 \subsection{Randomized algorithms}
 
