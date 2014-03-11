@@ -4,12 +4,12 @@
 In this chapter, we present the well-known family of \textit{Random Forests}
 methods. In Section~\ref{sec:4:bias-variance}, we first describe the
 bias-variance decomposition of the prediction error and then present, in
-Section~\ref{sec:4:ensemble}, how aggregating randomized models through ensembles reduces the prediction
-error by decreasing the variance term in this decomposition. In particular, we revisit
-Random Forests ant its variants and
+Section~\ref{sec:4:ensemble}, how aggregating randomized models through
+ensembles reduces the prediction error by decreasing the variance term in this
+decomposition. In particular, we revisit Random Forests ant its variants and
 study how randomness introduced into the decision tree induction algorithm can
-reduce prediction error by decorrelating the decision trees in the ensemble. Finally, the
-consistency of forests of randomized trees is explored in
+reduce prediction error by decorrelating the decision trees in the ensemble.
+Finally, the consistency of forests of randomized trees is explored in
 Section~\ref{sec:4:consistency}.
 \end{remark}
 
@@ -79,9 +79,9 @@ L}(\mathbf{x}) \} = 0$. In summary, the expected generalization error additively
 decomposes as formulated in Theorem~\ref{thm:bias-variance}.
 
 \begin{theorem}\label{thm:bias-variance}
-For the square error loss, the bias-variance decomposition of the expected generalization error
-$\mathbb{E}_{\cal L} \{ Err(\varphi_{\cal L}(\mathbf{x})) \}$ at $X=\mathbf{x}$
-is
+For the square error loss, the bias-variance decomposition of the expected
+generalization error $\mathbb{E}_{\cal L} \{ Err(\varphi_{\cal L}(\mathbf{x}))
+\}$ at $X=\mathbf{x}$ is
 \begin{equation}
 \mathbb{E}_{\cal L} \{ Err(\varphi_{\cal L}(\mathbf{x})) \} = \text{noise}(\mathbf{x}) + \text{bias}^2(\mathbf{x}) + \text{var}(\mathbf{x}),
 \end{equation}
@@ -195,9 +195,10 @@ We now reproduce the results of \citet{friedman:1997} who made this connection
 explicit for the case of binary classification. Let us first decompose the
 expected classification error into an irreducible part associated with the
 random nature of the output $Y$ and a reducible part that depends on
-$\varphi_{\cal L}(\mathbf{x})$, in analogy with Equation~\ref{eqn:4:decomp1} for
-the square error loss. (Note that, to simplify notations, we assume that all probabilities
-based on the random variable $Y$ is with respect to the distribution of $Y$ at $X=\mathbf{x}$.)
+$\varphi_{\cal L}(\mathbf{x})$, in analogy with Equation~\ref{eqn:4:decomp1}
+for the square error loss. (Note that, to simplify notations, we assume that
+all probabilities based on the random variable $Y$ is with respect to the
+distribution of $Y$ at $X=\mathbf{x}$.)
 \begin{align}
 & \mathbb{E}_{\cal L}\{ \mathbb{E}_{Y|X=\mathbf{x}} \{ 1(\varphi_{\cal L}(x) \neq Y) \} \}  \\
 &= P_{{\cal L}}(\varphi_{\cal L}(\mathbf{x}) \neq Y) \nonumber \\
@@ -271,36 +272,54 @@ has important consequences:
       error. If $\text{Var}_{\cal L}\{ p_{\cal L}(Y=\varphi_B(\mathbf{x})) \} \to 0$,
       then $\Phi \to 0$ and the expected generalization error tends to the error of the Bayes model.
       In particular, the generalization error can be driven to its minimum
-      value whatever the regression bias of the estimate.
+      value whatever the regression bias of the estimate (at least as long as $\mathbb{E}_{\cal L}\{ p_{\cal L}(Y=\varphi_B(\mathbf{x}) \} > 0.5$).
 \item Conversely, when $\mathbb{E}_{\cal L}\{ p_{\cal L}(Y=\varphi_B(\mathbf{x}) \} < 0.5$,
       a decrease of variance might actually increase the total misclassification error.
       If $\text{Var}_{\cal L}\{ p_{\cal L}(Y=\varphi_B(\mathbf{x})) \} \to 0$,
       then $\Phi \to 1$ and the error is maximal.
 \end{itemize}
 
-\subsection{Randomized algorithms}
-
-Given a learning set ${\cal L}$, a learning algorithm ${\cal A}$
-deterministically produces a model $\varphi_{{\cal L},\theta} = {\cal
-A}(\theta, {\cal L})$, where $\theta$ are hyper-parameters controlling the
-execution of ${\cal A}$. If $\theta$ includes a random seed parameter for
-mimicking a stochastic behavior in ${\cal A}$, then the bias-variance
-decomposition can be extended to account for everything that is random, hence
-considering both ${\cal L}$ and $\theta$ as random variables\footnote{Without
-loss of generality, we assume that the random variable $\theta$ only controls
-the randomness of the learning algorithm. Expectations denoted
-$\mathbb{E}_\theta$ are therefore only defined with respect to the random seed
-parameter, i.e., not with respect to the other hyper-parameters.}.
-
-Formally, results from sections~\ref{sec:bias-variance:regression} and \ref{sec:bias-variance:classification} can readily
-be extended to the expected generalization error $\mathbb{E}_{{\cal L},\theta} \{
-Err(\varphi_{{\cal L},\theta}(\mathbf{x})) \}$ of the randomized model
-$\varphi_{{\cal L},\theta}$ by replacing expectations $\mathbb{E}_{\cal L} \{ . \}$
-and variances $\text{Var}_{\cal L} \{ . \}$ with their respective counterparts
-computed over the joint distribution of ${\cal L}$ and $\theta$.
-
 \section{Ensembles of randomized trees}
 \label{sec:4:ensemble}
+
+Both theorems~\ref{thm:bias-variance} and \ref{thm:bias-variance:classification}
+reveal the role of variance in the expected generalization error of a model.
+In light of these results, a sensible approach for reducing generalization
+error would therefore consist in driving down the prediction variance, provided the
+respective bias can be kept the same or not be increased too much.
+
+
+
+
+
+
+% Diminiuer la variance réduit l'erreur
+% => Faire un ensemble de modèles légèremet différents de l'un à l'autre permet de réduire la variance
+% => le montrer et faire le lien avec correlation
+% RF differ from each in the way they decorrelate pairs of trees
+
+
+% \subsection{Randomized algorithms}
+
+% Given a learning set ${\cal L}$, a learning algorithm ${\cal A}$
+% deterministically produces a model $\varphi_{{\cal L},\theta} = {\cal
+% A}(\theta, {\cal L})$, where $\theta$ are hyper-parameters controlling the
+% execution of ${\cal A}$. If $\theta$ includes a random seed parameter for
+% mimicking a stochastic behavior in ${\cal A}$, then the bias-variance
+% decomposition can be extended to account for everything that is random, hence
+% considering both ${\cal L}$ and $\theta$ as random variables\footnote{Without
+% loss of generality, we assume that the random variable $\theta$ only controls
+% the randomness of the learning algorithm. Expectations denoted
+% $\mathbb{E}_\theta$ are therefore only defined with respect to the random seed
+% parameter, i.e., not with respect to the other hyper-parameters.}.
+
+% Formally, results from sections~\ref{sec:bias-variance:regression} and
+% \ref{sec:bias-variance:classification} can readily
+% be extended to the expected generalization error $\mathbb{E}_{{\cal L},\theta} \{
+% Err(\varphi_{{\cal L},\theta}(\mathbf{x})) \}$ of the randomized model
+% $\varphi_{{\cal L},\theta}$ by replacing expectations $\mathbb{E}_{\cal L} \{ . \}$
+% and variances $\text{Var}_{\cal L} \{ . \}$ with their respective counterparts
+% computed over the joint distribution of ${\cal L}$ and $\theta$.
 
 \subsection{Bias-variance decomposition}
 
@@ -316,15 +335,12 @@ computed over the joint distribution of ${\cal L}$ and $\theta$.
 
 \subsection{Random Forests}
 
-\subsubsection{Bagging}
+% \subsubsection{Bagging}
+% \subsubsection{Random Forests}
+% \subsubsection{Extremely Randomized Trees}
 
 % bagging
 % pasting
-
-\subsubsection{Random Forests}
-
-\subsubsection{Extremely Randomized Trees}
-
 % random forests algorithms
     % - Bagging
     % - Random features (Kwok & carter (1990), dietterich 1998 (see rf), breiman)
@@ -341,11 +357,9 @@ computed over the joint distribution of ${\cal L}$ and $\theta$.
 
 \subsection{Byproducts of Random Forests}
 
-\subsubsection{Out-of-bag estimates}
-
-\subsubsection{Proximity plots}
-
-\subsubsection{Variable importances}
+% \subsubsection{Out-of-bag estimates}
+% \subsubsection{Proximity plots}
+% \subsubsection{Variable importances}
 
 \section{Consistency}
 \label{sec:4:consistency}
