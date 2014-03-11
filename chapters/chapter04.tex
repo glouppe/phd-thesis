@@ -287,8 +287,8 @@ reveal the role of variance in the expected generalization error of a model.
 In light of these results, a sensible approach for reducing generalization
 error would therefore consist in driving down the prediction variance, provided the
 respective bias can be kept the same or not be increased too much.
-As it happens, \textit{ensemble methods} constitute a beautifully simple way to do just that.
 
+As it happens, \textit{ensemble methods} constitute a beautifully simple way to do just that.
 Specifically, the core principle of ensemble methods is to introduce random
 perturbations into the learning procedure in order to produce several different
 models from a single learning set ${\cal L}$ and then to combine the
@@ -304,20 +304,17 @@ $\varphi_{{\cal L},\theta}$, where $\theta$ are hyper-parameters controlling
 the execution of ${\cal A}$. Let us assume that $\theta$ includes a random seed
 parameter for mimicking some stochastic behavior in ${\cal A}$, hence producing
 (pseudo-)randomized models that are more or less different from one random seed to
-another. (We defer the discussion on specific random perturbations to
+another. (We defer the discussion on specific random perturbations in the case of decision trees to
 Section~\ref{sec:4:random-forests}.)
 
 In this context, the bias-variance decomposition can be extended to account
 for everything that is random, hence considering both ${\cal L}$ and $\theta$
-as random variables. Without loss of generality, we here assume that the random
-variable $\theta$ only controls the randomness of the learning algorithm.
-Expectations and variances over $\theta$ appearing in the next sections are
-therefore only defined with respect to the random seed parameter, i.e., not
-with respect to the other hyper-parameters.
-
-Formally, results from sections~\ref{sec:bias-variance:regression} and
-\ref{sec:bias-variance:classification} can readily
-be extended to the expected generalization error $\mathbb{E}_{{\cal L},\theta} \{
+as random variables\footnote{From now on, and without loss of generality, we assume that the random
+variable $\theta$ only controls the randomness of the learning algorithm -- and nothing else in the learning algorithm.}.
+% Expectations and variances over $\theta$ appearing in the next sections are
+% therefore only defined with respect to the random seed parameter, i.e., not
+% with respect to the other hyper-parameters.
+Accordingly, theorems~\ref{thm:bias-variance} and \ref{thm:bias-variance:classification} naturally extend to the expected generalization error $\mathbb{E}_{{\cal L},\theta} \{
 Err(\varphi_{{\cal L},\theta}(\mathbf{x})) \}$ of the randomized model
 $\varphi_{{\cal L},\theta}$ by replacing expectations $\mathbb{E}_{\cal L} \{ . \}$
 and variances $\text{Var}_{\cal L} \{ . \}$ with their respective counterparts
@@ -325,10 +322,13 @@ computed over the joint distribution of ${\cal L}$ and $\theta$.
 
 \subsection{Combining randomized models}
 
+Let us assume a set of $M$ randomized models $\{\varphi_{{\cal L},
+\theta_i} | i = 1, \dots, M \}$, all built on the same learning set ${\cal L}$
+but each from an independent random seed $\theta_i$.
 
 % Diminiuer la variance réduit l'erreur
 % => Faire un ensemble de modèles légèremet différents de l'un à l'autre permet de réduire la variance
-% => le montrer et faire le lien avec correlation
+% => le montrer et fainre le lien avec correlation
 % RF differ from each in the way they decorrelate pairs of trees
 
 
