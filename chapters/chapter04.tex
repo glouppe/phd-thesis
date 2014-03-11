@@ -79,7 +79,7 @@ L}(\mathbf{x}) \} = 0$. In summary, the expected generalization error additively
 decomposes as formulated in Theorem~\ref{thm:bias-variance}.
 
 \begin{theorem}\label{thm:bias-variance}
-The bias-variance decomposition of the expected generalization error
+For the square error loss, the bias-variance decomposition of the expected generalization error
 $\mathbb{E}_{\cal L} \{ Err(\varphi_{\cal L}(\mathbf{x})) \}$ at $X=\mathbf{x}$
 is
 \begin{equation}
@@ -159,6 +159,7 @@ trade-off is well-balanced between the two extreme situations. Bias and
 variance are neither too low nor too large.
 
 \subsection{Classification}
+\label{sec:bias-variance:classification}
 
 In direct analogy with the bias-variance decomposition for the square error
 loss, similar decompositions have been proposed in the literature for the
@@ -188,13 +189,13 @@ predicting the class that maximizes this estimate, that is:
 \end{equation}
 As such, a direction for studying classification models is the relate the
 bias-variance decomposition of these numerical estimates to the expected
-misclassifcation error of classification rule~\ref{eqn:4:classificaton-rule}.
+misclassification error of classification rule~\ref{eqn:4:classificaton-rule}.
 
 We now reproduce the results of \citet{friedman:1997} who made this connection
 explicit for the case of binary classification. Let us first decompose the
 expected classification error into an irreducible part associated with the
 random nature of the output $Y$ and a reducible part that depends on
-$\varphi_{\cal L}(\mathbf{x})$ in analogy with Equation~\ref{eqn:4:decomp1} for
+$\varphi_{\cal L}(\mathbf{x})$, in analogy with Equation~\ref{eqn:4:decomp1} for
 the square error loss. (Note that, to simplify notations, we assume that all probabilities
 based on the random variable $Y$ is with respect to the distribution of $Y$ at $X=\mathbf{x}$.)
 \begin{align}
@@ -232,6 +233,50 @@ of the decision threshold (at 0.5) of the distribution of the estimate.
     \label{fig:estimate-distribution}
 \end{figure}
 
+If we now further assume\footnote{For single decision trees, the normal
+assumption is certainly not satisfied in all cases, but the qualitative
+conclusions are still generally valid. When the computations of the estimates
+involve some averaging process, e.g., as further developed in the case of
+ensemble of randomized trees, this approximation is however fairly reasonable.}
+that the estimate $p_{\cal L}(Y=\varphi_B(\mathbf{x}))$ is normally distributed,
+then probability~\ref{eqn:4:prob-diff-from-bayes} can be computed explicitly
+from its mean and variance:
+\begin{equation}
+P_{\cal L}(p_{\cal L}(Y=\varphi_B(\mathbf{x})) < 0.5) = \Phi(\frac{0.5 - \mathbb{E}_{\cal L}\{ p_{\cal L}(Y=\varphi_B(\mathbf{x})) \}}{\sqrt{\text{Var}_{\cal L}\{ p_{\cal L}(Y=\varphi_B(\mathbf{x})) \}}})
+\end{equation}
+where $\Phi(x)=\frac{1}{\sqrt{2\pi}} \int_{-\infty}^x \exp(-\frac{t^2}{2}) dt$
+is the cumulative distribution function of the standard normal distribution.
+In summary, the expected generalization error additively
+decomposes as formulated in Theorem~\ref{thm:bias-variance:classification}.
+
+\begin{theorem}\label{thm:bias-variance:classification}
+For the zero-one loss and binary classification, the expected
+generalization error $\mathbb{E}_{\cal L} \{ Err(\varphi_{\cal L}(\mathbf{x}))
+\}$ at $X=\mathbf{x}$ decomposes as follows:
+
+\begin{align}
+\mathbb{E}_{\cal L} \{ Err(\varphi_{\cal L}(\mathbf{x})) \} &= P(\varphi_B(\mathbf{x})\neq Y) \\
+                                                            &+ \Phi(\frac{0.5 - \mathbb{E}_{\cal L}\{ p_{\cal L}(Y=\varphi_B(\mathbf{x})) \}}{\sqrt{\text{Var}_{\cal L}\{ p_{\cal L}(Y=\varphi_B(\mathbf{x})) \}}}) (2 P(\varphi_B(\mathbf{x}) = Y) - 1) \nonumber
+\end{align}
+\end{theorem}
+
+As a result, Theorem~\ref{thm:bias-variance:classification} establishes a
+direct connection between the regression variance of the estimates and the
+classification error of the resulting model. In practice, this decomposition
+has important consequences:
+\begin{itemize}
+\item When the expected probability estimate $\mathbb{E}_{\cal L}\{ p_{\cal L}(Y=\varphi_B(\mathbf{x}) \}$
+      for the true majority class is greater than $0.5$, a reduction of
+      variance of the estimate results in a decrease of the total misclassification
+      error. If $\text{Var}_{\cal L}\{ p_{\cal L}(Y=\varphi_B(\mathbf{x})) \} \to 0$,
+      then $\Phi \to 0$ and the expected generalization error tends to the error of the Bayes model.
+      In particular, the generalization error can be driven to its minimum
+      value whatever the regression bias of the estimate.
+\item Conversely, when $\mathbb{E}_{\cal L}\{ p_{\cal L}(Y=\varphi_B(\mathbf{x}) \} < 0.5$,
+      a decrease of variance might actually increase the total misclassification error.
+      If $\text{Var}_{\cal L}\{ p_{\cal L}(Y=\varphi_B(\mathbf{x})) \} \to 0$,
+      then $\Phi \to 1$ and the error is maximal.
+\end{itemize}
 
 \subsection{Randomized algorithms}
 
@@ -239,7 +284,7 @@ Given a learning set ${\cal L}$, a learning algorithm ${\cal A}$
 deterministically produces a model $\varphi_{{\cal L},\theta} = {\cal
 A}(\theta, {\cal L})$, where $\theta$ are hyper-parameters controlling the
 execution of ${\cal A}$. If $\theta$ includes a random seed parameter for
-mimicking a stochastic behaviour in ${\cal A}$, then the bias-variance
+mimicking a stochastic behavior in ${\cal A}$, then the bias-variance
 decomposition can be extended to account for everything that is random, hence
 considering both ${\cal L}$ and $\theta$ as random variables\footnote{Without
 loss of generality, we assume that the random variable $\theta$ only controls
@@ -247,25 +292,12 @@ the randomness of the learning algorithm. Expectations denoted
 $\mathbb{E}_\theta$ are therefore only defined with respect to the random seed
 parameter, i.e., not with respect to the other hyper-parameters.}.
 
-Formally, results from Section~\ref{sec:bias-variance:regression} can readily
+Formally, results from sections~\ref{sec:bias-variance:regression} and \ref{sec:bias-variance:classification} can readily
 be extended to the expected generalization error $\mathbb{E}_{{\cal L},\theta} \{
-\varphi_{{\cal L},\theta}(\mathbf{x}) \}$ of the randomized model
-$\varphi_{{\cal L},\theta}$, as summarized in Theorem~\ref{thm:bias-variance:randomized}.
-
-\begin{theorem}\label{thm:bias-variance:randomized}
-The bias-variance decomposition of the expected generalization error
-$\mathbb{E}_{{\cal L},\theta} \{ Err(\varphi_{{\cal L},\theta}(\mathbf{x})) \}$ at $X=\mathbf{x}$
-is
-\begin{equation}
-\mathbb{E}_{{\cal L},\theta} \{ Err(\varphi_{{\cal L},\theta}(\mathbf{x})) \} = \text{noise}(\mathbf{x}) + \text{bias}^2(\mathbf{x}) + \text{var}(\mathbf{x}),
-\end{equation}
-where
-\begin{align}
-\text{noise}(\mathbf{x}) &= Err(\varphi_B(\mathbf{x})), \\
-\text{bias}^2(\mathbf{x}) &= (\varphi_B(\mathbf{x}) - \mathbb{E}_{{\cal L},\theta} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} )^2,\\
-\text{var}(\mathbf{x}) &= \mathbb{E}_{{\cal L},\theta} \{ (\mathbb{E}_{{\cal L},\theta} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} - \varphi_{{\cal L},\theta}(\mathbf{x}))^2 \}.
-\end{align}
-\end{theorem}
+Err(\varphi_{{\cal L},\theta}(\mathbf{x})) \}$ of the randomized model
+$\varphi_{{\cal L},\theta}$ by replacing expectations $\mathbb{E}_{\cal L} \{ . \}$
+and variances $\text{Var}_{\cal L} \{ . \}$ with their respective counterparts
+computed over the joint distribution of ${\cal L}$ and $\theta$.
 
 \section{Ensembles of randomized trees}
 \label{sec:4:ensemble}
