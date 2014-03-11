@@ -221,10 +221,16 @@ than $0.5$, that is:
 \begin{equation}\label{eqn:4:prob-diff-from-bayes}
 P_{\cal L}(\varphi_{\cal L}(\mathbf{x})\neq \varphi_B(\mathbf{x})) = P_{\cal L}(p_{\cal L}(Y=\varphi_B(\mathbf{x})) < 0.5)
 \end{equation}
-Probability~\ref{eqn:4:prob-diff-from-bayes} therefore corresponds to the tail
-area of the estimate distribution on the left side of the decision threshold
-at $0.5$.
+As Figure~\ref{fig:estimate-distribution} illustrates, probability~\ref{eqn:4:prob-diff-from-bayes}
+therefore corresponds to the tail area on the left side
+of the decision threshold (at 0.5) of the distribution of the estimate.
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/ch4_estimate_distribution.pdf}
+    \caption{Probability distribution of $p_{\cal L}(Y=\varphi_B(\mathbf{x}))$.}
+    \label{fig:estimate-distribution}
+\end{figure}
 
 
 \subsection{Randomized algorithms}
