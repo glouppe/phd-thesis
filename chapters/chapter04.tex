@@ -6,7 +6,7 @@ methods. In Section~\ref{sec:4:bias-variance}, we first describe the
 bias-variance decomposition of the prediction error and then present, in
 Section~\ref{sec:4:ensemble}, how aggregating randomized models through
 ensembles reduces the prediction error by decreasing the variance term in this
-decomposition. In particular, we revisit Random Forests ant its variants and
+decomposition. In Section~\ref{sec:4:random-forests}, we revisit Random Forests ant its variants and
 study how randomness introduced into the decision tree induction algorithm can
 reduce prediction error by decorrelating the decision trees in the ensemble.
 Finally, the consistency of forests of randomized trees is explored in
@@ -279,7 +279,7 @@ has important consequences:
       then $\Phi \to 1$ and the error is maximal.
 \end{itemize}
 
-\section{Ensembles of randomized trees}
+\section{Ensembles of randomized models}
 \label{sec:4:ensemble}
 
 Both theorems~\ref{thm:bias-variance} and \ref{thm:bias-variance:classification}
@@ -287,10 +287,43 @@ reveal the role of variance in the expected generalization error of a model.
 In light of these results, a sensible approach for reducing generalization
 error would therefore consist in driving down the prediction variance, provided the
 respective bias can be kept the same or not be increased too much.
+As it happens, \textit{ensemble methods} constitute a beautifully simple way to do just that.
 
+Specifically, the core principle of ensemble methods is to introduce random
+perturbations into the learning procedure in order to produce several different
+models from a single learning set ${\cal L}$ and then to combine the
+predictions of those models to form the prediction of the ensemble. How
+predictions are combined and why does it help is formally studied in the next
+sections.
 
+\subsection{Randomized models}
 
+Given a learning set ${\cal L}$, a learning algorithm ${\cal A}$
+deterministically produces a model ${\cal A}(\theta, {\cal L})$, denoted
+$\varphi_{{\cal L},\theta}$, where $\theta$ are hyper-parameters controlling
+the execution of ${\cal A}$. Let us assume that $\theta$ includes a random seed
+parameter for mimicking some stochastic behavior in ${\cal A}$, hence producing
+(pseudo-)randomized models that are more or less different from one random seed to
+another. (We defer the discussion on specific random perturbations to
+Section~\ref{sec:4:random-forests}.)
 
+In this context, the bias-variance decomposition can be extended to account
+for everything that is random, hence considering both ${\cal L}$ and $\theta$
+as random variables. Without loss of generality, we here assume that the random
+variable $\theta$ only controls the randomness of the learning algorithm.
+Expectations and variances over $\theta$ appearing in the next sections are
+therefore only defined with respect to the random seed parameter, i.e., not
+with respect to the other hyper-parameters.
+
+Formally, results from sections~\ref{sec:bias-variance:regression} and
+\ref{sec:bias-variance:classification} can readily
+be extended to the expected generalization error $\mathbb{E}_{{\cal L},\theta} \{
+Err(\varphi_{{\cal L},\theta}(\mathbf{x})) \}$ of the randomized model
+$\varphi_{{\cal L},\theta}$ by replacing expectations $\mathbb{E}_{\cal L} \{ . \}$
+and variances $\text{Var}_{\cal L} \{ . \}$ with their respective counterparts
+computed over the joint distribution of ${\cal L}$ and $\theta$.
+
+\subsection{Combining randomized models}
 
 
 % Diminiuer la variance réduit l'erreur
@@ -299,29 +332,9 @@ respective bias can be kept the same or not be increased too much.
 % RF differ from each in the way they decorrelate pairs of trees
 
 
-% \subsection{Randomized algorithms}
 
-% Given a learning set ${\cal L}$, a learning algorithm ${\cal A}$
-% deterministically produces a model $\varphi_{{\cal L},\theta} = {\cal
-% A}(\theta, {\cal L})$, where $\theta$ are hyper-parameters controlling the
-% execution of ${\cal A}$. If $\theta$ includes a random seed parameter for
-% mimicking a stochastic behavior in ${\cal A}$, then the bias-variance
-% decomposition can be extended to account for everything that is random, hence
-% considering both ${\cal L}$ and $\theta$ as random variables\footnote{Without
-% loss of generality, we assume that the random variable $\theta$ only controls
-% the randomness of the learning algorithm. Expectations denoted
-% $\mathbb{E}_\theta$ are therefore only defined with respect to the random seed
-% parameter, i.e., not with respect to the other hyper-parameters.}.
 
-% Formally, results from sections~\ref{sec:bias-variance:regression} and
-% \ref{sec:bias-variance:classification} can readily
-% be extended to the expected generalization error $\mathbb{E}_{{\cal L},\theta} \{
-% Err(\varphi_{{\cal L},\theta}(\mathbf{x})) \}$ of the randomized model
-% $\varphi_{{\cal L},\theta}$ by replacing expectations $\mathbb{E}_{\cal L} \{ . \}$
-% and variances $\text{Var}_{\cal L} \{ . \}$ with their respective counterparts
-% computed over the joint distribution of ${\cal L}$ and $\theta$.
-
-\subsection{Bias-variance decomposition}
+\subsection{Bias-variance decomposition of an ensemble}
 
 % bias variance of ensemble of randomized
     % Aggregation
@@ -333,7 +346,8 @@ respective bias can be kept the same or not be increased too much.
 
 % RF do not overfit (theorem 2.3)
 
-\subsection{Random Forests}
+\section{Random Forests}
+\label{sec:4:random-forests}
 
 % \subsubsection{Bagging}
 % \subsubsection{Random Forests}
@@ -355,7 +369,7 @@ respective bias can be kept the same or not be increased too much.
 %   - computational
 %   - representational
 
-\subsection{Byproducts of Random Forests}
+%\subsection{Byproducts of Random Forests}
 
 % \subsubsection{Out-of-bag estimates}
 % \subsubsection{Proximity plots}
