@@ -13,6 +13,7 @@ Finally, the consistency of forests of randomized trees is explored in
 Section~\ref{sec:4:consistency}.
 \end{remark}
 
+
 \section{Bias-variance decomposition}
 \label{sec:4:bias-variance}
 
@@ -35,6 +36,7 @@ similar decomposition is more difficult to obtain. Yet, the
 concepts of bias and variance can be transposed in several ways to
 classification, thereby providing comparable frameworks for studying the
 prediction error of classifiers.
+
 
 \subsection{Regression}
 \label{sec:bias-variance:regression}
@@ -158,6 +160,7 @@ neither too simple nor too complex. In terms of bias and variance, the trade-
 off is well-balanced between the two extreme situations. Bias and variance are
 neither too low nor too large.
 
+
 \subsection{Classification}
 \label{sec:bias-variance:classification}
 
@@ -279,6 +282,7 @@ has important consequences:
       then $\Phi \to 1$ and the error is maximal.
 \end{itemize}
 
+
 \section{Ensemble methods}
 \label{sec:4:ensemble}
 
@@ -295,6 +299,7 @@ several different models from a single learning set ${\cal L}$ and then to
 combine the predictions of those models to form the prediction of the ensemble.
 How predictions are combined and why does it help is formally studied in the
 next sections.
+
 
 \subsection{Randomized models}
 
@@ -341,12 +346,13 @@ also usually increases, but often to a smaller extent than variance.
 
 \subsection{Combining randomized models}
 
-Let us assume a set of $M$ randomized models $\{\varphi_{{\cal L}, \theta_i} |
-i = 1, \dots, M \}$, all learned on the same data ${\cal L}$ but each built
-from an independent random seed $\theta_i$. Ensemble methods work by combining
-the predictions of these models into a new \textit{ensemble} model, denoted $\psi_{{\cal L},\theta_1,\dots,\theta_M}$,
-such that the expected generalization error of the ensemble is (hopefully)
-smaller than the expected generalization error of the individual randomized models.
+Let us assume a set of $M$ randomized models $\{\varphi_{{\cal L}, \theta_m} |
+m = 1, \dots, M \}$, all learned on the same data ${\cal L}$ but each built
+from an independent random seed $\theta_m$. Ensemble methods work by combining
+the predictions of these models into a new \textit{ensemble} model, denoted
+$\psi_{{\cal L},\theta_1,\dots,\theta_M}$, such that the expected
+generalization error of the ensemble is (hopefully) smaller than the expected
+generalization error of the individual randomized models.
 
 In regression, the most common way to combine the randomized models into an
 ensemble is to average their predictions to form the final prediction:
@@ -372,11 +378,13 @@ Equation~\ref{eqn:4:avg-estimate} has the advantage of providing accurate class
 probability estimates for the ensemble, which may prove to be useful in
 critical applications, e.g., when (estimates of) the certainty about
 predictions is as important as the predictions themselves. Additionally,
-combining predictions in this way makes it easy
-to study the expected generalization error of the ensemble -- it suffices
-to plug the averaged estimates into Theorem~\ref{thm:bias-variance:classification}.
-For these reasons, and for the rest of this work, predictions in classification
-are assumed to be combined through Equation~\ref{eqn:4:avg-estimate} unless mentioned otherwise.
+combining predictions in this way makes it easy to study the expected
+generalization error of the ensemble -- it suffices to plug the averaged
+estimates into Theorem~\ref{thm:bias-variance:classification}. For these
+reasons, and for the rest of this work, predictions in classification are
+assumed to be combined through Equation~\ref{eqn:4:avg-estimate} unless
+mentioned otherwise.
+
 
 \subsection{Bias-variance decomposition of an ensemble}
 \label{sec:4:bias-variance:ensemble}
@@ -394,6 +402,7 @@ are assumed to be combined through Equation~\ref{eqn:4:avg-estimate} unless ment
 % discussion on the correlation coefficient + increase of bias
 
 % RF do not overfit (theorem 2.3)
+
 
 \section{Random Forests}
 \label{sec:4:random-forests}
@@ -425,6 +434,7 @@ are assumed to be combined through Equation~\ref{eqn:4:avg-estimate} unless ment
 % \subsubsection{Out-of-bag estimates}
 % \subsubsection{Proximity plots}
 % \subsubsection{Variable importances}
+
 
 \section{Consistency}
 \label{sec:4:consistency}
