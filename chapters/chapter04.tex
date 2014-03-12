@@ -312,14 +312,31 @@ everything that is random, hence considering both ${\cal L}$ and $\theta$ as
 random variables\footnote{From now on, and without loss of generality, we
 assume that the random variable $\theta$ only controls the randomness of the
 learning algorithm -- and nothing else in the learning algorithm.}.
-Accordingly, theorems~\ref{thm:bias-variance} and \ref{thm:bias-
-variance:classification} naturally extend to the expected generalization error
+Accordingly, theorems~\ref{thm:bias-variance} and \ref{thm:bias-variance:classification}
+naturally extend to the expected generalization error
 $\mathbb{E}_{{\cal L},\theta} \{ Err(\varphi_{{\cal L},\theta}(\mathbf{x})) \}$
 of the randomized model $\varphi_{{\cal L},\theta}$ by replacing expectations
 $\mathbb{E}_{\cal L} \{ . \}$ and variances $\text{Var}_{\cal L} \{ . \}$ with
-their respective counterparts computed over the joint distribution of ${\cal
-L}$ and $\theta$.
+their respective counterparts $\mathbb{E}_{{\cal L},\theta} \{ . \}$ and
+$\text{Var}_{{\cal L},\theta} \{ . \}$ computed over the joint distribution of
+${\cal L}$ and $\theta$. In regression, the bias-variance decomposition
+of the square error loss thus becomes:
+\begin{equation}
+\mathbb{E}_{{\cal L},\theta} \{ Err(\varphi_{{\cal L},\theta}(\mathbf{x})) \} = \text{noise}(\mathbf{x}) + \text{bias}^2(\mathbf{x}) + \text{var}(\mathbf{x}),
+\end{equation}
+where
+\begin{align}
+\text{noise}(\mathbf{x}) &= Err(\varphi_B(\mathbf{x})), \\
+\text{bias}^2(\mathbf{x}) &= (\varphi_B(\mathbf{x}) - \mathbb{E}_{{\cal L},\theta} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} )^2, \\
+\text{var}(\mathbf{x}) &= \mathbb{E}_{{\cal L},\theta} \{ (\mathbb{E}_{{\cal L},\theta} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} - \varphi_{{\cal L},\theta}(\mathbf{x}))^2 \}.
+\end{align}
 
+In this form, variance now accounts for both the prediction variability due to
+the randomness of the learning set ${\cal L}$ and the variability due to the
+randomness of the learning algorithm itself. As a result, the variance of a
+randomized algorithm is usually strictly larger than the variance of its
+deterministic counterpart. Depending on the strength of randomization, bias
+also usually increases, but usually to a smaller extent than variance.
 
 
 \subsection{Combining randomized models}
@@ -337,6 +354,7 @@ but each from an independent random seed $\theta_i$.
 
 
 \subsection{Bias-variance decomposition of an ensemble}
+\label{sec:4:bias-variance:ensemble}
 
 % bias variance of ensemble of randomized
     % Aggregation
