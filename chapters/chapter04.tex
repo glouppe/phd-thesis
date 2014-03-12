@@ -336,14 +336,27 @@ the randomness of the learning set ${\cal L}$ and the variability due to the
 randomness of the learning algorithm itself. As a result, the variance of a
 randomized algorithm is usually strictly larger than the variance of its
 deterministic counterpart. Depending on the strength of randomization, bias
-also usually increases, but usually to a smaller extent than variance.
+also usually increases, but often to a smaller extent than variance.
 
 
 \subsection{Combining randomized models}
 
-Let us assume a set of $M$ randomized models $\{\varphi_{{\cal L},
-\theta_i} | i = 1, \dots, M \}$, all built on the same learning set ${\cal L}$
-but each from an independent random seed $\theta_i$.
+Let us assume a set of $M$ randomized models $\{\varphi_{{\cal L}, \theta_i} |
+i = 1, \dots, M \}$, all learned on the same data ${\cal L}$ but each built
+from an independent random seed $\theta_i$. Ensemble methods work by combining
+the predictions of these models into a new \textit{ensemble} model,
+such that the expected generalization error of the ensemble is (hopefully)
+smaller than the expected generalization error of any of the randomized models.
+
+In regression, the most common way to combine the randomized models into an
+ensemble, denoted $\psi_{{\cal L},\theta_1,\dots,\theta_M}$, is to average
+their predictions to form the final prediction:
+\begin{equation}
+\psi_{{\cal L},\theta_1,\dots,\theta_M}(\mathbf{x}) = \frac{1}{M} \sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x})
+\end{equation}
+
+In classification, ...
+
 
 % Diminiuer la variance réduit l'erreur
 % => Faire un ensemble de modèles légèremet différents de l'un à l'autre permet de réduire la variance
