@@ -381,13 +381,54 @@ predictions is as important as the predictions themselves. Additionally,
 combining predictions in this way makes it easy to study the expected
 generalization error of the ensemble -- it suffices to plug the averaged
 estimates into Theorem~\ref{thm:bias-variance:classification}. For these
-reasons, and for the rest of this work, predictions in classification are
+reasons, and for the rest of this work, predictions in classification are now
 assumed to be combined through Equation~\ref{eqn:4:avg-estimate} unless
 mentioned otherwise.
 
 
 \subsection{Bias-variance decomposition of an ensemble}
 \label{sec:4:bias-variance:ensemble}
+
+Let us now study the bias-variance decomposition of the expected generalization
+error of an ensemble $\psi_{{\cal L},\theta_1,\dots,\theta_M}$, first in the
+case in case of regression and then for classification.
+
+\subsubsection{Regression}
+
+From Theorem~\ref{thm:bias-variance}, the expected generalization error of an
+ensemble $\psi_{{\cal L},\theta_1,\dots,\theta_M}$ made of $M$ randomized
+models decomposes into a sum of $\text{noise}(\mathbf{x})$,
+$\text{bias}^2(\mathbf{x})$ and $\text{var}(\mathbf{x})$ terms.
+
+The noise term only depends on the intrinsic randomness of $Y$. Its value
+stays therefore the same, no matter the learning algorithm:
+\begin{equation}
+\text{noise}(\mathbf{x}) = \mathbb{E}_{Y|X=\mathbf{x}} \{ (Y - \varphi_B(\mathbf{x}))^2 \}
+\end{equation}
+
+The (squared) bias term is the (squared) difference between the prediction of the Bayes model
+and the average prediction of the model. For an ensemble, the average prediction
+is in fact the same as the average prediction of an individual model. Indeed,
+\begin{align}
+\mathbb{E}_{{\cal L},\theta_1,\dots,\theta_M} \{ \psi_{{\cal L},\theta_1,\dots,\theta_M}(\mathbf{x}) \} &= \mathbb{E}_{{\cal L},\theta_1,\dots,\theta_M} \{ \frac{1}{M} \sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x}) \} \nonumber \\
+&= \frac{1}{M} \sum_{m=1}^M \mathbb{E}_{{\cal L},\theta_m} \{ \varphi_{{\cal L},\theta_m}(\mathbf{x}) \} \nonumber \\
+&= \mathbb{E}_{{\cal L},\theta} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \}
+\end{align}
+since random variables $\theta_m$ are independent but drawn from the
+same distribution. As a result,
+\begin{equation}
+\text{bias}^2(\mathbf{x}) = (\varphi_B(\mathbf{x}) - \mathbb{E}_{{\cal L},\theta} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \})^2,
+\end{equation}
+which indicates that the bias of an ensemble of randomized models is the same
+as the bias of any of the randomized models. Put otherwise, combining
+randomized models has no effect on the bias of the resulting ensemble.
+
+The effect on variance, on the other hand, is more interesting.
+
+% !!!! improvements in prediction are solely a  result of variance reduction
+
+
+\subsubsection{Classification}
 
 % Diminiuer la variance réduit l'erreur
 % => Faire un ensemble de modèles légèremet différents de l'un à l'autre permet de réduire la variance
