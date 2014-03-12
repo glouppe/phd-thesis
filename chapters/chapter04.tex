@@ -423,10 +423,13 @@ which indicates that the bias of an ensemble of randomized models is the same
 as the bias of any of the randomized models. Put otherwise, combining
 randomized models has no effect on the bias of the resulting ensemble.
 
-The effect of ensemble methods on variance, on the other hand, is more
-interesting. Let us first derive the correlation coefficient $\rho$ between the
-predictions of two randomized models built on the same learning set ${\cal L}$
-but grown from two independent random seeds $\theta_i$ and $\theta_j$:
+On variance on the other hand, ensemble methods show all their raison d'etre,
+by virtually reducing the variability of predictions to almost nothing, thereby
+improving the accuracy of the ensemble. Before considering the variance of
+$\psi_{{\cal L},\theta_1,\dots,\theta_M}(\mathbf{x})$ however, let us first derive the
+correlation coefficient $\rho(\mathbf{x})$ between the predictions of two
+randomized models built on the same learning set ${\cal L}$ but grown from two
+independent random seeds $\theta_i$ and $\theta_j$:
 
 % !!!! improvements in prediction are solely a  result of variance reduction
 
