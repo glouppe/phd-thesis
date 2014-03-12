@@ -311,7 +311,7 @@ In this context, the bias-variance decomposition can be extended to account for
 everything that is random, hence considering both ${\cal L}$ and $\theta$ as
 random variables\footnote{From now on, and without loss of generality, we
 assume that the random variable $\theta$ only controls the randomness of the
-learning algorithm -- and nothing else in the learning algorithm.}.
+learning algorithm.}.
 Accordingly, theorems~\ref{thm:bias-variance} and \ref{thm:bias-variance:classification}
 naturally extend to the expected generalization error
 $\mathbb{E}_{{\cal L},\theta} \{ Err(\varphi_{{\cal L},\theta}(\mathbf{x})) \}$
@@ -344,31 +344,46 @@ also usually increases, but often to a smaller extent than variance.
 Let us assume a set of $M$ randomized models $\{\varphi_{{\cal L}, \theta_i} |
 i = 1, \dots, M \}$, all learned on the same data ${\cal L}$ but each built
 from an independent random seed $\theta_i$. Ensemble methods work by combining
-the predictions of these models into a new \textit{ensemble} model,
+the predictions of these models into a new \textit{ensemble} model, denoted $\psi_{{\cal L},\theta_1,\dots,\theta_M}$,
 such that the expected generalization error of the ensemble is (hopefully)
-smaller than the expected generalization error of any of the randomized models.
+smaller than the expected generalization error of the individual randomized models.
 
 In regression, the most common way to combine the randomized models into an
-ensemble, denoted $\psi_{{\cal L},\theta_1,\dots,\theta_M}$, is to average
-their predictions to form the final prediction:
+ensemble is to average their predictions to form the final prediction:
 \begin{equation}
 \psi_{{\cal L},\theta_1,\dots,\theta_M}(\mathbf{x}) = \frac{1}{M} \sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x})
 \end{equation}
 
-In classification, ...
-% citer breiman: vote vs average of estimates
+In classification, predictions are usually aggregated by considering the
+models in the ensemble as a committee  and then resorting to majority voting to
+form the final prediction:
+\begin{equation}
+\psi_{{\cal L},\theta_1,\dots,\theta_M}(\mathbf{x}) = \argmax_{c \in {\cal Y}}  \sum_{m=1}^M 1(\varphi_{{\cal L},\theta_m}(\mathbf{x})=c)
+\end{equation}
+When individual models provide class probability estimates $p_{{\cal L},\theta m}(Y=c|X=\mathbf{x})$,
+a natural alternative to majority voting consists in averaging the class probability estimates
+and then predict the class which is the most likely:
+\begin{equation}\label{eqn:4:avg-estimate}
+\psi_{{\cal L},\theta_1,\dots,\theta_M}(\mathbf{x}) = \argmax_{c \in {\cal Y}} \frac{1}{M} \sum_{m=1}^M p_{{\cal L},\theta m}(Y=c|X=\mathbf{x})
+\end{equation}
+As empirically investigated by \citet{breiman:1996b}, both approaches yield
+results that are virtually identical. From a practical point of view however,
+Equation~\ref{eqn:4:avg-estimate} has the advantage of providing accurate class
+probability estimates for the ensemble, which may prove to be useful in
+critical applications, e.g., when (estimates of) the certainty about
+predictions is as important as the predictions themselves. Additionally,
+combining predictions in this way makes it easy
+to study the expected generalization error of the ensemble -- it suffices
+to plug the averaged estimates into Theorem~\ref{thm:bias-variance:classification}.
+For these reasons, and for the rest of this work, predictions in classification
+are assumed to be combined through Equation~\ref{eqn:4:avg-estimate} unless mentioned otherwise.
 
+\subsection{Bias-variance decomposition of an ensemble}
+\label{sec:4:bias-variance:ensemble}
 
 % Diminiuer la variance réduit l'erreur
 % => Faire un ensemble de modèles légèremet différents de l'un à l'autre permet de réduire la variance
 % => le montrer et fainre le lien avec correlation
-% RF differ from each in the way they decorrelate pairs of trees
-
-
-
-
-\subsection{Bias-variance decomposition of an ensemble}
-\label{sec:4:bias-variance:ensemble}
 
 % bias variance of ensemble of randomized
     % Aggregation
@@ -382,6 +397,8 @@ In classification, ...
 
 \section{Random Forests}
 \label{sec:4:random-forests}
+
+% RF differ from each in the way they decorrelate pairs of trees
 
 % \subsubsection{Bagging}
 % \subsubsection{Random Forests}
