@@ -442,7 +442,7 @@ coefficient, it comes:
 \begin{align}
 \rho(\mathbf{x}) &= \frac{\mathbb{E}_{{\cal L},\theta_i,\theta_j} \{ (\varphi_{{\cal L}, \theta_i}(\mathbf{x}) - \mu_{{\cal L},\theta_i}) (\varphi_{{\cal L}, \theta_j}(\mathbf{x}) - \mu_{{\cal L},\theta_j}) \}}{\sigma_{{\cal L},\theta_i} \sigma_{{\cal L},\theta_j}} \nonumber \\
 &= \frac{\mathbb{E}_{{\cal L},\theta_i,\theta_j} \{ \varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x}) - \varphi_{{\cal L},\theta_i}(\mathbf{x}) \mu_{{\cal L},\theta_j} - \varphi_{{\cal L},\theta_j}(\mathbf{x}) \mu_{{\cal L},\theta_i} + \mu_{{\cal L},\theta_i} \mu_{{\cal L},\theta_j} \}}{\sigma^2_{{\cal L},\theta}} \nonumber \\
-&= \frac{\mathbb{E}_{{\cal L},\theta_i,\theta_j} \{ \varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x}) \} - \mu^2_{{\cal L},\theta}}{\sigma^2_{{\cal L},\theta}}
+&= \frac{\mathbb{E}_{{\cal L},\theta_i,\theta_j} \{ \varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x}) \} - \mu^2_{{\cal L},\theta}}{\sigma^2_{{\cal L},\theta}} \label{eqn:4:correlation}
 \end{align}
 since random variables $\theta_i$ and $\theta_j$ are drawn from the same
 distribution. Intuitively, $\rho(\mathbf{x})$ represents the strength of the
@@ -452,9 +452,22 @@ that randomization has no sensible effect on the predictions. By contrast, when
 it is close to $0$, predictions of the randomized models are decorrelated,
 hence indicating that randomization has a strong effect on the predictions. At
 the limit, when $\rho(\mathbf{x})=0$, predictions of two models built on the
-same learning set ${\cal L}$ are independent, which happens when predictions
+same learning set ${\cal L}$ are independent, which happens when they are
 perfectly random.
 
+From Equation~\ref{eqn:4:correlation}, the variance of $\psi_{{\cal
+L},\theta_1,\dots,\theta_M}(\mathbf{x})$ can now be derived as follows:
+\begin{align}
+& \text{Var}_{{\cal L},\theta_1,\dots,\theta_M} \{ \psi_{{\cal L},\theta_1,\dots,\theta_M}(\mathbf{x}) \} \nonumber \\
+&= \text{Var}_{{\cal L},\theta_1,\dots,\theta_M} \{ \frac{1}{M} \sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x})  \} \nonumber \\
+&= \frac{1}{M^2} \Bigg[ \mathbb{E}_{{\cal L},\theta_1,\dots,\theta_M} \{ (\sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x}))^2 \} - \mathbb{E}_{{\cal L},\theta_1,\dots,\theta_M} \{ \sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x}) \}^2 \Bigg] \nonumber \\
+&= \frac{1}{M^2} \Bigg[ \mathbb{E}_{{\cal L},\theta_1,\dots,\theta_M} \{ \sum_{i,j} \varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x}) \} - (M \mu_{{\cal L},\theta})^2 \Bigg] \nonumber \\
+&= \frac{1}{M^2} \Bigg[ \sum_{i,j} \mathbb{E}_{{\cal L},\theta_i,\theta_j} \{  \varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x}) \} - M^2 \mu^2_{{\cal L},\theta} \Bigg] \nonumber \\
+&= \frac{1}{M^2} \Bigg[ M \mathbb{E}_{{\cal L},\theta} \{ \varphi_{{\cal L},\theta}(\mathbf{x})^2 \} + (M^2-M) \mathbb{E}_{{\cal L},\theta_i,\theta_j} \{  \varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x}) \}  - M^2 \mu^2_{{\cal L},\theta} \Bigg] \nonumber \\
+&= \frac{1}{M^2} \Bigg[ M (\sigma^2_{{\cal L},\theta} + \mu^2_{{\cal L},\theta}) + (M^2-M)(\rho(\mathbf{x}) \sigma^2_{{\cal L},\theta} + \mu^2_{{\cal L},\theta}) - M^2 \mu^2_{{\cal L},\theta} \Bigg] \nonumber \\
+&= \frac{\sigma^2_{{\cal L},\theta}}{M} + \rho(\mathbf{x})\sigma^2_{{\cal L},\theta} - \rho(\mathbf{x}) \frac{\sigma^2_{{\cal L},\theta}}{M} \nonumber \\
+&= \rho(\mathbf{x}) \sigma^2_{{\cal L},\theta} + \frac{1 - \rho(\mathbf{x})}{M} \sigma^2_{{\cal L},\theta}
+\end{align}
 
 % !!!! improvements in prediction are solely a  result of variance reduction
 
