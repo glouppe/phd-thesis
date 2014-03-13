@@ -514,7 +514,7 @@ problem is to find the right trade-off between randomness and bias.
 \text{var}(\mathbf{x}) = \text{Var}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \} + \frac{1}{M} \mathbb{E}_{\cal L} \{ \text{Var}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}.
 \end{equation}
 The first term of this decomposition is the variance due to the randomness
-of the learning set ${\cal L}$, averaged the random seed parameters. It
+of the learning set ${\cal L}$, averaged over the random perturbations due to $\theta$. It
 measures the dependence of the model on the learning set, independently of
 $\theta$. The second term is the expectation over all learning sets of
 the variance with respect to $\theta$. It measures the strength of the
