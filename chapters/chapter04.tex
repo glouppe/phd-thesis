@@ -393,15 +393,15 @@ Let us now study the bias-variance decomposition of the expected generalization
 error of an ensemble $\psi_{{\cal L},\theta_1,\dots,\theta_M}$, first in the
 case in case of regression and then for classification.
 
-\subsubsection{Regression}
-
-To simplify notations, let us first denote the mean prediction at
+To simplify notations in the analysis below, let us denote the mean prediction at
 $X=\mathbf{x}$ of a single randomized model $\varphi_{{\cal L},\theta_m}$ and its
 respective prediction variance as:
 \begin{align}
 \mu_{{\cal L},\theta_m} &= \mathbb{E}_{{\cal L},\theta_m} \{ \varphi_{{\cal L},\theta_m}(\mathbf{x}) \} \\
 \sigma^2_{{\cal L},\theta_m} &= \text{Var}_{{\cal L},\theta_m} \{ \varphi_{{\cal L},\theta_m}(\mathbf{x}) \}
 \end{align}
+
+\subsubsection{Regression}
 
 From Theorem~\ref{thm:bias-variance}, the expected generalization error of an
 ensemble $\psi_{{\cal L},\theta_1,\dots,\theta_M}$ made of $M$ randomized
@@ -441,9 +441,19 @@ independent random seeds $\theta_i$ and $\theta_j$. From the definition of the P
 coefficient, it comes:
 \begin{align}
 \rho(\mathbf{x}) &= \frac{\mathbb{E}_{{\cal L},\theta_i,\theta_j} \{ (\varphi_{{\cal L}, \theta_i}(\mathbf{x}) - \mu_{{\cal L},\theta_i}) (\varphi_{{\cal L}, \theta_j}(\mathbf{x}) - \mu_{{\cal L},\theta_j}) \}}{\sigma_{{\cal L},\theta_i} \sigma_{{\cal L},\theta_j}} \nonumber \\
-&= \frac{}{\sigma^2_{{\cal L},\theta}}
+&= \frac{\mathbb{E}_{{\cal L},\theta_i,\theta_j} \{ \varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x}) - \varphi_{{\cal L},\theta_i}(\mathbf{x}) \mu_{{\cal L},\theta_j} - \varphi_{{\cal L},\theta_j}(\mathbf{x}) \mu_{{\cal L},\theta_i} + \mu_{{\cal L},\theta_i} \mu_{{\cal L},\theta_j} \}}{\sigma^2_{{\cal L},\theta}} \nonumber \\
+&= \frac{\mathbb{E}_{{\cal L},\theta_i,\theta_j} \{ \varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x}) \} - \mu^2_{{\cal L},\theta}}{\sigma^2_{{\cal L},\theta}}
 \end{align}
-
+since random variables $\theta_i$ and $\theta_j$ are drawn from the same
+distribution. Intuitively, $\rho(\mathbf{x})$ represents the strength of the
+random perturbations introduced in the learning algorithm. When it is close to
+$1$, predictions of two randomized models are highly correlated, suggesting
+that randomization has no sensible effect on the predictions. By contrast, when
+it is close to $0$, predictions of the randomized models are decorrelated,
+hence indicating that randomization has a strong effect on the predictions. At
+the limit, when $\rho(\mathbf{x})=0$, predictions of two models built on the
+same learning set ${\cal L}$ are independent, which happens when predictions
+perfectly random.
 
 
 % !!!! improvements in prediction are solely a  result of variance reduction
