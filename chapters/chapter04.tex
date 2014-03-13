@@ -395,6 +395,14 @@ case in case of regression and then for classification.
 
 \subsubsection{Regression}
 
+To simplify notations, let us first denote the mean prediction at
+$X=\mathbf{x}$ of a single randomized model $\varphi_{{\cal L},\theta_m}$ and its
+respective prediction variance as:
+\begin{align}
+\mu_{{\cal L},\theta_m} &= \mathbb{E}_{{\cal L},\theta_m} \{ \varphi_{{\cal L},\theta_m}(\mathbf{x}) \} \\
+\sigma^2_{{\cal L},\theta_m} &= \text{Var}_{{\cal L},\theta_m} \{ \varphi_{{\cal L},\theta_m}(\mathbf{x}) \}
+\end{align}
+
 From Theorem~\ref{thm:bias-variance}, the expected generalization error of an
 ensemble $\psi_{{\cal L},\theta_1,\dots,\theta_M}$ made of $M$ randomized
 models decomposes into a sum of $\text{noise}(\mathbf{x})$,
@@ -412,12 +420,12 @@ is in fact the same as the average prediction of an individual model. Indeed,
 \begin{align}
 \mathbb{E}_{{\cal L},\theta_1,\dots,\theta_M} \{ \psi_{{\cal L},\theta_1,\dots,\theta_M}(\mathbf{x}) \} &= \mathbb{E}_{{\cal L},\theta_1,\dots,\theta_M} \{ \frac{1}{M} \sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x}) \} \nonumber \\
 &= \frac{1}{M} \sum_{m=1}^M \mathbb{E}_{{\cal L},\theta_m} \{ \varphi_{{\cal L},\theta_m}(\mathbf{x}) \} \nonumber \\
-&= \mathbb{E}_{{\cal L},\theta} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \}
+&= \mu_{{\cal L},\theta}
 \end{align}
 since random variables $\theta_m$ are independent but drawn from the
 same distribution. As a result,
 \begin{equation}
-\text{bias}^2(\mathbf{x}) = (\varphi_B(\mathbf{x}) - \mathbb{E}_{{\cal L},\theta} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \})^2,
+\text{bias}^2(\mathbf{x}) = (\varphi_B(\mathbf{x}) - \mu_{{\cal L},\theta})^2,
 \end{equation}
 which indicates that the bias of an ensemble of randomized models is the same
 as the bias of any of the randomized models. Put otherwise, combining
@@ -428,9 +436,15 @@ virtually reducing the variability of predictions to almost nothing and thereby
 improving the accuracy of the ensemble. Before considering the variance of
 $\psi_{{\cal L},\theta_1,\dots,\theta_M}(\mathbf{x})$ however, let us first
 derive the correlation coefficient $\rho(\mathbf{x})$ between the predictions
-of two randomized models built on the same learning set but grown from two
-independent random seeds. From the definition of the Pearson's correlation
+of two randomized models built on the same learning set, but grown from two
+independent random seeds $\theta_i$ and $\theta_j$. From the definition of the Pearson's correlation
 coefficient, it comes:
+\begin{align}
+\rho(\mathbf{x}) &= \frac{\mathbb{E}_{{\cal L},\theta_i,\theta_j} \{ (\varphi_{{\cal L}, \theta_i}(\mathbf{x}) - \mu_{{\cal L},\theta_i}) (\varphi_{{\cal L}, \theta_j}(\mathbf{x}) - \mu_{{\cal L},\theta_j}) \}}{\sigma_{{\cal L},\theta_i} \sigma_{{\cal L},\theta_j}} \nonumber \\
+&= \frac{}{\sigma^2_{{\cal L},\theta}}
+\end{align}
+
+
 
 % !!!! improvements in prediction are solely a  result of variance reduction
 
