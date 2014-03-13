@@ -88,11 +88,11 @@ generalization error $\mathbb{E}_{\cal L} \{ Err(\varphi_{\cal L}(\mathbf{x}))
 \mathbb{E}_{\cal L} \{ Err(\varphi_{\cal L}(\mathbf{x})) \} = \text{noise}(\mathbf{x}) + \text{bias}^2(\mathbf{x}) + \text{var}(\mathbf{x}),
 \end{equation}
 where
-\begin{align}
+\begin{align*}
 \text{noise}(\mathbf{x}) &= Err(\varphi_B(\mathbf{x})), \\
 \text{bias}^2(\mathbf{x}) &= (\varphi_B(\mathbf{x}) - \mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} )^2, \\
 \text{var}(\mathbf{x}) &= \mathbb{E}_{\cal L} \{ (\mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} - \varphi_{\cal L}(\mathbf{x}))^2 \}.
-\end{align}
+\end{align*}
 \end{theorem}
 
 This bias-variance decomposition of the generalization error is due to
@@ -458,8 +458,7 @@ perfectly random.
 From Equation~\ref{eqn:4:correlation}, the variance of $\psi_{{\cal
 L},\theta_1,\dots,\theta_M}(\mathbf{x})$ can now be derived as follows:
 \begin{align}
-& \text{Var}_{{\cal L},\theta_1,\dots,\theta_M} \{ \psi_{{\cal L},\theta_1,\dots,\theta_M}(\mathbf{x}) \} \nonumber \\
-&= \text{Var}_{{\cal L},\theta_1,\dots,\theta_M} \{ \frac{1}{M} \sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x})  \} \nonumber \\
+\text{var}(\mathbf{x}) &= \text{Var}_{{\cal L},\theta_1,\dots,\theta_M} \{ \frac{1}{M} \sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x})  \} \nonumber \\
 &= \frac{1}{M^2} \Bigg[ \mathbb{E}_{{\cal L},\theta_1,\dots,\theta_M} \{ (\sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x}))^2 \} - \mathbb{E}_{{\cal L},\theta_1,\dots,\theta_M} \{ \sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x}) \}^2 \Bigg] \nonumber \\
 &= \frac{1}{M^2} \Bigg[ \mathbb{E}_{{\cal L},\theta_1,\dots,\theta_M} \{ \sum_{i,j} \varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x}) \} - (M \mu_{{\cal L},\theta})^2 \Bigg] \nonumber \\
 &= \frac{1}{M^2} \Bigg[ \sum_{i,j} \mathbb{E}_{{\cal L},\theta_i,\theta_j} \{  \varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x}) \} - M^2 \mu^2_{{\cal L},\theta} \Bigg] \nonumber \\
@@ -468,6 +467,41 @@ L},\theta_1,\dots,\theta_M}(\mathbf{x})$ can now be derived as follows:
 &= \frac{\sigma^2_{{\cal L},\theta}}{M} + \rho(\mathbf{x})\sigma^2_{{\cal L},\theta} - \rho(\mathbf{x}) \frac{\sigma^2_{{\cal L},\theta}}{M} \nonumber \\
 &= \rho(\mathbf{x}) \sigma^2_{{\cal L},\theta} + \frac{1 - \rho(\mathbf{x})}{M} \sigma^2_{{\cal L},\theta}
 \end{align}
+As the size of the ensemble gets arbitrarily large, i.e., as $M \to \infty$,
+the variance of the ensemble therefore reduces to $\rho(\mathbf{x})
+\sigma^2_{{\cal L},\theta}$. Under the assumption that randomization has some
+effect on the predictions of randomized models, i.e., assuming
+$\rho(\mathbf{x}) < 1$, the variance of an ensemble is therefore strictly
+smaller than the variance of an individual model. As a result, the expected
+generalization error of an ensemble is strictly smaller than the expected error
+of a randomized model. As such, improvements in predictions are
+solely the result of variance reduction, since both $\text{noise}(\mathbf{x})$
+and $\text{bias}^2(\mathbf{x})$ remain unchanged. Additionally, when random
+effects are strong, i.e., when $\rho(\mathbf{x}) \to 0$, variance reduces to
+$\smash{\tfrac{\sigma^2_{{\cal L},\theta}}{M}}$, which can further be driven to $0$ by
+increasing the size of the ensemble. On the other hand, when random effects are weak,
+i.e., when $\rho(\mathbf{x}) \to 1$, then variance reduces to $\sigma^2_{{\cal
+L},\theta}$ and building an ensemble brings no benefit. Put otherwise, the stronger the random effects, the larger
+the reduction of variance due to ensembling, and vice-versa.
+
+In summary, the expected generalization error of an ensemble additively
+decomposes as stated in Theorem~\ref{thm:bias-variance:ensemble}.
+\begin{theorem}\label{thm:bias-variance:ensemble}
+For the square error loss, the bias-variance decomposition of the expected
+generalization error $\mathbb{E}_{\cal L} \{ Err( \psi_{{\cal L},\theta_1,\dots,\theta_M}(\mathbf{x}))
+\}$ at $X=\mathbf{x}$ of an ensemble of $M$ randomized models $\varphi_{{\cal L},\theta_m}$ is
+\begin{equation}
+\mathbb{E}_{\cal L} \{ Err(\psi_{{\cal L},\theta_1,\dots,\theta_M}(\mathbf{x})) \} = \text{noise}(\mathbf{x}) + \text{bias}^2(\mathbf{x}) + \text{var}(\mathbf{x}),
+\end{equation}
+where
+\begin{align*}
+\text{noise}(\mathbf{x}) &= Err(\varphi_B(\mathbf{x})), \\
+\text{bias}^2(\mathbf{x}) &= (\varphi_B(\mathbf{x}) - \mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} )^2, \\
+\text{var}(\mathbf{x}) &= \rho(\mathbf{x}) \sigma^2_{{\cal L},\theta} + \frac{1 - \rho(\mathbf{x})}{M} \sigma^2_{{\cal L},\theta}.
+\end{align*}
+\end{theorem}
+
+% discussion increase of bias to allow for variance reduction. the crux of the problme is in finding the right trade-off.
 
 % !!!! improvements in prediction are solely a  result of variance reduction
 
