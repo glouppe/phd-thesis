@@ -227,7 +227,7 @@ than $0.5$, that is:
 P_{\cal L}(\varphi_{\cal L}(\mathbf{x})\neq \varphi_B(\mathbf{x})) = P_{\cal L}(p_{\cal L}(Y=\varphi_B(\mathbf{x})) < 0.5)
 \end{equation}
 As Figure~\ref{fig:estimate-distribution} illustrates, probability~\ref{eqn:4:prob-diff-from-bayes}
-therefore corresponds to the tail area on the left side
+in fact corresponds to the tail area on the left side
 of the decision threshold (at 0.5) of the distribution of the estimate.
 
 \begin{figure}
@@ -465,10 +465,10 @@ L},\theta_1,\dots,\theta_M}(\mathbf{x})$ can now be derived as follows:
 &= \frac{1}{M^2} \Bigg[ M \mathbb{E}_{{\cal L},\theta} \{ \varphi_{{\cal L},\theta}(\mathbf{x})^2 \} + (M^2-M) \mathbb{E}_{{\cal L},\theta_i,\theta_j} \{  \varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x}) \}  - M^2 \mu^2_{{\cal L},\theta} \Bigg] \nonumber \\
 &= \frac{1}{M^2} \Bigg[ M (\sigma^2_{{\cal L},\theta} + \mu^2_{{\cal L},\theta}) + (M^2-M)(\rho(\mathbf{x}) \sigma^2_{{\cal L},\theta} + \mu^2_{{\cal L},\theta}) - M^2 \mu^2_{{\cal L},\theta} \Bigg] \nonumber \\
 &= \frac{\sigma^2_{{\cal L},\theta}}{M} + \rho(\mathbf{x})\sigma^2_{{\cal L},\theta} - \rho(\mathbf{x}) \frac{\sigma^2_{{\cal L},\theta}}{M} \nonumber \\
-&= \rho(\mathbf{x}) \sigma^2_{{\cal L},\theta} + \frac{1 - \rho(\mathbf{x})}{M} \sigma^2_{{\cal L},\theta}
+&= \rho(\mathbf{x}) \sigma^2_{{\cal L},\theta} + \frac{1 - \rho(\mathbf{x})}{M} \sigma^2_{{\cal L},\theta} \label{eqn:4:variance-hastie}
 \end{align}
 As the size of the ensemble gets arbitrarily large, i.e., as $M \to \infty$,
-the variance of the ensemble therefore reduces to $\rho(\mathbf{x})
+the variance of the ensemble reduces to $\rho(\mathbf{x})
 \sigma^2_{{\cal L},\theta}$. Under the assumption that randomization has some
 effect on the predictions of randomized models, i.e., assuming
 $\rho(\mathbf{x}) < 1$, the variance of an ensemble is therefore strictly
@@ -496,32 +496,59 @@ generalization error $\mathbb{E}_{\cal L} \{ Err( \psi_{{\cal L},\theta_1,\dots,
 where
 \begin{align*}
 \text{noise}(\mathbf{x}) &= Err(\varphi_B(\mathbf{x})), \\
-\text{bias}^2(\mathbf{x}) &= (\varphi_B(\mathbf{x}) - \mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \} )^2, \\
+\text{bias}^2(\mathbf{x}) &= (\varphi_B(\mathbf{x}) - \mathbb{E}_{{\cal L},\theta} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} )^2, \\
 \text{var}(\mathbf{x}) &= \rho(\mathbf{x}) \sigma^2_{{\cal L},\theta} + \frac{1 - \rho(\mathbf{x})}{M} \sigma^2_{{\cal L},\theta}.
 \end{align*}
 \end{theorem}
 
-% discussion increase of bias to allow for variance reduction. the crux of the problme is in finding the right trade-off.
+In light of Theorem~\ref{thm:bias-variance:ensemble}, the core principle of
+ensemble methods is thus to introduce random perturbations in order to
+decorrelate as much as possible the predictions of the individual models,
+thereby maximizing variance reduction. However, random perturbations need to be
+carefully chosen so as to increase bias at least as possible.  The crux of the
+problem is to find the right trade-off between randomness and bias.
 
-% !!!! improvements in prediction are solely a  result of variance reduction
+\begin{remark}{Alternative variance decomposition}
+\citet{geurts:2002} alternatively decomposes the ensemble variance as
+\begin{equation}\label{eqn:4:variance-geurts}
+\text{var}(\mathbf{x}) = \text{Var}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \} + \frac{1}{M} \mathbb{E}_{\cal L} \{ \text{Var}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}.
+\end{equation}
+The first term of this decomposition is the variance due to the randomness
+of the learning set ${\cal L}$, averaged the random seed parameters. It
+measures the dependence of the model on the learning set, independently of
+$\theta$. The second term is the expectation over all learning sets of
+the variance with respect to $\theta$. It measures the strength of the
+random effects.
 
+Decompositions \ref{eqn:4:variance-hastie} and \ref{eqn:4:variance-geurts} are equivalent if
+\begin{equation}
+\rho(\mathbf{x}) = \frac{\text{Var}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}}{\text{Var}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \} + \mathbb{E}_{\cal L} \{ \text{Var}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}}
+\end{equation}
+which is true given that
+\begin{equation}
+\sigma^2_{{\cal L},\theta} = \text{Var}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \} + \mathbb{E}_{\cal L} \{ \text{Var}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}
+\end{equation} using the law of total variance, the definition of $\rho(\mathbf{x})$ from Equation~\ref{eqn:4:correlation} and the fact that
+\begin{align}
+& \text{Var}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \} \nonumber \\
+&= \mathbb{E}_{\cal L} \{ (\mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} - \mathbb{E}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x})\} \})^2 \} \nonumber \\
+&= \mathbb{E}_{\cal L} \{ (\mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} - \mu_{{\cal L},\theta})^2 \} \nonumber \\
+&= \mathbb{E}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \}^2 \} - \mu^2_{{\cal L},\theta} \nonumber \\
+&= \mathbb{E}_{\cal L} \{ \mathbb{E}_{\theta_i|{\cal L}} \{ \varphi_{{\cal L},\theta_i}(\mathbf{x}) \} \mathbb{E}_{\theta_j|{\cal L}} \{ \varphi_{{\cal L},\theta_j}(\mathbf{x}) \} \} - \mu^2_{{\cal L},\theta} \nonumber \\
+&= \mathbb{E}_{{\cal L},\theta_i,\theta_j} \{ \varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x}) \} - \mu^2_{{\cal L},\theta}.
+\end{align}
+\end{remark}
 
 \subsubsection{Classification}
 
-% Diminiuer la variance réduit l'erreur
-% => Faire un ensemble de modèles légèremet différents de l'un à l'autre permet de réduire la variance
-% => le montrer et fainre le lien avec correlation
+The decomposition of the expected generalization error of an ensemble in
+classification directly follows from theorems~\ref{thm:bias-variance:classification} and
+\ref{thm:bias-variance:ensemble}.
 
-% bias variance of ensemble of randomized
-    % Aggregation
-    % > consensus vote
-    % > average probability (Hastie, 283+)
-    % > average output values
-
-% discussion on the correlation coefficient + increase of bias
-
-% RF do not overfit (theorem 2.3)
-
+Provided that the expected probability estimate $\mathbb{E}_{{\cal L},\theta}\{
+p_{{\cal L},\theta}(Y=\varphi_B(\mathbf{x}) \}$ for the majority class remains
+strictly greater than $0.5$ in a randomized model, then building an ensemble
+reduces the variance of the estimate (as shown in Equation~\ref{eqn:4:variance-hastie}),
+which results in a decrease of the misclassification error.
 
 \section{Random Forests}
 \label{sec:4:random-forests}
@@ -541,6 +568,9 @@ where
     % - +other kinds of forests (see state-of-the-art in geurts)
     % => discuter sur un exemple les aspects stat/comput/repres
     % Ex: correlation coeff example
+
+
+% RF do not overfit (theorem 2.3)
 
 % Issues tackled by ensemble
 %   Ensemble methods in ML, Dietterich
