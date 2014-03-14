@@ -536,6 +536,13 @@ which is true given the fact that
 &= \mathbb{E}_{\cal L} \{ \mathbb{E}_{\theta_i|{\cal L}} \{ \varphi_{{\cal L},\theta_i}(\mathbf{x}) \} \mathbb{E}_{\theta_j|{\cal L}} \{ \varphi_{{\cal L},\theta_j}(\mathbf{x}) \} \} - \mu^2_{{\cal L},\theta} \nonumber \\
 &= \mathbb{E}_{{\cal L},\theta_i,\theta_j} \{ \varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x}) \} - \mu^2_{{\cal L},\theta}.
 \end{align}
+In this form, $\rho(\mathbf{x})$ is interpreted as the ratio between the variance
+due to the learning set  and the total variance, accounting for
+random effects due to both the learning set and the random perturbations.
+It is close to $1$ when variance is mostly due to the learning set, hence
+yielding correlated predictions. Conversely, it is close to $0$ when variance
+is mostly due to the random perburbations induced by $\theta$, hence decorrelating
+the predictions.
 \end{remark}
 
 \subsubsection{Classification}

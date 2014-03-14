@@ -138,6 +138,32 @@ Part I: Growing random forests
 * Comparison of existing implementations
     - Experiments and/or implementation details
 
+        List existing implementations and mention in which complexity they
+        fall in (eg., in a Table).
+
+        Open-source
+        * C4.5
+        * CART
+        * TMVA !!
+        * Scikit-Learn
+        * Weka
+            + original
+            + fast-random-forest
+        * randomForest
+            + original
+            + PARF
+        * Breiman Fortran code
+        * party (R)
+        * Pierre
+        * OpenCV
+        * H2O
+        * clus (Leuven)
+
+        Closed source
+        * Sherwood (Criminisi)
+        * WiseRF
+        * Random jungle
+
 
 Part II: Interpreting random forests
 ====================================
