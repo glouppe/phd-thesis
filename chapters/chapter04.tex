@@ -562,15 +562,15 @@ which results in a decrease of the misclassification error.
 \label{sec:4:random-forests}
 
 Random forests form a family of methods that consist in building an ensemble
-(or \textit{forest}) of decision trees grown from a randomized variant of the
-tree induction algorithm (as described in Chapter~\ref{ch:cart}). In this
-context, decision trees are indeed ideal candidates since they usually have low
-bias and high variance, making them are very likely to benefit from the
-averaging process. As we will review in this section, random forests methods
-mostly differ from each other in the way they introduce random perturbations
-into the induction procedure. As highlighted in the previous section, the
-difficulty is to inject enough randomness in order to minimize
-$\rho(\mathbf{x})$ while simultaneously maintaining a low bias in the
+(or \textit{forest} in this context) of decision trees grown from a randomized
+variant of the tree induction algorithm (as described in
+Chapter~\ref{ch:cart}). Decision trees are indeed ideal candidates for ensemble
+methods since they usually have low bias and high variance, making them are
+very likely to benefit from the averaging process. As we will review in this
+section, random forests methods mostly differ from each other in the way they
+introduce random perturbations into the induction procedure. As highlighted in
+the previous section, the difficulty is to inject enough randomness in order to
+minimize $\rho(\mathbf{x})$ while simultaneously maintaining a low bias in the
 randomized decision trees.
 
 \subsection{Randomized induction algorithms}
