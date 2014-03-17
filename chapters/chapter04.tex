@@ -596,10 +596,10 @@ randomized decision trees.
     $\varphi_{\cal L}$. As such, the \textit{bagging} ensemble consists in
     approximating $\mathbb{E}_{\cal L}\{ \varphi_{\cal L} \}$  by combining
     models built from \textit{bootstrap samples}~\citep{efron:1979} ${\cal
-    L}^b$ (for $b=1,\dots,M$) of the learning set ${\cal L}$. The $\{ {\cal
-    L}^b \}$ form replicates of ${\cal L}$, each consisting of $N$ cases $(\mathbf{x},y)$, drawn
+    L}^m$ (for $m=1,\dots,M$) of the learning set ${\cal L}$. The $\{ {\cal
+    L}^m \}$ form replicates of ${\cal L}$, each consisting of $N$ cases $(\mathbf{x},y)$, drawn
     at random but \textit{with replacement} from ${\cal L}$. Note that even
-    though $|{\cal L}|=|{\cal L}^b|=N$, $37\%$ of the couples from ${\cal L}$
+    though $|{\cal L}|=|{\cal L}^m|=N$, $37\%$ of the couples from ${\cal L}$
     are on average missing in the bootstrap replicates. Indeed, after $N$ draws
     with replacement, the probability of never be selected is
     \begin{equation}
@@ -671,7 +671,7 @@ randomized decision trees.
     of random subsets of variables~\citep{amit:1997}, \citet{ho:1998} proposes
     with the \textit{random subspace} method to build a \textit{decision
     forest} whose trees are grown on random subsets of the input variables
-    (drawn prior to the construction of each tree), rather than on all $p$
+    (drawn once prior to the construction of each tree), rather than on all $p$
     variables. As empirically evaluated at several
     occasions~\citep{ho:1998,panov:2007,louppe:2012}, the random subspace
     method is a powerful ensemble method that can achieve near state-of-the-art
@@ -680,7 +680,24 @@ randomized decision trees.
     by tuning the size of the random subset.
 
 \item \citet{breiman:2001}: \hfill \\
-% succès parce que software
+    In his seminal \textit{Random Forests} paper, \citet{breiman:2001} combines
+    bagging~\citep{breiman:1996b} with random variable selection at each
+    node~\citep{amit:1997}. Injecting randomness with both strategies  yields
+    one the most effective off-the-shelf methods in machine learning, working
+    surprisingly well for almost any kind of problems. The author empirically
+    shows that forests give results that are competitive with
+    boosting~\citep{freund:1995} and arcing algorithms~\citep{breiman:1996},
+    which both are designed to reduce bias while forests focus on variance
+    reduction.
+
+    While the original principles are due to several authors (as discussed
+    above), Breiman is often as cited as the father of random forests. Parts of
+    this recognition are certainly due to the pioneer theoretical analysis that
+    has always complemented his empirical analysis of algorithms. Another
+    reason might be his efficient software implementation~\citep{breiman:2002}
+    that was made freely available with his paper, thereby allowing users
+    outside of the machine learning community to quickly and easily apply
+    random forests to their problems.
 
 \item \citet{geurts:2006}: \hfill \\
 
