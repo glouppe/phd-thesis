@@ -597,7 +597,7 @@ randomized decision trees.
     approximating $\mathbb{E}_{\cal L}\{ \varphi_{\cal L} \}$  by combining
     models built from \textit{bootstrap samples}~\citep{efron:1979} ${\cal
     L}^b$ (for $b=1,\dots,M$) of the learning set ${\cal L}$. The $\{ {\cal
-    L}^b \}$ form replicates of ${\cal L}$, each consisting of $N$ cases, drawn
+    L}^b \}$ form replicates of ${\cal L}$, each consisting of $N$ cases $(\mathbf{x},y)$, drawn
     at random but \textit{with replacement} from ${\cal L}$. Note that even
     though $|{\cal L}|=|{\cal L}^b|=N$, $37\%$ of the couples from ${\cal L}$
     are on average missing in the bootstrap replicates. Indeed, after $N$ draws
@@ -605,15 +605,27 @@ randomized decision trees.
     \begin{equation}
     (1 - \frac{1}{N})^N \approx \frac{1}{e} \approx 0.368.
     \end{equation}
-    Bagging generates individual models that  are
-    different from one bootstrap sample to another, hence making them likely to
-    benefit from the averaging process. In some cases however, when the
-    learning set ${\cal L}$ is small, subsampling $67\%$ of the objects might
-    lead to an increase of bias which is too large to be compasented by a
-    decrease of variance, hence resulting in overall poorer performance.
-    Despite this defect, bagging has proven to be an effective method
-    in numerous applications, one of its strengths being that it can be
-    used to combine any kind of models -- i.e., not only decision trees.
+    When the learning algorithm is unstable (i.e., when small changes in the
+    learning set can cause large changes in the learned models), bagging
+    generates individual models that are  different from one bootstrap sample
+    to another, hence making them likely to benefit from the averaging process.
+    In some cases however, when the learning set ${\cal L}$ is small,
+    subsampling $67\%$ of the objects might lead to an increase of bias which
+    is too large to be compasented by a decrease of variance, hence resulting
+    in overall poorer performance. Despite this defect, bagging has proven to
+    be an effective method in numerous applications, one of its strengths being
+    that it can be used to combine any kind of models -- i.e., not only
+    decision trees.
+
+\item \citet{dietterich:1995}: \hfill \\
+    Building upon \citep{kwok:1990}, \citet{dietterich:1995} propose
+    to randomize the choice of the best split at a given node by selecting
+    uniformly at random one of the $20$ best splits of node $t$. The authors empirically
+    show in \citep{dietterich:1995,dietterich:2000} that randomizing in this
+    way give results that are slightly better than bagging in low noise settings.
+    Experiments show however that when noise is important, bagging usually
+    yield better results. From a bias-variance point of view, this method
+    virtually does not change bias but increases variance due to randomization.
 
 \item \citet{amit:1997}: \hfill \\
     In the context of handwritten character recognition, where the number $p$
@@ -645,24 +657,27 @@ randomized decision trees.
     \end{algorithm}
     When the output $Y$ can be explained in several ways, this randomized
     algorithm generates trees that are each structurally different, yet
-    individually good. As result, bias usually only slightly increases, while
-    variance due to randomization can be cancelled out through averaging.
+    individually good. As result, bias usually increases only slightly, while
+    variance due to randomization can be cancelled out through averaging. The
+    optimal trade-off between these quantities can otherwise be adjusted by
+    tuning the value of $K$. As $K \to 1$, the larger the bias but the larger the
+    variance of the individual models and hence the more effective the
+    averaging process. Conversely, as $K \to p$, the smaller the bias but also the
+    smaller the variance of the individual models and therefore the less
+    benefical the ensemble.
 
 \item \citet{ho:1998}: \hfill \\
-    The \textit{random subspace} method combines the principles of
-    bagging~\citep{breiman:1996b} with the idea of random subsets of
-    variables~\citep{amit:1997}. More specifically, \citet{ho:1998} proposes to
-    grow decision trees with the usual non-randomized induction procedure, but
-    on random subsets of the input variables (drawn prior to the construction
-    of each tree), rather than on all $p$ input variables. As empirically
-    evaluated at several occasions~\citep{ho:1998,panov:2007,louppe:2012}, the
-    random subspace is a powerful ensemble method that can achieve near
-    state-of-the-art performance on many problems. As for bagging, one of the strengths
-    of the method is its genericity -- i.e., it can in fact be used with any kind of models.
-
-\item \citet{breiman:1999}: \hfill \\
-
-\item \citet{dietterich:2000}: \hfill \\
+    Inspired from the principles of bagging~\citep{breiman:1996b} and the idea
+    of random subsets of variables~\citep{amit:1997}, \citet{ho:1998} proposes
+    with the \textit{random subspace} method to build a \textit{decision
+    forest} whose trees are grown on random subsets of the input variables
+    (drawn prior to the construction of each tree), rather than on all $p$
+    variables. As empirically evaluated at several
+    occasions~\citep{ho:1998,panov:2007,louppe:2012}, the random subspace
+    method is a powerful ensemble method that can achieve near state-of-the-art
+    performance on many problems. Again, the optimal trade-off between the
+    variance due to randomization  and the increase of bias can be controlled
+    by tuning the size of the random subset.
 
 \item \citet{breiman:2001}: \hfill \\
 % succès parce que software
