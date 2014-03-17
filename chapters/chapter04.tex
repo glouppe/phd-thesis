@@ -624,28 +624,41 @@ randomized decision trees.
     \texttt{max\_features}) the number of variables effectively considered at
     each node, this variant replaces Algorithm~\ref{algo:findsplit}
     with the following randomized alternative:
-
-\begin{algorithm}
-Find the best split $s^*$ that partitions ${\cal L}_t$, among a random subset of $K \leq p$ input variables.
-\textnormal{
-\begin{algorithmic}[1]
-\Function{FindBestSplitRandom}{${\cal L}_t, K$}
-    \State $\Delta = -\infty$
-    \State Draw $K$ random indices $j_k$ from $1,\dots,p$
-    \For{$k=1, \dots, K$}
-        \State Find the best binary split $s^*_{j_k}$ defined on $X_{j_k}$
-        \If{$\Delta i(s^*_{j_k}, t) > \Delta$}
-            \State $\Delta \gets \Delta i(s^*_{j_k}, t)$
-            \State $s^* \gets s^*_{j_k}$
-        \EndIf
-    \EndFor
-    \State \Return $s^*$
-\EndFunction
-\end{algorithmic}
-}
-\end{algorithm}
+    \begin{algorithm}
+    Find the best split $s^*$ that partitions ${\cal L}_t$, among a random subset of $K \leq p$ input variables.
+    \textnormal{
+    \begin{algorithmic}[1]
+    \Function{FindBestSplitRandom}{${\cal L}_t, K$}
+        \State $\Delta = -\infty$
+        \State Draw $K$ random indices $j_k$ from $1,\dots,p$
+        \For{$k=1, \dots, K$}
+            \State Find the best binary split $s^*_{j_k}$ defined on $X_{j_k}$
+            \If{$\Delta i(s^*_{j_k}, t) > \Delta$}
+                \State $\Delta \gets \Delta i(s^*_{j_k}, t)$
+                \State $s^* \gets s^*_{j_k}$
+            \EndIf
+        \EndFor
+        \State \Return $s^*$
+    \EndFunction
+    \end{algorithmic}
+    }
+    \end{algorithm}
+    When the output $Y$ can be explained in several ways, this randomized
+    algorithm generates trees that are each structurally different, yet
+    individually good. As result, bias usually only slightly increases, while
+    variance due to randomization can be cancelled out through averaging.
 
 \item \citet{ho:1998}: \hfill \\
+    The \textit{random subspace} method combines the principles of
+    bagging~\citep{breiman:1996b} with the idea of random subsets of
+    variables~\citep{amit:1997}. More specifically, \citet{ho:1998} proposes to
+    grow decision trees with the usual non-randomized induction procedure, but
+    on random subsets of the input variables (drawn prior to the construction
+    of each tree), rather than on all $p$ input variables. As empirically
+    evaluated at several occasions~\citep{ho:1998,panov:2007,louppe:2012}, the
+    random subspace is a powerful ensemble method that can achieve near
+    state-of-the-art performance on many problems. As for bagging, one of the strengths
+    of the method is its genericity -- i.e., it can in fact be used with any kind of models.
 
 \item \citet{breiman:1999}: \hfill \\
 
