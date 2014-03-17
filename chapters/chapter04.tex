@@ -593,7 +593,7 @@ randomized decision trees.
     versions of an estimator into an ensemble can give substantial gains in
     accuracy. He notes and shows that the average model $\mathbb{E}_{\cal L}\{
     \varphi_{\cal L} \}$ has a lower expected generalization error than
-    $\varphi_{\cal L}$. As such, the \textit{bagging} ensemble consists in
+    $\varphi_{\cal L}$. As such, \textit{bagging}  consists in
     approximating $\mathbb{E}_{\cal L}\{ \varphi_{\cal L} \}$  by combining
     models built from \textit{bootstrap samples}~\citep{efron:1979} ${\cal
     L}^m$ (for $m=1,\dots,M$) of the learning set ${\cal L}$. The $\{ {\cal
@@ -601,7 +601,7 @@ randomized decision trees.
     at random but \textit{with replacement} from ${\cal L}$. Note that even
     though $|{\cal L}|=|{\cal L}^m|=N$, $37\%$ of the couples from ${\cal L}$
     are on average missing in the bootstrap replicates. Indeed, after $N$ draws
-    with replacement, the probability of never be selected is
+    with replacement, the probability of never have been selected is
     \begin{equation}
     (1 - \frac{1}{N})^N \approx \frac{1}{e} \approx 0.368.
     \end{equation}
@@ -622,7 +622,7 @@ randomized decision trees.
     to randomize the choice of the best split at a given node by selecting
     uniformly at random one of the $20$ best splits of node $t$. The authors empirically
     show in \citep{dietterich:1995,dietterich:2000} that randomizing in this
-    way give results that are slightly better than bagging in low noise settings.
+    way gives results that are slightly better than bagging in low noise settings.
     Experiments show however that when noise is important, bagging usually
     yield better results. From a bias-variance point of view, this method
     virtually does not change bias but increases variance due to randomization.
@@ -667,11 +667,11 @@ randomized decision trees.
     benefical the ensemble.
 
 \item \citet{ho:1998}: \hfill \\
-    Inspired from the principles of bagging~\citep{breiman:1996b} and the idea
-    of random subsets of variables~\citep{amit:1997}, \citet{ho:1998} proposes
+    Inspired from the principles of bagging~\citep{breiman:1996b} and
+    random subsets of variables~\citep{amit:1997}, \citet{ho:1998} proposes
     with the \textit{random subspace} method to build a \textit{decision
     forest} whose trees are grown on random subsets of the input variables
-    (drawn once prior to the construction of each tree), rather than on all $p$
+    -- drawn once, prior to the construction of each tree, rather than on all $p$
     variables. As empirically evaluated at several
     occasions~\citep{ho:1998,panov:2007,louppe:2012}, the random subspace
     method is a powerful ensemble method that can achieve near state-of-the-art
@@ -682,7 +682,7 @@ randomized decision trees.
 \item \citet{breiman:2001}: \hfill \\
     In his seminal \textit{Random Forests} paper, \citet{breiman:2001} combines
     bagging~\citep{breiman:1996b} with random variable selection at each
-    node~\citep{amit:1997}. Injecting randomness with both strategies  yields
+    node~\citep{amit:1997}. Injecting randomness simultaneously with both strategies  yields
     one the most effective off-the-shelf methods in machine learning, working
     surprisingly well for almost any kind of problems. The author empirically
     shows that forests give results that are competitive with
@@ -691,11 +691,11 @@ randomized decision trees.
     reduction.
 
     While the original principles are due to several authors (as discussed
-    above), Breiman is often as cited as the father of random forests. Parts of
+    above), Breiman is often cited as the father of random forests. Parts of
     this recognition are certainly due to the pioneer theoretical analysis that
     has always complemented his empirical analysis of algorithms. By contrast
     with other authors, another reason might also be his efficient software
-    implementation~\citep{breiman:2002} that was made freely available, thereby
+    implementation~\citep{breiman:2002} that was made freely available,
     allowing users outside of the machine learning community to quickly and
     easily apply random forests to their problems.
 
