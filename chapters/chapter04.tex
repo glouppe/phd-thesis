@@ -595,13 +595,13 @@ randomized decision trees.
     \varphi_{\cal L} \}$ has a lower expected generalization error than
     $\varphi_{\cal L}$. As such, the \textit{bagging} ensemble consists in
     approximating $\mathbb{E}_{\cal L}\{ \varphi_{\cal L} \}$  by combining
-    models built from \textit{bootstrap samples}~\citep{efron:1979} ${\cal L}^b$ (for
-    $b=1,\dots,M$) of the learning set ${\cal L}$. The $\{ {\cal L}^b \}$ form
-    replicates of ${\cal L}$, each consisting of $N$ cases, drawn at random but
-    \textit{with replacement} from ${\cal L}$. Note that even though $|{\cal L}|=|{\cal
-    L}^b|=N$, $37\%$ of the couples from ${\cal L}$ are on average missing in
-    the bootstrap replicates. Indeed, after $N$ draws with replacement, the probability
-    of never be selected is
+    models built from \textit{bootstrap samples}~\citep{efron:1979} ${\cal
+    L}^b$ (for $b=1,\dots,M$) of the learning set ${\cal L}$. The $\{ {\cal
+    L}^b \}$ form replicates of ${\cal L}$, each consisting of $N$ cases, drawn
+    at random but \textit{with replacement} from ${\cal L}$. Note that even
+    though $|{\cal L}|=|{\cal L}^b|=N$, $37\%$ of the couples from ${\cal L}$
+    are on average missing in the bootstrap replicates. Indeed, after $N$ draws
+    with replacement, the probability of never be selected is
     \begin{equation}
     (1 - \frac{1}{N})^N \approx \frac{1}{e} \approx 0.368.
     \end{equation}
@@ -615,8 +615,35 @@ randomized decision trees.
     in numerous applications, one of its strengths being that it can be
     used to combine any kind of models -- i.e., not only decision trees.
 
-
 \item \citet{amit:1997}: \hfill \\
+    In the context of handwritten character recognition, where the number $p$
+    of input variables is typically very large, \citet{amit:1997} propose a
+    randomized variant of the tree induction algorithm that consists in
+    searching for the best split at each node over a random subsample of the
+    variables. Denoting $K \leq p$ (also known as \texttt{mtry} or
+    \texttt{max\_features}) the number of variables effectively considered at
+    each node, this variant replaces Algorithm~\ref{algo:findsplit}
+    with the following randomized alternative:
+
+\begin{algorithm}
+Find the best split $s^*$ that partitions ${\cal L}_t$, among a random subset of $K \leq p$ input variables.
+\textnormal{
+\begin{algorithmic}[1]
+\Function{FindBestSplitRandom}{${\cal L}_t, K$}
+    \State $\Delta = -\infty$
+    \State Draw $K$ random indices $j_k$ from $1,\dots,p$
+    \For{$k=1, \dots, K$}
+        \State Find the best binary split $s^*_{j_k}$ defined on $X_{j_k}$
+        \If{$\Delta i(s^*_{j_k}, t) > \Delta$}
+            \State $\Delta \gets \Delta i(s^*_{j_k}, t)$
+            \State $s^* \gets s^*_{j_k}$
+        \EndIf
+    \EndFor
+    \State \Return $s^*$
+\EndFunction
+\end{algorithmic}
+}
+\end{algorithm}
 
 \item \citet{ho:1998}: \hfill \\
 
@@ -625,6 +652,7 @@ randomized decision trees.
 \item \citet{dietterich:2000}: \hfill \\
 
 \item \citet{breiman:2001}: \hfill \\
+% succès parce que software
 
 \item \citet{geurts:2006}: \hfill \\
 
