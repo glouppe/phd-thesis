@@ -712,6 +712,7 @@ randomized decision trees.
     selection~\citep{amit:1997} with a randomization of the discretization
     threshold. That is, Algorithm~\ref{algo:findsplit:x_j} used for finding the
     cut-point on $X_j$ that maximizes impurity decrease is replaced with the
+    following
     simplistic but surprisingly effective randomized variant:
     \begin{algorithm}
     Draw a random split on $X_j$ that partitions ${\cal L}_t$.
@@ -739,10 +740,24 @@ randomized decision trees.
 
 \end{description}
 
-\todo{Add more methods? e.g., conditional inference trees?}
-
-
 \subsection{Out-of-bag estimates}
+
+An interesting feature of the ensemble methods that construct models
+on bootstrap samples, like bagging or random forests, is the possibility of
+using the left-out samples ${\cal L}\setminus {\cal L}^m$ to form accurate
+estimates of important statistics. In the case of generalization error, the
+\textit{out-of-bag} estimate at $(\mathbf{x}_i,y_i)$ consists in evaluating the
+prediction of the ensemble using only the individual models $\varphi_{{\cal
+L}^m}$ whose boostrap samples ${\cal L}^m$ did not include
+$(\mathbf{x}_i,y_i)$. That is,
+\begin{align}\label{eqn:oob-error}
+\widehat{Err}^\text{OOB}(\psi_{\cal L}) = \frac{1}{N} \sum_{i=1}^N L(\widetilde{\psi_{\cal L}^i}(\mathbf{x}_i), y_i)
+\end{align}
+where $\smash{\widetilde{\psi_{\cal L}^i}}$ is the ensemble that comprises only the models
+$\varphi_{{\cal L}^m}$ such that $(\mathbf{x}_i, y_i) \notin {\cal L}^m$.
+
+
+% intérêt pratique: beaucoup plus efficace que de cross-valider un ensemble
 
 \subsection{Proximity plots}
 
