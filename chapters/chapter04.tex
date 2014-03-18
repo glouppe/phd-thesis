@@ -714,7 +714,7 @@ randomized decision trees.
     cut-point on $X_j$ that maximizes impurity decrease is replaced with the
     simplistic but surprisingly effective randomized variant:
     \begin{algorithm}
-    Draw a random split that partitions ${\cal L}_t$.
+    Draw a random split on $X_j$ that partitions ${\cal L}_t$.
     \textnormal{
     \begin{algorithmic}[1]
     \Function{FindRandomSplit}{${\cal L}_t$, $X_j$}
@@ -737,9 +737,9 @@ randomized decision trees.
     result, the structure of such trees can be learned in an unsupervised way,
     independently of the output variable $Y$.
 
-\item \citet{strobl:2007}: \hfill \\
-
 \end{description}
+
+\todo{Add more methods? e.g., conditional inference trees?}
 
 
 \subsection{Out-of-bag estimates}
