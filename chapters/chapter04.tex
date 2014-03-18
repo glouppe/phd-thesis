@@ -562,15 +562,15 @@ which results in a decrease of the misclassification error.
 \label{sec:4:random-forests}
 
 Random forests form a family of methods that consist in building an ensemble
-(or \textit{forest} in this context) of decision trees grown from a randomized
-variant of the tree induction algorithm (as described in
-Chapter~\ref{ch:cart}). Decision trees are indeed ideal candidates for ensemble
-methods since they usually have low bias and high variance, making them are
-very likely to benefit from the averaging process. As we will review in this
-section, random forests methods mostly differ from each other in the way they
-introduce random perturbations into the induction procedure. As highlighted in
-the previous section, the difficulty is to inject enough randomness in order to
-minimize $\rho(\mathbf{x})$ while simultaneously maintaining a low bias in the
+(or \textit{forest}) of decision trees grown from a randomized variant of the
+tree induction algorithm (as described in Chapter~\ref{ch:cart}). Decision
+trees are indeed ideal candidates for ensemble methods since they usually have
+low bias and high variance, making them very likely to benefit from the
+averaging process. As we will review in this section, random forests methods
+mostly differ from each other in the way they introduce random perturbations
+into the induction procedure. As highlighted in the previous section, the
+difficulty is to inject enough randomness in order to minimize
+$\rho(\mathbf{x})$ while simultaneously maintaining a low bias in the
 randomized decision trees.
 
 \subsection{Randomized induction algorithms}
@@ -640,14 +640,14 @@ randomized decision trees.
     Find the best split $s^*$ that partitions ${\cal L}_t$, among a random subset of $K \leq p$ input variables.
     \textnormal{
     \begin{algorithmic}[1]
-    \Function{FindBestSplitRandom}{${\cal L}_t, K$}
+    \Function{FindBestSplitRandom}{${\cal L}_t$, $K$}
         \State $\Delta = -\infty$
         \State Draw $K$ random indices $j_k$ from $1,\dots,p$
         \For{$k=1, \dots, K$}
             \State Find the best binary split $s^*_{j_k}$ defined on $X_{j_k}$
             \If{$\Delta i(s^*_{j_k}, t) > \Delta$}
-                \State $\Delta \gets \Delta i(s^*_{j_k}, t)$
-                \State $s^* \gets s^*_{j_k}$
+                \State $\Delta = \Delta i(s^*_{j_k}, t)$
+                \State $s^* = s^*_{j_k}$
             \EndIf
         \EndFor
         \State \Return $s^*$
@@ -674,7 +674,7 @@ randomized decision trees.
     -- drawn once, prior to the construction of each tree, rather than on all $p$
     variables. As empirically evaluated at several
     occasions~\citep{ho:1998,panov:2007,louppe:2012}, the random subspace
-    method is a powerful ensemble method that can achieve near state-of-the-art
+    method is a powerful generic ensemble method that can achieve near state-of-the-art
     performance on many problems. Again, the optimal trade-off between the
     variance due to randomization  and the increase of bias can be controlled
     by tuning the size of the random subset.
@@ -700,6 +700,42 @@ randomized decision trees.
     easily apply random forests to their problems.
 
 \item \citet{geurts:2006}: \hfill \\
+    As investigated in \citep{wehenkel:1997,geurts:2000},  the notoriously high
+    variance of decision trees partly finds its origins from the high
+    dependence of the splits with the random nature of the learning set. The
+    authors empirically show that the variance of the optimal cut-point $v$ may
+    indeed be very high, even for large sample sizes.  In particular,
+    \citet{geurts:2002} shows that cut-point variance appears to be
+    responsible for a significant part of the generalization error of decision
+    trees. As a way to smoothen the decision boundary, \citet{geurts:2006}
+    hence propose in \textit{extremely randomized trees} to combine random variable
+    selection~\citep{amit:1997} with a randomization of the discretization
+    threshold. That is, Algorithm~\ref{algo:findsplit:x_j} used for finding the
+    cut-point on $X_j$ that maximizes impurity decrease is replaced with the
+    simplistic but surprisingly effective randomized variant:
+    \begin{algorithm}
+    Draw a random split that partitions ${\cal L}_t$.
+    \textnormal{
+    \begin{algorithmic}[1]
+    \Function{FindRandomSplit}{${\cal L}_t$, $X_j$}
+        \State $\min_j = \min(\{ x_{i,j} | (\mathbf{x}_i,y_i) \in {\cal L}_t \})$
+        \State $\max_j = \max(\{ x_{i,j} | (\mathbf{x}_i,y_i) \in {\cal L}_t \})$
+        \State Draw $v$ uniformly at random from $[\min_j; \max_j[$
+        \State \Return $s^v$
+    \EndFunction
+    \end{algorithmic}
+    }
+    \end{algorithm}
+    With respect to decomposition~\ref{eqn:4:variance-geurts} of variance,
+    extremely randomized trees can therefore be seen as a way to transfer
+    cut-point variance from the variance term due to the learning
+    set to the (reducible) variance term that is due to random effects.
+
+    In the special case where $K=1$, extremely randomized trees reduce to
+    \textit{totally randomized trees}, in which both a single variable $X_j$
+    and a discretization threshold $v$ are drawn at random at each node. As a
+    result, the structure of such trees can be learned in an unsupervised way,
+    independently of the output variable $Y$.
 
 \item \citet{strobl:2007}: \hfill \\
 

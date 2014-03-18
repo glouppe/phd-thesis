@@ -168,9 +168,9 @@ Prediction of the output value $\widehat{y} =\varphi(\mathbf{x})$ in a decision 
 \textnormal{
 \begin{algorithmic}[1]
 \Function{Predict}{$\varphi, \mathbf{x}$}
-    \State $t \gets t_0$
+    \State $t = t_0$
     \While{$t$ is not a terminal node}
-        \State $t \gets$ the child node $t'$ of $t$ such that $\mathbf{x} \in {\cal X}_{t'}$
+        \State $t =$ the child node $t'$ of $t$ such that $\mathbf{x} \in {\cal X}_{t'}$
     \EndWhile
     \State \Return $\widehat{y}_t$
 \EndFunction
@@ -305,9 +305,9 @@ Greedy induction of a binary decision tree.
     \State Create an empty stack $S$ of \emph{open} nodes $(t, {\cal L}_t)$
     \State $S$\Call{.push}{($t_0, {\cal L}$)}
     \While{$S$ is not empty}
-        \State $t, {\cal L}_t \gets$ $S$\Call{.pop}{~}
+        \State $t, {\cal L}_t =$ $S$\Call{.pop}{~}
         \If{the stopping criterion is met for $t$}\label{algo:induction:stop}
-            \State $\widehat{y}_{t} \gets$ some constant value\label{algo:induction:terminal}
+            \State $\widehat{y}_{t} =$ some constant value\label{algo:induction:terminal}
         \Else
             \State Find the split on ${\cal L}_t$ that maximizes impurity decrease $$s^* = \argmax_{s \in {\cal Q}} \Delta i(s, t)$$ \label{algo:induction:split}
             \State Partition ${\cal L}_t$ into ${\cal L}_{t_L} \cup {\cal L}_{t_R}$ according to $s^*$
@@ -1032,8 +1032,8 @@ Find the best split $s^*$ that partitions ${\cal L}_t$.
     \For{$j=1, \dots, p$}
         \State Find the best binary split $s^*_j$ defined on $X_j$
         \If{$\Delta i(s^*_j, t) > \Delta$}
-            \State $\Delta \gets \Delta i(s^*_j, t)$
-            \State $s^* \gets s^*_j$
+            \State $\Delta = \Delta i(s^*_j, t)$
+            \State $s^* = s^*_j$
         \EndIf
     \EndFor
     \State \Return $s^*$
@@ -1147,26 +1147,26 @@ Find the best split $s^*_j$ on $X_j$ that partitions ${\cal L}_t$.
 \begin{algorithmic}[1]
 \Function{FindBestSplit}{${\cal L}_t$, $X_j$}
     \State $\Delta = 0$
-    \State $k \gets 0$
+    \State $k = 0$
     \State $v^\prime_k = -\infty$
     \State Compute the necessary statistics for $i(t)$
     \State Initialize the statistics for $t_L$ to $0$
     \State Initialize the statistics for $t_R$ to those of $i(t)$
     \State Sort the node samples ${\cal L}_t$ such that $x_{1,j} \leq x_{2, j} \leq \dots \leq x_{N_t,j}$
-    \State $i \gets 1$
+    \State $i = 1$
     \While{$i \leq N_t$}
         \While{$i + 1 \leq N_t$ and $x_{i+1,j} = x_{i,j}$}
-            \State $i \gets i + 1$
+            \State $i = i + 1$
         \EndWhile{}
-        \State $i \gets i + 1$
+        \State $i = i + 1$
         \If{$i \leq N_t$}
-            \State $v^\prime_{k+1} \gets \tfrac{x_{i,j} + x_{i-1,j}}{2}$
+            \State $v^\prime_{k+1} = \tfrac{x_{i,j} + x_{i-1,j}}{2}$
             \State Update the necessary statistics from $v^\prime_k$ to $v^\prime_{k+1}$
             \If{$\smash{\Delta i(s^{v^\prime_{k+1}}_j, t) > \Delta}$}
-                \State $\smash{\Delta \gets \Delta i(s^{v^\prime_{k+1}}_j, t)}$
-                \State $s^*_j \gets s^{v^\prime_{k+1}}_j$
+                \State $\smash{\Delta = \Delta i(s^{v^\prime_{k+1}}_j, t)}$
+                \State $s^*_j = s^{v^\prime_{k+1}}_j$
             \EndIf{}
-            \State $k \gets k+1$
+            \State $k = k+1$
         \EndIf{}
     \EndWhile{}
     \State \Return $s^*_j$
