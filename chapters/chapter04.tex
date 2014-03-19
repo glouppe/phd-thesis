@@ -768,23 +768,29 @@ algorithm, instead of otherwise having to build $KM$ base models.
 \subsection{Proximity measure}
 
 Another helpful built-in feature of tree-based ensemble methods is the
-\textit{proximity measure} between two sample points. Formally, in
-classification, the proximity between $(\mathbf{x}_1, y_1)$ and $(\mathbf{x}_2,
-y_2)$ is defined as the number of times both samples reach the same leaf $t$ in
-all decision trees within the ensemble, normalized by the number $M$ of trees.
-The idea is that even though the data may be high-dimensional or involving
-mixed input variables, the proximity measure gives an indication of how close
-the  samples are with respect to the random forest~\citep{hastie:2005}. When
-proximity is close to $1$, samples propagate into the same leafs and are
-therefore similar according to the forest. On the other hand, when it is close
-to $0$, samples reach different leafs, suggesting that they structurally
-different from each other.
+\textit{proximity measure} between two sample points. Formally, the proximity
+between $(\mathbf{x}_1, y_1)$ and $(\mathbf{x}_2, y_2)$ is defined as the
+number of times both samples reach the same leaf $t$ within each decision tree,
+normalized by the number of trees in the ensemble. That is,
+\begin{equation}
+\text{proximity}(\mathbf{x}_1, \mathbf{x}_2) = \frac{1}{M} \sum_{m=1}^M \sum_{t \in \widetilde{\varphi}_{{\cal L}^m}} 1(\mathbf{x}_1 , \mathbf{x}_2 \in {\cal X}_t)
+\end{equation}
+where $\widetilde{\varphi}_{{\cal L}^m}$ denotes the set of terminal nodes in
+$\varphi_{{\cal L}^m}$. The idea is that the proximity measure gives an
+indication of how close the  samples are with respect to the random
+forest~\citep{hastie:2005}, even if the data is
+high-dimensional or involves mixed input variables. When proximity is close to $1$, samples propagate
+into the same leafs and are therefore similar according to the forest. On the
+other hand, when it is close to $0$, samples reach different leafs, suggesting
+that they are structurally different from each other.
+
 
 
 % def
 % plots
 % prototypes
 % outliers
+% when y is random
 
 \subsection{Variable importances}
 
