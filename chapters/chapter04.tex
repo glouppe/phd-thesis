@@ -742,9 +742,9 @@ randomized decision trees.
 
 \subsection{Out-of-bag estimates}
 
-An interesting feature of ensemble methods that construct models
-on bootstrap samples, like bagging or random forests, is the possibility of
-using the left-out samples ${\cal L}\setminus {\cal L}^m$ to form accurate
+An interesting  feature of ensemble methods that construct models
+on bootstrap samples, like bagging or random forests, is the built-in possibility of
+using the left-out samples ${\cal L}\setminus {\cal L}^m$ to form
 estimates of important statistics. In the case of generalization error, the
 \textit{out-of-bag} estimate at $(\mathbf{x}_i,y_i)$ consists in evaluating the
 prediction of the ensemble using only the individual models $\varphi_{{\cal
@@ -753,11 +753,17 @@ $(\mathbf{x}_i,y_i)$. That is,
 \begin{align}\label{eqn:oob-error}
 \widehat{Err}^\text{OOB}(\psi_{\cal L}) = \frac{1}{N} \sum_{i=1}^N L(\widetilde{\psi_{\cal L}^i}(\mathbf{x}_i), y_i)
 \end{align}
-where $\smash{\widetilde{\psi_{\cal L}^i}}$ is the ensemble that comprises only the models
-$\varphi_{{\cal L}^m}$ such that $(\mathbf{x}_i, y_i) \notin {\cal L}^m$.
+where $\smash{\widetilde{\psi_{\cal L}^i}}$ is the ensemble that comprises only
+the models $\varphi_{{\cal L}^m}$ such that $(\mathbf{x}_i, y_i) \notin {\cal
+L}^m$.
 
-
-% intérêt pratique: beaucoup plus efficace que de cross-valider un ensemble
+Out-of-bag estimates provide accurate estimates of the
+generalization error of the ensemble, often yielding statistics that are as
+good or even more precise than $K$-fold cross-validation
+estimates~\citep{wolpert:1999}. In practice, out-of-bag estimates also
+constitute a computationally efficient alternative to $K$-fold cross-validation,
+reducing to $M$ the number of invocations of the learning
+algorithm, instead of otherwise having to build $KM$ base models.
 
 \subsection{Proximity plots}
 
