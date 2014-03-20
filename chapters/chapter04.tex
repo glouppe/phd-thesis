@@ -828,11 +828,12 @@ of the same class is the largest.
 
 An alternative formulation of proximity measures is to consider a random forest
 as a mapping $\phi: {\cal X} \mapsto {\cal X}^\prime$ which transforms a sample
-$\mathbf{x}$ into the (one-hot-encoded) indices of the leaves it ends up in. That is,
-$\mathbf{x}^\prime_t$ is $1$ for all leaves $t$ of the forest in which $\mathbf{x}$ falls in,
-and $0$ for all the others. In this formalism, the proximity between
-$\mathbf{x}_1$ and $\mathbf{x}_2$ can therefore be restated as their normalized
-dot product in ${\cal X}^\prime$:
+$\mathbf{x}$ into the (one-hot-encoded) indices of the leaves it ends up in.
+That is, $\mathbf{x}^\prime_t$ is $1$ for all leaves $t$ of the forest in which
+$\mathbf{x}$ falls in, and $0$ for all the others. In this formalism, the
+proximity between $\mathbf{x}_1$ and $\mathbf{x}_2$ corresponds to a
+\textit{kernel}~\citep{scholkopf:2001}, that can be defined as the normalized
+dot product of the samples, as represented in ${\cal X}^\prime$:
 \begin{equation}
 \text{proximity}(\mathbf{x}_1, \mathbf{x}_2) = \frac{1}{M} \phi(\mathbf{x}_1) \cdot \phi(\mathbf{x}_2)
 \end{equation}
@@ -848,7 +849,16 @@ random~\citep{moosmann:2006,maree:2013}.
 
 \subsection{Variable importances}
 
-% See Chapter~\ref{ch:importances}.
+In most machine learning tasks, the goal is not only to find the most accurate
+model of the response but also to identify which of the input variables are the
+most important to make the predictions, e.g., in order to understand the
+underlying process under study.
+
+In this context, random forests offer several mechanisms for assessing the
+\textit{importance} of an input variable, and therefore enhance the
+interpretability of the model. These are the object of
+Chapter~\ref{ch:importances}, in which we study variable importance measures
+and develop original contributions to further improve their understanding.
 
 \subsection{Discussion}
 
@@ -863,6 +873,8 @@ random~\citep{moosmann:2006,maree:2013}.
 
 \section{Consistency}
 \label{sec:4:consistency}
+
+\todo{}
 
     % > Mise au point
     % > Preuve de consistence des extra-trees?
