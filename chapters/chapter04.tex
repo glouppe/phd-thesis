@@ -765,7 +765,7 @@ constitute a computationally efficient alternative to $K$-fold cross-validation,
 reducing to $M$ the number of invocations of the learning
 algorithm, instead of otherwise having to build $KM$ base models.
 
-\subsection{Proximity measure}
+\subsection{Proximity measures}
 
 Another helpful built-in feature of tree-based ensemble methods is the
 \textit{proximity measure}~\citep{breiman:2002} between two sample points. Formally, the proximity
@@ -844,7 +844,7 @@ same leafs and their representations in the projected space will be close, even
 if they may in fact appear quite dissimilar in the original space. In practical
 applications (e.g., in computer vision), such a forest-based transform
 has proven to be a helpful and efficient embedding, e.g., when combined with
-linear methods, even when trees in the forest are built totally at
+linear methods or support vector machines, even when trees in the forest are built totally at
 random~\citep{moosmann:2006,maree:2013}.
 
 \subsection{Variable importances}
@@ -860,7 +860,7 @@ interpretability of the model. These are the object of
 Chapter~\ref{ch:importances}, in which we study variable importance measures
 and develop original contributions to further improve their understanding.
 
-\subsection{Discussion}
+\section{Discussion}
 
 % Issues tackled by ensemble
 %   Ensemble methods in ML, Dietterich
