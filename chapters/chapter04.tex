@@ -768,7 +768,7 @@ algorithm, instead of otherwise having to build $KM$ base models.
 \subsection{Proximity measure}
 
 Another helpful built-in feature of tree-based ensemble methods is the
-\textit{proximity measure} between two sample points. Formally, the proximity
+\textit{proximity measure}~\citep{breiman:2002} between two sample points. Formally, the proximity
 between $(\mathbf{x}_1, y_1)$ and $(\mathbf{x}_2, y_2)$ is defined as the
 number of times both samples reach the same leaf $t$ within each decision tree,
 normalized by the number of trees in the forest. That is,
@@ -780,13 +780,18 @@ nodes in $\varphi_{{\cal L},\theta_m}$. The idea is that the proximity measure
 gives an indication of how close the  samples are in the eyes of the random
 forest~\citep{hastie:2005}, even if the data is high-dimensional or involves
 mixed input variables. When proximity is close to $1$, samples propagate into
-the same leafs and are therefore similar according to the forest. On the other
-hand, when it is close to $0$, samples reach different leafs, suggesting that
-they are structurally different from each other.
+the same leaves and are therefore similar according to the forest. On the other
+hand, when it is close to $0$, samples reach different leaves, suggesting that
+they are structurally different from each other. The proximity measure
+depends on both the depth and the number of trees in the forest.
+When trees are shallow, samples are more likely to end up in the same leaves
+than when trees are grown more deeply, thereby impacting on the spread of the measure.
+Likewise, the more trees in the forest, the smoother the measure since
+the larger the number $M+1$ of values the proximity measure can take.
 
 For exploratory purposes, the $N\times N$ proximity matrix $P$ such that
 \begin{equation}
-P[i, j] = \text{proximity}(\mathbf{x}_i, \mathbf{x}_j),
+P_{ij} = \text{proximity}(\mathbf{x}_i, \mathbf{x}_j),
 \end{equation}
 can be used to visually represent how samples are close together with respect
 to the random forest. Using $1-P$ as a dissimilarity matrix,  the level of
@@ -797,10 +802,10 @@ dissimilarities in $1-P$. As an illustrative example, Figure~\ref{fig:proximity-
 represents the proximity matrix learned for a 10-class handwritten digit
 classification task, as projected on a plane using Multidimensional Scaling~\citep{kruskal:1964}.
 Samples from a same class form identifiable clusters, which suggests that
-they share similar structure (since they end up in the same leafs). The figure
+they share similar structure (since they end up in the same leaves). The figure
 also highlights classes for which the random forest makes errors. In this case,
 digits $1$ and $8$ are the more dispersed, suggesting high within-class variance,
-but are also the most overlapping with samples of other classes, indicating
+but also overlap the most with samples of other classes, indicating
 that the random forest fails to identify the true class for these samples.
 
 \begin{figure}
@@ -810,11 +815,36 @@ that the random forest fails to identify the true class for these samples.
     \label{fig:proximity-plot}
 \end{figure}
 
-% def
-% plots
-% prototypes
-% outliers
-% when y is random
+Additionally, proximity measures can be used for identifying outliers within a
+learning set ${\cal L}$. A sample $\mathbf{x}$ can be considered as an outlier
+if its average proximity with respect to all other samples is small, which
+indeed indicates that $\mathbf{x}$ is structurally different from the other
+samples (since they do not end up in the same leaves). In the same way, in
+classification, within-class outliers can be identified by computing the
+average proximity of a sample with respect to all other samples of the same
+class. Conversely, proximity measures can be used for identifying class
+prototypes, by considering samples whose proximity with all other samples
+of the same class is the largest.
+
+An alternative formulation of proximity measures is to consider a random forest
+as a mapping $\phi: {\cal X} \mapsto {\cal X}^\prime$ which transforms a sample
+$\mathbf{x}$ into the (one-hot-encoded) indices of the leaves it ends up in. That is,
+$\mathbf{x}^\prime_t$ is $1$ for all leaves $t$ of the forest in which $\mathbf{x}$ falls in,
+and $0$ for all the others. In this formalism, the proximity between
+$\mathbf{x}_1$ and $\mathbf{x}_2$ can therefore be restated as their normalized
+dot product in ${\cal X}^\prime$:
+\begin{equation}
+\text{proximity}(\mathbf{x}_1, \mathbf{x}_2) = \frac{1}{M} \phi(\mathbf{x}_1) \cdot \phi(\mathbf{x}_2)
+\end{equation}
+Interestingly, $\phi$ provides a non-linear transformation to a sparse very
+high-dimensional space, taking somehow into account the structure of the
+problem. If two samples are structurally similar, then they will end up in the
+same leafs and their representations in the projected space will be close, even
+if they may in fact appear quite dissimilar in the original space. In practical
+applications (e.g., in computer vision), such a forest-based transform
+has proven to be a helpful and efficient embedding, e.g., when combined with
+linear methods, even when trees in the forest are built totally at
+random~\citep{moosmann:2006,maree:2013}.
 
 \subsection{Variable importances}
 
