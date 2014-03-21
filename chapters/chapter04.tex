@@ -541,7 +541,7 @@ due to the learning set  and the total variance, accounting for
 random effects due to both the learning set and the random perturbations.
 It is close to $1$ when variance is mostly due to the learning set, hence
 yielding correlated predictions. Conversely, it is close to $0$ when variance
-is mostly due to the random perburbations induced by $\theta$, hence decorrelating
+is mostly due to the random perturbations induced by $\theta$, hence decorrelating
 the predictions.
 \end{remark}
 
@@ -611,7 +611,7 @@ randomized decision trees.
     to another, hence making them likely to benefit from the averaging process.
     In some cases however, when the learning set ${\cal L}$ is small,
     subsampling $67\%$ of the objects might lead to an increase of bias which
-    is too large to be compasented by a decrease of variance, hence resulting
+    is too large to be compensated by a decrease of variance, hence resulting
     in overall poorer performance. Despite this defect, bagging has proven to
     be an effective method in numerous applications, one of its strengths being
     that it can be used to combine any kind of models -- i.e., not only
@@ -664,7 +664,7 @@ randomized decision trees.
     variance of the individual models and hence the more effective the
     averaging process. Conversely, as $K \to p$, the smaller the bias but also the
     smaller the variance of the individual models and therefore the less
-    benefical the ensemble.
+    beneficial the ensemble.
 
 \item \citet{ho:1998}: \hfill \\
     Inspired from the principles of bagging~\citep{breiman:1996b} and
@@ -710,7 +710,7 @@ randomized decision trees.
     \begin{equation}
     v = \alpha x_{1,j} + (1 -\alpha) x_{2, j},
     \end{equation} where $\alpha$ is drawn uniformly at random in $[0;1]$.
-    The induction of the trees proceed using such random splits until
+    The induction of the tree proceeds using such random splits until
     all nodes become pure or until it is no longer possible to draw samples
     of different output values.
 
@@ -719,9 +719,9 @@ randomized decision trees.
     when splitting the nodes of a tree. Regarding accuracy, experimental
     comparisons in \citep{cutler:2001} show that PERT is often as good as
     Random Forests~\citep{breiman:2001}, while resulting however in random
-    trees that are typically deeper and larger than  decision trees grown with
+    trees that are typically larger than  decision trees grown with
     less randomization. The simplicity of the method also allows for an amenable
-    theoretical analysis of random forests, as carried out in \citep{zhao:2000}.
+    theoretical analysis of forests of randomized trees, as carried out in \citep{zhao:2000}.
 
 \item \citet{geurts:2006}: \hfill \\
     As investigated in \citep{wehenkel:1997,geurts:2000},  the notoriously high
@@ -762,10 +762,10 @@ randomized decision trees.
     result, the structure of such trees can be learned in an unsupervised way,
     independently of the output variable $Y$. Finally, note that totally
     randomized trees are very close to perfect random tree
-    ensembles~\citep{cutler:2001} since both draw $X_j$ and $v$ at random. Both
-    methods are however not equivalent since they do not draw the random
-    discretization threholds $v$ with respect to the same probability
-    distribution.
+    ensembles~\citep{cutler:2001} since both draw $X_j$ and $v$ at random.
+    These methods are however not strictly equivalent since they do not draw
+    the random discretization thresholds $v$ with respect to the same
+    probability distribution.
 
 \end{description}
 
@@ -783,7 +783,7 @@ using the left-out samples ${\cal L}\setminus {\cal L}^m$ to form
 estimates of important statistics. In the case of generalization error, the
 \textit{out-of-bag} estimate at $(\mathbf{x}_i,y_i)$ consists in evaluating the
 prediction of the ensemble using only the individual models $\varphi_{{\cal
-L}^m}$ whose boostrap samples ${\cal L}^m$ did not include
+L}^m}$ whose bootstrap samples ${\cal L}^m$ did not include
 $(\mathbf{x}_i,y_i)$. That is,
 \begin{align}\label{eqn:oob-error}
 \widehat{Err}^\text{OOB}(\psi_{\cal L}) = \frac{1}{N} \sum_{i=1}^N L(\widetilde{\psi_{\cal L}^i}(\mathbf{x}_i), y_i)
