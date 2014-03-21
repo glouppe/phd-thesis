@@ -636,7 +636,7 @@ randomized decision trees.
     \texttt{max\_features}) the number of variables effectively considered at
     each node, this variant replaces Algorithm~\ref{algo:findsplit}
     with the following randomized alternative:
-    \begin{algorithm}
+    \begin{algorithm}\label{algo:findsplit:random}
     Find the best split $s^*$ that partitions ${\cal L}_t$, among a random subset of $K \leq p$ input variables.
     \textnormal{
     \begin{algorithmic}[1]
@@ -699,6 +699,29 @@ randomized decision trees.
     allowing users outside of the machine learning community to quickly and
     easily apply random forests to their problems.
 
+\item \citet{cutler:2001}: \hfill \\
+    With \textit{perfect random tree ensembles} (PERT), \citet{cutler:2001}
+    propose to grow a forest of perfectly fit decision trees in which both the
+    variable to split on and the discretization threshold are chosen at random.
+    Given a node $t$, the split variable $X_j$ is drawn at random using
+    Algorithm~\ref{algo:findsplit:random} with $K=1$. Let $(\mathbf{x}_1,y_1)$ and
+    $(\mathbf{x}_2, y_2)$ be two randomly drawn samples in $t$ such that $y_1 \neq
+    y_2$. Then, the random decision threshold is
+    \begin{equation}
+    v = \alpha x_{1,j} + (1 -\alpha) x_{2, j},
+    \end{equation} where $\alpha$ is drawn uniformly at random in $[0;1]$.
+    The induction of the trees proceed using such random splits until
+    all nodes become pure or until it is no longer possible to draw samples
+    of different output values.
+
+    From a practical point of view, PERT is an easily coded and a very
+    efficient ensemble method since there is no impurity criterion to evaluate
+    when splitting the nodes of a tree. Regarding accuracy, experimental
+    comparisons in \citep{cutler:2001} show that PERT is often as good as
+    Random Forests~\citep{breiman:2001}, while resulting however in random
+    trees that are typically deeper and larger than  decision trees grown with
+    less randomization.
+
 \item \citet{geurts:2006}: \hfill \\
     As investigated in \citep{wehenkel:1997,geurts:2000},  the notoriously high
     variance of decision trees partly finds its origins from the high
@@ -736,7 +759,12 @@ randomized decision trees.
     \textit{totally randomized trees}, in which both a single variable $X_j$
     and a discretization threshold $v$ are drawn at random at each node. As a
     result, the structure of such trees can be learned in an unsupervised way,
-    independently of the output variable $Y$.
+    independently of the output variable $Y$. Finally, note that totally
+    randomized trees are very close to perfect random tree
+    ensembles~\citep{cutler:2001} since both draw $X_j$ and $v$ at random. Both
+    methods are however not equivalent since they do not draw the random
+    discretization threholds $v$ with respect to the same probability
+    distribution.
 
 \end{description}
 
@@ -795,6 +823,13 @@ than when trees are grown more deeply, thereby impacting on the spread of the me
 Likewise, the more trees in the forest, the smoother the measure since
 the larger the number $M+1$ of values the proximity measure can take.
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/ch4_proximity_plot.pdf}
+    \caption{Proximity plot for a 10-class handwritten digit classification task.}
+    \label{fig:proximity-plot}
+\end{figure}
+
 For exploratory purposes, the $N\times N$ proximity matrix $P$ such that
 \begin{equation}
 P_{ij} = \text{proximity}(\mathbf{x}_i, \mathbf{x}_j),
@@ -813,13 +848,6 @@ also highlights classes for which the random forest makes errors. In this case,
 digits $1$ and $8$ are the more dispersed, suggesting high within-class variance,
 but also overlap the most with samples of other classes, indicating
 that the random forest fails to identify the true class for these samples.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.9\textwidth]{figures/ch4_proximity_plot.pdf}
-    \caption{Proximity plot for a 10-class handwritten digit classification task.}
-    \label{fig:proximity-plot}
-\end{figure}
 
 Additionally, proximity measures can be used for identifying outliers within a
 learning set ${\cal L}$. A sample $\mathbf{x}$ can be considered as an outlier
