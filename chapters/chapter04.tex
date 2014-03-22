@@ -669,7 +669,7 @@ randomized decision trees.
 \item \citet{ho:1998}: \hfill \\
     Inspired from the principles of bagging~\citep{breiman:1996b} and
     random subsets of variables~\citep{amit:1997}, \citet{ho:1998} proposes
-    with the \textit{random subspace} method to build a \textit{decision
+    with the \textit{random subspace} (RS) method to build a \textit{decision
     forest} whose trees are grown on random subsets of the input variables
     -- drawn once, prior to the construction of each tree, rather than on all $p$
     variables. As empirically evaluated at several
@@ -680,12 +680,12 @@ randomized decision trees.
     by tuning the size of the random subset.
 
 \item \citet{breiman:2001}: \hfill \\
-    In his seminal \textit{Random Forests} paper, \citet{breiman:2001} combines
+    In his seminal \textit{random forests} (RF) paper, \citet{breiman:2001} combines
     bagging~\citep{breiman:1996b} with random variable selection at each
     node~\citep{amit:1997}. Injecting randomness simultaneously with both strategies  yields
     one the most effective off-the-shelf methods in machine learning, working
     surprisingly well for almost any kind of problems. The author empirically
-    shows that forests give results that are competitive with
+    shows that random forests give results that are competitive with
     boosting~\citep{freund:1995} and arcing algorithms~\citep{breiman:1996},
     which both are designed to reduce bias while forests focus on variance
     reduction.
@@ -702,14 +702,23 @@ randomized decision trees.
 \item \citet{cutler:2001}: \hfill \\
     With \textit{perfect random tree ensembles} (PERT), \citet{cutler:2001}
     propose to grow a forest of perfectly fit decision trees in which both the
-    variable to split on and the discretization threshold are chosen at random.
-    Given a node $t$, the split variable $X_j$ is drawn at random using
-    Algorithm~\ref{algo:findsplit:random} with $K=1$. Let $(\mathbf{x}_1,y_1)$ and
-    $(\mathbf{x}_2, y_2)$ be two randomly drawn samples in $t$ such that $y_1 \neq
-    y_2$. Then, the random decision threshold is
-    \begin{equation}
-    v = \alpha x_{1,j} + (1 -\alpha) x_{2, j},
-    \end{equation} where $\alpha$ is drawn uniformly at random in $[0;1]$.
+    (ordered) variable to split on and the discretization threshold are chosen at random.
+    More specifically, given a node $t$, the split variable $X_j$ is drawn at random using
+    Algorithm~\ref{algo:findsplit:random} with $K=1$ while the discretization
+    threshold is found using the following procedure:
+    \begin{algorithm}
+    Draw a random split on $X_j$ that partitions ${\cal L}_t$.
+    \textnormal{
+    \begin{algorithmic}[1]
+    \Function{FindRandomSplit-PERT}{${\cal L}_t$, $X_j$}
+        \State Draw $(\mathbf{x}_1,y_1), (\mathbf{x}_2,y_2) \in {\cal L}_t$ such that $y_1 \neq y_2$
+        \State Draw $\alpha$ uniformly at random from $[0,1]$
+        \State $v = \alpha x_{1,j} + (1 -\alpha) x_{2, j}$
+        \State \Return $s^v$
+    \EndFunction
+    \end{algorithmic}
+    }
+    \end{algorithm}
     The induction of the tree proceeds using such random splits until
     all nodes become pure or until it is no longer possible to draw samples
     of different output values.
@@ -727,25 +736,24 @@ randomized decision trees.
     As investigated in \citep{wehenkel:1997,geurts:2000},  the notoriously high
     variance of decision trees partly finds its origins from the high
     dependence of the splits with the random nature of the learning set. The
-    authors empirically show that the variance of the optimal cut-point $v$ may
+    authors empirically show that the variance of the optimal cut-point $v$ (in the case of ordered input variables) may
     indeed be very high, even for large sample sizes.  In particular,
     \citet{geurts:2002} shows that cut-point variance appears to be
     responsible for a significant part of the generalization error of decision
     trees. As a way to smoothen the decision boundary, \citet{geurts:2006}
-    hence propose in \textit{extremely randomized trees} to combine random variable
+    hence propose in \textit{extremely randomized trees} (ETs) to combine random variable
     selection~\citep{amit:1997} with a randomization of the discretization
     threshold. That is, Algorithm~\ref{algo:findsplit:x_j} used for finding the
-    cut-point on $X_j$ that maximizes impurity decrease is replaced with the
-    following
-    simplistic but surprisingly effective randomized variant:
+    cut-point on $X_j$ is replaced with the
+    following simplistic but surprisingly effective randomized variant:
     \begin{algorithm}
     Draw a random split on $X_j$ that partitions ${\cal L}_t$.
     \textnormal{
     \begin{algorithmic}[1]
-    \Function{FindRandomSplit}{${\cal L}_t$, $X_j$}
+    \Function{FindRandomSplit-ETs}{${\cal L}_t$, $X_j$}
         \State $\min_j = \min(\{ x_{i,j} | (\mathbf{x}_i,y_i) \in {\cal L}_t \})$
         \State $\max_j = \max(\{ x_{i,j} | (\mathbf{x}_i,y_i) \in {\cal L}_t \})$
-        \State Draw $v$ uniformly at random from $[\min_j; \max_j[$
+        \State Draw $v$ uniformly at random from $[\min_j, \max_j[$
         \State \Return $s^v$
     \EndFunction
     \end{algorithmic}
@@ -768,12 +776,6 @@ randomized decision trees.
     probability distribution.
 
 \end{description}
-
-As a summary example, let us consider ... \todo{}
-
-% rho versus max_features, for rf, extra-trees
-% decomposition of var versus M
-
 
 \subsection{Out-of-bag estimates}
 
@@ -895,7 +897,12 @@ interpretability of the model. These are the object of
 Chapter~\ref{ch:importances}, in which we study variable importance measures
 and develop original contributions to further improve their understanding.
 
-\section{Discussion}
+\section{Example and discussion}
+
+As a summary example, let us consider, ... \todo{}
+
+% rho versus max_features, for rf, extra-trees
+% decomposition of var versus M
 
 % Issues tackled by ensemble
 %   Ensemble methods in ML, Dietterich
