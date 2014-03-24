@@ -713,9 +713,8 @@ simultaneously maintaining a low bias in the randomized decision trees.
     (ordered) variable to split on and the discretization threshold are chosen
     at random. More specifically, given a node $t$, the split variable $X_j$ is
     drawn at random using Algorithm~\ref{algo:findsplit:random} with $K=1$
-    while the cut-point $v$ is set inbetween two randomly drawn samples, instead of using
-    Algorithm~\ref{algo:findsplit:x_j} for finding the optimal threshold on
-    $X_j$:
+    while the cut-point $v$ is set inbetween two randomly drawn samples using
+    the following procedure (instead of Algorithm~\ref{algo:findsplit:x_j}):
     \begin{algorithm}
     Draw a random split on $X_j$ that partitions ${\cal L}_t$.
     \textnormal{
@@ -743,19 +742,20 @@ simultaneously maintaining a low bias in the randomized decision trees.
     theoretical analysis of forests of randomized trees, as carried out in \citep{zhao:2000}.
 
 \item \citet{geurts:2006}: \hfill \\
+
     As investigated in \citep{wehenkel:1997,geurts:2000},  the notoriously high
     variance of decision trees partly finds its origins from the high
     dependence of the splits with the random nature of the learning set. The
-    authors empirically show that the variance of the optimal cut-point $v$ (in the case of ordered input variables) may
-    indeed be very high, even for large sample sizes.  In particular,
-    \citet{geurts:2002} shows that cut-point variance appears to be
-    responsible for a significant part of the generalization error of decision
-    trees. As a way to smoothen the decision boundary, \citet{geurts:2006}
-    hence propose in \textit{Extremely Randomized Trees} (ETs) to combine random variable
-    selection~\citep{amit:1997} with random discretization
-    thresholds. Effectively replacing Algorithm~\ref{algo:findsplit:x_j}, the
-    following simplistic but surprisingly effective randomized variant
-    is used for finding a random threshold:
+    authors empirically show that the variance of the optimal cut-point $v$ (in
+    the case of ordered input variables) may indeed be very high, even for
+    large sample sizes.  In particular, \citet{geurts:2002} shows that cut-point
+    variance appears to be responsible for a significant part of the
+    generalization error of decision trees. As a way to smoothen the decision
+    boundary, \citet{geurts:2006} hence propose in \textit{Extremely Randomized
+    Trees} (ETs) to combine random variable selection~\citep{amit:1997} with
+    random discretization thresholds. As a drop-in replacement of Algorithm~\ref{algo:findsplit:x_j},
+    the authors propose the following simplistic but effective
+    procedure for drawing splits at random:
     \begin{algorithm}
     Draw a random split on $X_j$ that partitions ${\cal L}_t$.
     \textnormal{
@@ -966,7 +966,7 @@ and no general conclusion should be drawn from this toy regression problem.)
 \begin{figure}
     \centering
     \includegraphics[width=0.9\textwidth]{figures/ch4_variance.pdf}
-    \caption{Decomposition of variance with respect to the number $M$ of trees in the ensemble.}
+    \caption{Decomposition of the variance term $\text{var}(\mathbf{x})$ with respect to the number $M$ of trees in the ensemble.}
     \label{fig:variance}
 \end{figure}
 
