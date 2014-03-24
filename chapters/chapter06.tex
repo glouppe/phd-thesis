@@ -1,3 +1,41 @@
 \chapter{Variable importances}\label{ch:importances}
 
 % a forest of tree is impenetrable as far as simple interpretations of its mechanims go (Breiman, RF)
+
+
+An important task in many scientific fields is the prediction of  a response
+variable based on a set of predictor variables. In many situations though, the
+aim is not only to make the most accurate predictions of the response but also
+to identify which predictor variables are the most important to make these
+predictions, e.g. in order to understand the underlying process. Because of
+their applicability to a wide range of problems and their capability to both
+build accurate models and, at the same time, to provide variable importance
+measures, Random Forests~\citep{breiman:2001} and variants such as Extremely
+Randomized Trees~\citep{geurts:2006} have become a major data analysis tool
+used with success in various scientific areas.
+
+% Despite their extensive use in applied research, only a couple of works have
+% studied the theoretical properties and statistical mechanisms of these
+% algorithms. \citet{zhao2000new}, \citet{breiman2004consistency},
+% \citet{biau2008consistency,biau2012analysis}, \citet{meinshausen2006quantile}
+% and \citet{lin2006random} investigated simplified to very realistic variants of
+% these algorithms and proved  the consistency of those variants. Little is known
+% however regarding the variable importances computed by Random Forests like
+% algorithms, and -- as far as we know -- the work of~\citet{ishwaran2007variable}
+% is indeed the only theoretical study of tree-based variable importance measures.
+
+% In this work, we aim at filling this gap and present a theoretical  analysis of
+% the Mean Decrease Impurity importance derived from ensembles of randomized
+% trees. The rest of the paper is organized as follows: in
+% section~\ref{sec:background}, we provide  the background about ensembles of
+% randomized trees and recall how variable importances can be derived from them;
+% in section~\ref{sec:var-imp}, we then derive a characterization in asymptotic
+% conditions and show how variable importances derived from totally randomized
+% trees offer a three-level decomposition of the information jointly contained in
+% the input variables about the output; section~\ref{sec:rel} shows that this
+% characterization only depends on the relevant variables and
+% section~\ref{sec:variants} discusses theses ideas in the context of variants
+% closer to the Random Forest algorithm; section~\ref{sec:example} then
+% illustrates all these ideas on an artificial problem; finally,
+% section~\ref{sec:conclusions} includes our conclusions and proposes directions
+% of future works.

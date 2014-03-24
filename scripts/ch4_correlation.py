@@ -1,28 +1,38 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
 from functools import partial
+from sklearn.utils import check_random_state
 
-from sklearn.datasets import make_friedman1 as make
-from sklearn.ensemble import RandomForestRegressor, ExtraTreesRegressor
+
+def make(n_samples, n_features=10, noise_features=0, random_state=None):
+    X = check_random_state(random_state).normal(size=(n_samples, 1+n_features+noise_features))
+    y = np.sum(X[:, :n_features], axis=1)
+    return X[:, 1:], y
+
+
+# from sklearn.datasets import make_friedman1 as make
+# # make = partial(make,)
+
+from sklearn.ensemble import RandomForestRegressor, ExtraTreesRegressor, PERTRegressor
+from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import mean_squared_error
 
-TotallyRandomizedTreesRegressor = partial(ExtraTreesRegressor, max_features=1)
-BaggingRegressor = partial(RandomForestRegressor, max_features=1.0, bootstrap=True)
-
-estimators = [partial(RandomForestRegressor, max_features=i) for i in range(1, 10+1)]
-
-n_train = 20
-n_test = 500
+n_train = 50
+n_test = 600
 n_estimators = 10       # number of trees per forest
+n_sets = 100             # number of learning sets
+n_trees = 50            # number of trees per learning sets, for estimating statistics
 
-n_sets = 200            # number of learning sets
-n_trees = 200           # number of trees per learning sets, for estimating statistics
+estimators = [("PERTRegressor", PERTRegressor),
+              ("Bagging", partial(RandomForestRegressor, max_features=1.0, bootstrap=True))]
+estimators.extend([("RandomForestRegressor-K=%d" % i, partial(RandomForestRegressor, max_features=i)) for i in range(1, 10+1)])
+estimators.extend([("ExtraTreesRegressor-K=%d" % i, partial(ExtraTreesRegressor, max_features=i)) for i in range(1, 10+1)])
 
-train = [make(n_samples=n_train, n_features=10, random_state=i) for i in range(n_sets)]
-X_test, y_test = make(n_samples=n_test, n_features=10)
 
-for estimator in estimators:
+train = [make(n_samples=n_train, random_state=i) for i in range(n_sets)]
+X_test, y_test = make(n_samples=n_test)
+
+for method, estimator in estimators:
     # Compute bias/variance on forest predictions
     forests = []
 
@@ -67,7 +77,9 @@ for estimator in estimators:
     bias = (y_test - mu) ** 2
     var = rho * sigma + (1 - rho) / n_estimators * sigma
 
-    print "%f (error) = %f (b^2) + %f (var)" % (error, bias_forest.mean(), var_forest.mean())
-    print "%f (error) = %f (b^2) + %f (rho*sigma + (1-rho)/M*sigma)" % (bias.mean()+var.mean(), bias.mean(), var.mean())
-    print "var = %f (rho*sigma) + %f (1-rho)/M*sigma ; rho = %f" % ((rho*sigma).mean(), ((1 - rho) / n_estimators * sigma).mean(), rho.mean())
-    print "---"
+    print "%s,%f,%f,%f,%f,%f,%f,%f" % (method, bias.mean()+var.mean(), bias.mean(), var.mean(), rho.mean(), rho.std(), (rho*sigma).mean(), ((1 - rho) / n_estimators * sigma).mean())
+
+    # print "%f (error) = %f (b^2) + %f (var)" % (error, bias_forest.mean(), var_forest.mean())
+    # print "%f (error) = %f (b^2) + %f (rho*sigma + (1-rho)/M*sigma)" % (bias.mean()+var.mean(), bias.mean(), var.mean())
+    # print "var = %f (rho*sigma) + %f (1-rho)/M*sigma ; rho = %f" % ((rho*sigma).mean(), ((1 - rho) / n_estimators * sigma).mean(), rho.mean())
+    # print "---"

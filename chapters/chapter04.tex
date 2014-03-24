@@ -518,7 +518,11 @@ of the learning set ${\cal L}$, averaged over the random perturbations due to $\
 measures the dependence of the model on the learning set, independently of
 $\theta$. The second term is the expectation over all learning sets of
 the variance with respect to $\theta$. It measures the strength of the
-random effects.
+random effects. As the decomposition shows, only this last part of the variance
+can be reduced as a result of averaging, which is consistent with our previous
+conclusions.  The stronger the random effects, the larger the variance with
+respect to $\theta$, and hence the larger of reduction of variance due
+to ensembling.
 
 Decompositions \ref{eqn:4:variance-hastie} and \ref{eqn:4:variance-geurts} are equivalent if
 \begin{equation}
@@ -883,10 +887,10 @@ high-dimensional space, taking somehow into account the structure of the
 problem. If two samples are structurally similar, then they will end up in the
 same leafs and their representations in the projected space will be close, even
 if they may in fact appear quite dissimilar in the original space. In practical
-applications (e.g., in computer vision), such a forest-based transform
-has proven to be a helpful and efficient embedding, e.g., when combined with
-linear methods or support vector machines, even when trees in the forest are built totally at
-random~\citep{moosmann:2006,maree:2013}.
+applications (e.g., in computer vision), such forest-based transforms has
+proven to be helpful and efficient embeddings, e.g., when combined with linear
+methods or support vector machines, even when trees in the forest are built
+totally at random~\citep{moosmann:2006,maree:2013}.
 
 \subsection{Variable importances}
 
@@ -901,26 +905,71 @@ interpretability of the model. These are the object of
 Chapter~\ref{ch:importances}, in which we study variable importance measures
 and develop original contributions to further improve their understanding.
 
-\section{Example and discussion}
+\section{Example}
 
-As a summary example, let us consider, ... \todo{}
+As a summary and illustrative example, let us consider a simulated toy
+regression problem such that
+\begin{equation}
+Y = \sum_{j=1}^{5} X_j
+\end{equation}
+where all input variables $X_1,\dots,X_{5}$ are independent
+random Gaussian variables of zero mean and unit variance. To simulate
+noise in the data, 5 additional random Gaussian input variables $X_{6},\dots,X_{10}$,
+all independent from $Y$, are further appended to the learning set.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/ch4_correlation.pdf}
+    \caption{(Left) Bias-variance decomposition of the generalization error
+            with respect to the hyper-parameter $K$. The total error is shown by the plain
+            lines. Bias and variance terms are respectively shown by the dashed and dotted
+            lines.  (Right) Average correlation
+            coefficient $\rho(\mathbf{x})$ over the predictions of two randomized trees
+            grown from the same learning set but with different random seeds.}
+    \label{fig:correlation}
+\end{figure}
+
+The bias-variance decomposition of the expected generalization error of a Random
+Forest~\citep{breiman:2001} and of Extremely Randomized
+Trees~\citep{geurts:2006} is estimated using Theorem~\ref{thm:bias-variance:ensemble}
+from $100$ randomly drawn learning sets ${\cal L}$ of $50$ samples, on which
+ensembles of $10$ trees are built. Their generalization error is estimated on
+an independent test set of $1000$ samples. As the left plot in
+Figure~\ref{fig:correlation} shows,  the expected generalization error
+additively decomposes into (squared) bias and variance terms.  For small values of $K$,
+random effects are strong, leading to high bias and low variance. By contrast, for larger
+values of $K$, random effects are less important, reducing bias but
+increasing variance. For Random Forests, the optimal trade-off is at $K=7$
+while while it is at $K=9$ for Extremely Randomized Trees. The right plot of
+Figure~\ref{fig:correlation} illustrates the (averaged) correlation coefficient
+$\rho(\mathbf{x})$ between the predictions of two randomized trees grown on the
+same learning set. As expected, the smaller $K$, the stronger the random
+effects, therefore the less correlated the predictions and the more variance
+can be reduced from averaging. On this problem however, too small a value of
+$K$ also leads to a large increase of bias, for which averaging may not be able
+to compensate. The plot also confirms that Extremely Randomized Trees are
+inherently less correlated than trees built in a Random Forest, which is
+not surprising given the fact the former method randomizes the choice
+of the discretization threshold while the latter does not. In cases where such
+a randomization does not induce too large an increase of bias, as in this
+problem, Extremely Randomized Trees are therefore expected to benefit more
+from averaging than Random Forest does, hence yielded overall better results .
 
 % rho versus max_features, for rf, extra-trees
 % decomposition of var versus M
-
-% Issues tackled by ensemble
-%   Ensemble methods in ML, Dietterich
-%   - stat
-%   - computational
-%   - representational
-%
-% + Example?
 
 
 \section{Consistency}
 \label{sec:4:consistency}
 
 \todo{}
+
+% Issues tackled by ensemble
+%   Ensemble methods in ML, Dietterich
+%   - stat
+%   - computational
+%   - representational
+%       geometrical point of view, geurts:2006
 
     % > Mise au point
     % > Preuve de consistence des extra-trees?
