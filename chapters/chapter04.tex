@@ -934,26 +934,48 @@ Forest~\citep{breiman:2001} and of Extremely Randomized
 Trees~\citep{geurts:2006} is estimated using Theorem~\ref{thm:bias-variance:ensemble}
 from $100$ randomly drawn learning sets ${\cal L}$ of $50$ samples, on which
 ensembles of $10$ trees are built. Their generalization error is estimated on
-an independent test set of $1000$ samples. As the left plot in
-Figure~\ref{fig:correlation} shows,  the expected generalization error
-additively decomposes into (squared) bias and variance terms.  For small values of $K$,
-random effects are strong, leading to high bias and low variance. By contrast, for larger
-values of $K$, random effects are less important, reducing bias but
-increasing variance. For Random Forests, the optimal trade-off is at $K=7$
-while while it is at $K=9$ for Extremely Randomized Trees. The right plot of
-Figure~\ref{fig:correlation} illustrates the (averaged) correlation coefficient
-$\rho(\mathbf{x})$ between the predictions of two randomized trees grown on the
-same learning set. As expected, the smaller $K$, the stronger the random
-effects, therefore the less correlated the predictions and the more variance
-can be reduced from averaging. On this problem however, too small a value of
-$K$ also leads to a large increase of bias, for which averaging may not be able
-to compensate. The plot also confirms that Extremely Randomized Trees are
-inherently less correlated than trees built in a Random Forest, which is
-not surprising given the fact the former method randomizes the choice
-of the discretization threshold while the latter does not. In cases where such
-a randomization does not induce too large an increase of bias, as in this
-problem, Extremely Randomized Trees are therefore expected to benefit more
-from averaging than Random Forest does, hence yielded overall better results .
+an independent test set of $1000$ samples.
+
+As the left plot in Figure~\ref{fig:correlation} shows,  the expected
+generalization error additively decomposes into (squared) bias and variance
+terms.  For small values of $K$, random effects are strong, leading to high
+bias and low variance. By contrast, for larger values of $K$, random effects
+are less important, reducing bias but increasing variance.   For both methods,
+too small a value of $K$ appears however to lead to a too large increase of
+bias, for which averaging is not able to compensate. For Random Forests, the
+optimal trade-off is at $K=8$. For Extremely Randomized Trees, the
+optimal trade-off is at $K=10$, suggesting that random thresholds $v$ provide
+by themselves enough randomization on this problem.
+
+The right plot of Figure~\ref{fig:correlation} illustrates the (averaged)
+correlation coefficient $\rho(\mathbf{x})$ between the predictions of two
+randomized trees grown on the same learning set. As expected, the smaller $K$,
+the stronger the random effects, therefore the less correlated the predictions
+and the more variance can be reduced from averaging. The plot also confirms
+that Extremely Randomized Trees are inherently less correlated than trees built
+in a Random Forest, which is not surprising given the fact that the former
+method randomizes the choice of the discretization threshold while the latter
+does not. In cases where such a randomization does not induce too large an
+increase of bias, as in this problem, Extremely Randomized Trees are therefore
+expected to yield better results than Random Forests. (The choice of the
+optimal randomization strategy is however highly dependent on the problem
+and no general conclusion should be drawn from this toy regression problem.)
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/ch4_variance.pdf}
+    \caption{Decomposition of variance with respect to the number $M$ of trees in the ensemble.}
+    \label{fig:variance}
+\end{figure}
+
+As expected, variance also additively decomposes  into
+\begin{equation}
+var(\mathbf{x}) = \rho(\mathbf{x}) \sigma^2_{{\cal L},\theta} + \tfrac{1 - \rho(\mathbf{x})}{M} \sigma^2_{{\cal L},\theta},
+\end{equation} as confirmed by Figure~\ref{fig:variance} for the variance of
+Random Forests. The first term is the variance due to the learning set ${\cal
+L}$ and remains constant as the number $M$ of trees increases. The second term
+is the variance due to random effects and decreases as $M$ increases.
+
 
 % rho versus max_features, for rf, extra-trees
 % decomposition of var versus M

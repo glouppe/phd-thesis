@@ -4,10 +4,10 @@ from functools import partial
 from sklearn.utils import check_random_state
 
 
-def make(n_samples, n_features=10, noise_features=0, random_state=None):
-    X = check_random_state(random_state).normal(size=(n_samples, 1+n_features+noise_features))
+def make(n_samples, n_features=5, noise_features=5, random_state=None):
+    X = check_random_state(random_state).normal(size=(n_samples, n_features+noise_features))
     y = np.sum(X[:, :n_features], axis=1)
-    return X[:, 1:], y
+    return X, y
 
 
 # from sklearn.datasets import make_friedman1 as make
@@ -28,16 +28,25 @@ estimators = [("PERTRegressor", PERTRegressor),
 estimators.extend([("RandomForestRegressor-K=%d" % i, partial(RandomForestRegressor, max_features=i)) for i in range(1, 10+1)])
 estimators.extend([("ExtraTreesRegressor-K=%d" % i, partial(ExtraTreesRegressor, max_features=i)) for i in range(1, 10+1)])
 
+estimators = []
+estimators.extend([("RandomForestRegressor-M=%d" % i, partial(RandomForestRegressor, n_estimators=i, max_features=1)) for i in range(1, 50+1)])
+#estimators.extend([("ExtraTreesRegressor-M=%d" % i, partial(ExtraTreesRegressor, n_estimators=i, max_features=1)) for i in range(1, 50+1)])
+
 
 train = [make(n_samples=n_train, random_state=i) for i in range(n_sets)]
 X_test, y_test = make(n_samples=n_test)
 
-for method, estimator in estimators:
+for m in range(1, 50+1):
+    n_estimators = m
+    estimator = partial(RandomForestRegressor, n_estimators=m, max_features=1)
+    method = "RandomForestRegressor-M=%d" % m
+
     # Compute bias/variance on forest predictions
     forests = []
 
     for k, (X_train, y_train) in enumerate(train):
-        forests.append(estimator(n_estimators=n_estimators, random_state=k).fit(X_train, y_train))
+        #forests.append(estimator(n_estimators=n_estimators, random_state=k).fit(X_train, y_train))
+        forests.append(estimator(random_state=k).fit(X_train, y_train))
 
     pred_forest = np.zeros((n_test, n_sets))
 
@@ -54,7 +63,8 @@ for method, estimator in estimators:
     trees = []
 
     for k, (X_train, y_train) in enumerate(train):
-        trees.extend(estimator(n_estimators=n_trees, random_state=n_sets+k).fit(X_train, y_train).estimators_)
+        #trees.extend(estimator(n_estimators=n_trees, random_state=n_sets+k).fit(X_train, y_train).estimators_)
+        trees.extend(RandomForestRegressor(n_estimators=n_trees, max_features=1, random_state=n_sets+k).fit(X_train, y_train).estimators_)
 
     pred_trees = np.zeros((n_test, n_sets * n_trees))
 
