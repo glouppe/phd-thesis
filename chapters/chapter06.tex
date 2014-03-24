@@ -1,11 +1,18 @@
 \chapter{Variable importances}\label{ch:importances}
 
-% a forest of tree is impenetrable as far as simple interpretations of its mechanims go (Breiman, RF)
-
 \begin{remark}{Outline}
-\todo{}
+This chapter studies variable importance measures as computed from forests of
+randomized trees. In Section~\ref{sec:6:importances}, we first present how
+random forests can be used to assess the importance of input variables.  We
+then derive in Section~\ref{sec:6:theory} a characterization in asymptotic
+conditions and show that variable importances derived from totally randomized trees
+offer a three-level decomposition of the information jointly  contained in the
+input variables about the output. In Section~\ref{sec:6:variable-relevance}, we
+show that this  characterization only depends on the relevant variables and
+then discuss in Section~\ref{sec:6:variants} these ideas in the context of
+variants closer to the Random Forest algorithm. Finally, we illustrate these
+results on an artifical problem in Section~\ref{sec:6:illustration}.
 \end{remark}
-
 
 An important task in many scientific fields is the prediction of  a response
 variable based on a set of predictor variables. In many situations though, the
@@ -14,8 +21,8 @@ to identify which predictor variables are the most important to make these
 predictions, e.g. in order to understand the underlying process. Because of
 their applicability to a wide range of problems and their capability to both
 build accurate models and, at the same time, to provide variable importance
-measures, random forests have become a major data analysis tool
-used with success in various scientific areas.
+measures, random forests have become a major data analysis tool used with
+success in various scientific areas.
 
 Despite their extensive use in applied research, only a couple of works have
 studied the theoretical properties and statistical mechanisms of these
@@ -25,20 +32,33 @@ investigated simplified to very realistic variants of these algorithms and
 proved  the consistency of those variants. Little is known however regarding
 the variable importances computed by random forests, and -- as far as we know
 -- the work of~\citet{ishwaran:2007} is indeed the only theoretical study of
-tree-based variable importance measures.
+tree-based variable importance measures. In this chapter, we aim at filling
+this gap and present a theoretical  analysis of the Mean Decrease Impurity
+importance derived from ensembles of randomized trees.
 
-% In this chapter, we aim at filling this gap and present a theoretical  analysis of
-% the Mean Decrease Impurity importance derived from ensembles of randomized
-% trees. The rest of the chapter is organized as follows: in
-% section~\ref{sec:4:background}, we provide  the background about ensembles of
-% randomized trees and recall how variable importances can be derived from them;
-% in section~\ref{sec:4:var-imp}, we then derive a characterization in asymptotic
-% conditions and show how variable importances derived from totally randomized
-% trees offer a three-level decomposition of the information jointly contained in
-% the input variables about the output; section~\ref{sec:rel} shows that this
-% characterization only depends on the relevant variables and
-% section~\ref{sec:variants} discusses theses ideas in the context of variants
-% closer to the Random Forest algorithm; section~\ref{sec:example} then
-% illustrates all these ideas on an artificial problem; finally,
-% section~\ref{sec:conclusions} includes our conclusions and proposes directions
-% of future works.
+% A forest of trees is impenetrable
+% as far as simple interpretations of its mechanims go~\citep{breiman:2001}.
+
+
+\section{Variable importances}
+\label{sec:6:importances}
+
+% surrogates
+% in ensembles
+% permutation
+
+\section{Theoretical study}
+\label{sec:6:theory}
+
+
+\section{Relevance of variables}
+\label{sec:6:variable-relevance}
+
+
+\section{Variable importances in random forest variants}
+\label{sec:6:variants}
+
+
+\section{Illustration}
+\label{sec:6:illustration}
+

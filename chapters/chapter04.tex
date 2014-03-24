@@ -1,12 +1,12 @@
 \chapter{Random Forests}\label{ch:forest}
 
 \begin{remark}{Outline}
-In this chapter, we present the well-known family of \textit{Random Forests}
+In this chapter, we present the well-known family of \textit{random forests}
 methods. In Section~\ref{sec:4:bias-variance}, we first describe the
 bias-variance decomposition of the prediction error and then present, in
 Section~\ref{sec:4:ensemble}, how aggregating randomized models through
 ensembles reduces the prediction error by decreasing the variance term in this
-decomposition. In Section~\ref{sec:4:random-forests}, we revisit Random Forests ant its variants and
+decomposition. In Section~\ref{sec:4:random-forests}, we revisit random forests ant its variants and
 study how randomness introduced into the decision tree induction algorithm can
 reduce prediction error by decorrelating the decision trees in the ensemble.
 Finally, the consistency of forests of randomized trees is explored in
@@ -710,10 +710,12 @@ simultaneously maintaining a low bias in the randomized decision trees.
 \item \citet{cutler:2001}: \hfill \\
     With \textit{Perfect Random Tree Ensembles} (PERT), \citet{cutler:2001}
     propose to grow a forest of perfectly fit decision trees in which both the
-    (ordered) variable to split on and the discretization threshold are chosen at random.
-    More specifically, given a node $t$, the split variable $X_j$ is drawn at random using
-    Algorithm~\ref{algo:findsplit:random} with $K=1$ while the discretization
-    threshold is found using the following procedure:
+    (ordered) variable to split on and the discretization threshold are chosen
+    at random. More specifically, given a node $t$, the split variable $X_j$ is
+    drawn at random using Algorithm~\ref{algo:findsplit:random} with $K=1$
+    while the cut-point $v$ is set inbetween two randomly drawn samples, instead of using
+    Algorithm~\ref{algo:findsplit:x_j} for finding the optimal threshold on
+    $X_j$:
     \begin{algorithm}
     Draw a random split on $X_j$ that partitions ${\cal L}_t$.
     \textnormal{
@@ -750,10 +752,10 @@ simultaneously maintaining a low bias in the randomized decision trees.
     responsible for a significant part of the generalization error of decision
     trees. As a way to smoothen the decision boundary, \citet{geurts:2006}
     hence propose in \textit{Extremely Randomized Trees} (ETs) to combine random variable
-    selection~\citep{amit:1997} with a randomization of the discretization
-    threshold. That is, Algorithm~\ref{algo:findsplit:x_j} used for finding the
-    cut-point on $X_j$ is replaced with the
-    following simplistic but surprisingly effective randomized variant:
+    selection~\citep{amit:1997} with random discretization
+    thresholds. Effectively replacing Algorithm~\ref{algo:findsplit:x_j}, the
+    following simplistic but surprisingly effective randomized variant
+    is used for finding a random threshold:
     \begin{algorithm}
     Draw a random split on $X_j$ that partitions ${\cal L}_t$.
     \textnormal{
@@ -776,7 +778,7 @@ simultaneously maintaining a low bias in the randomized decision trees.
     \textit{Totally Randomized Trees}, in which both a single variable $X_j$
     and a discretization threshold $v$ are drawn at random at each node. As a
     result, the structure of such trees can be learned in an unsupervised way,
-    independently of the output variable $Y$. Finally, note that Totally
+    independently of the output variable $Y$. In this setting, Totally
     Randomized Trees are very close to Perfect Random Tree
     Ensembles~\citep{cutler:2001} since both draw $X_j$ and $v$ at random.
     These methods are however not strictly equivalent since they do not draw
@@ -905,7 +907,7 @@ interpretability of the model. These are the object of
 Chapter~\ref{ch:importances}, in which we study variable importance measures
 and develop original contributions to further improve their understanding.
 
-\section{Example}
+\subsection{Illustration on a regression problem}
 
 As a summary and illustrative example, let us consider a simulated toy
 regression problem such that
@@ -970,7 +972,7 @@ and no general conclusion should be drawn from this toy regression problem.)
 
 As expected, variance also additively decomposes  into
 \begin{equation}
-var(\mathbf{x}) = \rho(\mathbf{x}) \sigma^2_{{\cal L},\theta} + \tfrac{1 - \rho(\mathbf{x})}{M} \sigma^2_{{\cal L},\theta},
+\text{var}(\mathbf{x}) = \rho(\mathbf{x}) \sigma^2_{{\cal L},\theta} + \tfrac{1 - \rho(\mathbf{x})}{M} \sigma^2_{{\cal L},\theta},
 \end{equation} as confirmed by Figure~\ref{fig:variance} for the variance of
 Random Forests. The first term is the variance due to the learning set ${\cal
 L}$ and remains constant as the number $M$ of trees increases. The second term
