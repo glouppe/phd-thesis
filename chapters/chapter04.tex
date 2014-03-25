@@ -2,15 +2,15 @@
 
 \begin{remark}{Outline}
 In this chapter, we present the well-known family of \textit{random forests}
-methods. In Section~\ref{sec:4:bias-variance}, we first describe the
-bias-variance decomposition of the prediction error and then present, in
+methods. In Section~\ref{sec:4:bias-variance}, we first describe the bias-variance
+decomposition of the prediction error and then present, in
 Section~\ref{sec:4:ensemble}, how aggregating randomized models through
 ensembles reduces the prediction error by decreasing the variance term in this
-decomposition. In Section~\ref{sec:4:random-forests}, we revisit random forests ant its variants and
-study how randomness introduced into the decision tree induction algorithm can
-reduce prediction error by decorrelating the decision trees in the ensemble.
-Finally, the consistency of forests of randomized trees is explored in
-Section~\ref{sec:4:consistency}.
+decomposition. In Section~\ref{sec:4:random-forests} and \ref{sec:4:illustration}, we revisit random forests
+ant its variants and study how randomness introduced into the decision trees
+reduces prediction error by decorrelating the decision
+trees in the ensemble. Finally, the consistency of forests of randomized trees
+is explored in Section~\ref{sec:4:consistency}.
 \end{remark}
 
 
@@ -924,7 +924,8 @@ interpretability of the model. These are the object of
 Chapter~\ref{ch:importances}, in which we study variable importance measures
 and develop original contributions to further improve their understanding.
 
-\subsection{Illustration}
+\section{Illustration}
+\label{sec:4:illustration}
 
 As a summary and illustrative example, let us consider a simulated toy
 regression problem such that
@@ -935,6 +936,13 @@ where all input variables $X_1,\dots,X_{5}$ are independent
 random Gaussian variables of zero mean and unit variance. To simulate
 noise in the data, 5 additional random Gaussian input variables $X_{6},\dots,X_{10}$,
 all independent from $Y$, are further appended to the learning set.
+
+On this toy problem, we compare the bias-variance decomposition of the expected
+generalization error of a Random Forest~\citep{breiman:2001} and of Extremely
+Randomized Trees~\citep{geurts:2006}, as estimated from Theorem~\ref{thm:bias-variance:ensemble}
+using $100$ randomly drawn learning sets ${\cal L}$ of $50$
+samples, on which ensembles of $10$ trees are built. Their generalization error
+is estimated on an independent test set of $1000$ samples.
 
 \begin{figure}
     \centering
@@ -947,13 +955,6 @@ all independent from $Y$, are further appended to the learning set.
             grown from the same learning set but with different random seeds.}
     \label{fig:correlation}
 \end{figure}
-
-The bias-variance decomposition of the expected generalization error of a Random
-Forest~\citep{breiman:2001} and of Extremely Randomized
-Trees~\citep{geurts:2006} is estimated using Theorem~\ref{thm:bias-variance:ensemble}
-from $100$ randomly drawn learning sets ${\cal L}$ of $50$ samples, on which
-ensembles of $10$ trees are built. Their generalization error is estimated on
-an independent test set of $1000$ samples.
 
 As the left plot in Figure~\ref{fig:correlation} shows,  the expected
 generalization error additively decomposes into (squared) bias and variance
@@ -976,9 +977,9 @@ in a Random Forest, which is not surprising given the fact that the former
 method randomizes the choice of the discretization threshold while the latter
 does not. In cases where such a randomization does not induce too large an
 increase of bias, as in this problem, Extremely Randomized Trees are therefore
-expected to yield better results than Random Forests. (The choice of the
-optimal randomization strategy is however highly dependent on the problem
-and no general conclusion should be drawn from this toy regression problem.)
+expected to yield better results than Random Forests.  (The choice of the
+optimal randomization strategy is however highly dependent on the problem and
+no general conclusion should be drawn from this toy regression problem.)
 
 \begin{figure}
     \centering
@@ -987,17 +988,19 @@ and no general conclusion should be drawn from this toy regression problem.)
     \label{fig:variance}
 \end{figure}
 
-As expected, variance also additively decomposes  into
+As confirmed by Figure~\ref{fig:variance} for Random Forests, variance also additively decomposes  into
 \begin{equation}
-\text{var}(\mathbf{x}) = \rho(\mathbf{x}) \sigma^2_{{\cal L},\theta} + \tfrac{1 - \rho(\mathbf{x})}{M} \sigma^2_{{\cal L},\theta},
-\end{equation} as confirmed by Figure~\ref{fig:variance} for the variance of
-Random Forests. The first term is the variance due to the learning set ${\cal
-L}$ and remains constant as the number $M$ of trees increases. The second term
-is the variance due to random effects and decreases as $M$ increases.
+\text{var}(\mathbf{x}) = \rho(\mathbf{x}) \sigma^2_{{\cal L},\theta} + \tfrac{1 - \rho(\mathbf{x})}{M} \sigma^2_{{\cal L},\theta}.
+\end{equation}
+The first term is the variance due to the learning set ${\cal L}$ and remains
+constant as the number $M$ of trees increases. The second term is the variance
+due to random effects and decreases as $M$ increases. Of particular interest is
+variance at $M=1$, which corresponds to the variance of a single decision tree.
+As the figure clearly shows, averaging several decision trees into an ensemble
+allows to significantly reduce this quantity. At the limit, when $M\to \infty$,
+variance tends to $\rho(\mathbf{x}) \sigma^2_{{\cal L},\theta}$, as shown by
+the dotted line and as expected from Theorem~\ref{thm:bias-variance:ensemble}.
 
-
-% rho versus max_features, for rf, extra-trees
-% decomposition of var versus M
 
 
 \section{Consistency}

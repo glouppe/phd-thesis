@@ -80,10 +80,10 @@ better than the other due to the variations in the bootstrap samples.
 In the context of ensembles of randomized trees,
 \cite{breiman:2001,breiman:2002} proposed to evaluate the importance of
 a variable $X_j$  for predicting  $Y$ by adding up the weighted impurity decreases $p(t) \Delta
-i(s_t, t)$ for all nodes $t$ where $X_j$ is used, averaged over all $M$ trees
+i(s_t, t)$ for all nodes $t$ where $X_j$ is used, averaged over all trees $\varphi_m$ (for $m=1,\dots,M$)
 in the forest:
 \begin{equation}\label{eq:mdi}
-\text{Imp}(X_j) = \frac{1}{M} \sum_{m=1}^M \sum_{\substack{t \in \varphi_{{\cal L},\theta_m}\\v(s_t) = X_j}} p(t) \Delta i(s_t, t),
+\text{Imp}(X_j) = \frac{1}{M} \sum_{m=1}^M \sum_{\substack{t \in \varphi_{m}\\v(s_t) = X_j}} p(t) \Delta i(s_t, t),
 \end{equation}
 where $p(t)$ is the proportion $\tfrac{N_t}{N}$ of samples
 reaching $t$ and $v(s_t)$ is the variable used in split $s_t$. When
@@ -94,12 +94,11 @@ as the \textit{Mean Decrease Impurity} importance (MDI), no matter the impurity
 measure $i(t)$. We will characterize and derive results for this measure in the
 rest of this text.
 
-In addition to MDI,
-\cite{breiman:2001,breiman:2002} also proposed to evaluate the importance
-of a variable $X_j$ by measuring the \textit{Mean Decrease Accuracy} (MDA) of
-the forest when the values of $X_j$ are randomly permuted in the out-of-bag
-samples. For that reason, this latter measure is also known as the
-\textit{permutation importance}.
+In addition to MDI, \cite{breiman:2001,breiman:2002} also proposed to evaluate
+the importance of a variable $X_j$ by measuring the \textit{Mean Decrease
+Accuracy} (MDA) of the forest when the values of $X_j$ are randomly permuted in
+the out-of-bag samples For that reason, this latter measure is also known as
+the \textit{permutation importance}.
 
 Thanks to popular machine learning
 softwares~\citep{breiman:2002,liaw:2002,pedregosa:2011},
