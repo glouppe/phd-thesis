@@ -97,13 +97,23 @@ rest of this text.
 In addition to MDI, \cite{breiman:2001,breiman:2002} also proposed to evaluate
 the importance of a variable $X_j$ by measuring the \textit{Mean Decrease
 Accuracy} (MDA) of the forest when the values of $X_j$ are randomly permuted in
-the out-of-bag samples or in an independent test set. For that reason, this
-latter measure is also known as the \textit{permutation importance}.
-% It is
-% formally given by the following equation:
-% \begin{equation}\label{eq:mdi}
-% \text{Imp}(X_j) = \frac{1}{M} \sum_{m=1}^M \sum_{t \in \varphi_{m}} 1(X_{s_t} = X_j) \Big[ p(t) \Delta i(s_t, t) \Big],
-% \end{equation}
+the out-of-bag samples. For that reason, this
+latter measure is also known as the \textit{permutation importance}. Formally,
+in regression, the permutation importance of $X_j$ is given as:
+\begin{align}\label{eq:mda}
+\text{Imp}(X_j) &= \frac{1}{N} \sum_{(\mathbf{x}_i,y_i) \in {\cal L}} L(\frac{1}{M^{-i}} \sum_{l=1}^{M^{-i}} \varphi_{{\cal L}^{m_{k_l}}}(\mathbf{x}_i), y_i) \\ \nonumber
+                &- \frac{1}{N} \sum_{(\mathbf{x}_i^\prime,y_i) \in \pi_j({\cal L})} L(\frac{1}{M^{-i}} \sum_{l=1}^{M^{-i}} \varphi_{{\cal L}^{m_{k_l}}}(\mathbf{x}_i^\prime), y_i)
+\end{align}
+where $\pi_j({\cal L})$ denotes the replicate of ${\cal L}$ in which in the
+values of $X_j$ have been randomly permuted. For classification, the
+permutation importance is derived similarly as in Equation~\ref{eq:mda},
+except  that the out-of-bag average predictions are
+replaced with the class which is the most likely, as computed from the out-of-bag
+class probability estimates. Its rationale is that randomly permuting the
+input variable $X_j$ should break its association with the response $Y$. Therefore,
+if $X_j$ is in fact associated to $Y$, permuting its values should also result
+in a substantial decrease of accuracy, as here measured by the difference between
+out-of-bag estimates.
 
 Thanks to popular machine learning
 softwares~\citep{breiman:2002,liaw:2002,pedregosa:2011},
@@ -123,6 +133,44 @@ understanding of the actual MDA.
 
 \section{Theoretical study}
 \label{sec:6:theory}
+
+Let us now consider the MDI  importance
+as defined by Equation~\ref{eq:mdi}, and let us assume a set $V= \{X_1, ..., X_p\}$  of {\em categorical}
+input variables and a {\em categorical} output $Y$. For the sake of
+simplicity we will  use the Shannon entropy as impurity measure, and focus on
+totally randomized trees; later on we will discuss other impurity measures and tree construction algorithms.
+
+Given a training sample ${\cal L}$ of $N$ joint observations of $X_1, ..., X_p,
+Y$ independently drawn from the joint distribution $P(X_1, ..., X_p, Y)$, let us
+assume that we infer from it an infinitely large ensemble of \textit{totally
+randomized and fully developed trees}. In this setting, a totally randomized and
+fully developed tree is defined as a decision tree in which each node $t$ is
+partitioned using a variable $X_j$ picked uniformly at random among those not
+yet used at the parent nodes of $t$, and where each $t$ is split into $|{\cal
+X}_j|$ sub-trees, i.e., one for each possible value of ${\cal X}_j$, and where
+the recursive construction process halts only when all $p$ variables have been
+used along the current branch.  Hence, in such a tree, leaves are all at the
+same depth $p$, and the set of leaves of a fully developed tree is in bijection
+with the set $\cal X$ of all possible joint configurations of the $p$ input
+variables. For example, if the input variables are all binary, the resulting
+tree will have exactly $2^{p}$ leaves.
+
+\begin{theorem}\label{thm:imp}
+The MDI importance of $X_j \in V$ for $Y$ as computed
+with an   infinite ensemble of fully developed totally randomized trees and an
+infinitely large training sample is:
+  \begin{equation}\label{eqn:imp-full}
+  \text{Imp}(X_j)=\sum_{k=0}^{p-1} \frac{1}{C_p^k} \frac{1}{p-k} \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B),
+  \end{equation}
+\end{theorem}
+\noindent where $V^{-j}$ denotes the subset $V \setminus \{X_j\}$, ${\cal
+P}_k(V^{-j})$ is the set of subsets of  $V^{-j}$ of cardinality $k$, and
+$I(X_j;Y|B)$ is the conditional mutual information of $X_{j}$ and $Y$ given the
+variables in $B$.
+
+\begin{proof}
+\todo{}
+\end{proof}
 
 
 \section{Relevance of variables}
