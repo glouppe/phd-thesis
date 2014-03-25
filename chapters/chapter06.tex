@@ -83,10 +83,10 @@ a variable $X_j$  for predicting  $Y$ by adding up the weighted impurity decreas
 i(s_t, t)$ for all nodes $t$ where $X_j$ is used, averaged over all trees $\varphi_m$ (for $m=1,\dots,M$)
 in the forest:
 \begin{equation}\label{eq:mdi}
-\text{Imp}(X_j) = \frac{1}{M} \sum_{m=1}^M \sum_{\substack{t \in \varphi_{m}\\v(s_t) = X_j}} p(t) \Delta i(s_t, t),
+\text{Imp}(X_j) = \frac{1}{M} \sum_{m=1}^M \sum_{t \in \varphi_{m}} 1(X_{s_t} = X_j) \Big[ p(t) \Delta i(s_t, t) \Big],
 \end{equation}
 where $p(t)$ is the proportion $\tfrac{N_t}{N}$ of samples
-reaching $t$ and $v(s_t)$ is the variable used in split $s_t$. When
+reaching $t$ and where $X_{s_t}$ denotes the variable used in split $s_t$. When
 using the Gini index as impurity function, this measure is known as the
 \textit{Gini importance} or \textit{Mean Decrease Gini}. However, since it can
 be defined for any impurity measure $i(t)$, we will refer to Equation~\ref{eq:mdi}

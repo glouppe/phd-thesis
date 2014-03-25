@@ -938,8 +938,8 @@ noise in the data, 5 additional random Gaussian input variables $X_{6},\dots,X_{
 all independent from $Y$, are further appended to the learning set.
 
 On this toy problem, we compare the bias-variance decomposition of the expected
-generalization error of a Random Forest~\citep{breiman:2001} and of Extremely
-Randomized Trees~\citep{geurts:2006}, as estimated from Theorem~\ref{thm:bias-variance:ensemble}
+generalization error of a Random Forest~\citep{breiman:2001} (RF) and of Extremely
+Randomized Trees~\citep{geurts:2006} (ETs), as estimated from Theorem~\ref{thm:bias-variance:ensemble}
 using $100$ randomly drawn learning sets ${\cal L}$ of $50$
 samples, on which ensembles of $10$ trees are built. Their generalization error
 is estimated on an independent test set of $1000$ samples.
@@ -962,8 +962,8 @@ terms.  For small values of $K$, random effects are strong, leading to high
 bias and low variance. By contrast, for larger values of $K$, random effects
 are less important, reducing bias but increasing variance.   For both methods,
 too small a value of $K$ appears however to lead to a too large increase of
-bias, for which averaging is not able to compensate. For Random Forests, the
-optimal trade-off is at $K=8$. For Extremely Randomized Trees, the
+bias, for which averaging is not able to compensate. For RF, the
+optimal trade-off is at $K=8$. For ETs, the
 optimal trade-off is at $K=10$, suggesting that random thresholds $v$ provide
 by themselves enough randomization on this problem.
 
@@ -972,12 +972,12 @@ correlation coefficient $\rho(\mathbf{x})$ between the predictions of two
 randomized trees grown on the same learning set. As expected, the smaller $K$,
 the stronger the random effects, therefore the less correlated the predictions
 and the more variance can be reduced from averaging. The plot also confirms
-that Extremely Randomized Trees are inherently less correlated than trees built
-in a Random Forest, which is not surprising given the fact that the former
+that ETs are inherently less correlated than trees built
+in RF, which is not surprising given the fact that the former
 method randomizes the choice of the discretization threshold while the latter
 does not. In cases where such a randomization does not induce too large an
-increase of bias, as in this problem, Extremely Randomized Trees are therefore
-expected to yield better results than Random Forests.  (The choice of the
+increase of bias, as in this problem, ETs are therefore
+expected to yield better results than RF.  (The choice of the
 optimal randomization strategy is however highly dependent on the problem and
 no general conclusion should be drawn from this toy regression problem.)
 
@@ -988,7 +988,7 @@ no general conclusion should be drawn from this toy regression problem.)
     \label{fig:variance}
 \end{figure}
 
-As confirmed by Figure~\ref{fig:variance} for Random Forests, variance also additively decomposes  into
+As confirmed by Figure~\ref{fig:variance} for RF, variance also additively decomposes  into
 \begin{equation}
 \text{var}(\mathbf{x}) = \rho(\mathbf{x}) \sigma^2_{{\cal L},\theta} + \tfrac{1 - \rho(\mathbf{x})}{M} \sigma^2_{{\cal L},\theta}.
 \end{equation}
