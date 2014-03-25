@@ -172,6 +172,51 @@ variables in $B$.
 \todo{}
 \end{proof}
 
+\begin{theorem}\label{thm:sum-of-imp}
+For any ensemble of fully developed trees in asymptotic learning sample size
+conditions (e.g., in the same conditions as those of Theorem~\ref{thm:imp}), we
+have that
+\begin{equation}\label{eqn:sum-of-imp}
+\sum_{j=1}^{p} \text{Imp}(X_j) = I(X_{1}, \ldots, X_{p} ; Y).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+\todo{}
+\end{proof}
+
+Together, theorems \ref{thm:imp} and \ref{thm:sum-of-imp} show that  variable
+importances derived from totally randomized trees in asymptotic conditions
+provide a three-level decomposition of the information $I(X_{1}, \ldots, X_{p}
+; Y)$ contained in the set of input variables about the output variable. The
+first level is a decomposition among input variables (see Equation~\ref{eqn
+:sum-of-imp} of Theorem~\ref{thm:sum-of-imp}),  the second level is a
+decomposition along the degrees $k$ of interaction terms of a variable with the
+other ones (see the outer sum in Equation~\ref{eqn:imp-full} of
+Theorem~\ref{thm:imp}), and the third level is a decomposition along the
+combinations $B$ of interaction terms of fixed size $k$ of possible interacting
+variables (see the inner sum in Equation~\ref{eqn:imp-full}).
+
+We observe that the decomposition includes, for each variable, each and every
+interaction term of each and every degree weighted in a fashion resulting only
+from the combinatorics of possible interaction terms. In particular, since all
+$I(X_j;Y|B)$ terms are at most equal to $H(Y)$, the prior entropy of $Y$,  the
+$p$ terms of the outer sum of Equation~\ref{eqn:imp-full} are each upper
+bounded by
+\begin{equation}
+\frac{1}{C^k_p}\frac{1}{p-k}\sum_{B \in {\cal P}_k(V^{-j})}
+H(Y)=\frac{1}{C^k_p} \frac{1}{p-k} {C^k_{p-1}} H(Y) = \frac{1}{p}H(Y).
+\end{equation}
+As such,
+the second level decomposition resulting from totally randomized trees makes the
+$p$ sub-importance terms
+\begin{equation}
+\frac{1}{C^k_p} \frac{1}{p-k} \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B)
+\end{equation}
+to equally contribute (at most) to the total
+importance, even though they each include a combinatorially different number of
+terms.
+
 
 \section{Relevance of variables}
 \label{sec:6:variable-relevance}
