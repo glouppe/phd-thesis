@@ -813,13 +813,16 @@ estimates of important statistics. In the case of generalization error, the
 \textit{out-of-bag} estimate at $(\mathbf{x}_i,y_i)$ consists in evaluating the
 prediction of the ensemble using only the individual models $\varphi_{{\cal
 L}^m}$ whose bootstrap samples ${\cal L}^m$ did not include
-$(\mathbf{x}_i,y_i)$. That is,
+$(\mathbf{x}_i,y_i)$. That is, in regression,
 \begin{align}\label{eqn:oob-error}
-\widehat{Err}^\text{OOB}(\psi_{\cal L}) = \frac{1}{N} \sum_{i=1}^N L(\widetilde{\psi_{\cal L}^i}(\mathbf{x}_i), y_i)
+\widehat{Err}^\text{OOB}(\psi_{\cal L}) &= \frac{1}{N} \sum_{(\mathbf{x}_i,y_i) \in {\cal L}} L(\frac{1}{M^{-i}} \sum_{l=1}^{M^{-i}} \varphi_{{\cal L}^{m_{k_l}}}(\mathbf{x}_i), y_i),
 \end{align}
-where $\smash{\widetilde{\psi_{\cal L}^i}}$ is the ensemble that comprises only
-the models $\varphi_{{\cal L}^m}$ such that $(\mathbf{x}_i, y_i) \notin {\cal
-L}^m$.
+where $m_{k_1}, \dots, m_{k_{M^{-i}}}$ denote the indices of the trees that
+have been built from bootstrap replicates that do not include $(\mathbf{x}_i,
+y_i)$. For classification, the out-of-bag estimate of the generalization error is similar to
+Equation~\ref{eqn:oob-error}, except that the out-of-bag average prediction is
+replaced with the class which is the most likely, as given by the out-of-bag
+class probability estimates.
 
 Out-of-bag estimates provide accurate estimates of the
 generalization error of the ensemble, often yielding statistics that are as
@@ -956,6 +959,12 @@ an independent test set of $1000$ samples.
             grown from the same learning set but with different random seeds.}
     \label{fig:correlation}
 \end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/ch4_variance.pdf}
+    \caption{Decomposition of the variance term $\text{var}(\mathbf{x})$ with respect to the number $M$ of trees in the ensemble.}
+    \label{fig:variance}
+\end{figure}
 
 As the left plot in Figure~\ref{fig:correlation} shows,  the expected
 generalization error additively decomposes into (squared) bias and variance
@@ -981,13 +990,6 @@ increase of bias, as in this problem, ETs are therefore
 expected to yield better results than RF.  (The choice of the
 optimal randomization strategy is however highly dependent on the problem and
 no general conclusion should be drawn from this toy regression problem.)
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.9\textwidth]{figures/ch4_variance.pdf}
-    \caption{Decomposition of the variance term $\text{var}(\mathbf{x})$ with respect to the number $M$ of trees in the ensemble.}
-    \label{fig:variance}
-\end{figure}
 
 As confirmed by Figure~\ref{fig:variance} for RF, variance also additively decomposes  into
 \begin{equation}

@@ -97,8 +97,13 @@ rest of this text.
 In addition to MDI, \cite{breiman:2001,breiman:2002} also proposed to evaluate
 the importance of a variable $X_j$ by measuring the \textit{Mean Decrease
 Accuracy} (MDA) of the forest when the values of $X_j$ are randomly permuted in
-the out-of-bag samples For that reason, this latter measure is also known as
-the \textit{permutation importance}.
+the out-of-bag samples or in an independent test set. For that reason, this
+latter measure is also known as the \textit{permutation importance}.
+% It is
+% formally given by the following equation:
+% \begin{equation}\label{eq:mdi}
+% \text{Imp}(X_j) = \frac{1}{M} \sum_{m=1}^M \sum_{t \in \varphi_{m}} 1(X_{s_t} = X_j) \Big[ p(t) \Delta i(s_t, t) \Big],
+% \end{equation}
 
 Thanks to popular machine learning
 softwares~\citep{breiman:2002,liaw:2002,pedregosa:2011},
