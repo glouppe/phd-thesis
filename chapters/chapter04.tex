@@ -792,7 +792,7 @@ simultaneously maintaining a low bias in the randomized decision trees.
     ${\cal L}$. To further enhance diversity (i.e., to further decorrelate the
     predictions of the constituents of the ensemlbe), the input variables are
     then randomly split into $q$  subsets, principal component analysis (PCA)
-    is run separately on each subset, and a new set of $p$ extracted input
+    is run separately on each subset, and a new set $\widetilde{{\cal L}^m}$ of $p$ extracted input
     variables is constructed by pooling all principal components. In this
     way, bootstrap replicates ${\cal L}^m$ are each independently transformed
     linearly into a new input space using $q$  axis rotations. In this
@@ -800,7 +800,7 @@ simultaneously maintaining a low bias in the randomized decision trees.
     sensitive to changes in the input space and still can be very accurate.
     As reported in \citep{rodriguez:2006,kuncheva:2007}, Rotation Forests
     favorably compare with other tree-based ensemble methods, yielding
-    results that are often as good, sometimes better, than Random Forests.
+    results that are often as good, sometimes better, than Random Forests~\citep{breiman:2001}.
 
 \end{description}
 
