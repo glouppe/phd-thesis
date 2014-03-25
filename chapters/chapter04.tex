@@ -829,6 +829,19 @@ constitute a computationally efficient alternative to $K$-fold cross-validation,
 reducing to $M$ the number of invocations of the learning
 algorithm, instead of otherwise having to build $KM$ base models.
 
+\subsection{Variable importances}
+
+In most machine learning tasks, the goal is not only to find the most accurate
+model of the response but also to identify which of the input variables are the
+most important to make the predictions, e.g., in order to lead to a deeper
+understanding of the problem under study.
+
+In this context, random forests offer several mechanisms for assessing the
+\textit{importance} of an input variable, and therefore enhance the
+interpretability of the model. These are the object of
+Chapter~\ref{ch:importances}, in which we study variable importance measures
+and develop original contributions to further improve their understanding.
+
 \subsection{Proximity measures}
 
 Another helpful built-in feature of tree-based ensemble methods is the
@@ -911,38 +924,26 @@ proven to be helpful and efficient embeddings, e.g., when combined with linear
 methods or support vector machines, even when trees in the forest are built
 totally at random~\citep{moosmann:2006,maree:2013}.
 
-\subsection{Variable importances}
-
-In most machine learning tasks, the goal is not only to find the most accurate
-model of the response but also to identify which of the input variables are the
-most important to make the predictions, e.g., in order to lead to a deeper
-understanding of the problem under study.
-
-In this context, random forests offer several mechanisms for assessing the
-\textit{importance} of an input variable, and therefore enhance the
-interpretability of the model. These are the object of
-Chapter~\ref{ch:importances}, in which we study variable importance measures
-and develop original contributions to further improve their understanding.
-
 \section{Illustration}
 \label{sec:4:illustration}
 
 As a summary and illustrative example, let us consider a simulated toy
 regression problem such that
 \begin{equation}
-Y = \sum_{j=1}^{5} X_j
+Y = \sum_{j=1}^{5} X_j,
 \end{equation}
 where all input variables $X_1,\dots,X_{5}$ are independent
 random Gaussian variables of zero mean and unit variance. To simulate
 noise in the data, 5 additional random Gaussian input variables $X_{6},\dots,X_{10}$,
 all independent from $Y$, are further appended to the learning set.
 
-On this toy problem, we compare the bias-variance decomposition of the expected
-generalization error of a Random Forest~\citep{breiman:2001} (RF) and of Extremely
-Randomized Trees~\citep{geurts:2006} (ETs), as estimated from Theorem~\ref{thm:bias-variance:ensemble}
-using $100$ randomly drawn learning sets ${\cal L}$ of $50$
-samples, on which ensembles of $10$ trees are built. Their generalization error
-is estimated on an independent test set of $1000$ samples.
+Let us compare for this problem the bias-variance decomposition of the expected
+generalization error of a Random Forest~\citep{breiman:2001} (RF) and of
+Extremely Randomized Trees~\citep{geurts:2006} (ETs). For both methods, the
+error is estimated as derived from Theorem~\ref{thm:bias-variance:ensemble},
+using $100$ randomly drawn learning sets ${\cal L}$ of $50$ samples, on which
+ensembles of $10$ trees are built. Their generalization error is estimated on
+an independent test set of $1000$ samples.
 
 \begin{figure}
     \centering
