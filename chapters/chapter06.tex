@@ -790,3 +790,141 @@ the resulting importances may be biased.
 \section{Illustration}
 \label{sec:6:illustration}
 
+In this section, we consider the digit recognition
+problem of \citep{breiman:1984} for illustrating variable importances as
+computed with totally randomized trees. We verify that they match with our
+theoretical developments and that they decompose as foretold. We also compare
+these importances with those computed by an ensemble of non-totally randomized
+trees, as discussed in section~\ref{sec:ntrt}, for increasing values of $K$.
+
+\begin{figure}
+    \centering
+    \includegraphics[]{figures/ch6_led.pdf}
+    \caption{7-segment display}
+    \label{fig:digits}
+\end{figure}
+
+Let us consider a seven-segment indicator displaying numerals using horizontal and
+vertical lights in on-off combinations, as illustrated in
+Figure~\ref{fig:digits}. Let $Y$ be a random variable taking its value in $\{0, 1,
+..., 9\}$ with equal probability and  let $X_1, ..., X_7$ be binary variables
+whose values are each determined univocally given the corresponding value of $Y$
+in Table~\ref{table:digits}.
+
+Since Table~\ref{table:digits} perfectly defines the data distribution, and
+given the small dimensionality of the problem, it is practicable to directly
+apply Equation~\ref{eqn:imp-full} to compute variable importances. To verify our
+theoretical developments, we then compare in Table~\ref{table:imp} variable
+importances as computed by Equation~\ref{eqn:imp-full} and those yielded by an
+ensemble of $10000$ totally randomized trees ($K=1$). Note that given the  known
+structure of the problem, building trees on a sample of finite size  that
+perfectly follows the data distribution amounts to building them on a sample of
+infinite size. At best, trees can thus be built on a 10-sample dataset,
+containing exactly one sample for each of the equiprobable outcomes of $Y$. As
+the table illustrates, the importances yielded by totally randomized trees match
+those computed by Equation~\ref{eqn:imp-full}, which confirms
+Theorem~\ref{thm:imp}. Small differences stem from the fact that a finite number
+of  trees were built in our simulations, but those discrepancies should
+disappear as the size of the ensemble grows towards infinity. It also shows that
+importances indeed add up to $I(X_1, ... X_7;Y)$, which confirms
+Theorem~\ref{thm:sum-of-imp}.
+Regarding the actual importances, they indicate that $X_5$ is stronger than all
+others, followed -- in that order -- by $X_2$, $X_4$ and $X_3$ which also show
+large importances. $X_1$, $X_7$ and $X_6$ appear to be the less informative. The
+table also reports importances for increasing values of $K$. As discussed before,
+we see that a large value of $K$ yields importances that can be either
+overestimated (e.g., at $K=7$, the importances of $X_2$ and $X_5$ are larger
+than at $K=1$) or underestimated due to masking effects (e.g., at $K=7$, the
+importances of $X_1$, $X_3$, $X_4$ and $X_6$ are smaller than at $K=1$, as if
+they were less important). It can also be observed that masking effects may even
+induce changes in the variable rankings (e.g., compare the rankings at $K=1$ and
+at $K=7$), which thus confirms that importances are differently affected.
+
+\begin{table}
+    \centering
+    \begin{tabular}{| c | c c c c c c c |}
+    \hline
+    $y$ & $x_1$ & $x_2$ & $x_3$ & $x_4$ & $x_5$ & $x_6$ & $x_7$ \\
+    \hline
+    0 & 1 & 1 & 1 & 0 & 1 & 1 & 1 \\
+    1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 \\
+    2 & 1 & 0 & 1 & 1 & 1 & 0 & 1 \\
+    3 & 1 & 0 & 1 & 1 & 0 & 1 & 1 \\
+    4 & 0 & 1 & 1 & 1 & 0 & 1 & 0 \\
+    5 & 1 & 1 & 0 & 1 & 0 & 1 & 1 \\
+    6 & 1 & 1 & 0 & 1 & 1 & 1 & 1 \\
+    7 & 1 & 0 & 1 & 0 & 0 & 1 & 0 \\
+    8 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+    9 & 1 & 1 & 1 & 1 & 0 & 1 & 1 \\
+    \hline
+    \end{tabular}
+    \caption{Values of $Y, X_1, ..., X_7$}
+    \label{table:digits}
+\end{table}
+
+\begin{table}
+    \begin{tabular}{| c | c c c c c c c c |}
+    \hline
+        & Eqn.~\ref{eqn:imp-full} & $K=1$ & $K=2$ & $K=3$ & $K=4$ & $K=5$ & $K=6$ & $K=7$ \\
+    \hline
+    $X_1$ & 0.412 & 0.414 & 0.362 & 0.327 & 0.309 & 0.304 & 0.305 & 0.306\\
+    $X_2$ & 0.581 & 0.583 & 0.663 & 0.715 & 0.757 & 0.787 & 0.801 & 0.799\\
+    $X_3$ & 0.531 & 0.532 & 0.512 & 0.496 & 0.489 & 0.483 & 0.475 & 0.475\\
+    $X_4$ & 0.542 & 0.543 & 0.525 & 0.484 & 0.445 & 0.414 & 0.409 & 0.412\\
+    $X_5$ & 0.656 & 0.658 & 0.731 & 0.778 & 0.810 & 0.827 & 0.831 & 0.835\\
+    $X_6$ & 0.225 & 0.221 & 0.140 & 0.126 & 0.122 & 0.122 & 0.121 & 0.120\\
+    $X_7$ & 0.372 & 0.368 & 0.385 & 0.392 & 0.387 & 0.382 & 0.375 & 0.372\\
+    \hline
+    $\sum$& 3.321 & 3.321 & 3.321 & 3.321 & 3.321 & 3.321 & 3.321 & 3.321\\
+    \hline
+    \end{tabular}
+    \caption{Variable importances as computed with an ensemble of randomized trees, for increasing values of $K$. Importances at $K=1$ follow their theoretical values, as predicted by Equation~\ref{eqn:imp-full} in Theorem~\ref{thm:imp}. However, as $K$ increases,  importances diverge due to masking effects. In accordance with Theorem~\ref{thm:sum-of-imp}, their sum is also always equal to $I(X_{1}, \ldots, X_{7}; Y) = H(Y) = \log_{2}(10)= 3.321$ since inputs allow to perfectly predict the output.}
+    \label{table:imp}
+\end{table}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/ch6_imp_led.pdf}
+    \caption{Decomposition of variable importances along the degrees $k$ of interactions of one variable with the other ones. At $K=1$, all $I(X_j;Y|B)$ are accounted for in the total importance, while at $K=7$ only some of them are taken into account due to masking effects.}
+    \label{fig:decomposition}
+\end{figure}
+
+
+To better understand why a variable is important, it is also insightful to look
+at its decomposition into its $p$ sub-importances terms, as shown in
+Figure~\ref{fig:decomposition}. Each row in the plots of the figure corresponds
+to one the $p=7$ variables and each column to a size $k$ of conditioning sets.
+As such, the value at row $m$ and column $k$ corresponds the importance of $X_j$
+when conditioned with $k$ other variables (e.g., to the term $\frac{1}{C^k_p}
+\frac{1}{p-k} \sum_{B \in {\cal P}_k(V^{-m})} I(X_j;Y|B)$ in Equation~\ref{eqn:imp-full}
+in the case of totally randomized trees). In the left plot, for
+$K=1$, the figure first illustrates how importances yielded by totally
+randomized trees decomposes along the degrees $k$ of interactions terms. We can
+observe that they each equally contribute (at most) the total importance of a
+variable. The plot also illustrates why $X_5$ is important: it is informative
+either alone or conditioned with any combination of the other variables (all of
+its terms are significantly larger than $0$). By contrast, it also clearly shows
+why $X_6$ is not important: neither alone nor combined with others $X_6$ seems
+to be very informative (all of its terms are close to $0$). More interestingly,
+this figure also highlights redundancies: $X_7$ is informative alone or
+conditioned with a couple of others (the first terms are significantly larger
+than $0$), but becomes uninformative  when conditioned with
+many others (the last terms are closer to $0$). The right plot, for $K=7$,
+illustrates the decomposition of importances when variables are chosen in a
+deterministic way. The first thing to notice is masking effects. Some of the
+$I(X_j;Y|B)$ terms are indeed clearly never encountered and their contribution
+is therefore reduced to $0$ in the total importance. For instance, for $k=0$,
+the sub-importances of $X_2$ and $X_5$ are positive, while all others are null,
+which means that only those two variables are ever selected at the root node,
+hence masking the others. As a consequence, this also means that the importances
+of the remaining variables is biased and that it actually only accounts of their
+relevance when conditioned to $X_2$ or $X_5$, but not of their relevance in
+other contexts. At $k=0$, masking effects also amplify the contribution of $I(X_2;Y)$
+(resp. $I(X_5;Y)$) since $X_2$ (resp. $X_5$) appears more frequently at the root
+node than in totally randomized trees. In addition, because nodes become pure
+before reaching depth $p$, conditioning sets of size $k\geq4$ are never actually
+encountered, which means that we can no longer know whether variables are still
+informative when conditioned to many others. All in all, this figure thus indeed
+confirms that importances as computed with non-totally randomized trees take
+into account only some of the conditioning sets $B$, hence biasing the measured
+importances.
