@@ -102,9 +102,9 @@ latter measure is also known as the \textit{permutation importance}. Formally,
 in regression, the permutation importance of $X_j$ is given as:
 \begin{align}\label{eq:mda}
 \text{Imp}(X_j) &= \frac{1}{N} \sum_{(\mathbf{x}_i,y_i) \in {\cal L}} L(\frac{1}{M^{-i}} \sum_{l=1}^{M^{-i}} \varphi_{{\cal L}^{m_{k_l}}}(\mathbf{x}_i), y_i) \\ \nonumber
-                &- \frac{1}{N} \sum_{(\mathbf{x}_i^\prime,y_i) \in \pi_j({\cal L})} L(\frac{1}{M^{-i}} \sum_{l=1}^{M^{-i}} \varphi_{{\cal L}^{m_{k_l}}}(\mathbf{x}_i^\prime), y_i)
+                &\quad - \frac{1}{N} \sum_{(\mathbf{x}_i^\prime,y_i) \in \pi_j({\cal L})} L(\frac{1}{M^{-i}} \sum_{l=1}^{M^{-i}} \varphi_{{\cal L}^{m_{k_l}}}(\mathbf{x}_i^\prime), y_i)
 \end{align}
-where $\pi_j({\cal L})$ denotes the replicate of ${\cal L}$ in which in the
+where $\pi_j({\cal L})$ denotes a replicate of ${\cal L}$ in which in the
 values of $X_j$ have been randomly permuted. For classification, the
 permutation importance is derived similarly as in Equation~\ref{eq:mda},
 except  that the out-of-bag average predictions are
@@ -113,7 +113,7 @@ class probability estimates. Its rationale is that randomly permuting the
 input variable $X_j$ should break its association with the response $Y$. Therefore,
 if $X_j$ is in fact associated to $Y$, permuting its values should also result
 in a substantial decrease of accuracy, as here measured by the difference between
-out-of-bag estimates.
+the out-of-bag estimates of the generalization error.
 
 Thanks to popular machine learning
 softwares~\citep{breiman:2002,liaw:2002,pedregosa:2011},
@@ -134,11 +134,76 @@ understanding of the actual MDA.
 \section{Theoretical study}
 \label{sec:6:theory}
 
-Let us now consider the MDI  importance
-as defined by Equation~\ref{eq:mdi}, and let us assume a set $V= \{X_1, ..., X_p\}$  of {\em categorical}
-input variables and a {\em categorical} output $Y$. For the sake of
-simplicity we will  use the Shannon entropy as impurity measure, and focus on
-totally randomized trees; later on we will discuss other impurity measures and tree construction algorithms.
+\subsection{Background}
+
+To be self-contained, we first recall several definitions from information
+theory (see \citep{cover:2012}, for further properties).
+
+We suppose that we are given a probability space $(\Omega, {\cal E},
+\mathbb{P})$ and  consider random variables defined on it taking a finite
+number of possible values. We use upper case letters to denote such random
+variables (e.g. $X, Y, Z, W \ldots$)  and calligraphic letters (e.g. $\cal X,
+Y, Z, W \ldots$) to denote their image sets (of finite cardinality), and lower
+case letters (e.g. $x, y, z, w \ldots$) to denote one of their possible values.
+For a (finite) set of (finite) random variables $ X = \{X_{1}, \ldots ,
+X_{p}\}$, we denote by $P_{X}(x) = P_{X}(x_{1}, \ldots , x_{p})$ the
+probability $\mathbb{P}(\{ \omega \in \Omega \mid  \forall \ell : 1, \ldots, p:
+X_{\ell}(\omega) =x_{\ell}\})$, and by ${\cal X} = {\cal X}_{1} \times \cdots
+\times {\cal X}_{p}$ the set of joint configurations of these random variables.
+Given two sets of random variables, $X = \{X_{1}, \ldots , X_{p}\}$ and
+$Y=\{Y_{1}, \ldots , Y_{q}\}$, we denote by $P_{X \mid Y}(x \mid y) = {P_{X, Y}
+(x,  y)}/ {P_{Y}(y)}$ the conditional density of $X$ with respect to
+$Y$.\footnote{To avoid problems, we suppose that all probabilities are strictly
+positive, without fundamental limitation.}
+
+With these notations, the joint (Shannon) entropy of a set of random variables
+$X =\{X_{1}, \ldots , X_{p}\}$ is thus defined by
+\begin{equation}
+H(X)  = - \sum_{x \in {\cal X}}P_{X} (x)\log_{2}P_{X }(x),
+\end{equation}
+while the mean conditional entropy of a set of random variables $X = \{X_{1},
+\ldots , X_{p}\}$, given the values of another set of random variables
+$Y=\{Y_{1}, \ldots , Y_{q}\}$ is defined by
+\begin{equation}
+H(X\mid Y) = - \sum_{x \in {\cal X}} \sum_{y \in {\cal Y}} P_{X, Y} (x, y) \log_{2} P_{X \mid Y} (x  \mid y).
+ \end{equation}
+The mutual information among the set of random variables $X =\{X_{1}, \ldots ,
+X_{p}\}$ and the set of random variables $Y=\{Y_{1}, \ldots , Y_{q}\}$ is
+defined by
+ \begin{align}
+ I(X; Y) &= - \sum_{x \in {\cal X}} \sum_{y \in {\cal Y}} P_{X, Y} (x, y) \log_{2} \frac{P_{X}(x) P_{Y}(y)}{P_{X,Y}(x,y)} \\
+ &= H(X) - H(X \mid Y) \nonumber \\
+ &=  H(Y) - H(Y \mid X) \nonumber
+ \end{align}
+
+The mean conditional mutual information among the set of random variables $X
+=\{X_{1}, \ldots , X_{p}\}$ and the set of random variables $Y=\{Y_{1}, \ldots
+, Y_{q}\}$, given the values of a third set of random variables $Z=\{Z_{1},
+\ldots , Z_{r}\}$, is defined by
+ \begin{align}
+ I(X; Y \mid Z) &= H(X \mid Z) - H(X \mid Y, Z)\\
+ & = H(Y \mid Z) - H(Y \mid X, Z) \nonumber\\
+& = - \sum_{x \in {\cal X}} \sum_{y \in {\cal Y}} \sum_{z \in {\cal Z}} P_{X, Y, Z} (x, y, z) \log_{2} \frac{P_{X \mid Z}(x \mid z) P_{Y\mid Z}(y \mid z)}{P_{X,Y \mid Z}(x,y \mid z)}\nonumber
+\end{align}
+
+We also recall the chaining rule
+\begin{equation}
+I(X, Z ; Y \mid W ) = I(X; Y \mid W  ) + I( Z ; Y \mid W, X),
+\end{equation}
+and the symmetry of the (conditional) mutual information among sets of random variables
+\begin{equation}
+I(X ; Y \mid Z) = I(Y ;  X  \mid Z).
+\end{equation}
+
+
+\subsection{Asymptotic analysis}
+
+Let us now consider the MDI  importance as defined by Equation~\ref{eq:mdi},
+and let us assume a set $V= \{X_1, ..., X_p\}$  of {\em categorical} input
+variables and a {\em categorical} output $Y$. For the sake of simplicity we
+will  use the Shannon entropy as impurity measure, and focus on totally
+randomized trees; later on we will discuss other impurity measures and tree
+construction algorithms.
 
 Given a training sample ${\cal L}$ of $N$ joint observations of $X_1, ..., X_p,
 Y$ independently drawn from the joint distribution $P(X_1, ..., X_p, Y)$, let us
@@ -169,7 +234,61 @@ $I(X_j;Y|B)$ is the conditional mutual information of $X_{j}$ and $Y$ given the
 variables in $B$.
 
 \begin{proof}
-\todo{}
+By expanding $\Delta i(s, t) = i(t) - p_L i(t_L) - p_R i(t_R)$ into
+Equation~\ref{eq:mdi} and using the entropy $H(Y|t) = -\sum_j p(j|t) \log_2(p(j|t))$
+as impurity measure $i(t)$, Equation~\ref{eq:mdi} can be rewritten in terms of
+mutual information:
+\begin{equation}
+\text{Imp}(X_j) = \frac{1}{M} \sum_{m=1}^M \sum_{t \in \varphi_m} 1(X_{s_t} = X_j) p(t) I(Y;X_j|t)
+\end{equation}
+
+As the size $N$ of the training sample grows to infinity, $p(t)$ becomes the
+(exact) probability (according to $P(X_1,\ldots,X_p,Y)$) that an object reaches
+node $t$, i.e., a probability $P(B(t)=b(t))$ where $B(t)=(X_{i_1}, ...,
+X_{i_{k}})$ is the subset of $k$ variables tested in the branch from the root
+node to the parent of $t$ and $b(t)$ is the vector of values of these
+variables. As the the number $M$ of totally randomized trees also grows to
+infinity, the importance of a variable $X_j$ can then be written:
+\begin{equation}
+\text{Imp}(X_j)=\sum_{B\subseteq V^{-j}} \sum_{b\in {\cal X}_{i_1}\times ... \times {\cal X}_{i_{k}} } \alpha(B,b,X_j,p) P(B=b) I(Y;X_j|B=b),
+\end{equation}
+where $b$ is a set of values for the variables in $B$ and $\alpha(B,b,X_j,p)$ is
+the probability that a node $t$ (at depth $k$) in a totally randomized tree
+tests the variable $X_j$ and is such that $B(t)=B$ and $b(t)=b$.
+
+Let us compute $\alpha(B,b,X_j,p)$. First, let us consider the probability that
+a node $t$ tests the variable $X_j$ and is such that the branch leading to $t$
+follows a path defined, in that particular order, by all $k$ variables $X_{i_1},
+..., X_{i_{k}} \in B$ and their corresponding values in $b$. The probability of
+that branch is the probability of picking (uniformly at random)  $X_{i_1}$  at
+the root node times the probability of testing, in that order, the remaining
+$X_{i_2}, ..., X_{i_{k}}$ variables in the sub-tree corresponding to the value
+$x_{i_1}$ of $X_{i_1}$ defined in $b$. Note that, by construction, it is certain
+that this particular sub-tree exists since the root node is split into $|{\cal
+X}_{i_1}|$ sub-trees.  Then, the
+probability of testing $X_j$ at the end of this branch is the probability of
+picking $X_j$ among the remaining $p-k$ variables. By recursion, we thus have:
+\begin{equation}
+\frac{1}{p} \frac{1}{p-1} ... \frac{1}{p-k+1} \frac{1}{p-k} = \frac{(p-k)!}{p!} \frac{1}{p-k}
+\end{equation}
+
+Since the order along which the variables appear in the branch is of no
+importance, $\alpha(B,b,X_j,p)$ actually includes all $k!$ equiprobable ways of
+building a branch composed of the variables and values in $B$ and $b$. Then,
+since a tree may at most contain a single such branch, whatever the order of the
+tests, the probabilities may be added up and it comes:
+\begin{equation}
+\alpha(B,b,X_j,p)=k! \frac{(p-k)!}{p!} \frac{1}{p-k} = \frac{1}{C_p^k} \frac{1}{p-k}
+\end{equation}
+
+From the above expression, it appears that $\alpha(B,b,X_j,p)$ depends only on
+the size $k$ of $B$ and on the number $p$ of variables. As such, by grouping in
+the previous equation of $\text{Imp}(X_j)$ conditioning variable subsets $B$ according
+to their sizes and using the definition of conditional mutual information,
+$\alpha$ can be factored out, hence leading to the form foretold by Theorem~\ref{thm:imp}:
+\begin{equation}
+\text{Imp}(X_j)=\sum_{k=0}^{p-1} \frac{1}{C^k_p} \frac{1}{p-k} \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B).
+\end{equation}
 \end{proof}
 
 \begin{theorem}\label{thm:sum-of-imp}
@@ -182,15 +301,30 @@ have that
 \end{theorem}
 
 \begin{proof}
-\todo{}
+For any tree $\varphi$, we have that the sum of all importances estimated by
+using an infinitely large sample $\cal L$ (or equivalently, by assuming perfect
+knowledge of the joint distribution $P(X_1, ..., X_p, Y)$) is equal to $H(Y) -
+\sum_{t \in \widetilde{\varphi})} p(t) H(Y|b(t))$, where $\widetilde{\varphi}$
+denotes the set of all leaves of $\varphi$, and where $b(t)$  denotes the joint
+configuration of all input variables leading to leaf $t$. This is true because
+the impurities of all test nodes intervening in the computation of the variable
+importances, except the impurity $H(Y)$ at the root node of the tree, cancel
+each other when summing up the importances.
+
+Since, when the tree is fully developed, $\sum_{t \in \widetilde{\varphi}} p(t)
+H(Y|b(t))$ is obviously equal to the mean conditional entropy $H(Y | X_{1},
+\ldots, X_{p})$ of $Y$ given all input variables, this implies that for any
+fully developed tree we have that the sum of variable importances is equal to
+$I(X_{1}, \ldots, X_{p} ; Y)$, and so this relation also holds when averaging
+over an infinite ensemble of totally randomized trees.
 \end{proof}
 
 Together, theorems \ref{thm:imp} and \ref{thm:sum-of-imp} show that  variable
 importances derived from totally randomized trees in asymptotic conditions
 provide a three-level decomposition of the information $I(X_{1}, \ldots, X_{p}
 ; Y)$ contained in the set of input variables about the output variable. The
-first level is a decomposition among input variables (see Equation~\ref{eqn
-:sum-of-imp} of Theorem~\ref{thm:sum-of-imp}),  the second level is a
+first level is a decomposition among input variables (see Equation~\ref{eqn:sum-of-imp}
+of Theorem~\ref{thm:sum-of-imp}),  the second level is a
 decomposition along the degrees $k$ of interaction terms of a variable with the
 other ones (see the outer sum in Equation~\ref{eqn:imp-full} of
 Theorem~\ref{thm:imp}), and the third level is a decomposition along the
