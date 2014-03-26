@@ -355,6 +355,144 @@ terms.
 \section{Relevance of variables}
 \label{sec:6:variable-relevance}
 
+Following~\citet{kohavi:1997}, let us define as {\em relevant to $Y$ with
+respect to $V$} a variable $X_jm$ for which there exists at least one subset $B
+\subseteq V$ (possibly empty) such that $I(X_j;Y|B)>0$. Thus we define as {\em
+irrelevant to $Y$ with respect to $V$} a variable $X_i$ for which, for all $B
+\subseteq V$, $I(X_i; Y|B)=0$. Remark that if $X_i$ is irrelevant to $Y$ with
+respect to $V$, then by definition it is also irrelevant to $Y$ with respect to
+any subset of $V$. However, if $X_j$ is relevant to $Y$ with respect to $V$,
+then it is not necessarily relevant to $Y$ with respect to all  subsets of $V$.
+Among the relevant variables, we also distinguish the {\em marginally} relevant
+ones, for which $I(X_{j}; Y) > 0$, the  {\em strongly} relevant ones, for which
+$I(X_{j}; Y | V^{-j}) > 0$,  and the {\em weakly} relevant variables, which are
+relevant but not strongly relevant.
+
+\begin{theorem}\label{thm:irrelevant}
+  $X_i \in V$ is irrelevant to $Y$ with respect to $V$ if and only if  its
+  infinite sample size importance as computed with an infinite ensemble of fully
+  developed totally randomized trees built on $V$ for $Y$ is 0.
+\end{theorem}
+
+\begin{proof}
+The proof directly results from the definition of irrelevance. If $X_i$ is
+irrelevant with respect to $V$, then $I(X_i;Y|B)$ is zero for all $B \subseteq
+V^{-i} \subset V$ and Equation~\ref{eqn:imp-full} reduces to $0$. Also, since
+$I(X_i;Y|B)$ is non-negative for any $B$, $\text{Imp}(X_i)$ is zero if and only if all
+its $I(X_i;Y|B)$ terms are zero. Since $\text{Imp}(X_i)$ includes all $I(X_i;Y|B)$
+terms for $B \subseteq V^{-i}$, and since all of them are therefore null if
+$\text{Imp}(X_i)=0$,  $X_i$ is thus, by definition, irrelevant with respect to
+$V^{-i}$. $X_i$ is then also trivially irrelevant with respect to $V=V^{-i} \cup
+\{X_i\}$ since $I(X_i;Y|B\cup\{X_i\})=0$ for any $B$.
+\end{proof}
+
+\begin{lemma}\label{lemma:adding-irrelevant}
+  Let $X_i \notin V$ be an irrelevant variable for $Y$ with respect to $V$. The infinite
+  sample size importance of $X_j \in V$ as computed with an infinite
+  ensemble of fully developed totally randomized trees built on $V$ for $Y$ is the
+  same as the importance derived when using $V\cup \{X_i\}$ to build the ensemble of trees for $Y$.
+\end{lemma}
+
+\begin{proof}
+Let $X_i \notin V$ be an irrelevant variable with respect to $V$. For $X_j \in
+V$, $B \subseteq V^{-j}$, using the chain rules of mutual information, we have:
+\begin{align}
+I(X_j, X_i;Y|B) &= I(X_j;Y|B) + I(X_i;Y|B \cup \{X_j\})  \\
+                &= I(X_i;Y|B) + I(X_j;Y|B \cup \{X_i\})
+\end{align}
+If $X_i$ is irrelevant with respect to $V$, i.e., such that $I(X_i;Y|B)=0$ for
+all $B\subseteq V$, then $I(X_i;Y|B \cup \{X_j\})$ and $I(X_i;Y|B)$ both equal
+$0$, leading to
+\begin{equation}
+I(X_j;Y|B \cup \{X_i\}) = I(X_j;Y|B)
+\end{equation}
+
+Then, from Theorem~\ref{thm:imp}, the importance of $X_j$ as computed with an
+infinite ensemble of totally randomized trees built on $V\cup \{X_i\}$ can be
+simplified to:
+\begin{align}
+  Imp(X_j)&=\sum_{k=0}^{p-1+1} \frac{1}{C_{p+1}^k} \frac{1}{p+1-k} \sum_{B \in {\cal P}_k(V^{-j} \cup \{X_i\})} I(X_j;Y|B)\nonumber\\
+          &=\sum_{k=0}^{p} \frac{1}{C_{p+1}^k} \frac{1}{p+1-k} \left[ \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B) + \sum_{B \in {\cal P}_{k-1}(V^{-j})} I(X_j;Y|B \cup \{X_i\})  \right] \nonumber\\
+          &=\sum_{k=0}^{p-1} \frac{1}{C_{p+1}^k} \frac{1}{p+1-k} \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B) + \nonumber\\
+          & \hookrightarrow \sum_{k=1}^{p} \frac{1}{C_{p+1}^k} \frac{1}{p+1-k} \sum_{B \in {\cal P}_{k-1}(V^{-j})} I(X_j;Y|B)\nonumber\\
+          &=\sum_{k=0}^{p-1} \frac{1}{C_{p+1}^k} \frac{1}{p+1-k} \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B) + \nonumber\\
+          & \hookrightarrow \sum_{k'=0}^{p-1} \frac{1}{C_{p+1}^{k'+1}} \frac{1}{p+1-k'-1} \sum_{B \in {\cal P}_{k'}(V^{-j})} I(X_j;Y|B)\nonumber\\
+          &=\sum_{k=0}^{p-1} \left[ \frac{1}{C_{p+1}^k} \frac{1}{p+1-k} + \frac{1}{C_{p+1}^{k+1}} \frac{1}{p-k} \right] \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B)\nonumber\\
+          &=\sum_{k=0}^{p-1} \frac{1}{C^k_p} \frac{1}{p-k} \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B)
+\end{align}
+The last line above exactly corresponds to the importance of $X_j$ as computed
+with an infinite ensemble of totally randomized trees built on $V$, which proves
+Lemma~\ref{lemma:adding-irrelevant}.
+\end{proof}
+
+\begin{theorem}\label{thm:relevant}
+  Let $V_R \subseteq V$ be the subset of all variables in $V$ that are relevant to $Y$ with
+  respect to $V$. The infinite sample size importance of any variable $X_j \in
+  V_R$ as computed with an infinite ensemble of fully developed totally randomized
+  trees built on $V_R$ for $Y$ is the same as its importance computed in the same conditions by using all variables in $V$. That is:
+    \begin{align}
+      \text{Imp}(X_j)&=\sum_{k=0}^{p-1} \frac{1}{C_p^k} \frac{1}{p-k} \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B)\nonumber \\
+                     &=\sum_{l=0}^{r-1} \frac{1}{C_r^l} \frac{1}{r-l} \sum_{B \in {\cal P}_l(V_R^{-j})} I(X_j;Y|B)
+    \end{align}
+  where $r$ is the number of relevant variables in $V_R$.
+\end{theorem}
+
+\begin{proof}
+Let us assume that $V_R$ contains $r \leq p$ relevant variables. If an infinite
+ensemble of totally randomized trees were to be built directly on those $r$
+variables then, from Theorem~\ref{thm:imp}, the importance of a relevant
+variable $X_j$ would be:
+\begin{equation}%\label{eqn:imp-rel}
+  Imp(X_j)=\sum_{l=0}^{r-1} \frac{1}{C_r^l} \frac{1}{r-l} \sum_{B \in {\cal P}_l(V_R^{-m})} I(X_j;Y|B)
+\end{equation}
+
+Let $X_i \in V \setminus V_R$ be one of the $p-r$ irrelevant variables in $V$
+with respect to $V$. Since $X_i$ is also irrelevant with respect to $V_R$, using
+Lemma~\ref{lemma:adding-irrelevant}, the importance of $X_j$ when the ensemble
+is built on $V_R \cup \{X_i\}$ is the same as the one computed on $V_R$ only
+(i.e., as computed by the equation above). Using the same argument,
+adding a second irrelevant variable $X_{i'}$ with respect to $V$ -- and therefore
+also with respect to $V_R \cup \{X_i\}$ -- and building an ensemble of totally
+randomized trees on $V_R \cup \{X_i\} \cup \{X_{i'}\}$ will yield importances
+that are the same as those computed on $V_R \cup \{X_i\}$, which are themselves
+the same as those computed by an ensemble built on $V_R$. By induction, adding
+all $p-r$ irrelevant variables has therefore no effect on the importance of
+$X_j$, which means that:
+\begin{align}%\label{eqn:imp-rel-equiv}
+  \text{Imp}(X_j)&=\sum_{k=0}^{p-1} \frac{1}{C_p^k} \frac{1}{p-k} \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B)\nonumber \\
+          &=\sum_{l=0}^{r-1} \frac{1}{C_r^l} \frac{1}{r-l} \sum_{B \in {\cal P}_l(V_R^{-m})} I(X_j;Y|B)
+\end{align}
+\end{proof}
+
+Theorems~\ref{thm:irrelevant} and \ref{thm:relevant} show that the
+importances computed with an ensemble of totally randomized trees depends only
+on the relevant variables. Irrelevant variables have a zero importance and do
+not affect the importance of relevant variables. Practically, we believe that
+such properties are desirable conditions for a sound criterion assessing the
+importance of a variable. Indeed, noise should not be credited of any importance
+and should not make any other variable more (or less) important.
+
+Intuitively, the independence with respect to irrelevant variables can be partly
+attributed to the fact that splitting at $t$ on some irrelevant variable $X_i$
+should only dillute the local importance $p(t) \Delta i(t)$ of a relevant
+variable $X_j$ into the children $t_L$ and $t_R$, but not affect the total sum.
+For instance, if $X_j$ was to be used at $t$, then the local importance would be
+proportional to $p(t)$. By contrast, if $X_i$ was to be used at $t$ and $X_j$ at
+$t_L$ and $t_R$, then the sum of the local importances for $X_j$ would be
+proportional to $p(t_L) + p(t_R)=p(t)$, which does not change anything.
+Similarly, one can recursively invoke the same argument if $X_j$ was to be used
+deeper in $t_L$ or $t_R$.
+
+A second reason comes from the
+fact that local importances are collected only in nodes $t$ where $X_j$ is used.
+By contrast, if local importances were summed over all nodes (e.g., using
+surrogate splits), then it would necessarily depend on the total number of nodes
+in a tree, which itself directly depends on $p$ -- that is, not on $r$.
+
+Finally, it is also worth noting that this result is consistent with the work
+of~\citet{biau:2012}, who proved that rate of convergence of forests
+of randomized also only depends on the relevant variables.
+
 
 \section{Variable importances in random forest variants}
 \label{sec:6:variants}
