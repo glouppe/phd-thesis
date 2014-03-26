@@ -1,5 +1,58 @@
 \chapter{Computational efficiency}\label{ch:complexity}
 
+% * Implementation considerations
+%     - Data structures
+%     - Efficient implementation of criteria for iterative evaluation
+%        + How to evaluate multiple candidate thresholds cheaply for
+%          a given feature (algorithm, f-ordered)
+%        + Sorting algorithms
+%        + Approximately best splits
+%             + Binning
+%             + Subsampling
+%     - Shared computations
+%         > Splitters
+%             - (Independent splitters)
+%             - Pre-sorting + data reorganization (Breiman's strategy)
+%             - Pre-sorting + sample_mask
+%         > Multi-threading
+% * Overall complexity
+%     - Best cases => Master theorem and/or Akra Bazzi method
+%         RF: O(n log^2 n)
+%         ETs: O(n log n)
+%     - Worst cases
+%         RF: O(log(H(n)))
+%         ETs: O(n^2)
+%     - Average case => Should still be good (see Quicksort average complexity)
+%       http://en.wikipedia.org/wiki/Quicksort
+%       Solve: T(n) = nlog(n) + 1/(n-1) \sum_{i=1}^{n-1} [T(i) + T(n-i)]
+% * Comparison of existing implementations
+%     - Experiments and/or implementation details
+
+%         List existing implementations and mention in which complexity they
+%         fall in (eg., in a Table).
+
+%         Open-source
+%         * C4.5
+%         * CART
+%         * TMVA !!
+%         * Scikit-Learn
+%         * Weka
+%             + original
+%             + fast-random-forest
+%         * randomForest
+%             + original
+%             + PARF
+%         * Breiman Fortran code
+%         * party (R)
+%         * Pierre
+%         * OpenCV
+%         * H2O
+%         * clus (Leuven)
+
+%         Closed source
+%         * Sherwood (Criminisi)
+%         * WiseRF
+%         * Random jungle
 
 \todo{Rewrite later...}
 
