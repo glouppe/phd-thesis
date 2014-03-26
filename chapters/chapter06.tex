@@ -411,7 +411,7 @@ Then, from Theorem~\ref{thm:imp}, the importance of $X_j$ as computed with an
 infinite ensemble of totally randomized trees built on $V\cup \{X_i\}$ can be
 simplified to:
 \begin{align}
-  Imp(X_j)&=\sum_{k=0}^{p-1+1} \frac{1}{C_{p+1}^k} \frac{1}{p+1-k} \sum_{B \in {\cal P}_k(V^{-j} \cup \{X_i\})} I(X_j;Y|B)\nonumber\\
+  \text{Imp}(X_j)&=\sum_{k=0}^{p-1+1} \frac{1}{C_{p+1}^k} \frac{1}{p+1-k} \sum_{B \in {\cal P}_k(V^{-j} \cup \{X_i\})} I(X_j;Y|B)\nonumber\\
           &=\sum_{k=0}^{p} \frac{1}{C_{p+1}^k} \frac{1}{p+1-k} \left[ \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B) + \sum_{B \in {\cal P}_{k-1}(V^{-j})} I(X_j;Y|B \cup \{X_i\})  \right] \nonumber\\
           &=\sum_{k=0}^{p-1} \frac{1}{C_{p+1}^k} \frac{1}{p+1-k} \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B) + \nonumber\\
           & \hookrightarrow \sum_{k=1}^{p} \frac{1}{C_{p+1}^k} \frac{1}{p+1-k} \sum_{B \in {\cal P}_{k-1}(V^{-j})} I(X_j;Y|B)\nonumber\\
@@ -443,7 +443,7 @@ ensemble of totally randomized trees were to be built directly on those $r$
 variables then, from Theorem~\ref{thm:imp}, the importance of a relevant
 variable $X_j$ would be:
 \begin{equation}%\label{eqn:imp-rel}
-  Imp(X_j)=\sum_{l=0}^{r-1} \frac{1}{C_r^l} \frac{1}{r-l} \sum_{B \in {\cal P}_l(V_R^{-m})} I(X_j;Y|B)
+  \text{Imp}(X_j)=\sum_{l=0}^{r-1} \frac{1}{C_r^l} \frac{1}{r-l} \sum_{B \in {\cal P}_l(V_R^{-m})} I(X_j;Y|B)
 \end{equation}
 
 Let $X_i \in V \setminus V_R$ be one of the $p-r$ irrelevant variables in $V$
@@ -496,6 +496,295 @@ of randomized also only depends on the relevant variables.
 
 \section{Variable importances in random forest variants}
 \label{sec:6:variants}
+
+In this section, we consider and discuss variable importances as computed with
+other types of ensembles of randomized trees. We first show how our results
+extend to any other impurity measure, and then analyze importances computed by
+depth-pruned ensemble of randomized trees and those computed by randomized
+trees built on random subspaces of fixed size. Finally, we discuss the case of
+non-totally randomized trees.
+
+\subsection{Generalization to other impurity measures}
+
+Although our characterization in sections~\ref{sec:6:importances} and
+\ref{sec:6:variable-relevance} uses Shannon entropy as the impurity measure,
+theorems~\ref{thm:imp}, \ref{thm:irrelevant} and \ref{thm:relevant} hold for
+other impurity measures, simply substituting conditional mutual information for
+conditional impurity reduction in the different formulas and in the definition
+of irrelevant variables.  In particular, our results thus hold for the Gini
+index in classification and can be extended to regression problems using
+variance as the impurity measure.
+
+Let us consider a generic impurity measure $i(Y|t)$ and, by mimicking the
+notation used for conditional mutual information, let us denote by $G(Y;X_j|t)$
+the impurity decrease for a split on $X_j$ at node $t$:
+\begin{equation}%\label{eqn:impsample}
+G(Y;X_j|t) = i(Y|t)-\sum_{x\in{\cal X}_j} p(t_x) i(Y|t_x),
+\end{equation}
+where $t_{x}$ denotes the successor node of $t$ corresponding to value
+$x$ of $X_j$. The importance score associated to a variable $X_j$ (see
+Equation~\ref{eq:mdi}) is then rewritten:
+\begin{equation}\label{eq:mdigen}
+\text{Imp}(X_j) = \frac{1}{M} \sum_{m=1}^M \sum_{t \in \varphi_m} 1(X_{s_t} = X_j) p(t) G(Y;X_j|t).
+\end{equation}
+
+As explained in the proof of Theorem~\ref{thm:imp}, conditioning
+over a node $t$ is equivalent to conditioning over an event of the
+form $B(t)=b(t)$, where $B(t)$ and $b(t)$ denote respectively the set
+of variables tested in the branch from the root to $t$ and their
+values in this branch. When the learning sample size $N$ grows to
+infinity, this yields the following population based impurity decrease
+at node $t$:
+\begin{align}
+&G(Y;X_j|B(t)=b(t)) \\
+&=i(Y|B(t)=b(t))-\sum_{x\in{\cal X}_j} P(X_j=x|B(t)=b(t)) i(Y|B(t)=b(t),X_j=x) \nonumber \label{eqn:imppop}
+\end{align}
+Again by analogy with conditional entropy and mutual
+information\footnote{Note however that $G(Y;X_j|B)$ does not share all
+  properties of conditional mutual information as for example $G(X_j;
+  Y|B)$ might not be equal to $G(Y; X_j|B)$ or even be defined,
+  depending on the impurity measure and the nature of the output
+  $Y$.}, let us define $i(Y|B)$ and $G(Y;X_j|B)$ for some subset of
+variables $B\subseteq V$ as follows:
+\begin{align}
+i(Y|B)&=\sum_{b} P(B=b) i(Y|B=b)\\
+G(Y;X_j|B)&= \sum_{b} P(B=b) G(Y;X_j|B=b)\\
+&=i(Y|B)-i(Y|B,X_j) \nonumber
+\end{align}
+where the sums run over all possible combinations $b$ of values for
+the variables in $B$.
+
+With these notations, the proof of Theorem~\ref{thm:imp} can be easily adapted to lead
+to the following generalization of Equation~\ref{eqn:imp-full}:
+\begin{equation}
+\text{Imp}(X_j)=\sum_{k=0}^{p-1} \frac{1}{C_p^k} \frac{1}{p-k} \sum_{B \in
+  {\cal P}_k(V^{-j})} G(Y;X_j|B).
+\end{equation}
+Note that this generalization is valid without any further specific constraints
+on the impurity measure $i(Y|t)$.
+
+Let us now define as {\it irrelevant to $Y$ with respect to $V$} a
+variable $X_i$ for which, for all $B\subseteq V$,
+$G(Y;X_i|B)=0$ (i.e. a variable that neither affects impurity
+whatever the conditioning). From this definition, one can deduce the
+following property of an irrelevant variable $X_i$ (for all
+$B\subseteq V$ and $X_j\in V$):
+$$G(Y;X_j|B\cup\{X_i\})=G(Y;X_j|B).$$
+
+Indeed, by a simple application of previous definitions, we have:
+\begin{align}
+& G(Y;X_j|B)-G(Y;X_j|B\cup\{X_i\})  \nonumber \\
+& = i(Y|B)-i(Y|B\cup\{X_j\})-i(Y|B\cup\{X_i\})+i(Y|B\cup\{X_i,X_j\})\nonumber\\
+& =  i(Y|B)-i(Y|B\cup\{X_i\})-i(Y|B\cup\{X_j\})+i(Y|B\cup\{X_i,X_j\})\nonumber\\
+& =  G(Y;X_i|B)-G(Y;X_i|B\cup\{X_j\})\nonumber\\
+& =  0,
+\end{align}
+where the last step is a consequence of the irrelevance of $X_i$.
+
+Using this property, the proofs of Lemma~\ref{lemma:adding-irrelevant}
+and Theorem~\ref{thm:relevant} can be straightforwardly adapted, showing that,
+in the general case also, the MDI importance of a variable is
+invariant with respect to the removal or the addition of irrelevant
+variables.
+
+Given the general definition of irrelevance, all irrelevant variables
+also get zero MDI importance but, without further constraints on the
+impurity measure $i$, there is no guarantee that all relevant
+variables (defined as all variables that are not irrelevant) will get
+a non zero importance. This property, and in consequence
+theorem~\ref{thm:irrelevant}, will be however satisfied as soon as the
+impurity measure is such that $G(Y;X_j|B)\geq 0$ for all $X_j\in V$
+and for all $B\subseteq V$.
+
+Previous developments show that all results presented in this chapter remain valid for any impurity measure leading to non negative
+impurity decreases, provided that the definition of variable
+irrelevance is adapted to this impurity measure. The choice of a
+specific impurity measure should thus be guided by the meaning one
+wants to associate to irrelevance.
+
+Measuring impurity with Shannon entropy, i.e., taking $i(Y|t)=H(Y|t)$
+and $i(Y|B=b)=H(Y|B=b)$, one gets back all results in the paper. Given the
+properties of conditional mutual information, irrelevance for this
+impurity measure strictly coincides with conditional independence: a
+variable $X_i$ is irrelevant to $Y$ with respect to $V$ if and only if
+$X_i\perp Y|B$ for all $B\subseteq V$.
+
+A common alternative to Shannon entropy for growing classification
+trees is Gini index (or entropy), which, in the finite and infinite
+sample cases, is written:
+\begin{align}
+i(Y|t)&= -\sum_j p(j|t) (1-p(j|t))\\
+i(Y|B=b)&= -\sum_j P(Y=j|B=b) (1-P(Y=j|B=b)).
+\end{align}
+Like Shannon entropy, this measure leads to non negative impurity
+decreases and the corresponding notion of irrelevance is also directly
+related to conditional independence.
+
+The most common impurity measure for regression is variance, which, in
+the finite and infinite sample cases, is written:
+\begin{align}
+i(Y|t)&=\frac{1}{N_t} \sum_{i\in t} (y_i-\frac{1}{N_t} \sum_{i\in t} y_i)^2\\
+i(Y|B=b)&=E_{Y|B=b}\{(Y-E_{Y|B=b}\{Y\})^2\}.
+\end{align}
+Variance can only decrease as a consequence of a split and therefore,
+Theorem~\ref{thm:irrelevant} is also valid for this impurity measure,
+meaning that only irrelevant variables will get a zero variance
+reduction. Note however that with this impurity measure, irrelevance
+is not directly related to conditional independence, as some variable
+$X_i$ can be irrelevant in the sense of our definition and still
+affects the distribution of output values.
+
+
+\subsection{Pruning and random subspaces}
+
+In sections~\ref{sec:6:importances} and \ref{sec:6:variable-relevance}, we
+considered totally randomized trees that were fully developed, i.e. until all
+$p$ variables were used within each branch. When totally randomized trees are
+developed only up to some smaller depth $q \leq p$, we show in
+Proposition~\ref{proposition:pruning} that the variable importances as computed
+by these trees is limited to the $q$ first terms of Equation~\ref{eqn:imp-full}.
+We then show in Proposition~\ref{proposition:imp-subspaces} that these
+latter importances are actually the same as when each tree of the ensemble is
+fully developed over a random subspace~\citep{ho:1998} of $q$ variables
+drawn prior to its construction.
+
+\begin{proposition}\label{proposition:pruning}
+  The importance of $X_j \in V$ for $Y$ as computed with an
+  infinite ensemble of pruned totally randomized trees built up to depth $q \leq p$ and an
+infinitely large training sample is:
+  \begin{equation}\label{eqn:imp-pruning}
+  \text{Imp}(X_j)=\sum_{k=0}^{q-1} \frac{1}{C_p^k} \frac{1}{p-k} \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B)
+  \end{equation}
+\end{proposition}
+
+\begin{proof}
+The proof of Theorem~\ref{thm:imp} can be directly adapted to prove
+Proposition~\ref{proposition:pruning}. If the recursive procedure is stopped at
+depth $q$, then it means that $B(t)$ may include up to $q-1$ variables, which is
+strictly equivalent to summing from $k=0$ to $q-1$ in the outer sum of
+Equation~\ref{eqn:imp-full}.
+\end{proof}
+
+\begin{proposition}\label{proposition:imp-subspaces}
+  The importance of $X_j \in V$ for $Y$ as computed with an infinite ensemble   of
+pruned totally randomized trees built up to depth $q \leq p$ and an infinitely
+large training sample is identical to the importance as computed  for $Y$ with an
+infinite ensemble of fully developed totally randomized trees built on random
+subspaces of $q$ variables drawn from $V$.
+\end{proposition}
+
+\begin{proof}
+Let us define a random subspace of size $q$ as a random subset $V_S \subseteq V$
+such that $|V_S|=q$. By replacing $p$ with $q$ in Equation~\ref{eqn:imp-full}
+(since each tree is built on $q$ variables) and adjusting by the probability
+$$\frac{C^{q-k-1}_{p-k-1}}{C^q_p}$$ of having selected $X_j$ and the $k$ variables in
+the branch when drawing $V_S$ prior to the construction of the tree, it comes:
+
+\begin{equation}
+\text{Imp}(X_j)=\sum_{k=0}^{q-1} \frac{C^{q-k-1}_{p-k-1}}{C^q_p} \frac{1}{C_q^k} \frac{1}{q-k} \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B)
+\end{equation}
+
+The multiplicative factor in the outer sum can then be simplified as follows:
+\begin{align}
+\frac{C^{q-k-1}_{p-k-1}}{C^q_p} \frac{1}{C_q^k} \frac{1}{q-k} &= \frac{\frac{(p-k-1)!}{(p-k)!(q-k-1)!}}{\frac{p!}{(p-q)!q!}} \frac{1}{C_q^k} \frac{1}{q-k}\nonumber\\
+&= \frac{(p-k-1)!q!}{(q-k-1)!p!} \frac{1}{C_q^k} \frac{1}{q-k} \nonumber\\
+&= \frac{q(q-1) ... (q-k)}{p(p-1) ... (p-k)} \frac{1}{C_q^k} \frac{1}{q-k}\nonumber\\
+&= \frac{q(q-1) ... (q-k)}{p(p-1) ... (p-k)} \frac{k!(q-k)!}{q!} \frac{1}{q-k}\nonumber\\
+&= \frac{1}{p(p-1) ... (p-k)} \frac{k!(q-k)!}{(q-k-1)!} \frac{1}{q-k}\nonumber\\
+&= \frac{k!}{p(p-1) ... (p-k)}\nonumber \\
+&= \frac{k!(p-k)!}{p!} \frac{1}{p-k} \nonumber\\
+&= \frac{1}{C^k_p} \frac{1}{p-k} \nonumber\\
+\end{align}
+which  yields the same importance as in Proposition~\ref{proposition:pruning} and proves the
+proposition.
+\end{proof}
+
+As long as $q  \geq r $ (where $r$ denotes the number of relevant variables in
+$V$), it can easily be shown that all relevant variables will still obtain a
+strictly positive importance, which will however differ in general from the
+importances computed by fully grown totally randomized trees built over all
+variables.  Also, each irrelevant variable of course keeps an importance equal
+to zero, which means that, in asymptotic conditions, these pruning and random
+subspace methods would still allow us identify the relevant  variables, as long
+as we have a good upper bound $q$ on $r$.
+
+\subsection{Non-totally randomized trees}
+\label{sec:ntrt}
+
+In our analysis in the previous sections, trees are built totally at random and
+hence do not directly relate to those built in Random
+Forest~\citep{breiman:2001} or in Extremely Randomized
+Trees~\citep{geurts:2006}. To better understand the importances as computed by
+those algorithms,  let us consider a close variant of totally randomized trees:
+at each node $t$, let us instead draw uniformly at random $1 \leq K \leq p$
+variables  and let us choose the one that maximizes $\Delta i(t)$. As
+previously, $t$ is split into as many subtrees as the cardinality of the chosen
+variable. Asymptotically, for binary variables, this variant exactly matches
+Random Forests and Extremely Randomized Trees. For variables with a larger
+cardinality, the correspondance no longer exactly holds but the trees still
+closely relate. Notice that, for $K=1$, this procedure amounts to building
+ensembles of  totally randomized trees as defined before, while, for $K=p$, it
+amounts to building classical single trees in a deterministic way.
+
+First, the importance of  $X_j \in V$ as computed with an infinite ensemble of
+such randomized trees is not the same as Equation~\ref{eqn:imp-full}. For $K>1$,
+masking effects indeed appear: at $t$, some variables are never selected
+because there always is some other variable for which $\Delta i(t)$ is larger.
+Such effects tend to pull the best variables  at the top of the trees and to
+push the others at the leaves.  As a result, the importance of a variable no
+longer decomposes into a sum including all $I(X_j;Y|B)$ terms. The
+importance of the best variables decomposes into a sum of their mutual
+information alone or conditioned only with the best others -- but not
+conditioned with all variables since they no longer ever appear at the bottom of
+trees. By contrast, the importance of the least promising variables now
+decomposes into a sum of their mutual information conditioned only with all
+variables -- but not alone or conditioned with a couple of others since they no
+longer ever appear at the top of trees. In other words, because of the guided
+structure of the trees, the importance of $X_j$ now takes into account only some
+of the conditioning sets $B$, which may over- or underestimate its overall
+relevance.
+
+To make things clearer, let us consider a simple example. Let $X_1$ perfectly explains $Y$
+ and let $X_2$ be a slightly noisy copy of $X_1$ (i.e., $I(X_1;Y)
+\approx I(X_2;Y)$, $I(X_1;Y|X_2)=\epsilon$ and $I(X_2;Y|X_1)=0$). Using totally
+randomized trees, the importances of $X_1$ and $X_2$ are nearly equal -- the
+importance of $X_1$ being slightly higher than the importance of $X_2$:
+\begin{align}
+\text{Imp}(X_1) &= \frac{1}{2} I(X_1;Y) + \frac{1}{2} I(X_1;Y|X_2) = \frac{1}{2} I(X_1;Y) + \frac{\epsilon}{2}\\
+\text{Imp}(X_2) &= \frac{1}{2} I(X_2;Y) + \frac{1}{2} I(X_2;Y|X_1) = \frac{1}{2} I(X_2;Y) + 0
+\end{align}
+In non-totally randomized trees, for $K=2$, $X_1$ is always selected at the root
+node and $X_2$ is always used in its children. Also, since $X_1$ perfectly
+explains $Y$, all its children are pure and the reduction of entropy when
+splitting on $X_2$ is null. As a result, $text{Imp}_{K=2}(X_1) = I(X_1;Y)$ and
+$text{Imp}_{K=2}(X_2) = I(X_2;Y|X_1) = 0$. Masking effects are here
+clearly visible: the true importance of $X_2$ is masked by $X_1$ as if $X_2$
+were irrelevant, while it is only a bit less informative than $X_1$.
+
+As a direct consequence of the example above, for $K>1$, it is no longer true
+that a variable is irrelevant if and only if its importance is zero. In the same
+way, it can also be shown that the importances become dependent on the number of
+irrelevant variables. Let us indeed consider the following counter-example: let
+us add in the previous example an irrelevant variable $X_i$ with respect to
+$\{X_1, X_2\}$ and let us keep $K=2$. The probability of selecting $X_2$ at the
+root node now becomes positive, which means that $\text{Imp}_{K=2}(X_2)$ now includes
+$I(X_2;Y)>0$ and is therefore strictly larger than the importance computed
+before. For $K$ fixed, adding irrelevant variables dampens masking effects,
+which thereby makes importances indirectly dependent on the number of irrelevant
+variables.
+
+In conclusion, the importances as computed with totally randomized trees
+exhibit properties that do not possess, by extension, neither random forests nor
+extra-trees. With totally randomized trees, the importance of
+$X_j$ only depends on the relevant variables and is 0 if and only if $X_j$ is
+irrelevant. As we have shown, it may no longer be the case for $K>1$.
+Asymptotically, the use of totally randomized trees for assessing the importance of
+a variable may therefore be more appropriate. In a finite setting (i.e., a
+limited number of samples and a limited number of trees), guiding the choice of
+the splitting variables remains however a sound strategy. In such a case,
+$I(X_j;Y|B)$ cannot be measured neither for all $X_j$ nor for all $B$. It is
+therefore  pragmatic to promote those that look the most promising -- even if
+the resulting importances may be biased.
 
 
 \section{Illustration}
