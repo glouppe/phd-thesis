@@ -972,10 +972,14 @@ terms.  For small values of $K$, random effects are strong, leading to high
 bias and low variance. By contrast, for larger values of $K$, random effects
 are less important, reducing bias but increasing variance.   For both methods,
 too small a value of $K$ appears however to lead to a too large increase of
-bias, for which averaging is not able to compensate. For RF, the
-optimal trade-off is at $K=8$. For ETs, the
-optimal trade-off is at $K=10$, suggesting that random thresholds $v$ provide
-by themselves enough randomization on this problem.
+bias, for which averaging is not able to compensate. For RF, the optimal
+trade-off is at $K=8$, which indicates that bagging and random variable selection are
+here complementary with regard to the level of randomness injected into the
+trees. Indeed, using bagging only (at $K=10$) for randomizing the construction
+of the trees yield results that are slighlty worse than when both techniques
+are combined. For ETs, the optimal trade-off is at $K=10$, suggesting that
+random thresholds $v$ provide by themselves enough randomization on this
+problem.
 
 The right plot of Figure~\ref{fig:correlation} illustrates the (averaged)
 correlation coefficient $\rho(\mathbf{x})$ between the predictions of two
