@@ -96,13 +96,14 @@ rest of this text.
 
 In addition to MDI, \cite{breiman:2001,breiman:2002} also proposed to evaluate
 the importance of a variable $X_j$ by measuring the \textit{Mean Decrease
-Accuracy} (MDA) of the forest when the values of $X_j$ are randomly permuted in
-the out-of-bag samples. For that reason, this
-latter measure is also known as the \textit{permutation importance}. Formally,
-in regression, the permutation importance of $X_j$ is given as:
+Accuracy} (MDA) or, equivalently, by measuring the \textit{Mean Increase Error},
+of the forest when the values of $X_j$ are randomly permuted in the out-of-bag
+samples. For that reason, this latter measure is also known as the
+\textit{permutation importance}. Formally, in regression, the permutation
+importance of $X_j$ is given as:
 \begin{align}\label{eq:mda}
-\text{Imp}(X_j) &= \frac{1}{N} \sum_{(\mathbf{x}_i,y_i) \in {\cal L}} L(\frac{1}{M^{-i}} \sum_{l=1}^{M^{-i}} \varphi_{{\cal L}^{m_{k_l}}}(\mathbf{x}_i), y_i) \\ \nonumber
-                &\quad - \frac{1}{N} \sum_{(\mathbf{x}_i^\prime,y_i) \in \pi_j({\cal L})} L(\frac{1}{M^{-i}} \sum_{l=1}^{M^{-i}} \varphi_{{\cal L}^{m_{k_l}}}(\mathbf{x}_i^\prime), y_i)
+\text{Imp}(X_j) =  \frac{1}{N} \Bigg[ &\sum_{(\mathbf{x}_i^\prime,y_i) \in \pi_j({\cal L})} L(\frac{1}{M^{-i}} \sum_{l=1}^{M^{-i}} \varphi_{{\cal L}^{m_{k_l}}}(\mathbf{x}_i^\prime), y_i) \nonumber \\
+&-\sum_{(\mathbf{x}_i,y_i) \in {\cal L}} L(\frac{1}{M^{-i}} \sum_{l=1}^{M^{-i}} \varphi_{{\cal L}^{m_{k_l}}}(\mathbf{x}_i), y_i) \Bigg]
 \end{align}
 where $\pi_j({\cal L})$ denotes a replicate of ${\cal L}$ in which in the
 values of $X_j$ have been randomly permuted. For classification, the
@@ -112,8 +113,9 @@ replaced with the class which is the most likely, as computed from the out-of-ba
 class probability estimates. Its rationale is that randomly permuting the
 input variable $X_j$ should break its association with the response $Y$. Therefore,
 if $X_j$ is in fact associated to $Y$, permuting its values should also result
-in a substantial decrease of accuracy, as here measured by the difference between
-the out-of-bag estimates of the generalization error.
+in a substantial increase of error, as here measured by the difference between
+the out-of-bag estimates of the generalization error. That is, the larger
+the increase of error, the more important the variable, and vice-versa.
 
 Thanks to popular machine learning
 softwares~\citep{breiman:2002,liaw:2002,pedregosa:2011},
