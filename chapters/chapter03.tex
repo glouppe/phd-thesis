@@ -1,5 +1,7 @@
 \chapter{Classification and regression trees}\label{ch:cart}
 
+% todo : 3.7
+
 \begin{remark}{Outline}
 In this chapter, we present a unified framework in which we detail (single)
 decision trees methods. In Section~\ref{sec:3:introduction}, we first give an
@@ -336,6 +338,18 @@ finding the best split $s^* \in {\cal Q}$ (Line~\ref{algo:induction:split} of
 Algorithm~\ref{algo:induction}). As we will see, the crux of the problem is in
 finding good splits and in knowing when to stop splitting.
 
+\begin{remark}{Lookahead search}
+Obviously, the greedy assumption on which Algorithm~\ref{algo:induction} relies
+may produce trees that are suboptimal. A natural improvement of the greedy
+strategy consists in lookahead search, which consists in evaluating the
+goodness of a split and of those deeper in the tree up to some fixed depth. As empirically
+investigated in \citep{murthy:1995}, such an approach is however not only more
+computationally intensive, it is also not significantly better than greedily
+induced decision trees. On average, decision trees grown in this way have
+indeed the same accuracy, while being however usually shorter. For this reason,
+more elaborate variants of Algorithm~\ref{algo:induction} are not considered
+within this work.
+\end{remark}
 
 \section{Assignment rules}
 \label{sec:3:assignment}
@@ -637,7 +651,7 @@ $t_R$. In the general case however, $s$ may divide ${\cal X}_t$ into more than
 two subsets, resulting in as many child nodes $t_{i_1}$, ..., $t_{i_N}$ as
 subsets (See Figure~\ref{fig:3:splits}).
 
-\begin{figure}[b]
+\begin{figure}
     \centering
     \includegraphics[scale=1.0]{figures/ch3_splits.pdf}
     \caption{Binary split of $t$ (left) and $N$-ary split of $t$ (right).}
