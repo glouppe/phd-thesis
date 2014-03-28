@@ -341,8 +341,8 @@ finding good splits and in knowing when to stop splitting.
 \begin{remark}{Lookahead search}
 Obviously, the greedy assumption on which Algorithm~\ref{algo:induction} relies
 may produce trees that are suboptimal. A natural improvement of the greedy
-strategy consists in lookahead search, which consists in evaluating the
-goodness of a split and of those deeper in the tree up to some fixed depth. As empirically
+strategy is lookahead search, which consists in evaluating the
+goodness of a split, but also of those deeper in the tree if this former split was effectively performed. As empirically
 investigated in \citep{murthy:1995}, such an approach is however not only more
 computationally intensive, it is also not significantly better than greedily
 induced decision trees. On average, decision trees grown in this way have
@@ -812,7 +812,7 @@ $i_R(t)$ has two serious defects:
       the same in both child nodes, that is if $\widehat{y}_t = \widehat{y}_{t_L} = \widehat{y}_{t_R}$.
 
       In our toy problem, splitting either on $X_1$, $X_2$ or $X_3$ produces
-      child nodes in which the majority class remains class $1$. As a result,
+      child nodes in which the majority class remains class $2$. As a result,
       $\Delta i(s, t_0) = 0$ for all three possible splits, as if they were
       equally bad, or as if no further improvement could be achieved.
 
@@ -829,7 +829,7 @@ $i_R(t)$ has two serious defects:
       if it does not reduce immediately the training error.
 \end{enumerate}
 
-\begin{figure}[h]
+\begin{figure}
     \centering
     \includegraphics[scale=1.0]{figures/ch3_goodness.pdf}
     \caption{Splitting on $X_1$ versus splitting on $X_3$.}
