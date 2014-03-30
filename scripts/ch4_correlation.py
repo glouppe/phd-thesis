@@ -13,7 +13,7 @@ def make(n_samples, n_features=5, noise_features=5, random_state=None):
 # from sklearn.datasets import make_friedman1 as make
 # # make = partial(make,)
 
-from sklearn.ensemble import RandomForestRegressor, ExtraTreesRegressor, PERTRegressor
+from sklearn.ensemble import RandomForestRegressor, ExtraTreesRegressor #, PERTRegressor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import mean_squared_error
 
