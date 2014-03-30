@@ -606,7 +606,9 @@ simultaneously maintaining a low bias in the randomized decision trees.
     models built from \textit{bootstrap samples}~\citep{efron:1979} ${\cal
     L}^m$ (for $m=1,\dots,M$) of the learning set ${\cal L}$. The $\{ {\cal
     L}^m \}$ form replicates of ${\cal L}$, each consisting of $N$ cases $(\mathbf{x},y)$, drawn
-    at random but \textit{with replacement} from ${\cal L}$. Note that even
+    at random but \textit{with replacement} from ${\cal L}$.
+
+    Note that even
     though $|{\cal L}|=|{\cal L}^m|=N$, $37\%$ of the couples from ${\cal L}$
     are on average missing in the bootstrap replicates. Indeed, after $N$ draws
     with replacement, the probability of never have been selected is
@@ -640,7 +642,9 @@ simultaneously maintaining a low bias in the randomized decision trees.
     of input variables is typically very large, \citet{amit:1997} propose a
     randomized variant of the tree induction algorithm that consists in
     searching for the best split at each node over a random subsample of the
-    variables. Denoting $K \leq p$ (also known as \texttt{mtry} or
+    variables.
+
+    Denoting $K \leq p$ (also known as \texttt{mtry} or
     \texttt{max\_features}) the number of variables effectively considered at
     each node, this variant replaces Algorithm~\ref{algo:findsplit}
     with the following randomized alternative:
@@ -666,7 +670,7 @@ simultaneously maintaining a low bias in the randomized decision trees.
     When the output $Y$ can be explained in several ways, this randomized
     algorithm generates trees that are each structurally different, yet
     individually good. As result, bias usually increases only slightly, while
-    variance due to randomization can be cancelled out through averaging. The
+    the increased variance due to randomization can be cancelled out through averaging. The
     optimal trade-off between these quantities can otherwise be adjusted by
     tuning the value of $K$. As $K \to 1$, the larger the bias but the larger the
     variance of the individual models and hence the more effective the
@@ -679,7 +683,7 @@ simultaneously maintaining a low bias in the randomized decision trees.
     random subsets of variables~\citep{amit:1997}, \citet{ho:1998} proposes
     with the \textit{Random Subspace} (RS) method to build a \textit{decision
     forest} whose trees are grown on random subsets of the input variables
-    -- drawn once, prior to the construction of each tree, rather than on all $p$
+    -- drawn once, prior to the construction of each tree -- rather than on all $p$
     variables. As empirically evaluated at several
     occasions~\citep{ho:1998,panov:2007,louppe:2012}, the Random Subspace
     method is a powerful generic ensemble method that can achieve near state-of-the-art
@@ -713,7 +717,7 @@ simultaneously maintaining a low bias in the randomized decision trees.
     (ordered) variable to split on and the discretization threshold are chosen
     at random. More specifically, given a node $t$, the split variable $X_j$ is
     drawn at random using Algorithm~\ref{algo:findsplit:random} with $K=1$
-    while the cut-point $v$ is set inbetween two randomly drawn samples using
+    while the cut-point $v$ is set midway between two randomly drawn samples using
     the following procedure (instead of Algorithm~\ref{algo:findsplit:x_j}):
     \begin{algorithm}
     Draw a random split on $X_j$ that partitions ${\cal L}_t$.
@@ -735,7 +739,7 @@ simultaneously maintaining a low bias in the randomized decision trees.
     From a practical point of view, PERT is an easily coded and a very
     efficient ensemble method since there is no impurity criterion to evaluate
     when splitting the nodes of a tree. Regarding accuracy, experimental
-    comparisons in \citep{cutler:2001} show that PERT is often as good as
+    comparisons in \citep{cutler:2001} show that PERT is often nearly as good as
     Random Forests~\citep{breiman:2001}, while resulting however in random
     trees that are typically larger than  decision trees grown with
     less randomization. The simplicity of the method also allows for an amenable
