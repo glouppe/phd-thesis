@@ -12,6 +12,7 @@ show that this  characterization only depends on the relevant variables and
 then discuss these ideas in Section~\ref{sec:6:variants} in the context of
 variants closer to the Random Forest algorithm. Finally, we illustrate these
 results on an artifical problem in Section~\ref{sec:6:illustration}.
+\textit{The content of this chapter is based on previous work published in \citep{louppe:2013}.}
 \end{remark}
 
 An important task in many scientific fields is the prediction of  a response
@@ -36,7 +37,7 @@ tree-based variable importance measures. In this chapter, we aim at filling
 this gap and present a theoretical  analysis of the Mean Decrease Impurity
 importance derived from ensembles of randomized trees.
 
-\textit{The content of this chapter is based on previous work published in \citep{louppe:2013}.}
+
 
 % A forest of trees is impenetrable
 % as far as simple interpretations of its mechanims go~\citep{breiman:2001}.
@@ -102,8 +103,8 @@ samples. For that reason, this latter measure is also known as the
 \textit{permutation importance}. Formally, in regression, the permutation
 importance of $X_j$ is given as:
 \begin{align}\label{eq:mda}
-\text{Imp}(X_j) =  \frac{1}{N} \Bigg[ &\sum_{(\mathbf{x}_i^\prime,y_i) \in \pi_j({\cal L})} L(\frac{1}{M^{-i}} \sum_{l=1}^{M^{-i}} \varphi_{{\cal L}^{m_{k_l}}}(\mathbf{x}_i^\prime), y_i) \nonumber \\
-&-\sum_{(\mathbf{x}_i,y_i) \in {\cal L}} L(\frac{1}{M^{-i}} \sum_{l=1}^{M^{-i}} \varphi_{{\cal L}^{m_{k_l}}}(\mathbf{x}_i), y_i) \Bigg]
+\text{Imp}(X_j) &=  \mathbb{E}_{\pi_j} \Bigg\{ \frac{1}{N} \sum_{(\mathbf{x}_i^\prime,y_i) \in \pi_j({\cal L})} L(\frac{1}{M^{-i}} \sum_{l=1}^{M^{-i}} \varphi_{{\cal L}^{m_{k_l}}}(\mathbf{x}_i^\prime), y_i) \Bigg\} \nonumber  \\
+&\hookrightarrow - \frac{1}{N} \sum_{(\mathbf{x}_i,y_i) \in {\cal L}} L(\frac{1}{M^{-i}} \sum_{l=1}^{M^{-i}} \varphi_{{\cal L}^{m_{k_l}}}(\mathbf{x}_i), y_i)
 \end{align}
 where $\pi_j({\cal L})$ denotes a replicate of ${\cal L}$ in which in the
 values of $X_j$ have been randomly permuted. For classification, the
