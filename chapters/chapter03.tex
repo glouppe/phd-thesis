@@ -1271,13 +1271,44 @@ Algorithm~\ref{algo:findsplit:x_j} is then applied to find the best binary
 split on these ordered values.
 
 
-\section{Multi-output trees}
+\section{Multi-output decision trees}
 
-\todo{}
+Up to now, we have assumed that the response was modeled as a single target
+variable $Y$. In some contexts however, the goal may be to predict several
+output values $\mathbf{y} = (y_1, \dots, y_q) \in {\cal Y}_1 \times \dots
+\times {\cal Y}_q$ for the same input $\mathbf{x}$. A famous example of such
+multi-objective task is multi-label classification (see
+\citep{tsoumakas:2007}), in which a sample $\mathbf{x}$ can be assigned to
+multiple binary labels $Y_k$ (for $k = 1, \dots, q$). Another example is image
+annotation, in which the goal is to annotate (i.e., classify) every pixel of an
+image  in order to identify regions or objects (see \citep{zhang:2012}).
 
-% multi-objective regression trees
-% https://dtai.cs.kuleuven.be/clus/publications.html
+The most straightforward strategy to solve the multi-objective task is to build
+an independent and separate model for each the $q$ output variables $Y_k$.
+Distinctively, decision trees offer an alternative strategy which consists in
+learning a single \textit{multi-output} (or \textit{multi-objective}) model,
+capable of predicting all output variables at once. Algorithmically,  \textit
+{multi-output decision trees}~\citep{dumont:2007,kocev:2007} can easily be
+implemented on the basis of the induction procedure developed in this chapter,
+provided the following two changes:
+\begin{itemize}
+\item Leaves are labeled with output vectors $\mathbf{y}_t = (y_{t,1}, \dots, y_{t,q})$,
+      where each $y_{t,k}$ (for $k=1,\dots,q$) is computed using assignment rule
+      \ref{eqn:assignment-classification} in classification (resp. assignment
+      rule \ref{eqn:assignment-regression} in regression), as previously
+      done in single output decision trees.
 
-% présentation
-% structured learning
-% output kernel tree
+\item The impurity decrease of a split is computed as the average impurity decrease
+      over the $q$ output variables. Accordingly, splits are optimized
+      in order to improve node homogeneity with respect to all output variables,
+      thereby exploiting correlations between $Y_1, \dots, Y_q$ whenever possible.
+
+\end{itemize}
+
+The main advantage of multi-output decision trees is that dependencies between
+output variables can be taken into account, whereas building $q$ individual
+models cannot exploit correlations between these variables, which may in some
+cases affect the overall accuracy of the model. From a practical point of view,
+a second advantage is that building a single model is often much less
+computationally expensive than building $q$ different models, both from a time
+and space complexity point of view.
