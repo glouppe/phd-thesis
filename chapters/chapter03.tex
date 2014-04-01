@@ -720,11 +720,15 @@ simply reduces to the implementation of Equation~\ref{eqn:best-split-single}.
 
 While partitions of form~\ref{eqn:q:ordered} and \ref{eqn:q:categorical-cart}
 certainly constitute the most common types of splits, alternatives proposed
-over the years in the literature are worth mentioning. In ID3,
-\citet{quinlan:1986} replaces binary splits on categorical variables with
-exhaustive splits. That is, if ${\cal X}_j$ counts $k$ different values, then
+over the years in the literature are worth mentioning. In ID3 and C4.5,
+\citet{quinlan:1986,quinlan:1993} replaces binary splits on categorical variables with
+multiway splits. That is, if ${\cal X}_j$ counts $k$ different values, then
 splitting on $X_j$ divides ${\cal X}_t$ into $k$ child nodes -- one for each
-value of the variable. In oblique decision trees, \citet{heath:1993} propose to
+value of the variable. In our framework, $Q(X_j)$ therefore reduces to the singleton
+\begin{equation}
+Q(X_j) = \{ (\{\mathbf{x} | x_j = v\} | v \in {\cal X}_j) \}.
+\end{equation}
+In oblique decision trees, \citet{heath:1993} propose to
 replace axis-parallel cutting hyperplanes with hyperplanes of any orientation,
 resulting into smaller, yet as accurate, decision trees. In this setting
 however, decomposition~\ref{eqn:best-best-split} no longer holds, hence making
@@ -732,7 +736,7 @@ the search of the best split often more computationally intensive. More
 recently, several authors (e.g., \citep{gama:2004,criminisi:2013,botta:2013})
 outlined more general frameworks in which splits are
 defined as multi-variate functions, thereby revisiting separating hyperplanes
-like in oblique trees or investigating more advanced models like quadratic
+like in oblique trees or investigating more advanced models like qua\-dratic
 surfaces or decision trees inside decision trees. Finally, in an another
 direction, several authors~\citep{adamo:1980,yuan:1995,olaru:2003} propose in fuzzy
 decision trees to redefine the notion of split as overlapping fuzzy sets
