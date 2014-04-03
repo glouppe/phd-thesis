@@ -368,7 +368,7 @@ ensemble is to average their predictions to form the final prediction:
 In classification, predictions are usually aggregated by considering the
 models in the ensemble as a committee  and then resorting to majority voting to
 form the final prediction:
-\begin{equation}
+\begin{equation}\label{eqn:4:majority-vote}
 \psi_{{\cal L},\theta_1,\dots,\theta_M}(\mathbf{x}) = \argmax_{c \in {\cal Y}}  \sum_{m=1}^M 1(\varphi_{{\cal L},\theta_m}(\mathbf{x})=c)
 \end{equation}
 When individual models provide class probability estimates $p_{{\cal L},\theta m}(Y=c|X=\mathbf{x})$,
@@ -390,6 +390,18 @@ reasons, and for the rest of this work, predictions in classification are now
 assumed to be combined through Equation~\ref{eqn:4:avg-estimate} unless
 mentioned otherwise.
 
+\begin{remark}{Condorcet's jury theorem}
+The rationale behind majority voting, as defined in Equation~\ref{eqn:4:majority-vote},
+finds its origins in the \textit{Condorcet's jury theorem}
+from the field of political science. Let consider a group of $M$ voters that
+wishes to reach a decision by majority vote. The theorem states that if each
+voter has an independent  probability $p > \tfrac{1}{2}$ of voting for the
+correct decision, then adding more voters increases the probability that the
+majority decision is correct. When $M \to \infty$, the probability that decision
+taken by group is correct approaches $1$. Conversely, if $p < \tfrac{1}{2}$, then
+each voter is more likely to vote incorrectly and increasing $M$ makes things
+worse.
+\end{remark}
 
 \subsection{Bias-variance decomposition of an ensemble}
 \label{sec:4:bias-variance:ensemble}

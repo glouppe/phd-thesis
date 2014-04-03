@@ -3,8 +3,8 @@
 \begin{remark}{Outline}
 In this chapter, we study the computational efficiency of tree-based ensemble
 methods. In sections~\ref{sec:5:time} and \ref{sec:5:space}, we first derive both time and space
-complexity of the induction algorithm, as presented in chapters~\ref{ch:cart}
-and \ref{ch:forest} for several randomized variants of the algorithm. In
+complexity of decision trees and random forests, as presented in chapters~\ref{ch:cart}
+and \ref{ch:forest} for several randomized variants. In
 Section~\ref{sec:5:impl}, we then discuss technical details that are critical
 for efficiently  implementing random forests. Finally, we benchmark in
 Section~\ref{sec:5:benchmarks} the random forest implementation developed
@@ -15,7 +15,7 @@ within this work and compare our solution with alternative implementations.
 \label{sec:5:time}
 
 The dominant objective of most machine learning methods is to find models that
-minimize some loss function. For models of equivalent accuracy however, a
+maximize accuracy. For models of equivalent performance however, a
 secondary objective is usually to minimize complexity. In this work, we
 distinguish between two definitions of complexity: \textit{time complexity} and
 \textit{space complexity}. Time complexity corresponds to the time, or
@@ -31,9 +31,9 @@ complexity of decision trees.
 
 Let $T(N)$ denotes the time complexity for building a decision tree from a
 learning set ${\cal L}$ of $N$ samples. From Algorithm~\ref{algo:induction},
-$T(N)$ corresponds to the number of operations required for finding a split $s$, partition the
+$T(N)$ corresponds to the number of operations required for finding a split $s$, partitioning the
 node samples into ${\cal L}_{t_L}$ and ${\cal L}_{t_R}$ and then recursively
-build two sub-trees respectively from $N_{t_L}$ and $N_{t_R}$ samples. Without
+building two sub-trees respectively from $N_{t_L}$ and $N_{t_R}$ samples. Without
 loss of generality, let us assume that the learning samples all have distinct
 input values, such that it is possible to build a fully developed decision tree
 where each leaf contains exactly one sample. Under this assumption, determining
@@ -47,10 +47,11 @@ T(N) = c(N) + T(N_{t_L}) + T(N_{t_R}),
 where $c(N)$ is the time complexity for finding a split $s$ and partitioning
 the node samples.
 
-% foreword sur l'hypothèse des splits
-% Secondary goal of minizizing time complexity among trees of same accuracy
+% foreword sur l'hypothèse des splits => en plys d'etre bonne niveau accuracy (cf consistence), ca permet une recherche de split qui est efficace
+
 
 \begin{remark}{Big $\BigO{.}$ notation}
+% https://en.wikipedia.org/wiki/Big_O_notation
 \end{remark}
 
 % Average Time Complexity of Decision Trees (Intelligent Systems ...
