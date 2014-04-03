@@ -1,10 +1,18 @@
 \chapter{Computational efficiency}\label{ch:complexity}
 
 \begin{remark}{Outline}
-\todo{}
+In this chapter, we study the computational efficiency of tree-based ensemble
+methods. In Section~\ref{sec:5:complexity}, we first derive both time and space
+complexity of the induction algorithm, as presented in chapters~\ref{ch:cart}
+and \ref{ch:forest}, for several randomized variants of the algorithm. In
+Section~\ref{sec:5:impl}, we then discuss technical details that are critical
+for efficiently  implementing random forests. Finally, we benchmark in
+Section~\ref{sec:5:benchmarks} the random forest implementation developed
+within work and compare our solution with alternative implementations.
 \end{remark}
 
 \section{Complexity analysis}
+\label{sec:5:complexity}
 
 % foreword sur l'hypothèse des splits
 % Secondary goal of minizizing time complexity among trees of same accuracy
@@ -42,8 +50,11 @@
 % by J Su - ‎2006 - ‎Cited by 39 - ‎Related articles
 % c4.5, multi-way splits
 
+% words on big-o notations
+
 
 \section{Implementation}
+\label{sec:5:impl}
 
 % foreword on scikit-learn
 
@@ -77,6 +88,7 @@
 
 
 \section{Benchmarks}
+\label{sec:5:benchmarks}
 
 % * Comparison of existing implementations
 %     - Experiments and/or implementation details
