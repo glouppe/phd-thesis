@@ -2,7 +2,7 @@
 
 \begin{remark}{Outline}
 In this chapter, we study the computational efficiency of tree-based ensemble
-methods. In Section~\ref{sec:5:complexity}, we first derive both time and space
+methods. In sections~\ref{sec:5:time} and \ref{sec:5:space}, we first derive both time and space
 complexity of the induction algorithm, as presented in chapters~\ref{ch:cart}
 and \ref{ch:forest} for several randomized variants of the algorithm. In
 Section~\ref{sec:5:impl}, we then discuss technical details that are critical
@@ -11,10 +11,41 @@ Section~\ref{sec:5:benchmarks} the random forest implementation developed
 within this work and compare our solution with alternative implementations.
 \end{remark}
 
-\section{Complexity analysis}
-\label{sec:5:complexity}
+\section{Time complexity}
+\label{sec:5:time}
 
+The dominant objective of most machine learning methods is to find models that
+minimize some loss function. For models of equivalent accuracy however, a
+secondary objective is usually to minimize complexity. In this work, we
+distinguish between two definitions of complexity: \textit{time complexity} and
+\textit{space complexity}. Time complexity corresponds to the time, or
+equivalently to the number of operations, required for building a model. The
+lower the time complexity, the shorter it takes for building models. Space
+complexity measures the space required for representing the model. In the case
+of decision trees, space complexity can be defined, e.g., as the average number
+of nodes or as the average depth the leaves. All other things being equal, the
+lower the space complexity, usually the more interpretable the model. In this
+section, we study the time complexity for building random forests.
+Section~\ref{sec:5:space} then outlines results regarding the space
+complexity of decision trees.
 
+Let $T(N)$ denote the time complexity for building a decision tree from a
+learning set ${\cal L}$ of $N$ samples. From Algorithm~\ref{algo:induction},
+$T(N)$ corresponds to the time required for finding a split $s$, partition the
+node samples into ${\cal L}_{t_L}$ and ${\cal L}_{t_R}$ and then recursively
+build two sub-trees respectively from $N_{t_L}$ and $N_{t_R}$ samples. Without
+loss of generality, let us assume that the learning samples all have distinct
+input values, such that it is possible to build a fully developed decision tree
+where each leaf contains exactly one sample. Under this assumption, determining
+time complexity therefore amounts to solve recurrence equation
+\begin{equation}
+\begin{cases}
+T(1) = {\cal O}(1) \\
+T(N) = c(N) + T(N_{t_L}) + T(N_{t_R}),
+\end{cases}
+\end{equation}
+where $c(N)$ is the time complexity for finding a split $s$ and partitioning
+the node samples.
 
 % foreword sur l'hypothèse des splits
 % Secondary goal of minizizing time complexity among trees of same accuracy
@@ -54,11 +85,11 @@ within this work and compare our solution with alternative implementations.
 
 % words on big-o notations
 
-% \section{Space complexity}
-% \label{sec:5:space}
+\section{Space complexity}
+\label{sec:5:space}
 
-% % discuter en fonction du nombre de feuilles
-% %                      de la profondeur moyenne
+% discuter en fonction du nombre de feuilles
+%                      de la profondeur moyenne
 
 \section{Implementation}
 \label{sec:5:impl}
