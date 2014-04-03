@@ -20,18 +20,18 @@ secondary objective is usually to minimize complexity. In this work, we
 distinguish between two definitions of complexity: \textit{time complexity} and
 \textit{space complexity}. Time complexity corresponds to the time, or
 equivalently to the number of operations, required for building a model. The
-lower the time complexity, the shorter it takes for building models. Space
+lower the time complexity, the shorter it takes for building models. By contrast, space
 complexity measures the space required for representing the model. In the case
 of decision trees, space complexity can be defined, e.g., as the average number
-of nodes or as the average depth the leaves. All other things being equal, the
+of nodes or as the average depth of the leaves. All other things being equal, the
 lower the space complexity, usually the more interpretable the model. In this
-section, we study the time complexity for building random forests.
+section, we first study the time complexity of random forests.
 Section~\ref{sec:5:space} then outlines results regarding the space
 complexity of decision trees.
 
-Let $T(N)$ denote the time complexity for building a decision tree from a
+Let $T(N)$ denotes the time complexity for building a decision tree from a
 learning set ${\cal L}$ of $N$ samples. From Algorithm~\ref{algo:induction},
-$T(N)$ corresponds to the time required for finding a split $s$, partition the
+$T(N)$ corresponds to the number of operations required for finding a split $s$, partition the
 node samples into ${\cal L}_{t_L}$ and ${\cal L}_{t_R}$ and then recursively
 build two sub-trees respectively from $N_{t_L}$ and $N_{t_R}$ samples. Without
 loss of generality, let us assume that the learning samples all have distinct
