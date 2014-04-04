@@ -2,34 +2,33 @@
 
 \begin{remark}{Outline}
 In this chapter, we study the computational efficiency of tree-based ensemble
-methods. In sections~\ref{sec:5:time} and \ref{sec:5:space}, we first derive both time and space
-complexity of decision trees and random forests, as presented in chapters~\ref{ch:cart}
-and \ref{ch:forest} for several randomized variants. In
-Section~\ref{sec:5:impl}, we then discuss technical details that are critical
-for efficiently  implementing random forests. Finally, we benchmark in
-Section~\ref{sec:5:benchmarks} the random forest implementation developed
-within this work and compare our solution with alternative implementations.
+methods. In sections~\ref{sec:5:complexity-fit} and \ref{sec:5:complexity-predict},
+we first derive and discuss the time complexity for building and
+predicting from decision trees and random forests, as presented in
+chapters~\ref{ch:cart} and \ref{ch:forest}. In Section~\ref{sec:5:impl}, we
+then discuss technical details that are critical for efficiently  implementing
+random forests. Finally, we benchmark in Section~\ref{sec:5:benchmarks} the
+random forest implementation developed within this work and compare our
+solution with alternative implementations.
 \end{remark}
 
-\section{Time complexity}
-\label{sec:5:time}
+\section{Complexity of building random forests}
+\label{sec:5:complexity-fit}
 
 The dominant objective of most machine learning methods is to find models that
-maximize accuracy. For models of equivalent performance however, a
-secondary objective is usually to minimize complexity. In this work, we
-distinguish between two definitions of complexity: \textit{time complexity} and
-\textit{space complexity}. Time complexity corresponds to the time, or
-equivalently to the number of operations, required for building a model. The
-lower the time complexity, the shorter it takes for building models. By contrast, space
-complexity measures the space required for representing the model. In the case
-of decision trees, space complexity can be defined, e.g., as the average number
-of nodes or as the average depth of the leaves. All other things being equal, the
-lower the space complexity, usually the more interpretable the model. In this
-section, we first study the time complexity of random forests.
-Section~\ref{sec:5:space} then outlines results regarding the space
-complexity of decision trees.
+maximize accuracy. For models of equivalent performance however, a secondary
+objective is usually to minimize complexity, given some definition of the
+concept of complexity. A first and immediate facet of complexity in decision
+trees and random forests is the time complexity for learning models, that is
+the number of operations required for building models from data.
 
-Let $T(N)$ denotes the time complexity for building a decision tree from a
+Given the exponential growth in the number of possible partitions of $N$
+samples, we chose in Section~\ref{sec:3:splitting-rules} to restrict splitting
+rules to binary splits defined on single variables. Not only this is sufficient
+for reaching good accuracy (as discussed in Section~\ref{sec:4:consistency}),
+it also allows for time complexity to effectively remain within reasonable bounds.
+
+Formally, let $T(N)$ denotes the time complexity for building a decision tree from a
 learning set ${\cal L}$ of $N$ samples. From Algorithm~\ref{algo:induction},
 $T(N)$ corresponds to the number of operations required for finding a split $s$, partitioning the
 node samples into ${\cal L}_{t_L}$ and ${\cal L}_{t_R}$ and then recursively
@@ -46,6 +45,7 @@ T(N) = c(N) + T(N_{t_L}) + T(N_{t_R}),
 \end{equation}
 where $c(N)$ is the time complexity for finding a split $s$ and partitioning
 the node samples.
+
 
 % foreword sur l'hypothèse des splits => en plys d'etre bonne niveau accuracy (cf consistence), ca permet une recherche de split qui est efficace
 
@@ -73,8 +73,8 @@ the node samples.
 % by J Su - ‎2006 - ‎Cited by 39 - ‎Related articles
 % c4.5, multi-way splits
 
-\section{Space complexity}
-\label{sec:5:space}
+\section{Complexity of making predictions}
+\label{sec:5:complexity-predict}
 
 % discuter en fonction du nombre de feuilles
 %                      de la profondeur moyenne
