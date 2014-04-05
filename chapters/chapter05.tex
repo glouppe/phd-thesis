@@ -3,24 +3,22 @@
 \begin{remark}{Outline}
 In this chapter, we study the computational efficiency of tree-based ensemble
 methods. In sections~\ref{sec:5:complexity-fit} and \ref{sec:5:complexity-predict},
-we first derive and discuss the time complexity for building and
-predicting from decision trees and random forests, as presented in
-chapters~\ref{ch:cart} and \ref{ch:forest}. In Section~\ref{sec:5:impl}, we
-then discuss technical details that are critical for efficiently  implementing
-random forests. Finally, we benchmark in Section~\ref{sec:5:benchmarks} the
-random forest implementation developed within this work and compare our
-solution with alternative implementations.
+we derive and discuss the time complexity of random forests, first for building them from data and then for making predictions. In
+Section~\ref{sec:5:impl}, we discuss technical details that are critical
+for efficiently  implementing random forests. Finally, we conclude in
+Section~\ref{sec:5:benchmarks} with benchmarks of the random forest implementation developed
+within this work and compare our solution with alternative implementations.
 \end{remark}
 
 \section{Complexity of building random forests}
 \label{sec:5:complexity-fit}
 
 The dominant objective of most machine learning methods is to find models that
-maximize accuracy. For models of equivalent performance however, a secondary
-objective is usually to minimize complexity, given some definition of the
-concept of complexity. A first and immediate facet of complexity in decision
-trees and random forests is the time complexity for learning models, that is
-the number of operations required for building models from data.
+maximize accuracy. For models of equivalent performance, a secondary objective
+is usually to minimize complexity. Complexity, however, has many facets. A
+first and immediate notion of complexity in decision trees and random forests is
+the \textit{time complexity} for learning models, that is the number of
+operations required for building models from data.
 
 Given the exponential growth in the number of possible partitions of $N$
 samples, we chose in Section~\ref{sec:3:splitting-rules} to restrict splitting
@@ -30,30 +28,56 @@ it also allows for time complexity to effectively remain within reasonable bound
 
 Formally, let $T(N)$ denotes the time complexity for building a decision tree from a
 learning set ${\cal L}$ of $N$ samples. From Algorithm~\ref{algo:induction},
-$T(N)$ corresponds to the number of operations required for finding a split $s$, partitioning the
-node samples into ${\cal L}_{t_L}$ and ${\cal L}_{t_R}$ and then recursively
+$T(N)$ corresponds to the number of operations required for splitting a node of $N$ samples and then recursively
 building two sub-trees respectively from $N_{t_L}$ and $N_{t_R}$ samples. Without
 loss of generality, let us assume that the learning samples all have distinct
 input values, such that it is possible to build a fully developed decision tree
 where each leaf contains exactly one sample. Under this assumption, determining
-time complexity therefore amounts to solve recurrence equation
+time complexity therefore amounts to solve the recurrence equation
 \begin{equation}
 \begin{cases}
-T(1) = \BigO{1} \\
+T(1) = O(1) \\
 T(N) = c(N) + T(N_{t_L}) + T(N_{t_R}),
 \end{cases}
 \end{equation}
-where $c(N)$ is the time complexity for finding a split $s$ and partitioning
-the node samples.
+where $c(N)$ is the time complexity for splitting a node of $N$ samples. For
+$N=1$, the node is necessarily pure, hence the constant time complexity
+$O(1)$. For $N>1$, $c(N)$ corresponds to the time complexity for finding a
+split $s$ and then partitioning the node samples into $N_{t_L}$ and $N_{t_R}$.
+Let us already note that this later operation requires at least to iterate over
+all $N$ samples, which sets a linear lower bound on time complexity within a
+node, i.e., $c(N)=\Omega(N)$. As previously outlined in
+algorithms~\ref{algo:findsplit}, \ref{algo:findsplit:x_j},
+\ref{algo:findsplit:random}, \ref{algo:findsplit:pert} and
+\ref{algo:findsplit:et}, random forest algorithms differ from each other
+in the way they find the split $s$ used to partition the node samples.
+Not only this is an impact on the accuracy of the resulting model, it also
+drives the time complexity for building the model.
 
 \begin{remark}{Big O notations}
 Time complexity analyzes the asymptotic behavior of an algorithm
 with respect to the size of its input and its hyper-parameters. In this way,
-big O notations are used to formally express terms that are asymptotically dominant
-with respect to the number of steps in the algorithm, discarding the smaller terms that can be neglected. Formally,
-we write that...
-% https://en.wikipedia.org/wiki/Big_O_notation
+big O notations are used to formally express an asymptotic upper bound on the
+growth rate of the number of steps in the algorithm. Formally,
+we write that
+\begin{equation}
+f(n) =  O(g(n)) \quad\text{if}\quad \exists c > 0, \exists n_0 > 0, \forall n > n_0, f(n) \leq c g(n).
+\end{equation}
+Similarly, big $\Omega$ notations are used to express an asymptotic lower
+bound on the growth rate of the number of steps in the algorithm. Formally,
+we write that
+\begin{equation}
+f(n) =  \Omega(g(n)) \quad\text{if}\quad \exists c > 0, \exists n_0 > 0, \forall n > n_0,  c g(n) \leq f(n).
+\end{equation}
+Consequently, if $f(n)$ is both $O(g(n))$ and $\Omega(g(n))$ then $f(n)$ is
+both lower bounded and upper bounded asymptotically by $g(n)$ (possibly for different constants),
+which we write using big $\Theta$ notations. That is,
+\begin{equation}
+f(n) = \Theta(g(n)) \quad\text{if}\quad  f(n) =  O(g(n)) = \Omega(g(n)).
+\end{equation}
 \end{remark}
+
+In PERT, finding a split $s$ ...
 
 % Average Time Complexity of Decision Trees (Intelligent Systems ...
 % ftp://icksie.no-ip.org/.../Average%20time%20complexity%20of%20decis...‎
@@ -111,7 +135,7 @@ we write that...
 %             - Pre-sorting + sample_mask
 %         > Multi-threading
 
-\subsection{Sparse data}
+% \subsection{Sparse data}
 
 
 \section{Benchmarks}

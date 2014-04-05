@@ -736,7 +736,7 @@ simultaneously maintaining a low bias in the randomized decision trees.
     drawn at random using Algorithm~\ref{algo:findsplit:random} with $K=1$
     while the cut-point $v$ is set midway between two randomly drawn samples using
     the following procedure (instead of Algorithm~\ref{algo:findsplit:x_j}):
-    \begin{algorithm}
+    \begin{algorithm}\label{algo:findsplit:pert}
     Draw a random split on $X_j$ that partitions ${\cal L}_t$.
     \textnormal{
     \begin{algorithmic}[1]
@@ -776,7 +776,7 @@ simultaneously maintaining a low bias in the randomized decision trees.
     random discretization thresholds. As a drop-in replacement of Algorithm~\ref{algo:findsplit:x_j},
     the authors propose the following simplistic but effective
     procedure for drawing splits at random:
-    \begin{algorithm}
+    \begin{algorithm}\label{algo:findsplit:et}
     Draw a random split on $X_j$ that partitions ${\cal L}_t$.
     \textnormal{
     \begin{algorithmic}[1]
