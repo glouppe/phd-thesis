@@ -10,7 +10,7 @@ Section~\ref{sec:5:benchmarks} with benchmarks of the random forest implementati
 within this work and compare our solution with alternative implementations.
 \end{remark}
 
-\section{Complexity of building random forests}
+\section{Complexity of the induction procedure}
 \label{sec:5:complexity-fit}
 
 The dominant objective of most machine learning methods is to find models that
@@ -28,7 +28,7 @@ it also allows for time complexity to effectively remain within reasonable bound
 
 Formally, let $T(N)$ denotes the time complexity for building a decision tree from a
 learning set ${\cal L}$ of $N$ samples. From Algorithm~\ref{algo:induction},
-$T(N)$ corresponds to the number of operations required for splitting a node of $N$ samples and then recursively
+$T(N)$ corresponds to the number of operations required for splitting a node of $N$ samples and then for recursively
 building two sub-trees respectively from $N_{t_L}$ and $N_{t_R}$ samples. Without
 loss of generality, let us assume that the learning samples all have distinct
 input values, such that it is possible to build a fully developed decision tree
@@ -41,18 +41,15 @@ T(N) = c(N) + T(N_{t_L}) + T(N_{t_R}),
 \end{cases}
 \end{equation}
 where $c(N)$ is the time complexity for splitting a node of $N$ samples. For
-$N=1$, the node is necessarily pure, hence the constant time complexity
-$O(1)$. For $N>1$, $c(N)$ corresponds to the time complexity for finding a
-split $s$ and then partitioning the node samples into $N_{t_L}$ and $N_{t_R}$.
-Let us already note that this later operation requires at least to iterate over
-all $N$ samples, which sets a linear lower bound on time complexity within a
-node, i.e., $c(N)=\Omega(N)$. As previously outlined in
-algorithms~\ref{algo:findsplit}, \ref{algo:findsplit:x_j},
-\ref{algo:findsplit:random}, \ref{algo:findsplit:pert} and
-\ref{algo:findsplit:et}, random forest algorithms differ from each other
-in the way they find the split $s$ for partitioning the node samples.
-Not only this is an impact on the accuracy of the resulting model, it also
-drives the time complexity of the induction procedure.
+$N=1$, the node is necessarily pure, hence the constant time complexity $O(1)$.
+For $N>1$, $c(N)$ corresponds to the time complexity for finding a split $s$
+and then partitioning the node samples into ${t_L}$ and ${t_R}$. This later
+operation requires at least to iterate over all $N$ samples, which sets a
+linear lower bound on time complexity within a node, i.e., $c(N)=\Omega(N)$. As
+for finding the split $s$, this can be achieved in several ways, as outlined in
+the previous chapters  for several randomized variants of the induction
+procedure. As we will see, not only this is an impact on the accuracy of the
+resulting model, it also drives the time complexity of the induction procedure.
 
 \begin{remark}{Big O notations}
 Time complexity analyzes the asymptotic behavior of an algorithm
@@ -61,23 +58,75 @@ big O notations are used to formally express an asymptotic upper bound on the
 growth rate of the number of steps in the algorithm. Formally,
 we write that
 \begin{equation}
-f(n) =  O(g(n)) \quad\text{if}\quad \exists c > 0, \exists n_0 > 0, \forall n > n_0, f(n) \leq c g(n).
+f(n) =  O(g(n)) \quad\text{if}\quad \exists c > 0, \exists n_0 > 0, \forall n > n_0, f(n) \leq c g(n),
 \end{equation}
+to express that  $f(n)$ is asymptotically upper bounded by $g(n)$, up to some neglectable constant factor $c$.
 Similarly, big $\Omega$ notations are used to express an asymptotic lower
 bound on the growth rate of the number of steps in the algorithm. Formally,
 we write that
 \begin{equation}
-f(n) =  \Omega(g(n)) \quad\text{if}\quad \exists c > 0, \exists n_0 > 0, \forall n > n_0,  c g(n) \leq f(n).
+f(n) =  \Omega(g(n)) \quad\text{if}\quad \exists c > 0, \exists n_0 > 0, \forall n > n_0,  c g(n) \leq f(n),
 \end{equation}
-Consequently, if $f(n)$ is both $O(g(n))$ and $\Omega(g(n))$ then $f(n)$ is
-both lower bounded and upper bounded asymptotically by $g(n)$ (possibly for different constants),
-which we write using big $\Theta$ notations. That is,
-\begin{equation}
-f(n) = \Theta(g(n)) \quad\text{if}\quad  f(n) =  O(g(n)) = \Omega(g(n)).
-\end{equation}
+to express that $f(n)$ is asymptoptically lower bounded by $g(n)$.
+% Consequently, if $f(n)$ is both $O(g(n))$ and $\Omega(g(n))$ then $f(n)$ is
+% both lower bounded and upper bounded asymptotically by $g(n)$ (possibly for different constants),
+% which we write using big $\Theta$ notations. That is,
+% \begin{equation}
+% f(n) = \Theta(g(n)) \quad\text{if}\quad  f(n) =  O(g(n)) = \Omega(g(n)).
+% \end{equation}
 \end{remark}
 
-In PERT, finding a split $s$ ...
+In the original CART induction procedure~\citep{breiman:1984}
+(Algorithms~\ref{algo:findsplit} and \ref{algo:findsplit:x_j}), finding a split
+$s$  requires, for each of the $p$ variables $X_j$ (for $j=1,\dots,p$), to sort
+the values $x_{i,j}$ of all $N$ node samples (for $i=1,\dots,N$) and then to
+iterate over these in order to find the best threshold $v$. The most costly
+operation is sorting, whose time complexity is at best $O(N \log N)$. As a
+result, the overall within-node complexity is $c(N) = (p N \log N)$. In a
+randomized tree as built with the Random Forest algorithm~\citep{breiman:2001}
+(RF, Algorithm~\ref{algo:findsplit:random}), the search of the best split $s$
+is carried out in the same way, but only on $K \leq p$ of the input variables,
+resulting in a within-node complexity $c(N) = O(K N \log N)$. In Extremely
+Randomized Trees~\citep{geurts:2006} (ETs, Algorithm~\ref{algo:findsplit:et}),
+discretization thresholds are drawn at random within the minimum and maximum
+node sample values of $X_j$, making sort no longer necessary. As such, the
+within-node complexity reduces to the time required for finding these lower and
+upper bounds, which can be done in linear time, hence $c(N)=O(KN)$. Finally, in
+Perfect Random Tree Ensembles~\citep{cutler:2001} (PERT,
+Algorithm~\ref{algo:findsplit:pert}), cut-points $v$ are set midway between
+two randomly drawn samples, which can be done in constant time, independently
+of the number $N$ of node samples. Yet, the within-node complexity is lower
+bounded by the time required for partitioning the node samples into ${t_L}$ and
+${t_R}$, hence $c(N)=O(N)$.
+
+Since both CART and PERT can respectively be considered as special cases of RF
+and ETs with regards to time complexity (i.e., for $K=p$ in CART, for $K=1$ in
+PERT), let us consider the overall complexity $T(n)$ when either
+$c(N)=O(KN\log N)$ or $c(N)=O(KN)$ (for $K=1,\dots,p$). Time complexity
+is studied in three cases:
+
+\begin{itemize}
+\item \textbf{Best case.} The induction procedure is the most effective
+      when node samples can always be partitioned into two balanced subsets of $\tfrac{N}{2}$
+      samples.
+
+\item \textbf{Worst case.} By contrast, the induction procedure is the least
+      effective when splits are unbalanced. In the worst case,
+      this results in splits that move a single sample in the first sub-tree and
+      all $N-1$ others in the second sub-tree.
+
+\item \textbf{Average case.} The average case corresponds to the average time
+      complexity, as taken over all possible learning sets ${\cal L}$ and
+      all random seeds $\theta$.  Since the analysis of this case is hardly
+      feasible without strong assumptions on the structure of the problem,
+      we consider instead the case where the sizes of the possible
+      partitions are all equiprobable.
+
+\end{itemize}
+
+
+
+
 
 % Average Time Complexity of Decision Trees (Intelligent Systems ...
 % ftp://icksie.no-ip.org/.../Average%20time%20complexity%20of%20decis...‎
@@ -98,7 +147,7 @@ In PERT, finding a split $s$ ...
 % by J Su - ‎2006 - ‎Cited by 39 - ‎Related articles
 % c4.5, multi-way splits
 
-\section{Complexity of making predictions}
+\section{Complexity of the prediction procedure}
 \label{sec:5:complexity-predict}
 
 % discuter en fonction du nombre de feuilles
@@ -106,6 +155,8 @@ In PERT, finding a split $s$ ...
 
 \section{Implementation}
 \label{sec:5:impl}
+
+\subsection{Scikit-Learn}
 
 % foreword on scikit-learn
 
@@ -118,6 +169,7 @@ In PERT, finding a split $s$ ...
 % découpage criterion/splitter/builder
 % growing vector
 % replace stack with priority queue
+% support for sample_weight => this reduce complexity
 
 \subsection{Splitting nodes}
 
