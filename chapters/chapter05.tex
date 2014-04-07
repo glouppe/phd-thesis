@@ -34,7 +34,7 @@ loss of generality, let us assume that the learning samples all have distinct
 input values, such that it is possible to build a fully developed decision tree
 where each leaf contains exactly one sample. Under this assumption, determining
 time complexity therefore amounts to solve the recurrence equation
-\begin{equation}
+\begin{equation}\label{eqn:complexity:rec}
 \begin{cases}
 T(1) = O(1) \\
 T(N) = c(N) + T(N_{t_L}) + T(N_{t_R}),
@@ -68,12 +68,12 @@ we write that
 f(n) =  \Omega(g(n)) \quad\text{if}\quad \exists c > 0, \exists n_0 > 0, \forall n > n_0,  c g(n) \leq f(n),
 \end{equation}
 to express that $f(n)$ is asymptoptically lower bounded by $g(n)$.
-% Consequently, if $f(n)$ is both $O(g(n))$ and $\Omega(g(n))$ then $f(n)$ is
-% both lower bounded and upper bounded asymptotically by $g(n)$ (possibly for different constants),
-% which we write using big $\Theta$ notations. That is,
-% \begin{equation}
-% f(n) = \Theta(g(n)) \quad\text{if}\quad  f(n) =  O(g(n)) = \Omega(g(n)).
-% \end{equation}
+Consequently, if $f(n)$ is both $O(g(n))$ and $\Omega(g(n))$ then $f(n)$ is
+both lower bounded and upper bounded asymptotically by $g(n)$ (possibly for different constants),
+which we write using big $\Theta$ notations. That is,
+\begin{equation}
+f(n) = \Theta(g(n)) \quad\text{if}\quad  f(n) =  O(g(n)) = \Omega(g(n)).
+\end{equation}
 \end{remark}
 
 In the original CART induction procedure~\citep{breiman:1984}
@@ -120,51 +120,128 @@ is studied in three cases:
       all random seeds $\theta$.  Since the analysis of this case is hardly
       feasible without strong assumptions on the structure of the problem,
       we consider instead the case where the sizes of the possible
-      partitions are all equiprobable.
+      partitions of a node are all equiprobable.
 
 \end{itemize}
 
+\begin{remark}{Master Theorem}
+Some of the results outlined in the remaining of this section make use of the
+Master Theorem~\citep{goodrich:2006}, which recall below to be self-contained.
+
 \begin{theorem}
-For $c(N)=O(K\log N)$, the time complexity for building a decision
+Let consider the recurrence equation
+\begin{equation}
+\begin{cases}
+T(1) = c & \text{if}\quad n < d\\
+T(n) = aT(\frac{n}{b}) + f(n) & \text{if}\quad n \geq d
+\end{cases}
+\end{equation}
+where $d \geq 1$ is an integer constant, $a > 0$, $c>0$ and $b>1$ are real constants, and
+$f(n)$ is a function that is positive for $n \geq d$.
+
+\begin{enumerate}
+\item If there is a small constant $\epsilon > 0$, such that $f(n)$ is $O(n^{\log_b a - \epsilon})$, then $T(n)$ is $\Theta(n^{\log_b a})$.
+\item If there is a constant $k \geq 0$, such that $f(n)$ is $O(n^{\log_b a} \log^k n)$, then $T(n)$ is $\Theta(n^{\log_b a} \log^{k+1} n)$.
+\item If there are small constants $\epsilon > 0$ and $\delta < 1$, such that $f(n)$ is $\Omega(n^{\log_b a + \epsilon})$ and $af(\tfrac{n}{b}) \leq \delta f(n)$, for $n \geq d$, then $T(n)$ is $\Theta(f(n))$.
+\end{enumerate}
+\end{theorem}
+\end{remark}
+
+\begin{theorem}\label{thm:6:best:knlogn}
+For $c(N)=O(K N\log N)$, the time complexity for building a decision
 tree in the best case is $O(K N \log^2 N)$.
 \end{theorem}
 
 \begin{proof}
+Since $O(K)=O(1)$, the dependency to $K$ in Equation~\ref{eqn:complexity:rec} can be factored out,
+thereby rewriting $T(N)$ as $O(K) T'(N)$, where $T'(N)$ is
+\begin{equation}
+\begin{cases}
+T'(1) = O(1) \\
+T'(N) = O(N\log N) + 2 T'(\frac{N}{2})
+\end{cases}
+\end{equation}
+in the best case. In this form, the second case of the Master Theorem applies for
+$a=2$, $b=2$ and $k=1$. Accordingly, $T'(N)=O(N\log^{k+1} N)=O(N\log^2 N)$ and $T(N) = O(K N\log^2 N)$ in the best case.
 \end{proof}
 
-\begin{theorem}
+\begin{theorem}\label{thm:6:best:kn}
 For $c(N)=O(K N)$, the time complexity for building a decision
 tree in the best case is $O(K N \log N)$.
 \end{theorem}
 
 \begin{proof}
+For $T(N) = O(K)T'(N)$, Equation~\ref{eqn:complexity:rec}
+can be rewritten in the best case as
+\begin{equation}
+\begin{cases}
+T'(1) = O(1) \\
+T'(N) = O(N) + 2 T'(\frac{N}{2})
+\end{cases}
+\end{equation}
+Again, the second case of the Master Theorem applies, this time for $a=2$, $b=2$ and $k=0$.
+Accordingly, $T'(N)=O(N\log^{k+1} N)=O(N\log N)$ and $T(N) = O(K N\log N)$ in the case case.
 \end{proof}
 
-\begin{theorem}
-For $c(N)=O(K\log N)$, the time complexity for building a decision
+\begin{theorem}\label{thm:6:worst:knlogn}
+For $c(N)=O(K N\log N)$, the time complexity for building a decision
 tree in the worst case is $O(K N^2 \log N)$.
 \end{theorem}
 
 \begin{proof}
+For $T(N) = O(K)T'(N)$, Equation~\ref{eqn:complexity:rec}
+can be rewritten in the worst case as
+\begin{equation}
+\begin{cases}
+T'(1) = O(1) \\
+T'(N) = O(N\log N) +  T'(1) + T'(N-1)
+\end{cases}
+\end{equation}
+It comes,
+\begin{align}
+T'(N) &= O(N\log N) + O(1) + T'(N-1) \nonumber \\
+      &= O(1) + \sum_{i=2}^N O(1) + O(i\log i) \nonumber \\
+      &= O(N) + \sum_{i=2}^N O(i\log i) \nonumber \\
+      &\leq O(N) + O(\log N) \sum_{i=2}^N O(i) \nonumber \\
+      &= O(N) + O(\log N) O(\frac{1}{2} (N-1)(N-2)) \nonumber \\
+      &= O(N^2 \log N)
+\end{align}
+As a result, $T(N) = O(K N^2 \log N)$ in the worst case.
 \end{proof}
 
-\begin{theorem}
+\begin{theorem}\label{thm:6:worst:kn}
 For $c(N)=O(K N)$, the time complexity for building a decision
 tree in the worst case is $O(K N^2)$.
 \end{theorem}
 
 \begin{proof}
+For $T(N) = O(K)T'(N)$, Equation~\ref{eqn:complexity:rec}
+can be rewritten in the worst case as
+\begin{equation}
+\begin{cases}
+T'(1) = O(1) \\
+T'(N) = O(N) +  T'(1) + T'(N-1)
+\end{cases}
+\end{equation}
+It comes,
+\begin{align}
+T'(N) &= O(N) + O(1) + T'(N-1) \nonumber \\
+      &= O(1) + \sum_{i=2}^N O(1+i) \nonumber \\
+      &= O(1) + O(\frac{1}{2} (N^2 + 3N - 4)) \nonumber \\
+      &= O(N^2)
+\end{align}
+As a result, $T(N) = O(K N^2)$ in the worst case.
 \end{proof}
 
-\begin{theorem}
-For $c(N)=O(K\log N)$, the time complexity for building a decision
+\begin{theorem}\label{thm:6:average:knlogn}
+For $c(N)=O(K N\log N)$, the time complexity for building a decision
 tree in the average case is $O(K N \log^2 N)$.
 \end{theorem}
 
 \begin{proof}
 \end{proof}
 
-\begin{theorem}
+\begin{theorem}\label{thm:6:average:kn}
 For $c(N)=O(K N)$, the time complexity for building a decision
 tree in the average case is $O(K N \log N)$.
 \end{theorem}
