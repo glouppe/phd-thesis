@@ -81,7 +81,7 @@ In the original CART induction procedure~\citep{breiman:1984}
 $s$  requires, for each of the $p$ variables $X_j$ (for $j=1,\dots,p$), to sort
 the values $x_{i,j}$ of all $N$ node samples (for $i=1,\dots,N$) and then to
 iterate over these in order to find the best threshold $v$. The most costly
-operation is sorting, whose time complexity is at best $O(N \log N)$. As a
+operation is sorting, whose time complexity is at worst $O(N \log N)$. As a
 result, the overall within-node complexity is $c(N) = (p N \log N)$. In a
 randomized tree as built with the Random Forest algorithm~\citep{breiman:2001}
 (RF, Algorithm~\ref{algo:findsplit:random}), the search of the best split $s$
@@ -106,16 +106,16 @@ $c(N)=O(KN\log N)$ or $c(N)=O(KN)$ (for $K=1,\dots,p$). Time complexity
 is studied in three cases:
 
 \begin{itemize}
-\item \textbf{Best case.} The induction procedure is the most effective
+\item \textit{Best case.} The induction procedure is the most effective
       when node samples can always be partitioned into two balanced subsets of $\tfrac{N}{2}$
       samples.
 
-\item \textbf{Worst case.} By contrast, the induction procedure is the least
+\item \textit{Worst case.} By contrast, the induction procedure is the least
       effective when splits are unbalanced. In the worst case,
       this results in splits that move a single sample in the first sub-tree and
       all $N-1$ others in the second sub-tree.
 
-\item \textbf{Average case.} The average case corresponds to the average time
+\item \textit{Average case.} The average case corresponds to the average time
       complexity, as taken over all possible learning sets ${\cal L}$ and
       all random seeds $\theta$.  Since the analysis of this case is hardly
       feasible without strong assumptions on the structure of the problem,
@@ -124,9 +124,53 @@ is studied in three cases:
 
 \end{itemize}
 
+\begin{theorem}
+For $c(N)=O(K\log N)$, the time complexity for building a decision
+tree in the best case is $O(K N \log^2 N)$.
+\end{theorem}
 
+\begin{proof}
+\end{proof}
 
+\begin{theorem}
+For $c(N)=O(K N)$, the time complexity for building a decision
+tree in the best case is $O(K N \log N)$.
+\end{theorem}
 
+\begin{proof}
+\end{proof}
+
+\begin{theorem}
+For $c(N)=O(K\log N)$, the time complexity for building a decision
+tree in the worst case is $O(K N^2 \log N)$.
+\end{theorem}
+
+\begin{proof}
+\end{proof}
+
+\begin{theorem}
+For $c(N)=O(K N)$, the time complexity for building a decision
+tree in the worst case is $O(K N^2)$.
+\end{theorem}
+
+\begin{proof}
+\end{proof}
+
+\begin{theorem}
+For $c(N)=O(K\log N)$, the time complexity for building a decision
+tree in the average case is $O(K N \log^2 N)$.
+\end{theorem}
+
+\begin{proof}
+\end{proof}
+
+\begin{theorem}
+For $c(N)=O(K N)$, the time complexity for building a decision
+tree in the average case is $O(K N \log N)$.
+\end{theorem}
+
+\begin{proof}
+\end{proof}
 
 % Average Time Complexity of Decision Trees (Intelligent Systems ...
 % ftp://icksie.no-ip.org/.../Average%20time%20complexity%20of%20decis...‎
