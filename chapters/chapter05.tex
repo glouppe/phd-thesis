@@ -239,6 +239,47 @@ tree in the average case is $O(K N \log^2 N)$.
 \end{theorem}
 
 \begin{proof}
+For $T(N) = O(K)T'(N)$, Equation~\ref{eqn:complexity:rec}
+can be rewritten in the average case as
+\begin{equation}
+\begin{cases}
+T'(1) = O(1) \\
+T'(N) = O(N\log N) +  \frac{1}{N-1} \sum_{i=1}^{N-1} T'(i) + T'(N-i).
+\end{cases}
+\end{equation}
+By symmetry and by multiplying both sides of the last equation by $(N-1)$, it comes
+\begin{equation}\label{eqn:6:average:knlogn:1}
+(N-1) T'(N) = O(N\log N)(N-1) +  2 \sum_{i=1}^{N-1} T'(i).
+\end{equation}
+For $N \geq 3$, we similarly have
+\begin{equation}\label{eqn:6:average:knlogn:2}
+(N-2) T'(N-1) = O((N-1) \log(N-1))(N-2) +  2 \sum_{i=1}^{N-2} T'(i).
+\end{equation}
+Subtracting Equation~\ref{eqn:6:average:knlogn:2} from \ref{eqn:6:average:knlogn:1},
+it comes after simplifications and division by $N(N-1)$:
+\begin{equation}
+\frac{T'(N)}{N} = \frac{T'(N-1)}{N-1} + O(\frac{2}{N} \log(N-1) + \log \frac{N}{N-1} ).
+\end{equation}
+Let us define $S(N) = \frac{T'(N)}{N}$. It comes,
+\begin{align}
+S(N) &= S(N-1) + O(\frac{2}{N} \log(N-1) + \log \frac{N}{N-1} ) \nonumber \\
+     &= O(1) + O(\sum_{i=2}^N \frac{2}{i} \log(i-1) + \log \frac{i}{i-1} ) \nonumber \\
+     &= O(1) + O(\log N) + O(2 \sum_{i=2}^N \frac{1}{i} \log(i-1) ) \nonumber \\
+     &\leq O(1) + O(\log N) + O(2 \log N) O(\sum_{i=2}^N \frac{1}{i} ) \nonumber \\
+     &= O(1) + O(\log N) + O(2 \log N) O(H_N - 1)
+     &= O(H_N \log N)
+\end{align}
+where $H_N$ is the $N$-th harmonic number. Using
+\begin{equation}
+H_N \approx \log N + \gamma + \frac{1}{2N} + O(\frac{1}{N^2})
+\end{equation}
+as approximation (where $\gamma$ is the Euler-Mascheroni constant), we have
+\begin{align*}
+T'(N) &= O(N H_N \log N) \nonumber \\
+      &= O(N (\log N + \gamma + \frac{1}{2N} + \frac{1}{N^2}) \log N  ) \nonumber \\
+    &= O(N \log^2 N)
+\end{align*}
+As a result, $T(N) = O(KN \log^2 N)$ in the average case.
 \end{proof}
 
 \begin{theorem}\label{thm:6:average:kn}
@@ -247,6 +288,44 @@ tree in the average case is $O(K N \log N)$.
 \end{theorem}
 
 \begin{proof}
+For $T(N) = O(K)T'(N)$, Equation~\ref{eqn:complexity:rec}
+can be rewritten in the average case as
+\begin{equation}
+\begin{cases}
+T'(1) = O(1) \\
+T'(N) = O(N) +  \frac{1}{N-1} \sum_{i=1}^{N-1} T'(i) + T'(N-i).
+\end{cases}
+\end{equation}
+By symmetry and by multiplying both sides of the last equation by $(N-1)$, it comes
+\begin{equation}\label{eqn:6:average:kn:1}
+(N-1) T'(N) = O(N)(N-1) +  2 \sum_{i=1}^{N-1} T'(i).
+\end{equation}
+For $N \geq 3$, we similarly have
+\begin{equation}\label{eqn:6:average:kn:2}
+(N-2) T'(N-1) = O(N-1)(N-2) +  2 \sum_{i=1}^{N-2} T'(i).
+\end{equation}
+Subtracting Equation~\ref{eqn:6:average:kn:2} from \ref{eqn:6:average:kn:1},
+it comes after simplifications and division by $N(N-1)$:
+\begin{equation}
+\frac{T'(N)}{N} = \frac{T'(N-1)}{N-1} + O(\frac{2}{N}).
+\end{equation}
+Let us define $S(N) = \frac{T'(N)}{N}$. It comes,
+\begin{align}
+S(N) &= S(N-1) + O(\frac{2}{N}) \nonumber \\
+     &= O(2 \sum_{i=1}^N \frac{1}{i} ) \nonumber \\
+     &= O(2 H_N)
+\end{align}
+where $H_N$ is the $N$-th harmonic number. Using
+\begin{equation}
+H_N \approx \log N + \gamma + \frac{1}{2N} + O(\frac{1}{N^2})
+\end{equation}
+as approximation (where $\gamma$ is the Euler-Mascheroni constant), we have
+\begin{align}
+T'(N) &= O(2 H_N N) \nonumber \\
+&= O(2 N \log N + 2 N\gamma + 1 + \frac{2}{N}) \nonumber \\
+&= O(N \log N).
+\end{align}
+As a result, $T(N) = O(KN \log N)$ in the average case.
 \end{proof}
 
 % Average Time Complexity of Decision Trees (Intelligent Systems ...
