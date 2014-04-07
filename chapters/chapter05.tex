@@ -256,17 +256,17 @@ For $N \geq 3$, we similarly have
 (N-2) T'(N-1) = O((N-1) \log(N-1))(N-2) +  2 \sum_{i=1}^{N-2} T'(i).
 \end{equation}
 Subtracting Equation~\ref{eqn:6:average:knlogn:2} from \ref{eqn:6:average:knlogn:1},
-it comes after simplifications and division by $N(N-1)$:
+it comes after simplifications and division of both sides by $N(N-1)$:
 \begin{equation}
 \frac{T'(N)}{N} = \frac{T'(N-1)}{N-1} + O(\frac{2}{N} \log(N-1) + \log \frac{N}{N-1} ).
 \end{equation}
-Let us define $S(N) = \frac{T'(N)}{N}$. It comes,
+Let us introduce $S(N) = \frac{T'(N)}{N}$. From the last equation, it then comes
 \begin{align}
 S(N) &= S(N-1) + O(\frac{2}{N} \log(N-1) + \log \frac{N}{N-1} ) \nonumber \\
      &= O(1) + O(\sum_{i=2}^N \frac{2}{i} \log(i-1) + \log \frac{i}{i-1} ) \nonumber \\
      &= O(1) + O(\log N) + O(2 \sum_{i=2}^N \frac{1}{i} \log(i-1) ) \nonumber \\
      &\leq O(1) + O(\log N) + O(2 \log N) O(\sum_{i=2}^N \frac{1}{i} ) \nonumber \\
-     &= O(1) + O(\log N) + O(2 \log N) O(H_N - 1)
+     &= O(1) + O(\log N) + O(2 \log N) O(H_N - 1) \nonumber \\
      &= O(H_N \log N)
 \end{align}
 where $H_N$ is the $N$-th harmonic number. Using
@@ -277,7 +277,7 @@ as approximation (where $\gamma$ is the Euler-Mascheroni constant), we have
 \begin{align*}
 T'(N) &= O(N H_N \log N) \nonumber \\
       &= O(N (\log N + \gamma + \frac{1}{2N} + \frac{1}{N^2}) \log N  ) \nonumber \\
-    &= O(N \log^2 N)
+    &= O(N \log^2 N).
 \end{align*}
 As a result, $T(N) = O(KN \log^2 N)$ in the average case.
 \end{proof}
@@ -305,11 +305,11 @@ For $N \geq 3$, we similarly have
 (N-2) T'(N-1) = O(N-1)(N-2) +  2 \sum_{i=1}^{N-2} T'(i).
 \end{equation}
 Subtracting Equation~\ref{eqn:6:average:kn:2} from \ref{eqn:6:average:kn:1},
-it comes after simplifications and division by $N(N-1)$:
+it comes after simplifications and division of both sides by $N(N-1)$:
 \begin{equation}
 \frac{T'(N)}{N} = \frac{T'(N-1)}{N-1} + O(\frac{2}{N}).
 \end{equation}
-Let us define $S(N) = \frac{T'(N)}{N}$. It comes,
+Let us introduce $S(N) = \frac{T'(N)}{N}$. From the last equation, it then comes
 \begin{align}
 S(N) &= S(N-1) + O(\frac{2}{N}) \nonumber \\
      &= O(2 \sum_{i=1}^N \frac{1}{i} ) \nonumber \\
@@ -327,6 +327,31 @@ T'(N) &= O(2 H_N N) \nonumber \\
 \end{align}
 As a result, $T(N) = O(KN \log N)$ in the average case.
 \end{proof}
+
+From Theorems~\ref{thm:6:best:knlogn}-\ref{thm:6:average:kn}, the total
+time complexity for building an ensemble of $M$ randomized trees can finally
+be derived, as summarized in Table~\ref{table:complexity-fit}.
+
+Building a single tree using the original CART algorithm requires between
+$O(pN\log^2 N)$ and $O(pN^2\log N)$ depending on the problem.
+
+\begin{table}
+    \centering
+    \begin{tabular}{| c | c c c |}
+    \hline
+         & \textit{Best case} & \textit{Worst case} & \textit{Average case}  \\
+    \hline
+    \hline
+    CART & $O(pN\log^2 N)$ & $O(pN^2\log N)$ & $O(pN\log^2 N)$ \\
+    Bagging & $O(Mp\widetilde{N}\log^2 \widetilde{N})$ & $O(Mp\widetilde{N}^2\log \widetilde{N})$ & $O(Mp\widetilde{N}\log^2 \widetilde{N})$  \\
+    RF & $O(MK\widetilde{N}\log^2 \widetilde{N})$ & $O(MK\widetilde{N}^2\log \widetilde{N})$ & $O(MK\widetilde{N}\log^2 \widetilde{N})$  \\
+    ETs & $O(MKN\log N)$ & $O(MKN^2)$ & $O(MKN\log N)$  \\
+    PERT & $O(MN\log N)$ & $O(MN^2)$ & $O(MN\log N)$  \\
+    \hline
+    \end{tabular}
+    \captionof{table}{Time complexity for building forests of randomized trees. $\widetilde{N} = 0.632 N$, due to the fact that bootstrap samples draw, on average, $63.2\%$ of unique samples.}
+    \label{table:complexity-fit}
+\end{table}
 
 % Average Time Complexity of Decision Trees (Intelligent Systems ...
 % ftp://icksie.no-ip.org/.../Average%20time%20complexity%20of%20decis...‎
