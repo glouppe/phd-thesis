@@ -341,6 +341,24 @@ the context of large datasets. Reassuringly, the analysis of the average case
 shows that pathological cases are not dominant and that, on average, complexity
 behaves as in the best case.
 
+\begin{table}
+    \centering
+    \begin{tabular}{| c | c c c |}
+    \hline
+         & \textit{Best case} & \textit{Worst case} & \textit{Average case}  \\
+    \hline
+    \hline
+    CART & $O(pN\log^2 N)$ & $O(pN^2\log N)$ & $O(pN\log^2 N)$ \\
+    Bagging & $O(Mp\widetilde{N}\log^2 \widetilde{N})$ & $O(Mp\widetilde{N}^2\log \widetilde{N})$ & $O(Mp\widetilde{N}\log^2 \widetilde{N})$  \\
+    RF & $O(MK\widetilde{N}\log^2 \widetilde{N})$ & $O(MK\widetilde{N}^2\log \widetilde{N})$ & $O(MK\widetilde{N}\log^2 \widetilde{N})$  \\
+    ETs & $O(MKN\log N)$ & $O(MKN^2)$ & $O(MKN\log N)$  \\
+    PERT & $O(MN\log N)$ & $O(MN^2)$ & $O(MN\log N)$  \\
+    \hline
+    \end{tabular}
+    \captionof{table}{Time complexity for building forests of $M$ randomized trees. $N$ denotes the number of samples in ${\cal L}$, $p$ the number of input variables and $K$ the number of variables randomly drawn at each node. $\widetilde{N} = 0.632 N$, due to the fact that bootstrap samples draw, on average, $63.2\%$ of unique samples.}
+    \label{table:complexity-fit}
+\end{table}
+
 As expected, the complexity of Bagging~\citep{breiman:1996b} is nearly $M$
 times as large as the complexity of building a single decision tree. By taking
 into account the fact that bagged decision trees are built on bootstrap replicates ${\cal L}^m$ that
@@ -364,37 +382,39 @@ is considered at each split. For $K=1$ however, ETs and PERT have identical
 time complexity.
 
 \begin{remark}{Presorting data in Random Forests}
+As shown above, sorting node samples at each split significantly impacts
+the overall complexity of the induction procedure. An alternative strategy is
+possible~\citep{breiman:2002} and consists in presorting the samples for all
+$p$ input variables before the construction of the tree. More specifically, let
+$i=1,\dots,\widetilde{N}$ denote the original indices of the unique input
+samples in ${\cal L}^m$. For each input variable $X_j$ (for $j=1,\dots,p$), the
+sorted indices $\sigma^j_1,\dots,\sigma^j_{\widetilde{N}}$, such that
+\begin{equation} x_{\sigma^j_1,j} \leq \dots \leq
+x_{\sigma^j_{\widetilde{N}},j}, \end{equation} can be computed in
+$O(p\widetilde{N}\log \widetilde{N})$. Given these indices, finding the best
+split at a node then simply amounts to iterate, in that order, over the
+samples $\smash{\sigma^j_1,\dots,\sigma^j_{\widetilde{N}}}$ (for all $K$ of the
+split variables $X_j$). Identifying the best split therefore reduces to
+$O(K\widetilde{N})$ instead of $O(K\widetilde{N}\log \widetilde{N})$.
+Partitioning the node samples into $t_L$ and $t_R$ then requires to partition
+all $p$ lists of sorted indices into $2p$ sublists of $\widetilde{N}_{t_L}$ and
+$\widetilde{N}_{t_R}$ sorted indices
+$\smash{\sigma^j_1,\dots,\sigma^j_{\widetilde{N}_{t_L}}}$ and
+$\smash{\sigma^j_1,\dots,\sigma^j_{\widetilde{N}_{t_R}}}$, which can be done in
+$O(p\widetilde{N})$. In total, the within-node complexity is
+\begin{equation}
+c(\widetilde{N}) = O(K\widetilde{N} + p\widetilde{N}) = O(p\widetilde{N}).
+\end{equation} Using this
+alternative strategy, the time complexity of RF for the best, the worst and the
+average cases is respectively $O(Mp\widetilde{N}\log \widetilde{N})$,
+$O(Mp\widetilde{N}^2)$ and $O(Mp\widetilde{N}\log \widetilde{N})$, as derived
+from theorems~\ref{thm:6:best:kn}, \ref{thm:6:worst:kn} and
+\ref{thm:6:average:kn} for $K=p$. Neglecting constant factors, the ratio between the two
+implementations is $O(\frac{p}{K\log \widetilde{N}})$, which might not necessarily
+lead to faster building times depending on $K$ and the size of the problem.
 \end{remark}
 
-% bonne complexité en général, assurée dans la plupart dans cas vu le average case
 
-% even if average is not exactly true, it gives a good approx
-% average case = best case
-
-% bagging
-% bagging -> rf => réduction de la complexité de K/p
-
-% rf => et => réduction de la complexité de N/(N~ log N)
-
-% pert is K times faster, but this may be too random
-
-\begin{table}
-    \centering
-    \begin{tabular}{| c | c c c |}
-    \hline
-         & \textit{Best case} & \textit{Worst case} & \textit{Average case}  \\
-    \hline
-    \hline
-    CART & $O(pN\log^2 N)$ & $O(pN^2\log N)$ & $O(pN\log^2 N)$ \\
-    Bagging & $O(Mp\widetilde{N}\log^2 \widetilde{N})$ & $O(Mp\widetilde{N}^2\log \widetilde{N})$ & $O(Mp\widetilde{N}\log^2 \widetilde{N})$  \\
-    RF & $O(MK\widetilde{N}\log^2 \widetilde{N})$ & $O(MK\widetilde{N}^2\log \widetilde{N})$ & $O(MK\widetilde{N}\log^2 \widetilde{N})$  \\
-    ETs & $O(MKN\log N)$ & $O(MKN^2)$ & $O(MKN\log N)$  \\
-    PERT & $O(MN\log N)$ & $O(MN^2)$ & $O(MN\log N)$  \\
-    \hline
-    \end{tabular}
-    \captionof{table}{Time complexity for building forests of $M$ randomized trees. $N$ denotes the number of samples in ${\cal L}$, $p$ the number of input variables and $K$ the number of variables randomly drawn at each node. $\widetilde{N} = 0.632 N$, due to the fact that bootstrap samples draw, on average, $63.2\%$ of unique samples.}
-    \label{table:complexity-fit}
-\end{table}
 
 
 \section{Complexity of the prediction procedure}
