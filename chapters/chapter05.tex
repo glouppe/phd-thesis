@@ -359,16 +359,17 @@ behaves as in the best case.
     \label{table:complexity-fit}
 \end{table}
 
-As expected, the complexity of Bagging~\citep{breiman:1996b} is nearly $M$
-times as large as the complexity of building a single decision tree. By taking
+As expected, the complexity of Bagging~\citep{breiman:1996b} is about $M$ times
+as large as the complexity of building a single decision tree. Yet, by taking
 into account the fact that bagged decision trees are built on bootstrap
 replicates ${\cal L}^m$ that contain about $63.2\%$ of unique samples,
 complexity can be expressed with respect to $\widetilde{N} = 0.632 N$ instead
 of $N$. From an implementation point of view, repeated occurences of the same
-input vector can indeed be accounted for using sample weights for the evaluation
-of the impurity criterion, hence effectively simulating a learning set of $N$
-samples from $\widetilde{N}$ unique samples. Assuming close constant factors,
-building a single bagged decision tree is therefore asymptotically
+input vector can indeed be accounted for using sample weights for the
+evaluation of the impurity criterion, thereby  simulating a learning set of $N$
+samples from $\widetilde{N}$ unique samples while reducing the effective size
+of the learning set. Assuming close constant factors, building a single bagged
+decision tree is therefore asymptotically
 \begin{equation}
 \lim_{N\to \infty} \frac{N\log^2 N}{0.632N \log^2 0.632N} = 1.582
 \end{equation}
@@ -398,7 +399,7 @@ x_{\sigma^j_{\widetilde{N}},j}, \end{equation} can be computed in
 $O(p\widetilde{N}\log \widetilde{N})$. Given these indices, finding the best
 split at a node then simply amounts to iterate, in that order, over the
 samples $\smash{\sigma^j_1,\dots,\sigma^j_{\widetilde{N}}}$ (for all $K$ of the
-split variables $X_j$). Identifying the best split therefore reduces to
+split variables $X_j$), which reduces complexity to
 $O(K\widetilde{N})$ instead of $O(K\widetilde{N}\log \widetilde{N})$.
 Partitioning the node samples into $t_L$ and $t_R$ then requires to partition
 all $p$ lists of sorted indices into $2p$ sublists of $\widetilde{N}_{t_L}$ and
@@ -435,14 +436,15 @@ Implementing decision trees and random forests involves many issues that are
 easily overlooked if not considered with care. In this section, we describe the
 random forest implementation that has been developed in this work and
 deployed within the Scikit-Learn machine learning
-library~\citep{pedregosa:2011}.
+library~\citep{pedregosa:2011}. \textit{The first part of this section is based
+on previous work published in \citep{buitinck:2013}.}
 
 \subsection{Scikit-Learn}
 
-The Scikit-Learn library, on which we have contributed in this work,
+The Scikit-Learn library, on which we have contributed during this work,
 provides a comprehensive suite of machine learning tools for Python. It extends
 this general-purpose programming language with machine learning
-operations~\citep{buitinck:2013}: learning algorithms, preprocessing tools,
+operations: learning algorithms, preprocessing tools,
 model selection procedures and a composition mechanism to produce complex ML
 workflows. The ambition of the library is to provide efficient implementations
 of well-established algorithms within a programming environment that is
@@ -451,15 +453,15 @@ is distributed under the simplified BSD license to encourage its use in both
 academia and industry.
 
 Scikit-Learn is designed to tie in with the set of numeric and scientific
-packages centered around the NumPy and SciPy libraries \citep{oliphant:2007,
-vanderwalt:2011}. NumPy augments Python with a contiguous numeric array
-datatype and fast array computing primitives, while SciPy extends it further
-with common numerical operations, either by implementing these in Python/NumPy
-or by wrapping existing C/C{}\verb!++!/Fortran code. The name ``scikit''
-derives from ``SciPy toolkit'' and is shared with \textit{scikit-image}.
-IPython \citep{perez:2007} and Matplotlib \citep{hunter:2007} complement SciPy
-to provide a \textsc{matlab}-like working environment suited for scientific
-use.
+packages centered around the NumPy~\citep{oliphant:2007} and
+SciPy~\citep{vanderwalt:2011} libraries. NumPy augments Python with a
+contiguous numeric array datatype and fast array computing primitives, while
+SciPy extends it further with common numerical operations, either by
+implementing these in Python/NumPy or by wrapping existing
+C/C{}\verb!++!/Fortran code. The name ``scikit'' derives from ``SciPy toolkit''
+and is shared with \textit{scikit-image}. IPython~\citep{perez:2007} and
+Matplotlib~\citep{hunter:2007} complement SciPy to provide a
+\textsc{matlab}-like working environment suited for scientific use.
 
 Since 2007, Scikit-Learn has been developed by more than a dozen core
 developers, mostly researchers in fields ranging from neuroscience to
@@ -472,17 +474,152 @@ code must follow specific quality guidelines, such as style consistency and
 unit-test coverage. Documentation and examples are required for all features,
 and major changes must pass code review by at least two other developers.
 
-Scikit-Learn's popularity can be gauged from various indicators such as the
-hundreds of citations in scientific publications, successes in various machine
-learning challenges (e.g., Kaggle), and statistics derived from our
-repositories and mailing list.  At the time of writing, the project is watched
-by 2700 people and forked 1400 times on GitHub; the mailing list receives more
-than 300 mails per month; version control logs
-show more than 200 unique contributors to the codebase and the online
-documentation receives 37000 unique visitors and 295000 pageviews per month.
-\\
+\subsubsection{Data representation}
 
-\noindent\todo{Discuss API?}
+Machine learning revolves around data, so good datastructures are paramount to
+designing software for it. In most tasks, data is modeled by a set of $p$
+numerical variables, so that a single \textit{sample} is a vector $\mathbf{x} \in
+\mathbb{R}^p$. A collection of such samples is naturally regarded as the rows
+in a matrix $\mathbf{X}$ of size $N \times p$. In the common case of supervised
+learning (classification, regression), we have an additional vector $y$ of
+length $N$ at training time and want an algorithm to produce such a $y$ for new
+data.
+
+Scikit-Learn's data representation is kept as close as possible to this matrix
+formulation: datasets are encoded as two-dimensional NumPy arrays or SciPy
+sparse matrices \citep{vanderwalt:2011}, while target vectors are flat
+arrays of numbers or strings. While these may seem rather unsophisticated when
+compared to more object-oriented constructs, such as the ones used by Weka
+\citep{hall:2009}, they allow us to rely on efficient NumPy and SciPy vector
+operations while keeping the code close to the textbook. Given the
+pervasiveness of NumPy and SciPy in many other scientific Python packages, many
+scientific users of Python will already be familiar with these data structures,
+and a collection of available data loading and conversion tools facilitate
+interoperability. For tasks where the inputs are text files or semi-structured
+objects, we provide \textit{vectorizer} objects that efficiently convert such
+data to the NumPy or SciPy formats.
+
+The public interface is oriented towards processing a batch of samples, rather
+than a single sample, in each API call. While classification and regression
+algorithms can make predictions for single samples, Scikit-Learn objects are
+not optimized for this use case. (The online learning algorithms in the library
+are intended to take mini-batches.) Batch processing makes optimal use of NumPy
+and SciPy by preventing the overhead inherent to Python function calls or due
+to per-element dynamic type checking. Although this might seem to be an
+artifact of the Python language, and therefore an implementation detail that
+leaks into the API, we argue that APIs should be designed so as not to tie a
+library to a suboptimal implementation strategy. Batch processing also enables
+fast implementations in lower-level languages, where memory hierarchy effects
+and the possibility of internal parallelization come into play.
+
+
+\subsubsection{Estimators}
+
+The \textit{estimator} interface is at the core of the library. It defines
+instantiation mechanisms of objects and exposes a \texttt{fit} method for
+learning a model from training data.  All supervised and unsupervised learning
+algorithms (e.g., for classification, regression or clustering) are offered as
+objects implementing this interface. Machine learning tasks like feature
+extraction and selection are also provided as estimators.
+
+Estimator initialization and actual learning are strictly separated, in a way
+that is similar to partial function application: an estimator is initialized
+from a set of named hyper-parameter values (e.g., the $C$ constant in support
+vector machines) and can be considered a function that maps these values to
+actual learning algorithms. The constructor does not see any actual data. All
+it does is attach the given parameters to the object. For the sake of model
+inspection, hyper-parameters are set as public attributes, which is especially
+important in model selection settings. Default hyper-parameter values are
+provided for all built-in estimators. These defaults are set to be relevant in
+many common situations in order to make estimators effective \textit{out-of-
+box}.
+
+Actual learning is performed by the \texttt{fit} method. This method is called
+with training data (e.g., supplied as two arrays \texttt{X\_train} and
+\texttt{y\_train} in supervised learning estimators). Its task is to run a
+learning algorithm and to determine model-specific parameters from the training
+data and set these as attributes on the estimator object. As a convention, the
+parameters learned by an estimator are exposed as public attributes with names
+suffixed with a trailing underscore (e.g., \texttt{coef\_} for the learned
+coefficients of a linear model), again to facilitate model inspection. In the
+partial application view, \texttt{fit} is a function from data to a model of
+that data. It always returns the estimator object it was called on, which now
+serves as a model and can be used to perform predictions or transformations of
+new data.
+
+The choice to let a single object serve dual purpose as estimator and model has
+been driven by usability and technical considerations. Having two coupled
+instances (an estimator object used as a factory, and a model object produced
+by the estimator) makes a library harder to learn and use. From the developer
+point of view, decoupling estimators from models would create parallel class
+hierarchies and increases the overall maintenance burden. A good reason for
+decoupling would be to make it possible to ship a model to a new environment
+where the full library cannot be installed. However, our inspectable setup
+where model parameters are documented public attributes and prediction formulas
+follow standard textbooks, goes a long way in solving this problem.
+
+To illustrate the initialize-fit sequence, let us consider a supervised
+learning task using a single decision tree. Given the API defined above,
+solving this problem is as simple as the following example.
+
+\vskip0.3cm
+\begin{pythoncode}
+from sklearn.tree import DecisionTreeClassifier
+clf = DecisionTreeClassifier(min_samples_split=5)
+clf.fit(X_train, y_train)
+\end{pythoncode}
+
+In this snippet, a \texttt{DecisionTreeClassifier} estimator is first
+initialized by setting the \texttt{min\_samples\_split} hyper-parameter to $5$
+(See Section~\ref{sec:3:stop}). Upon calling \texttt{fit}, a model is learned
+from the training arrays \texttt{X\_train} and \texttt{y\_train}, and stored on
+the object for later use. Since all estimators share the same interface, using
+a different learning algorithm is as simple as replacing the constructor (the
+class name). To build a random forest on the same data, one would simply
+replace \texttt{DecisionTreeClassifier(min\_samples\_split=5)} in the snippet
+above by \texttt{RandomForestClassifier()}.
+
+In Scikit-Learn, classical learning algorithms are not the only objects to be
+implemented as estimators. For example, preprocessing routines (e.g., scaling
+of features) or feature extraction techniques (e.g., vectorization of text
+documents) also implement the \textit{estimator} interface. Even stateless
+processing steps, that do not require the \texttt{fit} method to perform useful
+work, implement the estimator interface. This design pattern is of prime
+importance for consistency, composition and model selection reasons,
+as further illustrated in \citep{buitinck:2013}.
+
+\subsubsection{Predictors}
+
+The \textit{predictor} interface extends the notion of an estimator by adding a
+\texttt{predict} method that takes an array \texttt{X\_test} and produces
+predictions for \texttt{X\_test}, based on the learned parameters of the
+estimator (we call the input to \texttt{predict} ``\texttt{X\_test}'' in order
+to emphasize that \texttt{predict} generalizes to new data). In the case of
+supervised learning estimators, this method returns the predicted labels or
+values computed by the model:
+
+\vskip0.3cm
+\begin{pythoncode}
+y_pred = clf.predict(X_test)
+\end{pythoncode}
+
+Apart from \texttt{predict}, predictors may also implement methods that
+quantify the confidence of predictions. In the case of linear models, the
+\texttt{decision\_function} method returns the distance of samples to the
+separating hyperplane. Some predictors also provide a \texttt{predict\_proba}
+method which returns class probability estimates.
+
+Finally, supervised predictors provide a \texttt{score} function to assess
+their performance on a batch of input data. This method takes as input arrays
+\texttt{X\_test} and \texttt{y\_test} and typically computes the coefficient of
+determination between \texttt{y\_test} and \texttt{predict(X\_test)} in
+regression, or the accuracy in classification. The only requirement is that the
+\texttt{score} method return a value that quantifies the quality of its
+predictions (the higher, the better). An unsupervised estimator may also expose
+a \texttt{score} function to compute, for instance, data likelihood under its
+model.
+
+
 
 \subsection{Representing decision trees}
 
