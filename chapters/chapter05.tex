@@ -429,15 +429,55 @@ lead to faster building times depending on $K$ and the size of the problem.
 
 Implementing decision trees and random forests involves many issues that are
 easily overlooked if not considered with care. In this section, we describe the
-random forest implementation that has been developed within this work and
+random forest implementation that has been developed in this work and
 deployed within the Scikit-Learn machine learning
 library~\citep{pedregosa:2011}.
 
 \subsection{Scikit-Learn}
 
-% foreword on scikit-learn
+The Scikit-Learn library, on which we have contributed in this work,
+provides a comprehensive suite of machine learning tools for Python. It extends
+this general-purpose programming language with machine learning
+operations~\citep{buitinck:2013}: learning algorithms, preprocessing tools,
+model selection procedures and a composition mechanism to produce complex ML
+workflows. The ambition of the library is to provide efficient implementations
+of well-established algorithms within a programming environment that is
+accessible to non-experts and reusable in various scientific areas. The library
+is distributed under the simplified BSD license to encourage its use in both
+academia and industry.
 
-\subsection{Data structures}
+Scikit-Learn is designed to tie in with the set of numeric and scientific
+packages centered around the NumPy and SciPy libraries \citep{oliphant:2007,
+vanderwalt:2011}. NumPy augments Python with a contiguous numeric array
+datatype and fast array computing primitives, while SciPy extends it further
+with common numerical operations, either by implementing these in Python/NumPy
+or by wrapping existing C/C{}\verb!++!/Fortran code. The name ``scikit''
+derives from ``SciPy toolkit'' and is shared with \textit{scikit-image}.
+IPython \citep{perez:2007} and Matplotlib \citep{hunter:2007} complement SciPy
+to provide a \textsc{matlab}-like working environment suited for scientific
+use.
+
+Since 2007, Scikit-Learn has been developed by more than a dozen core
+developers, mostly researchers in fields ranging from neuroscience to
+astrophysics. It also benefits from occasional contributors proposing small
+bugfixes or improvements. Development proceeds on
+GitHub\footnote{\url{https://github.com/scikit-learn}}, a platform which
+greatly facilitates this kind of collaboration. Because of the large number of
+developers, emphasis is put on keeping the project maintainable. In particular,
+code must follow specific quality guidelines, such as style consistency and
+unit-test coverage. Documentation and examples are required for all features,
+and major changes must pass code review by at least two other developers.
+
+Scikit-Learn's popularity can be gauged from various indicators such as the
+hundreds of citations in scientific publications, successes in various machine
+learning challenges (e.g., Kaggle), and statistics derived from our
+repositories and mailing list.  At the time of writing, the project is watched
+by 2700 people and forked 1400 times on GitHub; the mailing list receives more
+than 300 mails per month; version control logs
+show more than 200 unique contributors to the codebase and the online
+documentation receives 37000 unique visitors and 295000 pageviews per month.
+
+\subsection{Representing decision trees}
 
 % growing vector vs object oriented
 
@@ -483,7 +523,7 @@ library~\citep{pedregosa:2011}.
 %             + Binning
 %             + Subsampling
 
-% \subsection{Shared computations}
+\subsection{Growing forests}
 
 % %     - Shared computations
 % %         > Splitters
@@ -491,8 +531,6 @@ library~\citep{pedregosa:2011}.
 % %             - Pre-sorting + data reorganization (Breiman's strategy)
 % %             - Pre-sorting + sample_mask
 % %         > Multi-threading
-
-% \subsection{Sparse data}
 
 
 \section{Benchmarks}
