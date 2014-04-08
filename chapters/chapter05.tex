@@ -361,10 +361,14 @@ behaves as in the best case.
 
 As expected, the complexity of Bagging~\citep{breiman:1996b} is nearly $M$
 times as large as the complexity of building a single decision tree. By taking
-into account the fact that bagged decision trees are built on bootstrap replicates ${\cal L}^m$ that
-contain about $63.2\%$ of unique samples, as later discussed in Section~\ref{sec:5:impl},
+into account the fact that bagged decision trees are built on bootstrap
+replicates ${\cal L}^m$ that contain about $63.2\%$ of unique samples,
 complexity can be expressed with respect to $\widetilde{N} = 0.632 N$ instead
-of $N$. Assuming close constant factors, building a single bagged decision tree is therefore asymptotically
+of $N$. From an implementation point of view, repeated occurences of the same
+input vector can indeed be accounted for using sample weights for the evaluation
+of the impurity criterion, hence effectively simulating a learning set of $N$
+samples from $\widetilde{N}$ unique samples. Assuming close constant factors,
+building a single bagged decision tree is therefore asymptotically
 \begin{equation}
 \lim_{N\to \infty} \frac{N\log^2 N}{0.632N \log^2 0.632N} = 1.582
 \end{equation}
