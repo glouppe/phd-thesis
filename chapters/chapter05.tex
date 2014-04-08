@@ -328,12 +328,55 @@ T'(N) &= O(2 H_N N) \nonumber \\
 As a result, $T(N) = O(KN \log N)$ in the average case.
 \end{proof}
 
-From Theorems~\ref{thm:6:best:knlogn}-\ref{thm:6:average:kn}, the total
-time complexity for building an ensemble of $M$ randomized trees can finally
-be derived, as summarized in Table~\ref{table:complexity-fit}.
+From Theorems~\ref{thm:6:best:knlogn}-\ref{thm:6:average:kn}, the total time
+complexity for building an ensemble of $M$ randomized trees can finally be
+derived. As summarized in Table~\ref{table:complexity-fit}, complexity remains
+within reasonable bounds for all variants studied in this work. In the best
+case, complexity is linear with the number of split variables considered at
+each node (i.e., $O(K)$) and linearithmic or quasilinear with the number of
+(unique) samples effectively used to build each tree (i.e., $O(N\log N)$ or
+$O(N\log^2 N)$). In the very worst case however, this later dependency becomes quadratic
+(i.e., $O(N^2)$ or $O(N^2 \log N)$, which might greatly affect performance in
+the context of large datasets. Reassuringly, the analysis of the average case
+shows that pathological cases are not dominant and that, on average, complexity
+behaves as in the best case.
 
-Building a single tree using the original CART algorithm requires between
-$O(pN\log^2 N)$ and $O(pN^2\log N)$ depending on the problem.
+As expected, the complexity of Bagging~\citep{breiman:1996b} is nearly $M$
+times as large as the complexity of building a single decision tree. By taking
+into account the fact that bagged decision trees are built on bootstrap replicates ${\cal L}^m$ that
+contain about $63.2\%$ of unique samples, as later discussed in Section~\ref{sec:5:impl},
+complexity can be expressed with respect to $\widetilde{N} = 0.632 N$ instead
+of $N$. Assuming close constant factors, building a single bagged decision tree is therefore asymptotically
+\begin{equation}
+\lim_{N\to \infty} \frac{N\log^2 N}{0.632N \log^2 0.632N} = 1.582
+\end{equation}
+times faster than building a regular decision tree. The complexity of RF is
+identical to Bagging, except that the dependency
+to $p$ becomes a dependency to $K$, resulting in an average speedup of
+$\tfrac{p}{K}$. In other words, not only chosing $K \leq p$ improves accuracy,
+it also significantly decreases the time required for building trees in a
+forest. In ETs, due to the fact that
+samples are no longer required to be sorted at each node, the dependency to $N$
+becomes linearithmic instead of quasilinear. With respect to RF,
+speedup is asymptotically $O(\log N)$. Finally, PERT shows to be the fastest
+method of all, which is due to the fact that only a single split variable
+is considered at each split. For $K=1$ however, ETs and PERT have identical
+time complexity.
+
+\begin{remark}{Presorting data in Random Forests}
+\end{remark}
+
+% bonne complexité en général, assurée dans la plupart dans cas vu le average case
+
+% even if average is not exactly true, it gives a good approx
+% average case = best case
+
+% bagging
+% bagging -> rf => réduction de la complexité de K/p
+
+% rf => et => réduction de la complexité de N/(N~ log N)
+
+% pert is K times faster, but this may be too random
 
 \begin{table}
     \centering
@@ -353,24 +396,6 @@ $O(pN\log^2 N)$ and $O(pN^2\log N)$ depending on the problem.
     \label{table:complexity-fit}
 \end{table}
 
-% Average Time Complexity of Decision Trees (Intelligent Systems ...
-% ftp://icksie.no-ip.org/.../Average%20time%20complexity%20of%20decis...‎
-% by I Chikalov - ‎Cited by 2 - ‎Related articles
-% average depth
-
-% The Time Complexity of Decision Tree Induction - CiteSeer
-% citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.51.2193...‎
-% by JK Martin - ‎1995 - ‎Cited by 19 - ‎Related articles
-% analyse en fonction de la hauteur, on utilise qu'une fois un attribut par branche (multi-way split)
-
-% High Computational Complexity of the Decision Tree Induction with ...
-% www.mimuw.edu.pl/~rlatkows/.../latkowski2003complexity.pdf‎
-% by R l Latkowski - ‎Cited by 1 - ‎Related articles
-
-% A Fast Decision Tree Learning Algorithm
-% pdf.aminer.org/000/014/.../a_fast_decision_tree_learning_algorithm.pdf‎
-% by J Su - ‎2006 - ‎Cited by 39 - ‎Related articles
-% c4.5, multi-way splits
 
 \section{Complexity of the prediction procedure}
 \label{sec:5:complexity-predict}
@@ -403,14 +428,14 @@ $O(pN\log^2 N)$ and $O(pN^2\log N)$ depending on the problem.
 %             + Binning
 %             + Subsampling
 
-\subsection{Shared computations}
+% \subsection{Shared computations}
 
-%     - Shared computations
-%         > Splitters
-%             - (Independent splitters)
-%             - Pre-sorting + data reorganization (Breiman's strategy)
-%             - Pre-sorting + sample_mask
-%         > Multi-threading
+% %     - Shared computations
+% %         > Splitters
+% %             - (Independent splitters)
+% %             - Pre-sorting + data reorganization (Breiman's strategy)
+% %             - Pre-sorting + sample_mask
+% %         > Multi-threading
 
 % \subsection{Sparse data}
 
