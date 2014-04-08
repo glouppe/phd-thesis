@@ -415,16 +415,23 @@ lead to faster building times depending on $K$ and the size of the problem.
 \end{remark}
 
 
-
-
 \section{Complexity of the prediction procedure}
 \label{sec:5:complexity-predict}
+
+\todo{}
 
 % discuter en fonction du nombre de feuilles
 %                      de la profondeur moyenne
 
+
 \section{Implementation}
 \label{sec:5:impl}
+
+Implementing decision trees and random forests involves many issues that are
+easily overlooked if not considered with care. In this section, we describe the
+random forest implementation that has been developed within this work and
+deployed within the Scikit-Learn machine learning
+library~\citep{pedregosa:2011}.
 
 \subsection{Scikit-Learn}
 
@@ -433,6 +440,34 @@ lead to faster building times depending on $K$ and the size of the problem.
 \subsection{Data structures}
 
 % growing vector vs object oriented
+
+% Among all possible ways of representing a tree, one of the simplest and most
+% direct representation is to adopt an object-oriented approach. In this
+% paradigm, a decision tree is naturally represented as a hierarchy of high-level
+% objects, where each object corresponds to a node of the tree and comprises
+% attributes referencing its children or storing its split and value. Such a
+% representation would make for a correct, intuitive and flexible implementation
+% but may in fact not be the most appropriate when aiming for high-performance.
+% One of the biggest issues indeed is that object-oriented programming usually
+% fragments complex and nested objects into non-contiguous memory blocks, thereby
+% requiring multiple levels of indirection for traversing the structure. In
+% particular, this design can easily impair computing times in performance-
+% critical applications, e.g., by not making it possible to leverage CPU cache or
+% pre- fetching mechanisms.
+
+% At the price of less abstraction and flexibility, we adopt instead in this work
+% a low-level representation of decision trees, allowing us for a fine-grained
+% and complete control over memory management and CPU mechanisms. The tree
+% representation that we consider ...
+
+%     > Data structures (arrays vs. object-oriented structures)
+%       binary vs n-ary tree
+%     > définir l'algo de construction
+%     > definir l'algo de prédiction
+
+%       * Recursive partition
+%           Depth/Breadth/Best first
+
 
 \subsection{Building decision trees}
 
@@ -491,42 +526,3 @@ lead to faster building times depending on $K$ and the size of the problem.
 %         * Sherwood (Criminisi)
 %         * WiseRF
 %         * Random jungle
-
-
-
-
-
-% \todo{Rewrite later...}
-
-% \section{Data structures}
-
-% Implementing decision trees involves many issues that are easily overlooked if
-% not considered with care. The first of these issues concerns the choice of the
-% data structure for representing decision trees.
-
-% Among all possible ways of representing a tree, one of the simplest and most
-% direct representation is to adopt an object-oriented approach. In this
-% paradigm, a decision tree is naturally represented as a hierarchy of high-level
-% objects, where each object corresponds to a node of the tree and comprises
-% attributes referencing its children or storing its split and value. Such a
-% representation would make for a correct, intuitive and flexible implementation
-% but may in fact not be the most appropriate when aiming for high-performance.
-% One of the biggest issues indeed is that object-oriented programming usually
-% fragments complex and nested objects into non-contiguous memory blocks, thereby
-% requiring multiple levels of indirection for traversing the structure. In
-% particular, this design can easily impair computing times in performance-
-% critical applications, e.g., by not making it possible to leverage CPU cache or
-% pre- fetching mechanisms.
-
-% At the price of less abstraction and flexibility, we adopt instead in this work
-% a low-level representation of decision trees, allowing us for a fine-grained
-% and complete control over memory management and CPU mechanisms. The tree
-% representation that we consider ...
-
-%     > Data structures (arrays vs. object-oriented structures)
-%       binary vs n-ary tree
-%     > définir l'algo de construction
-%     > definir l'algo de prédiction
-
-%       * Recursive partition
-%           Depth/Breadth/Best first
