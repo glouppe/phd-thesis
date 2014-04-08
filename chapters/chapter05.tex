@@ -53,26 +53,26 @@ resulting model, it also drives the time complexity of the induction procedure.
 
 \begin{remark}{Big O notations}
 Time complexity analyzes the asymptotic behavior of an algorithm
-with respect to the size of its input and its hyper-parameters. In this way,
+with respect to the size $N$ of its input and its hyper-parameters. In this way,
 big O notations are used to formally express an asymptotic upper bound on the
-growth rate of the number of steps in the algorithm. Formally,
+growth rate of the number $f(N)$ of steps in the algorithm. Formally,
 we write that
 \begin{equation}
-f(n) =  O(g(n)) \quad\text{if}\quad \exists c > 0, \exists n_0 > 0, \forall n > n_0, f(n) \leq c g(n),
+f(N) =  O(g(N)) \ \text{if}\ \exists c > 0, N_0 > 0, \forall N > N_0, f(N) \leq c g(N)
 \end{equation}
-to express that  $f(n)$ is asymptotically upper bounded by $g(n)$, up to some neglectable constant factor $c$.
+to express that  $f(N)$ is asymptotically upper bounded by $g(N)$, up to some neglectable constant factor $c$.
 Similarly, big $\Omega$ notations are used to express an asymptotic lower
 bound on the growth rate of the number of steps in the algorithm. Formally,
 we write that
 \begin{equation}
-f(n) =  \Omega(g(n)) \quad\text{if}\quad \exists c > 0, \exists n_0 > 0, \forall n > n_0,  c g(n) \leq f(n),
+f(N) =  \Omega(g(N)) \ \text{if}\ \exists c > 0, N_0 > 0, \forall N > N_0,  c g(N) \leq f(N)
 \end{equation}
-to express that $f(n)$ is asymptoptically lower bounded by $g(n)$.
-Consequently, if $f(n)$ is both $O(g(n))$ and $\Omega(g(n))$ then $f(n)$ is
-both lower bounded and upper bounded asymptotically by $g(n)$ (possibly for different constants),
-which we write using big $\Theta$ notations. That is,
+to express that $f(N)$ is asymptotically lower bounded by $g(N)$.
+Consequently, if $f(N)$ is both $O(g(N))$ and $\Omega(g(N))$ then $f(N)$ is
+both lower bounded and upper bounded asymptotically by $g(N)$ (possibly for different constants),
+which we write using big $\Theta$ notations:
 \begin{equation}
-f(n) = \Theta(g(n)) \quad\text{if}\quad  f(n) =  O(g(n)) = \Omega(g(n)).
+f(N) = \Theta(g(N)) \ \text{if}\  f(N) =  O(g(N)) = \Omega(g(N)).
 \end{equation}
 \end{remark}
 
@@ -82,7 +82,7 @@ $s$  requires, for each of the $p$ variables $X_j$ (for $j=1,\dots,p$), to sort
 the values $x_{i,j}$ of all $N$ node samples (for $i=1,\dots,N$) and then to
 iterate over these in order to find the best threshold $v$. The most costly
 operation is sorting, whose time complexity is at worst $O(N \log N)$. As a
-result, the overall within-node complexity is $c(N) = (p N \log N)$. In a
+result, the overall within-node complexity is $c(N) = O(p N \log N)$. In a
 randomized tree as built with the Random Forest algorithm~\citep{breiman:2001}
 (RF, Algorithm~\ref{algo:findsplit:random}), the search of the best split $s$
 is carried out in the same way, but only on $K \leq p$ of the input variables,
@@ -162,7 +162,7 @@ T'(N) = O(N\log N) + 2 T'(\frac{N}{2})
 \end{cases}
 \end{equation}
 in the best case. In this form, the second case of the Master Theorem applies for
-$a=2$, $b=2$ and $k=1$. Accordingly, $T'(N)=O(N\log^{k+1} N)=O(N\log^2 N)$ and $T(N) = O(K N\log^2 N)$ in the best case.
+$a=2$, $b=2$ and $k=1$. Accordingly, $T'(N)=O(N\log^{k+1} N)=O(N\log^2 N)$ and $T(N) = O(K N\log^2 N)$.
 \end{proof}
 
 \begin{theorem}\label{thm:6:best:kn}
@@ -180,7 +180,7 @@ T'(N) = O(N) + 2 T'(\frac{N}{2})
 \end{cases}
 \end{equation}
 Again, the second case of the Master Theorem applies, this time for $a=2$, $b=2$ and $k=0$.
-Accordingly, $T'(N)=O(N\log^{k+1} N)=O(N\log N)$ and $T(N) = O(K N\log N)$ in the case case.
+Accordingly, $T'(N)=O(N\log^{k+1} N)=O(N\log N)$ and $T(N) = O(K N\log N)$.
 \end{proof}
 
 \begin{theorem}\label{thm:6:worst:knlogn}
@@ -194,17 +194,17 @@ can be rewritten in the worst case as
 \begin{equation}
 \begin{cases}
 T'(1) = O(1) \\
-T'(N) = O(N\log N) +  T'(1) + T'(N-1)
+T'(N) = O(N\log N) +  T'(1) + T'(N-1).
 \end{cases}
 \end{equation}
-It comes,
+By expanding the recurrence, we have
 \begin{align}
 T'(N) &= O(N\log N) + O(1) + T'(N-1) \nonumber \\
-      &= O(1) + \sum_{i=2}^N O(1) + O(i\log i) \nonumber \\
-      &= O(N) + \sum_{i=2}^N O(i\log i) \nonumber \\
-      &\leq O(N) + O(\log N) \sum_{i=2}^N O(i) \nonumber \\
-      &= O(N) + O(\log N) O(\frac{1}{2} (N-1)(N-2)) \nonumber \\
-      &= O(N^2 \log N)
+      &= \sum_{i=1}^N O(1) + O(i\log i) \nonumber \\
+      &= O(N) + \sum_{i=1}^N O(i\log i) \nonumber \\
+      &\leq O(N) + O(\log N) \sum_{i=1}^N O(i) \nonumber \\
+      &= O(N) + O(\log N) O(\frac{1}{2} N(N+1) \nonumber \\
+      &= O(N^2 \log N).
 \end{align}
 As a result, $T(N) = O(K N^2 \log N)$ in the worst case.
 \end{proof}
@@ -223,12 +223,12 @@ T'(1) = O(1) \\
 T'(N) = O(N) +  T'(1) + T'(N-1)
 \end{cases}
 \end{equation}
-It comes,
+By expanding the recurrence, we have
 \begin{align}
 T'(N) &= O(N) + O(1) + T'(N-1) \nonumber \\
       &= O(1) + \sum_{i=2}^N O(1+i) \nonumber \\
       &= O(1) + O(\frac{1}{2} (N^2 + 3N - 4)) \nonumber \\
-      &= O(N^2)
+      &= O(N^2).
 \end{align}
 As a result, $T(N) = O(K N^2)$ in the worst case.
 \end{proof}
@@ -251,7 +251,7 @@ By symmetry and by multiplying both sides of the last equation by $(N-1)$, it co
 \begin{equation}\label{eqn:6:average:knlogn:1}
 (N-1) T'(N) = O(N\log N)(N-1) +  2 \sum_{i=1}^{N-1} T'(i).
 \end{equation}
-For $N \geq 3$, we similarly have
+For $N \geq 3$, substituting $N$ with $N-1$ similarly yields
 \begin{equation}\label{eqn:6:average:knlogn:2}
 (N-2) T'(N-1) = O((N-1) \log(N-1))(N-2) +  2 \sum_{i=1}^{N-2} T'(i).
 \end{equation}
@@ -260,7 +260,7 @@ it comes after simplifications and division of both sides by $N(N-1)$:
 \begin{equation}
 \frac{T'(N)}{N} = \frac{T'(N-1)}{N-1} + O(\frac{2}{N} \log(N-1) + \log \frac{N}{N-1} ).
 \end{equation}
-Let us introduce $S(N) = \frac{T'(N)}{N}$. From the last equation, it then comes
+Let us now introduce $S(N) = \frac{T'(N)}{N}$. From the last equation, it comes
 \begin{align}
 S(N) &= S(N-1) + O(\frac{2}{N} \log(N-1) + \log \frac{N}{N-1} ) \nonumber \\
      &= O(1) + O(\sum_{i=2}^N \frac{2}{i} \log(i-1) + \log \frac{i}{i-1} ) \nonumber \\
@@ -300,7 +300,7 @@ By symmetry and by multiplying both sides of the last equation by $(N-1)$, it co
 \begin{equation}\label{eqn:6:average:kn:1}
 (N-1) T'(N) = O(N)(N-1) +  2 \sum_{i=1}^{N-1} T'(i).
 \end{equation}
-For $N \geq 3$, we similarly have
+For $N \geq 3$, substituting $N$ with $N-1$ similarly yields
 \begin{equation}\label{eqn:6:average:kn:2}
 (N-2) T'(N-1) = O(N-1)(N-2) +  2 \sum_{i=1}^{N-2} T'(i).
 \end{equation}
@@ -309,7 +309,7 @@ it comes after simplifications and division of both sides by $N(N-1)$:
 \begin{equation}
 \frac{T'(N)}{N} = \frac{T'(N-1)}{N-1} + O(\frac{2}{N}).
 \end{equation}
-Let us introduce $S(N) = \frac{T'(N)}{N}$. From the last equation, it then comes
+Let us now introduce $S(N) = \frac{T'(N)}{N}$. From the last equation, it comes
 \begin{align}
 S(N) &= S(N-1) + O(\frac{2}{N}) \nonumber \\
      &= O(2 \sum_{i=1}^N \frac{1}{i} ) \nonumber \\
