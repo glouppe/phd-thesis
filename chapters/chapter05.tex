@@ -620,15 +620,33 @@ predictions (the higher, the better). An unsupervised estimator may also expose
 a \texttt{score} function to compute, for instance, data likelihood under its
 model.
 
-\subsubsection{API for decision trees and forests}
+\subsubsection{API for trees and forests}
+
+Scikit-Learn provides efficient implementations of decision trees and random
+forests, all offered as objects implementing the estimator and predictor
+interfaces presented above and supporting most of the hyper-parameters described
+in this work.
+
+\begin{description}
+\item \texttt{DecisionTreeClassifier}, \texttt{DecisionTreeRegressor}: \hfill \\
+    Implement single decision trees~\citep{breiman:1984}, as described in Chapter~\ref{ch:cart}.
+
+\item \texttt{BaggingClassifier}, \texttt{BaggingRegressor}: \hfill \\
+    Implement Bagging~\citep{breiman:1996b}, Random Subspaces~\citep{ho:1998}
+    and Ensembles of Random Patches~\citep{louppe:2012}.
+
+\item \texttt{RandomForestClassifier}, \texttt{RandomForestRegressor}: \hfill \\
+    Implement Random Forest~\citep{breiman:2001}.
+
+\item \texttt{ExtraTreesClassifier}, \texttt{ExtraTreesRegressor}: \hfill \\
+    Implement Extremely Randomized Trees~\citep{geurts:2006}.
+\end{description}
 
 % decisiontree
 % randomforest
 % extratrees
 % bagging
-
 % parameters
-
 % feature_importances
 
 
