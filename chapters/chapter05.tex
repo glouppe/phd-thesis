@@ -355,7 +355,7 @@ behaves as in the best case.
     PERT & $O(MN\log N)$ & $O(MN^2)$ & $O(MN\log N)$  \\
     \hline
     \end{tabular}
-    \captionof{table}{Time complexity for building forests of $M$ randomized trees. $N$ denotes the number of samples in ${\cal L}$, $p$ the number of input variables and $K$ the number of variables randomly drawn at each node. $\widetilde{N} = 0.632 N$, due to the fact that bootstrap samples draw, on average, $63.2\%$ of unique samples.}
+    \caption{Time complexity for building forests of $M$ randomized trees. $N$ denotes the number of samples in ${\cal L}$, $p$ the number of input variables and $K$ the number of variables randomly drawn at each node. $\widetilde{N} = 0.632 N$, due to the fact that bootstrap samples draw, on average, $63.2\%$ of unique samples.}
     \label{table:complexity-fit}
 \end{table}
 
@@ -659,11 +659,75 @@ requiring multiple levels of indirection for traversing the structure. In
 particular, this design can easily impair computing times in
 performance-critical applications, e.g., by not making it possible to leverage CPU cache or
 pre-fetching mechanisms.
-
 At the price of less abstraction and flexibility, we adopt instead in this work
 a low-level representation of decision trees, allowing us for a fine-grained
-and complete control over memory management and CPU mechanisms. The tree
-representation that we consider ...
+and complete control over memory management and CPU mechanisms.
+
+Let $\texttt{t}\in \{0,\dots,T-1\}$ denote unique node identifiers and let
+$\texttt{t}=0$ corresponds to the identifier of the root node. The data
+structure that we propose for representing decision trees consists in using
+contiguous arrays for simultaneously storing the content of all nodes, as
+defined below:
+
+\begin{description}
+
+\item \texttt{left\_child} (array of $T$ integers):\hfill\\
+    Store the node identifier $\texttt{left\_child[t]} \in \{0,\dots,T-1\}$ of the left child of node \texttt{t}.
+\item \texttt{right\_child} (array of $T$ integers):\hfill\\
+    Store the node identifier $\texttt{right\_child[t]} \in \{0,\dots,T-1\}$ of the right child of node \texttt{t}.
+\item \texttt{feature} (array of $T$ integers):\hfill\\
+    Store the identifier $\texttt{feature[t]} \in \{1, \dots, p\}$ of the variable used for splitting  node \texttt{t}.
+\item \texttt{threshold} (array of $T$ reals):\hfill\\
+    Store the cut-off value $\texttt{threshold[t]} \in \mathbb{R}$ used for splitting  node \texttt{t}.
+\item \texttt{impurity} (array of $T$ reals):\hfill\\
+    Store the impurity $\Delta i(s,t)$ at node \texttt{t}, as computed on the learning set ${\cal L}$.
+\item \texttt{n\_samples} (array of $T$ integers or reals):\hfill\\
+    Store the (weighted) number \texttt{n\_samples[t]} of learning samples reaching node \texttt{t}.
+\item \texttt{value} (array of $T\times J$ reals or $T$ reals):\hfill\\
+    Store the class probability estimates (i.e., the number of samples of each class) or the mean regression values,
+    as computed from the learning samples reaching node \texttt{t}.
+
+\end{description}
+
+As an example, Table~\ref{table:tree-array} illustrates the array
+representation of the toy decision tree shown in Figure~\ref{fig:5:tree}.
+
+% todo: fix table numberings
+% todo: add L
+% todo: add decision tree
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=1.0]{figures/ch3_tree.pdf}
+    \caption{A toy decision tree.}
+    \label{fig:5:tree}
+\end{figure}
+
+\begin{table}
+    \small
+    \hspace{-1.2cm}
+    \begin{tabular}{| l | c c c c c c c c c |}
+    \hline
+    \texttt{t}    & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+    \hline
+    \hline
+    \texttt{left\_child} & 1 & -- & 3 & 5 & -- & -- & 7 & -- & -- \\
+    \texttt{right\_child} & 2 & -- & 4 & 6 & -- & -- & 8 & -- & -- \\
+    \texttt{feature} & 2 & -- & 2 & 1 & -- & -- & 1 & -- & -- \\
+    \texttt{threshold} & 0.303 & -- & 0.696 & 0.296 & -- & -- & 0.703 & -- & -- \\
+    \texttt{impurity} & 0.273 & 0. & 0.368 & 0.482 &  0.065 &  0.051 & 0.48  & 0.042 &  0. \\
+    \texttt{n\_samples} & 300 & 99  & 201 & 113  & 88  & 38  & 75  & 46  & 29\\
+    \texttt{value} & 251/49 & 99/0 & 152/49 & 67/46 & 85/3 & 37/1 & 30/45 & 1/45 & 29/0 \\
+    \hline
+    \end{tabular}
+    \caption{Array representation of Figure~\ref{fig:5:tree}.}
+    \label{table:tree-array}
+\end{table}
+
+
+
+% avantage en terms de overhead et de prefetching
+
 
 %     > Data structures (arrays vs. object-oriented structures)
 
@@ -706,16 +770,15 @@ representation that we consider ...
 
 %         Open-source
 %         * C4.5
-%         * CART
+%         * CART => Breiman Fortran code
 %         * TMVA !!
 %         * Scikit-Learn
 %         * Weka
 %             + original
 %             + fast-random-forest
-%         * randomForest
+%         * randomForest (R)
 %             + original
 %             + PARF
-%         * Breiman Fortran code
 %         * party (R)
 %         * Pierre
 %         * OpenCV
