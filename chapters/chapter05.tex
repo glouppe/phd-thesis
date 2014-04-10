@@ -624,8 +624,8 @@ model.
 
 Scikit-Learn provides efficient implementations of decision trees and random
 forests, all offered as objects implementing the estimator and predictor
-interfaces presented above and supporting most of the hyper-parameters described
-in this work.
+interfaces presented above. Most of the hyper-parameters described
+in this work are supported.
 
 \begin{description}
 \item \texttt{DecisionTreeClassifier}, \texttt{DecisionTreeRegressor}: \hfill \\
@@ -633,13 +633,14 @@ in this work.
 
 \item \texttt{BaggingClassifier}, \texttt{BaggingRegressor}: \hfill \\
     Implement Bagging~\citep{breiman:1996b}, Random Subspaces~\citep{ho:1998}
-    and Ensembles of Random Patches~\citep{louppe:2012}.
+    and Ensembles of Random Patches~\citep{louppe:2012}, as described in Chapters~\ref{ch:forest}
+    and \ref{ch:random-patches}.
 
 \item \texttt{RandomForestClassifier}, \texttt{RandomForestRegressor}: \hfill \\
-    Implement Random Forest~\citep{breiman:2001}.
+    Implement Random Forest~\citep{breiman:2001},  as described in Chapter~\ref{ch:forest}.
 
 \item \texttt{ExtraTreesClassifier}, \texttt{ExtraTreesRegressor}: \hfill \\
-    Implement Extremely Randomized Trees~\citep{geurts:2006}.
+    Implement Extremely Randomized Trees~\citep{geurts:2006},  as described in Chapter~\ref{ch:forest}.
 \end{description}
 
 
@@ -665,9 +666,7 @@ and complete control over memory management and CPU mechanisms. The tree
 representation that we consider ...
 
 %     > Data structures (arrays vs. object-oriented structures)
-%       binary vs n-ary tree
-%     > définir l'algo de construction
-%     > definir l'algo de prédiction
+
 
 \subsection{Builders}
 
@@ -681,6 +680,7 @@ representation that we consider ...
 
 \subsection{Splitters}
 
+%        + use fortran ordering to maximize caching effects
 %        + Sorting algorithms
 %        + Approximately best splits
 %             + Binning

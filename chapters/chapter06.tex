@@ -84,10 +84,10 @@ a variable $X_j$  for predicting  $Y$ by adding up the weighted impurity decreas
 i(s_t, t)$ for all nodes $t$ where $X_j$ is used, averaged over all trees $\varphi_m$ (for $m=1,\dots,M$)
 in the forest:
 \begin{equation}\label{eq:mdi}
-\text{Imp}(X_j) = \frac{1}{M} \sum_{m=1}^M \sum_{t \in \varphi_{m}} 1(X_{s_t} = X_j) \Big[ p(t) \Delta i(s_t, t) \Big],
+\text{Imp}(X_j) = \frac{1}{M} \sum_{m=1}^M \sum_{t \in \varphi_{m}} 1(j_t = j) \Big[ p(t) \Delta i(s_t, t) \Big],
 \end{equation}
 where $p(t)$ is the proportion $\tfrac{N_t}{N}$ of samples
-reaching $t$ and where $X_{s_t}$ denotes the variable used in split $s_t$. When
+reaching $t$ and where $j_t$ denotes the variable used for splitting node $t$. When
 using the Gini index as impurity function, this measure is known as the
 \textit{Gini importance} or \textit{Mean Decrease Gini}. However, since it can
 be defined for any impurity measure $i(t)$, we will refer to Equation~\ref{eq:mdi}
@@ -242,7 +242,7 @@ Equation~\ref{eq:mdi} and using the entropy $H(Y|t) = -\sum_j p(j|t) \log_2(p(j|
 as impurity measure $i(t)$, Equation~\ref{eq:mdi} can be rewritten in terms of
 mutual information:
 \begin{equation}
-\text{Imp}(X_j) = \frac{1}{M} \sum_{m=1}^M \sum_{t \in \varphi_m} 1(X_{s_t} = X_j) p(t) I(Y;X_j|t)
+\text{Imp}(X_j) = \frac{1}{M} \sum_{m=1}^M \sum_{t \in \varphi_m} 1(j_t = j) p(t) I(Y;X_j|t)
 \end{equation}
 
 As the size $N$ of the training sample grows to infinity, $p(t)$ becomes the
@@ -528,7 +528,7 @@ where $t_{x}$ denotes the successor node of $t$ corresponding to value
 $x$ of $X_j$. The importance score associated to a variable $X_j$ (see
 Equation~\ref{eq:mdi}) is then rewritten:
 \begin{equation}\label{eq:mdigen}
-\text{Imp}(X_j) = \frac{1}{M} \sum_{m=1}^M \sum_{t \in \varphi_m} 1(X_{s_t} = X_j) p(t) G(Y;X_j|t).
+\text{Imp}(X_j) = \frac{1}{M} \sum_{m=1}^M \sum_{t \in \varphi_m} 1(j_t = j) p(t) G(Y;X_j|t).
 \end{equation}
 
 As explained in the proof of Theorem~\ref{thm:imp}, conditioning

@@ -692,7 +692,7 @@ in non-empty subsets of ${\cal L}_t$:
 \end{equation}
 \begin{itemize}
 \item If $X_j$ is an ordered variable taking values in ${\cal X}_j$, then the set of binary splits on $X_j$ is the set
-of all binary non-crossing partitions of ${\cal X}_j$:
+of all binary non-crossing partitions $s^v_j$ of ${\cal X}_j$:
 \begin{align}
 {\cal Q}(X_j) = \{ (\{ \mathbf{x} | x_j \leq v \}, \{ \mathbf{x} | x_j > v \}) | v \in {\cal X}_j \} \label{eqn:q:ordered}
 \end{align}
@@ -1065,10 +1065,10 @@ Find the best split $s^*$ that partitions ${\cal L}_t$.
 
 Let $X_j$ be an ordered variable and let ${\cal Q}(X_j)$ be the set of all
 binary non-crossing partitions of ${\cal X}_j$, as defined in
-Equation~\ref{eqn:q:ordered}. Let also ${\cal X}_{j|{\cal L}_t} = \{ x_j | \mathbf{x},y
-\in {\cal L}_t \}$ denotes the set of unique values of $X_j$ within the node
-samples in $t$.  The best split on $X_j$ is the best binary partition
-$s^v_j \in {\cal Q}(X_j)$ of ${\cal L}_t$ into two non-empty subsets:
+Equation~\ref{eqn:q:ordered}. Let also ${\cal X}_{j|{\cal L}_t} = \{ x_j |
+\mathbf{x},y \in {\cal L}_t \}$ denotes the set of unique values of $X_j$
+within the node samples in $t$.  The best split $s^v_j \in {\cal Q}(X_j)$ on $X_j$
+ is the best binary partition  of ${\cal L}_t$ into two non-empty subsets:
 \begin{align*}
 {\cal L}^v_{t_L} &= \{(\mathbf{x}, y)|(\mathbf{x}, y)\in {\cal L}_t, x_j \leq v\}\\
 {\cal L}^v_{t_R} &= \{(\mathbf{x}, y)|(\mathbf{x}, y)\in {\cal L}_t, x_j > v\}
