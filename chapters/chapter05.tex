@@ -789,8 +789,8 @@ An alternative strategy consists in replacing the stack $S$ in
 Algorithm~\ref{algo:induction} by a priority queue, hence changing the order
 in which the nodes are split. In particular, if nodes $t$ are prioritized by
 weighted potential impurity decrease $p(t) \Delta i(s^*,t)$ (where $s^*$ is the
-best split on $t$), then the greedy induction procedure switches from a depth-
-first construction of the tree to a \textit{best-first} induction procedure. In
+best split on $t$), then the greedy induction procedure switches from a
+depth-first construction of the tree to a \textit{best-first} induction procedure. In
 this way, an additional stopping criterion can be defined as the maximum number
 \texttt{max\_leaf\_nodes} of leaves in the tree. If nodes are expanded in
 best-first order, then the resulting tree only includes the most significant splits,
@@ -798,7 +798,7 @@ thereby pre-pruning all (seemingly) irrelevant branches without wasting
 computational resources.
 
 % criminisi : breadth-first
-% alex: mix, gpu
+% alex: mix, gpu \citep{liao:2013}
 
 
 \subsection{Splitters}
