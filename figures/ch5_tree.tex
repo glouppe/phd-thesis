@@ -1,0 +1,47 @@
+\documentclass{article}
+\usepackage{pstricks}
+\usepackage{pst-plot}
+\pagestyle{empty}
+\begin{document}
+    \begin{pspicture}(20,15)
+    %\psgrid[subgriddiv=1,griddots=10,gridlabels=7pt]
+    % Arrows
+    \psline[linewidth=0.5pt]{->}(10,12)(8.3,11.3)
+    \psline[linewidth=0.5pt]{->}(10,12)(11.7,11.3)
+    \psline[linewidth=0.5pt]{->}(12,11)(11,9.4)
+    \psline[linewidth=0.5pt]{->}(12,11)(13,9.3)
+    \psline[linewidth=0.5pt]{->}(11,9)(10,7.3)
+    \psline[linewidth=0.5pt]{->}(11,9)(12,7.4)
+    \psline[linewidth=0.5pt]{->}(12,7)(11,5.3)
+    \psline[linewidth=0.5pt]{->}(12,7)(13,5.3)
+    % Nodes
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](10,12){0.4}
+    \psframe[fillstyle=solid,linewidth=1pt,linecolor=black](7.7,10.7)(8.3,11.3)
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](12,11){0.4}
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](11,9){0.4}
+    \psframe[fillstyle=solid,linewidth=1pt,linecolor=black](12.7,8.7)(13.3,9.3)
+    \psframe[fillstyle=solid,linewidth=1pt,linecolor=black](9.7,6.7)(10.3,7.3)
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](12,7){0.4}
+    \psframe[fillstyle=solid,linewidth=1pt,linecolor=black](10.7,4.7)(11.3,5.3)
+    \psframe[fillstyle=solid,linewidth=1pt,linecolor=black](12.7,4.7)(13.3,5.3)
+    % Text
+    \rput(10,12){$t_0$}
+    \rput(8,11){$t_1$}
+    \rput(12,11){$t_2$}
+    \rput(11,9){$t_3$}
+    \rput(13,9){$t_4$}
+    \rput(10,7){$t_5$}
+    \rput(12,7){$t_6$}
+    \rput(11,5){$t_7$}
+    \rput(13,5){$t_8$}
+    \rput(10,11.3){{\small $X_2 \leq 0.303$}}
+    \rput(12,9.65){{\small $X_2 \leq 0.696$}}
+    \rput(11,7.65){{\small $X_1 \leq 0.296$}}
+    \rput(12,5.65){{\small $X_1 \leq 0.703$}}
+    \rput(8,10.5){$c_1$}
+    \rput(13,8.5){$c_1$}
+    \rput(10,6.5){$c_1$}
+    \rput(11,4.5){$c_2$}
+    \rput(13,4.5){$c_1$}
+    \end{pspicture}
+\end{document}

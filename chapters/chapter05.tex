@@ -697,15 +697,25 @@ representation of the toy decision tree shown in Figure~\ref{fig:5:tree}.
 % todo: add decision tree
 
 \begin{figure}
-    \centering
-    \includegraphics[scale=1.0]{figures/ch3_tree.pdf}
-    \caption{A toy decision tree.}
+\centering
+\begin{minipage}{0.55\textwidth}
+\hspace{-0.5cm}
+\centering
+    \includegraphics[width=\textwidth]{figures/ch5_learningset.pdf}
+    \caption{Binary classification task.}
+    \label{fig:5:set}
+\end{minipage}\hfill
+\begin{minipage}{0.45\textwidth}
+\centering
+    \includegraphics[scale=1.0]{figures/ch5_tree.pdf}
+    \caption{Decision tree learned from Figure~\ref{fig:5:set}.}
     \label{fig:5:tree}
+\end{minipage}
 \end{figure}
 
 \begin{table}
     \small
-    \hspace{-1.2cm}
+    \hspace{-0.8cm}
     \begin{tabular}{| l | c c c c c c c c c |}
     \hline
     \texttt{t}    & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
@@ -720,7 +730,7 @@ representation of the toy decision tree shown in Figure~\ref{fig:5:tree}.
     \texttt{value} & 251/49 & 99/0 & 152/49 & 67/46 & 85/3 & 37/1 & 30/45 & 1/45 & 29/0 \\
     \hline
     \end{tabular}
-    \caption{Array representation of Figure~\ref{fig:5:tree}.}
+    \caption{Array representation of the decision tree in Figure~\ref{fig:5:tree}.}
     \label{table:tree-array}
 \end{table}
 
