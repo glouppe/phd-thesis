@@ -728,20 +728,35 @@ defined below:
 \end{table}
 
 As an example, Table~\ref{table:tree-array} illustrates the array
-representation of the decision tree shown in Figure~\ref{fig:5:tree} as built
-from the learning set ${\cal L}$ of Figure~\ref{fig:5:set}.
+representation of the decision tree shown in Figure~\ref{fig:5:tree}, as built
+from the learning set ${\cal L}$ of Figure~\ref{fig:5:set}. Internal nodes
+($t_0$, $t_2$, $t_3$ and $t_6$) are nodes for which the corresponding values in
+$\texttt{left\_child}$, $\texttt{right\_child}$, $\texttt{feature}$ and
+$\texttt{threshold}$ are not empty, while leaves ($t_1$, $t_4$, $t_7$ and
+$t_8$) correspond to nodes for which these values are not defined. In the case
+of classification, the \texttt{value} array contains the number of samples of
+each class for each node. From these, class probability estimates $p_{\cal
+L}(Y=c|t)$ can be computed by dividing \texttt{value[t][c]} by the number of
+samples $\texttt{n\_samples[t]}$ in $t$. In the case of regression,
+\texttt{value[t]} would  contain the average output value for the samples in
+$t$. Finally, let us note that storing node impurities in the \texttt{impurity}
+array is not strictly necessary, since these values are only used during the
+construction of the tree. Yet, storing them can prove to be valuable, e.g., for
+later inspection of tree or for computing variable importances (see
+Chapter~\ref{ch:importances}) more readily.
 
-
-% avantage en terms de overhead et de prefetching
-
-
-%     > Data structures (arrays vs. object-oriented structures)
+By implementing the array representation as dynamic tables~\citep{cormen:2001},
+insertion of new nodes has an $O(1)$ amortized cost, while keeping memory
+allocations at a minimum and thereby reducing the overhead that would otherwise
+occur using per-node data structures. Maintaining the representation
+contiguously in memory also brings the benefits of leveraging CPU caches,
+which might greatly improve performance when fast predictions are critical.
 
 
 \subsection{Builders}
 
 % découpage criterion/splitter/builder
-% growing vector
+
 % replace stack with priority queue
 %       * Recursive partition
 %           Depth/Breadth/Best first
