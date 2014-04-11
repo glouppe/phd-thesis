@@ -473,6 +473,19 @@ code must follow specific quality guidelines, such as style consistency and
 unit-test coverage. Documentation and examples are required for all features,
 and major changes must pass code review by at least two other developers.
 
+Our implementation guidelines emphasize writing efficient but readable code. In
+particular, we focus on making the codebase maintainable and understandable in
+order to favor external contributions. Whenever practical, algorithms
+implemented in Scikit-Learn are written in Python, using NumPy vector
+operations for numerical work. This allows the code to remain concise, readable
+and efficient. For critical algorithms that cannot be easily and efficiently
+expressed as NumPy operations, we rely on Cython \citep{behnel:2011} to achieve
+competitive performance and scalability. Cython is a compiled programming
+language that extends Python with static typing. It produces efficient C
+extension modules that are importable from the Python run-time system. Examples
+of Cython code in Scikit-Learn are stochastic gradient descent for linear
+models, some clustering algorithms, and decision trees.
+
 \subsubsection{Data representation}
 
 Machine learning revolves around data, so good datastructures are paramount to
@@ -708,7 +721,7 @@ defined below:
 
 \begin{table}
     \small
-    \hspace{-0.8cm}
+    \hspace{-1.2cm}
     \begin{tabular}{| l | c c c c c c c c c |}
     \hline
     \texttt{t}    & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
@@ -740,9 +753,9 @@ L}(Y=c|t)$ can be computed by dividing \texttt{value[t][c]} by the number of
 samples $\texttt{n\_samples[t]}$ in $t$. In the case of regression,
 \texttt{value[t]} would  contain the average output value for the samples in
 $t$. Finally, let us note that storing node impurities in the \texttt{impurity}
-array is not strictly necessary, since these values are only used during the
-construction of the tree. Yet, storing them can prove to be valuable, e.g., for
-later inspection of tree or for computing variable importances (see
+array is not strictly necessary, since these values are only used during
+construction. Yet, storing them can prove to be valuable, e.g., for
+later inspection of the decision tree or for computing variable importances (see
 Chapter~\ref{ch:importances}) more readily.
 
 By implementing the array representation as dynamic tables~\citep{cormen:2001},
