@@ -673,7 +673,7 @@ particular, this design can easily impair computing times in
 performance-critical applications, e.g., by not making it possible to leverage CPU cache or
 pre-fetching mechanisms.
 At the price of less abstraction and flexibility, we adopt instead in this work
-a low-level representation of decision trees, allowing us for a fine-grained
+a compact low-level representation of decision trees, allowing us for a fine-grained
 and complete control over memory management and CPU mechanisms.
 
 Let $\texttt{t}\in \{0,\dots,T-1\}$ denote unique node identifiers and let
@@ -764,7 +764,9 @@ allocations at a minimum and thereby reducing the overhead that would otherwise
 occur using per-node data structures. Maintaining the representation
 contiguously in memory also brings the benefits of leveraging CPU caches,
 which might greatly improve performance when fast predictions are critical.
-
+Since nodes are accessed successively and repeatedly at test time,
+storing them in nearby memory locations is indeed recommended to improve
+cache performance.
 
 \subsection{Builders}
 
@@ -773,17 +775,17 @@ three complementary components:
 
 \begin{enumerate}
 \item The first component is a \texttt{Builder} object whose role is to
-    effectively build the tree array representation.
+    effectively build the tree array representation presented above.
 
-\item The second component is a \texttt{Splitter} object whose role is to split
-    a node.
+\item The second component is a \texttt{Splitter} object whose role is to find splits on internal nodes.
 
 \item The third component is a \texttt{Criterion} object whose role is to evaluate
     the goodness of a split.
 \end{enumerate}
 
-The most straightforward \texttt{Builder} implementation is the greedy
-induction procedure as originally outlined in Algorithm~\ref{algo:induction}.
+The most straightforward \texttt{Builder} implementation is the depth-first
+greedy induction procedure as originally outlined in
+Algorithm~\ref{algo:induction}.
 
 An alternative strategy consists in replacing the stack $S$ in
 Algorithm~\ref{algo:induction} by a priority queue, hence changing the order
@@ -797,13 +799,21 @@ best-first order, then the resulting tree only includes the most significant spl
 thereby pre-pruning all (seemingly) irrelevant branches without wasting
 computational resources.
 
-% criminisi : breadth-first
-% alex: mix, gpu \citep{liao:2013}
-
+Likewise,  the stack $S$ in Algorithm~\ref{algo:induction} can be replaced by a
+deque data structure, in which case the induction procedure switches to a
+\textit{breadth-first} construction of the tree. With some modifications,
+breadth-first construction shows to be more efficient when it is expensive to
+randomly access the data~\citep{criminisi:2013}, e.g., when data are too big to
+fit into memory and must be streamed from disk. Breadth-first induction also
+proves to be an efficient strategy when combined with parallelism, e.g., for
+building a whole level of the decision tree simultaneously using multiple
+cores~\citep{liao:2013}.
 
 \subsection{Splitters}
 
 % classic, random, etc
+
+% maintain a single samples array, with in-place reordering
 
 %        + use fortran ordering to maximize caching effects
 %        + Sorting algorithms
