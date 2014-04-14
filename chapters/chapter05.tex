@@ -105,24 +105,27 @@ PERT), let us consider the overall complexity $T(n)$ when either
 $c(N)=O(KN\log N)$ or $c(N)=O(KN)$ (for $K=1,\dots,p$). Time complexity
 is studied in three cases:
 
-\begin{itemize}
-\item \textit{Best case.} The induction procedure is the most effective
+\begin{description}
+\item \textit{Best case.}\hfill\\
+      The induction procedure is the most effective
       when node samples can always be partitioned into two balanced subsets of $\tfrac{N}{2}$
       samples.
 
-\item \textit{Worst case.} By contrast, the induction procedure is the least
+\item \textit{Worst case.}\hfill\\
+      By contrast, the induction procedure is the least
       effective when splits are unbalanced. In the worst case,
       this results in splits that move a single sample in the first sub-tree and
       all $N-1$ others in the second sub-tree.
 
-\item \textit{Average case.} The average case corresponds to the average time
+\item \textit{Average case.}\hfill\\
+      The average case corresponds to the average time
       complexity, as taken over all possible learning sets ${\cal L}$ and
       all random seeds $\theta$.  Since the analysis of this case is hardly
       feasible without strong assumptions on the structure of the problem,
       we consider instead the case where the sizes of the possible
       partitions of a node are all equiprobable.
 
-\end{itemize}
+\end{description}
 
 \begin{remark}{Master Theorem}
 Some of the results outlined in the remaining of this section make use of the
@@ -765,8 +768,7 @@ occur using per-node data structures. Maintaining the representation
 contiguously in memory also brings the benefits of leveraging CPU caches,
 which might greatly improve performance when fast predictions are critical.
 Since nodes are accessed successively and repeatedly at test time,
-storing them in nearby memory locations is indeed recommended to improve
-cache performance.
+storing them in nearby memory locations is indeed highly recommended.
 
 \subsection{Builders}
 
@@ -787,7 +789,7 @@ three nested components:
 The most direct \texttt{Builder} implementation is the depth-first greedy
 induction procedure as originally outlined in Algorithm~\ref{algo:induction}. A
 critical aspect of this algorithm is how to keep account of the  the input
-samples $(\mathbf{x}_i,y_i) \in {\cal L}_t$  that arrive at node $t$. A
+samples $(\mathbf{x},y) \in {\cal L}_t$  that arrive at node $t$. A
 straightforward solution is to store lists of indices of the input samples at
 node $t$. As pointed out in \citep{criminisi:2013}, building many such lists is
 however inefficient because of repeated memory allocations and deallocations. A
@@ -803,7 +805,7 @@ into $\texttt{samples[start:pos]}$ and $\texttt{samples[pos:end]}$, such that
 all samples in the first part are on the left side of the split while all
 samples in the second part are on the right side of the split. The induction
 procedure then proceeds by pushing the bounds $\texttt{start:pos}$ and
-$\texttt{pos:end}$ on the stack $S$, as an effecient way to effectively
+$\texttt{pos:end}$ on the stack $S$, as an efficient way to effectively
 represent ${\cal L}_{t_L}$ and ${\cal L}_{t_R}$.
 
 An alternative implementation of the $\texttt{Builder}$ interface consists in
@@ -836,9 +838,37 @@ algorithms~\ref{algo:findsplit} and \ref{algo:findsplit:x_j} for finding the
 best split over all $p$ input variables. In the case of randomized trees, they
 implement the search procedure \ref{algo:findsplit:random} over $K \leq p$
 randomly drawn input variables, combined with either algorithm
-\ref{algo:findsplit:x_j}, \ref{algo:findsplit:pert} or  \ref{algo:findsplit:et}
-to respectively obtain Random Forests, Perfect Random Tree Ensembles or
-Extremely Randomized Trees.
+\ref{algo:findsplit:x_j} or  \ref{algo:findsplit:et} to respectively obtain
+Random Forests or Extremely Randomized Trees. Again, several aspects of the
+algorithm should be considered with care to obtain an efficient implementation:
+
+\begin{description}
+
+\item \textit{Data access.}\hfill\\
+    Looking for the best split on the input variable $X_j$ and/or partitioning
+    ${\cal L}_t$ on $X_j$ requires to iterate repeatedly over the node sample
+    values $x_{i,j}$, which may comes at a non
+    negligible cost if data is accessed randomly.  Due to CPU caching and
+    pre-fetching effects however, the closer the values in memory, usually the lower it takes
+    to access them. In our case, the cost of data access can therefore be minimized in
+    two ways:
+    \begin{itemize}
+    \item By storing the learning set ${\cal L}$ using column-major order (i.e., Fortran
+          array memory layout), hence storing the values $x_{i,j}$ of $X_j$ (for all samples $i=1,\dots,N$)
+          contiguously in memory.
+    \item By pre-fetching the node sample values $x_{i,j}$ (for $i = 1, \dots, N_t$) manually
+          into a static and contiguous buffer, on which the search procedure
+          is then applied.
+    \end{itemize}
+
+
+\item \textit{Sort algorithm.}\hfill\\
+
+\item \textit{Split approximations.}\hfill\\
+
+\item \textit{Shared computations.}\hfill\\
+
+\end{description}
 
 
 
