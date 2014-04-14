@@ -771,11 +771,12 @@ cache performance.
 \subsection{Builders}
 
 The implementation of the induction procedure in Scikit-Learn revolves around
-three complementary components:
+three nested components:
 
 \begin{enumerate}
 \item The first component is a \texttt{Builder} object whose role is to
-    effectively build the tree array representation presented above.
+    effectively build the tree array representation presented above,
+    by recursively partitioning nodes using splits found by a \texttt{Splitter} object.
 
 \item The second component is a \texttt{Splitter} object whose role is to find splits on internal nodes.
 
@@ -783,21 +784,39 @@ three complementary components:
     the goodness of a split.
 \end{enumerate}
 
-The most straightforward \texttt{Builder} implementation is the depth-first
-greedy induction procedure as originally outlined in
-Algorithm~\ref{algo:induction}.
+The most direct \texttt{Builder} implementation is the depth-first greedy
+induction procedure as originally outlined in Algorithm~\ref{algo:induction}. A
+critical aspect of this algorithm is how to keep account of the  the input
+samples $(\mathbf{x}_i,y_i) \in {\cal L}_t$  that arrive at node $t$. A
+straightforward solution is to store lists of indices of the input samples at
+node $t$. As pointed out in \citep{criminisi:2013}, building many such lists is
+however inefficient because of repeated memory allocations and deallocations. A
+better solution is to have instead all indices stored in a single static array
+and to use in-place reordering operations when partitioning $t$. More
+specifically, let assume that  $\texttt{samples}$ is the list of all indices
+and that  $\texttt{start}$ and $\texttt{end}$ are bounds such that
+$\texttt{samples[start:end]}$ contains the sample indices at the current node
+$t$. If $\texttt{t}$ is split on feature $\texttt{feature[t]}$ and threshold
+$\texttt{threshold[t]}$, then ${\cal L}_t$ can be partitioned into ${\cal
+L}_{t_L}$ and ${\cal L}_{t_R}$ by reorganizing $\texttt{samples[start:end]}$
+into $\texttt{samples[start:pos]}$ and $\texttt{samples[pos:end]}$, such that
+all samples in the first part are on the left side of the split while all
+samples in the second part are on the right side of the split. The induction
+procedure then proceeds by pushing the bounds $\texttt{start:pos}$ and
+$\texttt{pos:end}$ on the stack $S$, as an effecient way to effectively
+represent ${\cal L}_{t_L}$ and ${\cal L}_{t_R}$.
 
-An alternative strategy consists in replacing the stack $S$ in
-Algorithm~\ref{algo:induction} by a priority queue, hence changing the order
-in which the nodes are split. In particular, if nodes $t$ are prioritized by
-weighted potential impurity decrease $p(t) \Delta i(s^*,t)$ (where $s^*$ is the
-best split on $t$), then the greedy induction procedure switches from a
-depth-first construction of the tree to a \textit{best-first} induction procedure. In
-this way, an additional stopping criterion can be defined as the maximum number
-\texttt{max\_leaf\_nodes} of leaves in the tree. If nodes are expanded in
-best-first order, then the resulting tree only includes the most significant splits,
-thereby pre-pruning all (seemingly) irrelevant branches without wasting
-computational resources.
+An alternative implementation of the $\texttt{Builder}$ interface consists in
+replacing the stack $S$ in Algorithm~\ref{algo:induction} by a priority queue,
+hence changing the order in which the nodes are split. In particular, if nodes
+$t$ are prioritized by weighted potential impurity decrease $p(t) \Delta
+i(s^*,t)$ (where $s^*$ is the best split on $t$), then the greedy induction
+procedure switches from a depth-first construction of the tree to a \textit
+{best-first} induction procedure. In this way, an additional stopping criterion
+can be defined as the maximum number \texttt{max\_leaf\_nodes} of leaves in the
+tree. If nodes are expanded in best-first order, then the resulting tree only
+includes the most significant splits, thereby pre-pruning all (seemingly)
+irrelevant branches without wasting computational resources.
 
 Likewise,  the stack $S$ in Algorithm~\ref{algo:induction} can be replaced by a
 deque data structure, in which case the induction procedure switches to a
@@ -811,12 +830,22 @@ cores~\citep{liao:2013}.
 
 \subsection{Splitters}
 
-% classic, random, etc
+In Scikit-Learn, \texttt{Splitter} objects implement search procedures for
+finding splits on internal nodes. In the case of decision trees, they implement
+algorithms~\ref{algo:findsplit} and \ref{algo:findsplit:x_j} for finding the
+best split over all $p$ input variables. In the case of randomized trees, they
+implement the search procedure \ref{algo:findsplit:random} over $K \leq p$
+randomly drawn input variables, combined with either algorithm
+\ref{algo:findsplit:x_j}, \ref{algo:findsplit:pert} or  \ref{algo:findsplit:et}
+to respectively obtain Random Forests, Perfect Random Tree Ensembles or
+Extremely Randomized Trees.
 
-% maintain a single samples array, with in-place reordering
+
 
 %        + use fortran ordering to maximize caching effects
+
 %        + Sorting algorithms
+
 %        + Approximately best splits
 %             + Binning
 %             + Subsampling
