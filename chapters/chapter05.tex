@@ -849,9 +849,9 @@ algorithm should be considered with care to obtain an efficient implementation:
     ${\cal L}_t$ requires to repeatedly access  over the node sample
     values $x_{i,j}$ (i.e., over values in the $j$-th column if samples are represented
     as a two dimensional array), which may comes at a non negligible cost if data is
-    not ordered properly.  Due to CPU caching and pre-fetching effects however, the
+    not ordered properly.  However, due to CPU caching and pre-fetching effects, the
     closer the values in memory, usually the lower it takes to access them. In
-    our case, the cost of data access can therefore be minimized in two ways:
+    our case, this can be exploited in two ways to minimize the cost of data access:
 
     \begin{itemize}
     \item By storing the learning set ${\cal L}$ using column-major order (i.e., Fortran
@@ -878,14 +878,26 @@ algorithm should be considered with care to obtain an efficient implementation:
     performance in the worst case is bounded to $\Theta(N \log N)$  due to
     Heapsort (instead of $\Theta(N^2)$ in the worst-case for Quicksort).
 
-    Finally, partitioning node samples ${\cal L}_t$ into subsets ${\cal
-    L}_{t_L}$ and ${\cal L}_{t_R}$ not only makes them purer in terms of the
-    ouput variable $Y$, it also usually makes node samples more and more
-    identical in terms of the input variables $X_j$. As we get deeper into the
-    tree, this property can be leveraged by implementing Quicksort as a
-    three-way recursive partition~\citep{bentley:1993}, thereby setting  at their
-    final positions, in a single recursive call, all the elements that are
-    identical to the pivot  and ensuring good performance.
+    Additionally, let us notice that partitioning node samples ${\cal L}_t$
+    into subsets ${\cal L}_{t_L}$ and ${\cal L}_{t_R}$ not only makes them
+    purer in terms of the ouput variable $Y$, it also usually makes node
+    samples more and more identical in terms of the values taken by the input
+    variables. As we get deeper into the tree, this property can be leveraged
+    by implementing Quicksort as a 3-way recursive
+    partition~\citep{bentley:1993}, thereby setting at their final positions,
+    in a single recursive call, all the elements that are identical to the
+    pivot and then recursively sorting the remaining elements from the two
+    other sub-arrays. If the number of distinct values is constant, this
+    variant of Quicksort can be shown~\citep{sedgewick:2011} to reduce running
+    times from $O(N \log N)$ to $O(N H)$, where $H$ is the Shannon entropy
+    defined on the frequencies of the values to be sorted. As a consequence, in
+    the case of many duplicates (i.e., when $H=O(1)$), using 3-way Quicksort
+    for sorting the sample indices in fact reduces the overall complexity of
+    Random Forests to the asymptotic complexity of Extremely Randomized Trees
+    (see Section~\ref{sec:5:complexity-fit}).
+
+    \todo{Choice of the pivot.}
+    \todo{Insert image of 3-way quicksort invariant.}
 
 \item \textit{Split approximations.}\hfill\\
 
