@@ -845,13 +845,14 @@ algorithm should be considered with care to obtain an efficient implementation:
 \begin{description}
 
 \item \textit{Data access.}\hfill\\
-    Looking for the best split on the input variable $X_j$ and/or partitioning
-    ${\cal L}_t$ on $X_j$ requires to iterate repeatedly over the node sample
-    values $x_{i,j}$, which may comes at a non
-    negligible cost if data is accessed randomly.  Due to CPU caching and
-    pre-fetching effects however, the closer the values in memory, usually the lower it takes
-    to access them. In our case, the cost of data access can therefore be minimized in
-    two ways:
+    Looking for the best split on the input variable $X_j$ and partitioning
+    ${\cal L}_t$ on $X_j$ requires to repeatedly access  over the node sample
+    values $x_{i,j}$ (i.e., over the column values if samples are represented
+    as a two dimensional array), which may comes at a non negligible cost if data is
+    ordered randomly.  Due to CPU caching and pre-fetching effects however, the
+    closer the values in memory, usually the lower it takes to access them. In
+    our case, the cost of data access can therefore be minimized in two ways:
+
     \begin{itemize}
     \item By storing the learning set ${\cal L}$ using column-major order (i.e., Fortran
           array memory layout), hence storing the values $x_{i,j}$ of $X_j$ (for all samples $i=1,\dots,N$)
