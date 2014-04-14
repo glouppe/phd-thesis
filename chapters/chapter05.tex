@@ -846,10 +846,10 @@ algorithm should be considered with care to obtain an efficient implementation:
 
 \item \textit{Data access.}\hfill\\
     Looking for the best split on the input variable $X_j$ and partitioning
-    ${\cal L}_t$ on $X_j$ requires to repeatedly access  over the node sample
-    values $x_{i,j}$ (i.e., over the column values if samples are represented
+    ${\cal L}_t$ requires to repeatedly access  over the node sample
+    values $x_{i,j}$ (i.e., over values in the $j$-th column if samples are represented
     as a two dimensional array), which may comes at a non negligible cost if data is
-    ordered randomly.  Due to CPU caching and pre-fetching effects however, the
+    not ordered properly.  Due to CPU caching and pre-fetching effects however, the
     closer the values in memory, usually the lower it takes to access them. In
     our case, the cost of data access can therefore be minimized in two ways:
 
@@ -862,8 +862,30 @@ algorithm should be considered with care to obtain an efficient implementation:
           is then applied.
     \end{itemize}
 
-
 \item \textit{Sort algorithm.}\hfill\\
+    In CART and Random Forests, finding the best split on $X_j$ requires
+    to sort the sample indices $\texttt{samples[start:end]}$ along
+    the respective values of $X_j$. As shown in Section~\ref{sec:5:complexity-fit},
+    this operation drives the complexity of the overall induction procedure
+    and  is therefore critical in the implementation of the algorithm.
+
+    To guarantee the lowest time complexity in all cases, we rely on
+    Introsort~\citep{musser:1997} which combines Quicksort and Heapsort into a
+    hybrid sorting algorithm. Basically, sorting in Introsort begins with
+    Quicksort and then switches to Heapsort when the depth of partitioning
+    exceeds $\Theta(\log N)$. As such, the practical $\Theta(N\log N)$
+    performance of Introsort is comparable to Quicksort, except that
+    performance in the worst case is bounded to $\Theta(N \log N)$  due to
+    Heapsort (instead of $\Theta(N^2)$ in the worst-case for Quicksort).
+
+    Finally, partitioning node samples ${\cal L}_t$ into subsets ${\cal
+    L}_{t_L}$ and ${\cal L}_{t_R}$ not only makes them purer in terms of the
+    ouput variable $Y$, it also usually makes node samples more and more
+    identical in terms of the input variables $X_j$. As we get deeper into the
+    tree, this property can be leveraged by implementing Quicksort as a
+    three-way recursive partition~\citep{bentley:1993}, thereby setting  at their
+    final positions, in a single recursive call, all the elements that are
+    identical to the pivot  and ensuring good performance.
 
 \item \textit{Split approximations.}\hfill\\
 
