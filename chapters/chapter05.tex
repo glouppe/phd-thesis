@@ -883,9 +883,9 @@ algorithm should be considered with care to obtain an efficient implementation:
     performance of Introsort is comparable to the average performance of
     Quicksort, except that performance in the worst case is bounded to
     $\Theta(N \log N)$  due to Heapsort, instead of $\Theta(N^2)$ in the
-    worst-case for Quicksort. To further improve performance, Quicksort is
+    worst case for Quicksort. Additionally, Quicksort is
     implemented using the median-of-three as pivot~\citep{bentley:1993}, hence
-    yielding better partitions.
+    yielding better partitions and further improving performance.
 
     \begin{figure}
         \centering
@@ -916,20 +916,26 @@ algorithm should be considered with care to obtain an efficient implementation:
     complexity of Extremely Randomized Trees (see Section~\ref{sec:5:complexity-fit}).
 
 \item \textit{Split approximations.}\hfill\\
+    In Chapter~\ref{ch:forest}, we showed that an increase of bias due to
+    randomization is not necessarily damaging as long as it decorrelates the
+    predictions of the individual trees. Given this result, a legitimate
+    question is to wonder if finding the very best splits $s^*_j$ really is
+    always imperative to achieve good accuracy in forests. As proved by the
+    good results usually obtained by Extremely Randomized Trees, even splits
+    that are drawn at random are in fact often sufficient to reach good
+    (sometimes even better) performance. However, not only this yields
+    comparable accuracy, it is also more computationally efficient. At midway
+    between  exact best splits (as in Algorithm~\ref{algo:findsplit:x_j}) and
+    random splits (as in Algorithm~\ref{algo:findsplit:et}), an intermediate
+    solution is therefore to consider approximations of the best splits.
+
+
+
+
+    % subsampling
+    % binnining
 
 \item \textit{Shared computations.}\hfill\\
-
-\end{description}
-
-
-
-%        + use fortran ordering to maximize caching effects
-
-%        + Sorting algorithms
-
-%        + Approximately best splits
-%             + Binning
-%             + Subsampling
 
 % %     - Shared computations
 % %         > Splitters
@@ -938,6 +944,8 @@ algorithm should be considered with care to obtain an efficient implementation:
 % %             - Pre-sorting + sample_mask
 % %         > Multi-threading
 
+
+\end{description}
 
 \subsection{Criteria}
 
