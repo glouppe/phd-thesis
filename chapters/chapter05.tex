@@ -865,7 +865,13 @@ algorithm should be considered with care to obtain an efficient implementation:
 \item \textit{Sort algorithm.}\hfill\\
     In CART and Random Forests, finding the best split on $X_j$ requires
     to sort the sample indices $\texttt{samples[start:end]}$ along
-    the respective values of $X_j$. As shown in Section~\ref{sec:5:complexity-fit},
+    their respective values on $X_j$, i.e., such that
+    \begin{align}
+    \texttt{X[samples[start], j]} &\leq \dots \leq \texttt{X[samples[start+i], j]} \nonumber \\
+                                  &\leq \dots \leq \texttt{X[samples[end-1], j]}, \nonumber
+    \end{align}
+    for $i=0,\dots,N_t-1$.
+    As shown in Section~\ref{sec:5:complexity-fit},
     this operation drives the complexity of the overall induction procedure
     and  is therefore critical in the implementation of the algorithm.
 
@@ -874,30 +880,40 @@ algorithm should be considered with care to obtain an efficient implementation:
     hybrid sorting algorithm. Basically, sorting in Introsort begins with
     Quicksort and then switches to Heapsort when the depth of partitioning
     exceeds $\Theta(\log N)$. As such, the practical $\Theta(N\log N)$
-    performance of Introsort is comparable to Quicksort, except that
-    performance in the worst case is bounded to $\Theta(N \log N)$  due to
-    Heapsort (instead of $\Theta(N^2)$ in the worst-case for Quicksort).
+    performance of Introsort is comparable to the average performance of
+    Quicksort, except that performance in the worst case is bounded to
+    $\Theta(N \log N)$  due to Heapsort, instead of $\Theta(N^2)$ in the
+    worst-case for Quicksort. To further improve performance, Quicksort is
+    implemented using the median-of-three as pivot~\citep{bentley:1993}, hence
+    yielding better partitions.
 
-    Additionally, let us notice that partitioning node samples ${\cal L}_t$
-    into subsets ${\cal L}_{t_L}$ and ${\cal L}_{t_R}$ not only makes them
-    purer in terms of the ouput variable $Y$, it also usually makes node
-    samples more and more identical in terms of the values taken by the input
-    variables. As we get deeper into the tree, this property can be leveraged
-    by implementing Quicksort as a 3-way recursive
-    partition~\citep{bentley:1993}, thereby setting at their final positions,
-    in a single recursive call, all the elements that are identical to the
-    pivot and then recursively sorting the remaining elements from the two
-    other sub-arrays. If the number of distinct values is constant, this
-    variant of Quicksort can be shown~\citep{sedgewick:2011} to reduce running
-    times from $O(N \log N)$ to $O(N H)$, where $H$ is the Shannon entropy
-    defined on the frequencies of the values to be sorted. As a consequence, in
-    the case of many duplicates (i.e., when $H=O(1)$), using 3-way Quicksort
-    for sorting the sample indices in fact reduces the overall complexity of
-    Random Forests to the asymptotic complexity of Extremely Randomized Trees
-    (see Section~\ref{sec:5:complexity-fit}).
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{figures/ch5_sort.pdf}
+        \caption{3-way partition in Quicksort. Once $\texttt{i=r}$, elements that are identical
+                 to the pivot are all set at their final positions \texttt{samples[l:r]} in a single
+                 recursive call. The sub-arrays \texttt{samples[start:l]} and \texttt{samples[r:end]}
+                 are then recursively sorted.}
+        \label{fig:5:sort}
+    \end{figure}
 
-    \todo{Choice of the pivot.}
-    \todo{Insert image of 3-way quicksort invariant.}
+    In the context of the tree induction procedure, let us finally notice that
+    partitioning node samples ${\cal L}_t$ into subsets ${\cal L}_{t_L}$ and
+    ${\cal L}_{t_R}$ not only makes them purer in terms of the ouput variable
+    $Y$, it also indirectly makes node samples more and more identical in terms
+    of the values taken by the input variables. As we get deeper into the tree,
+    this property can be leveraged by implementing Quicksort as a 3-way
+    recursive partition~\citep{bentley:1993}, as illustrated in
+    Figure~\ref{fig:5:sort}. In this variant, elements that are identical to
+    the pivot are all set at their final positions in a single recursive call,
+    hence accelerating the sorting procedure. If the number of distinct values
+    is constant, 3-way Quicksort can be shown~\citep{sedgewick:2011}
+    to reduce running times from $O(N \log N)$ to $O(N H)$, where $H$ is the
+    Shannon entropy defined on the frequencies of the values to be sorted. As a
+    consequence, in the case of many duplicates (i.e., when $H=O(1)$),
+    $c(N)=O(N)$ and using 3-way Quicksort for sorting the sample indices in
+    fact reduces the overall complexity of Random Forests to the asymptotic
+    complexity of Extremely Randomized Trees (see Section~\ref{sec:5:complexity-fit}).
 
 \item \textit{Split approximations.}\hfill\\
 

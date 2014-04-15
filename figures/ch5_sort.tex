@@ -1,0 +1,29 @@
+\documentclass{article}
+\usepackage{pstricks}
+\usepackage{pst-plot}
+\definecolor{gray}{rgb}{0.95,0.95,0.95}
+\definecolor{darkgray}{rgb}{0.8,0.8,0.8}
+\pagestyle{empty}
+\begin{document}
+    \begin{pspicture}(20,15)
+    %\psgrid[subgriddiv=1,griddots=10,gridlabels=7pt]
+    \psframe[fillstyle=solid,linewidth=0.5pt,linecolor=black](3,13)(13,14)
+    \psframe[fillstyle=solid,linewidth=0.5pt,linecolor=white,fillcolor=gray](3.1,13.1)(4.9,13.9)
+    \psframe[fillstyle=solid,linewidth=0.5pt,linecolor=white,fillcolor=gray](11.1,13.1)(12.9,13.9)
+    \psframe[fillstyle=solid,linewidth=0.5pt,linecolor=white,fillcolor=darkgray](8.1,13.1)(9.4,13.9)
+    \psline[linewidth=0.5pt]{-}(5,13)(5,14.5)
+    \psline[linewidth=0.5pt]{-}(11,13)(11,14.5)
+    \psline[linewidth=0.5pt]{-}(7,14)(7,12.5)
+    \psline[linewidth=0.5pt]{-}(8,14)(8,12.5)
+    \psline[linewidth=0.5pt]{-}(9.5,14)(9.5,12.5)
+    \rput(2,13.5){\texttt{samples}}
+    \rput[l](5.1,14.5){\texttt{start}}
+    \rput[l](11.1,14.5){\texttt{end}}
+    \rput[l](7.1,12.5){\texttt{l}}
+    \rput[l](8.1,12.5){\texttt{i}}
+    \rput[l](9.6,12.5){\texttt{r}}
+    \rput(6,13.5){$<$}
+    \rput(7.5,13.5){$=$}
+    \rput(10.25,13.5){$>$}
+    \end{pspicture}
+\end{document}
