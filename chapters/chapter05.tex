@@ -915,27 +915,46 @@ algorithm should be considered with care to obtain an efficient implementation:
     fact reduces the overall complexity of Random Forests to the asymptotic
     complexity of Extremely Randomized Trees (see Section~\ref{sec:5:complexity-fit}).
 
+\item \textit{Skipping locally constant input variables.}\hfill \\
+    \todo{}
+
 \item \textit{Split approximations.}\hfill\\
     In Chapter~\ref{ch:forest}, we showed that an increase of bias due to
     randomization is not necessarily damaging as long as it decorrelates the
     predictions of the individual trees. Given this result, a legitimate
     question is to wonder if finding the very best splits $s^*_j$ really is
-    always imperative to achieve good accuracy in forests. As proved by the
+    imperative in the first place to achieve good accuracy in forests. As proved by the
     good results usually obtained by Extremely Randomized Trees, even splits
     that are drawn at random are in fact often sufficient to reach good
     (sometimes even better) performance. However, not only this yields
     comparable accuracy, it is also more computationally efficient. At midway
     between  exact best splits (as in Algorithm~\ref{algo:findsplit:x_j}) and
     random splits (as in Algorithm~\ref{algo:findsplit:et}), an intermediate
-    solution is therefore to consider approximations of the best splits.
+    and pragmatic solution is therefore to consider approximations of the best splits.
+    The two most strategies are based on subsampling and binning:
+
+    \begin{itemize}
+    \item Let $N_0$ denote an upper limit on the node sample size. If $N_t > N_0$,
+          the subsampling approximation of the best split $s^*_j$ at $t$ on $X_j$ consists
+          in looking for the best split using only $N_0$ randomly drawn node
+          samples from ${\cal L}_t$, and all node samples otherwise. The rationale behind this strategy is
+          that, in the first nodes of the tree, the best splits are often
+          so markedly superior to all other splits that this clear-cut information
+          also reflects in a subsample. For nodes further down in the tree (i.e., for $N_t \leq N_0$),
+          splits are usually less marked but then all node samples in ${\cal L}_t$
+          are used, hence guaranteeing to find the same splits as in the original procedure.
+          Historically, the subsampling strategy was first proposed in \citep{breiman:1984}
+          in the context of single decision trees, for datasets too large to be held in memory.
 
 
-
+    \item
+    \end{itemize}
 
     % subsampling
     % binnining
 
 \item \textit{Shared computations.}\hfill\\
+    \todo{}
 
 % %     - Shared computations
 % %         > Splitters
