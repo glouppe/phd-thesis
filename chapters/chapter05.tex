@@ -920,13 +920,13 @@ algorithm should be considered with care to obtain an efficient implementation:
 
 \item \textit{Split approximations.}\hfill\\
     In Chapter~\ref{ch:forest}, we showed that an increase of bias due to
-    randomization is not necessarily damaging as long as it decorrelates the
+    randomization is beneficial as long as it sufficiently decorrelates the
     predictions of the individual trees. Given this result, a legitimate
     question is to wonder if finding the very best splits $s^*_j$ really is
-    imperative in the first place to achieve good accuracy in forests. As proved by the
+    imperative in the first place to achieve good accuracy in random forests. As proved by the
     good results usually obtained by Extremely Randomized Trees, even splits
     that are drawn at random are in fact often sufficient to reach good
-    (sometimes even better) performance. However, not only this yields
+    (sometimes even better) performance. More importantly, not only this yields
     comparable accuracy, it is also more computationally efficient. At midway
     between  exact best splits (as in Algorithm~\ref{algo:findsplit:x_j}) and
     random splits (as in Algorithm~\ref{algo:findsplit:et}), an intermediate
