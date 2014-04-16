@@ -389,39 +389,6 @@ method of all, which is due to the fact that only a single split variable
 is considered at each split. For $K=1$ however, ETs and PERT have identical
 time complexity.
 
-\begin{remark}{Presorting data in Random Forests}
-As shown above, sorting node samples at each split significantly impacts
-the overall complexity of the induction procedure. An alternative strategy is
-possible~\citep{breiman:2002} and consists in presorting the samples for all
-$p$ input variables before the construction of the tree. More specifically, let
-$i=1,\dots,\widetilde{N}$ denote the original indices of the unique input
-samples in ${\cal L}^m$. For each input variable $X_j$ (for $j=1,\dots,p$), the
-sorted indices $\sigma^j_1,\dots,\sigma^j_{\widetilde{N}}$, such that
-\begin{equation} x_{\sigma^j_1,j} \leq \dots \leq
-x_{\sigma^j_{\widetilde{N}},j}, \end{equation} can be computed in
-$O(p\widetilde{N}\log \widetilde{N})$. Given these indices, finding the best
-split at a node then simply amounts to iterate, in that order, over the
-samples $\smash{\sigma^j_1,\dots,\sigma^j_{\widetilde{N}}}$ (for all $K$ of the
-split variables $X_j$), which reduces complexity to
-$O(K\widetilde{N})$ instead of $O(K\widetilde{N}\log \widetilde{N})$.
-Partitioning the node samples into $t_L$ and $t_R$ then requires to partition
-all $p$ lists of sorted indices into $2p$ sub-lists of $\widetilde{N}_{t_L}$ and
-$\widetilde{N}_{t_R}$ sorted indices
-$\smash{\sigma^j_1,\dots,\sigma^j_{\widetilde{N}_{t_L}}}$ and
-$\smash{\sigma^j_1,\dots,\sigma^j_{\widetilde{N}_{t_R}}}$, which can be done in
-$O(p\widetilde{N})$. In total, the within-node complexity is
-\begin{equation}
-c(\widetilde{N}) = O(K\widetilde{N} + p\widetilde{N}) = O(p\widetilde{N}).
-\end{equation} Using this
-alternative strategy, the time complexity of RF for the best, the worst and the
-average cases is respectively $O(Mp\widetilde{N}\log \widetilde{N})$,
-$O(Mp\widetilde{N}^2)$ and $O(Mp\widetilde{N}\log \widetilde{N})$, as derived
-from theorems~\ref{thm:6:best:kn}, \ref{thm:6:worst:kn} and
-\ref{thm:6:average:kn} for $K=p$. Neglecting constant factors, the ratio between the two
-implementations is $O(\frac{p}{K\log \widetilde{N}})$, which might not necessarily
-lead to faster building times depending on $K$ and the size of the problem.
-\end{remark}
-
 
 \section{Complexity of the prediction procedure}
 \label{sec:5:complexity-predict}
@@ -722,6 +689,24 @@ defined below:
 \end{minipage}
 \end{figure}
 
+As an example, Table~\ref{table:tree-array} illustrates the array
+representation of the decision tree shown in Figure~\ref{fig:5:tree}, as built
+from the learning set ${\cal L}$ of Figure~\ref{fig:5:set}. Internal nodes
+($t_0$, $t_2$, $t_3$ and $t_6$) are nodes for which the corresponding values in
+$\texttt{left\_child}$, $\texttt{right\_child}$, $\texttt{feature}$ and
+$\texttt{threshold}$ are not empty, while leaves ($t_1$, $t_4$, $t_7$ and
+$t_8$) correspond to nodes for which these values are not defined. In the case
+of classification, the \texttt{value} array contains the number of samples of
+each class for each node. From these, class probability estimates $p_{\cal
+L}(Y=c|t)$ can be computed by dividing \texttt{value[t][c]} by the number of
+samples $\texttt{n\_samples[t]}$ in $t$. In the case of regression,
+\texttt{value[t]} would  contain the average output value for the samples in
+$t$. Finally, let us note that storing node impurities in the \texttt{impurity}
+array is not strictly necessary, since these values are only used during
+construction. Yet, storing them can prove to be valuable, e.g., for
+later inspection of the decision tree or for computing variable importances (see
+Chapter~\ref{ch:importances}) more readily.
+
 \begin{table}
     \small
     \hspace{-1.3cm}
@@ -742,24 +727,6 @@ defined below:
     \caption{Array representation of the decision tree in Figure~\ref{fig:5:tree}.}
     \label{table:tree-array}
 \end{table}
-
-As an example, Table~\ref{table:tree-array} illustrates the array
-representation of the decision tree shown in Figure~\ref{fig:5:tree}, as built
-from the learning set ${\cal L}$ of Figure~\ref{fig:5:set}. Internal nodes
-($t_0$, $t_2$, $t_3$ and $t_6$) are nodes for which the corresponding values in
-$\texttt{left\_child}$, $\texttt{right\_child}$, $\texttt{feature}$ and
-$\texttt{threshold}$ are not empty, while leaves ($t_1$, $t_4$, $t_7$ and
-$t_8$) correspond to nodes for which these values are not defined. In the case
-of classification, the \texttt{value} array contains the number of samples of
-each class for each node. From these, class probability estimates $p_{\cal
-L}(Y=c|t)$ can be computed by dividing \texttt{value[t][c]} by the number of
-samples $\texttt{n\_samples[t]}$ in $t$. In the case of regression,
-\texttt{value[t]} would  contain the average output value for the samples in
-$t$. Finally, let us note that storing node impurities in the \texttt{impurity}
-array is not strictly necessary, since these values are only used during
-construction. Yet, storing them can prove to be valuable, e.g., for
-later inspection of the decision tree or for computing variable importances (see
-Chapter~\ref{ch:importances}) more readily.
 
 By implementing the array representation as dynamic tables~\citep{cormen:2001},
 insertion of new nodes has an $O(1)$ amortized cost, while keeping memory
@@ -959,30 +926,46 @@ algorithm should be considered with care to obtain an efficient implementation:
           of the possible discretization thresholds $v^\prime_k$ instead
           of exhaustively evaluating all candidate splits. In binning, this
           is performed by grouping together node samples that are close
-          of each other into bins and then evaluating only the thresholds inbetween these groups.
+          to each other into bins and then evaluating only the thresholds inbetween these groups.
           The simplest strategy of all is to divide the value interval of $X_j$
           at $t$ into $D$ intervals of equal length. Another strategy
           is to sort the node samples along their respective values of $X_j$
           and to partition them into $D$ subsets of equal size.
-          More elaborate strategies, also known as \textit{attribute discretization},
+          More elaborate algorithms, also known as \textit{attribute discretization} procedures,
           are reviewed in \citep{zighed:2000}.
-
     \end{itemize}
 
-
-    % subsampling
-    % binnining
-
-\item \textit{Shared computations.}\hfill\\
-    \todo{}
-
-% %     - Shared computations
-% %         > Splitters
-% %             - (Independent splitters)
-% %             - Pre-sorting + data reorganization (Breiman's strategy)
-% %             - Pre-sorting + sample_mask
-% %         > Multi-threading
-
+\item \textit{Pre-sorting data.}\hfill\\
+    As shown earlier, sorting node samples for each candidate split significantly impacts
+    the overall complexity of the induction procedure. An alternative strategy is
+    possible~\citep{breiman:2002} and consists in presorting the samples for all
+    $p$ input variables before the construction of the tree. More specifically, let
+    $i=1,\dots,\widetilde{N}$ denote the original indices of the unique input
+    samples in ${\cal L}^m$. For each input variable $X_j$ (for $j=1,\dots,p$), the
+    sorted indices $\sigma^j_1,\dots,\sigma^j_{\widetilde{N}}$, such that
+    \begin{equation} x_{\sigma^j_1,j} \leq \dots \leq
+    x_{\sigma^j_{\widetilde{N}},j}, \end{equation} can be computed in
+    $O(p\widetilde{N}\log \widetilde{N})$. Given these indices, finding the best
+    split at a node then simply amounts to iterate, in that order, over the
+    samples $\smash{\sigma^j_1,\dots,\sigma^j_{\widetilde{N}}}$ (for all $K$ of the
+    split variables $X_j$), which reduces complexity to
+    $O(K\widetilde{N})$ instead of $O(K\widetilde{N}\log \widetilde{N})$.
+    Partitioning the node samples into $t_L$ and $t_R$ then requires to partition
+    all $p$ lists of sorted indices into $2p$ sub-lists of $\widetilde{N}_{t_L}$ and
+    $\widetilde{N}_{t_R}$ sorted indices
+    $\smash{\sigma^j_1,\dots,\sigma^j_{\widetilde{N}_{t_L}}}$ and
+    $\smash{\sigma^j_1,\dots,\sigma^j_{\widetilde{N}_{t_R}}}$, which can be done in
+    $O(p\widetilde{N})$. In total, the within-node complexity is
+    \begin{equation}
+    c(\widetilde{N}) = O(K\widetilde{N} + p\widetilde{N}) = O(p\widetilde{N}).
+    \end{equation} Using this
+    alternative strategy, the time complexity of RF for the best, the worst and the
+    average cases is respectively $O(Mp\widetilde{N}\log \widetilde{N})$,
+    $O(Mp\widetilde{N}^2)$ and $O(Mp\widetilde{N}\log \widetilde{N})$, as derived
+    from theorems~\ref{thm:6:best:kn}, \ref{thm:6:worst:kn} and
+    \ref{thm:6:average:kn} for $K=p$. Neglecting constant factors, the ratio between the two
+    implementations is $O(\frac{p}{K\log \widetilde{N}})$, which might not necessarily
+    lead to faster building times depending on $K$ and the size of the problem.
 
 \end{description}
 
