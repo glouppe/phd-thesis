@@ -395,6 +395,11 @@ time complexity.
 
 \todo{}
 
+% seconde facette de la notion of complexity est model complexity, which has an impact on prediction time
+
+% resultats quand les arbres sont totalement aléatoires => distribution voir papier imp
+% segdewick chapter 6
+
 % discuter en fonction du nombre de feuilles
 %                      de la profondeur moyenne
 
@@ -983,30 +988,34 @@ $O(N_t)$ operation.
 \section{Benchmarks}
 \label{sec:5:benchmarks}
 
-% * Comparison of existing implementations
-%     - Experiments and/or implementation details
+\subsection{Empirical complexity}
 
-%         List existing implementations and mention in which complexity they
-%         fall in (eg., in a Table).
+% Define some artifical data generators
+% Evaluate the effect of
+%   - M
+%   - N
+%   - p
+%   - K
+%   - Unique values versus dupplicates
+%   - sorting algorithm
 
-%         Open-source
-%         * C4.5
-%         * CART => Breiman Fortran code
-%         * TMVA !!
-%         * Scikit-Learn                ***
-%         * Weka                        ***
-%             + original
-%             + fast-random-forest
-%         * randomForest (R)            ***
-%             + original
-%             + PARF
-%         * party (R)
-%         * Pierre                      ***
-%         * OpenCV
-%         * H2O                         ***
-%         * clus (Leuven)
+% Measure
+%   - Fit time
+%   - Predict time
+%   - Accuracy
+%   - number of nodes
+%   - average depth of nodes
 
-%         Closed source
-%         * Sherwood (Criminisi)
-%         * WiseRF
-%         * Random jungle
+\subsection{Comparison with other implementations}
+
+% Compare
+%   - Scikit-Learn
+%   - Weka
+%   - randomForest (R)
+%   - Pierre
+%   - H20
+%   - TMVA
+% Comparison on various datasets
+% Discussion of the results
+
+% Mention C4.5, party, OpenCV, clus, Sherwood, wiserf, random jungle
