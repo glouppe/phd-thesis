@@ -23,6 +23,8 @@ for i in range(len(X_) - 1):
     s = (X_[i]+X_[i+1]) / 2.0
     plt.plot([s,s], [0.00001, 0], ':', color=gray)
 
+plt.plot([-3,-3], [0.00001, 0], '-', color='k')
+
 y = y[indices]
 
 def gini(p):
@@ -58,6 +60,7 @@ s2 = X_[7]
 smid = (s1+s2) / 2.0
 
 #plt.plot([s2,s2], [0.00001, -0.00001], '-', color=gray)
+plt.text(-3, 0.0000105, "$\Delta i(s_j^v, t)$", fontsize=15, horizontalalignment='center')
 plt.text(s1, 0.00000095, "$x_{i-1,j}$", fontsize=15, horizontalalignment='center')
 plt.text(s2, 0.00000095, "$x_{i,j}$", fontsize=15, horizontalalignment='center')
 plt.text(smid, 0.0000105, "$v^\prime_k$", fontsize=15, horizontalalignment='center')
