@@ -60,7 +60,7 @@ smid = (s1+s2) / 2.0
 #plt.plot([s2,s2], [0.00001, -0.00001], '-', color=gray)
 plt.text(s1, 0.00000095, "$x_{i-1,j}$", fontsize=15, horizontalalignment='center')
 plt.text(s2, 0.00000095, "$x_{i,j}$", fontsize=15, horizontalalignment='center')
-plt.text(smid, 0.000011, "$v^\prime_k$", fontsize=15, horizontalalignment='center')
+plt.text(smid, 0.0000105, "$v^\prime_k$", fontsize=15, horizontalalignment='center')
 plt.text((smid+(-3)) / 2.0, -0.000001, "${\cal L}^{v^\prime_k}_{t_L}$", fontsize=15, horizontalalignment='center')
 plt.text((smid+3) / 2.0, -0.000001, "${\cal L}^{v^\prime_k}_{t_R}$", fontsize=15, horizontalalignment='center')
 
@@ -75,7 +75,7 @@ plt.annotate(
 
 plt.annotate("$\Delta$", xy=(s[3], delta[3]), xycoords='data', xytext=(s[3]-0.5, delta[3]-0.000001), textcoords='data', arrowprops={'arrowstyle':'->'})
 
-plt.text(3, -0.000003, "$X_j$", fontsize=15)
+plt.text(3, -0.0000007, "$X_j$", fontsize=15)
 
 plt.show()
 

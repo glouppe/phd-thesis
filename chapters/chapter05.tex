@@ -955,8 +955,20 @@ algorithm should be considered with care to obtain an efficient implementation:
           Historically, the subsampling strategy was first proposed in \citep{breiman:1984}
           in the context of single decision trees, for datasets too large to be held in memory.
 
-    \item
+    \item An alternative but close strategy is to consider only a subset
+          of the possible discretization thresholds $v^\prime_k$ instead
+          of exhaustively evaluating all candidate splits. In binning, this
+          is performed by grouping together node samples that are close
+          of each other into bins and then evaluating only the thresholds inbetween these groups.
+          The simplest strategy of all is to divide the value interval of $X_j$
+          at $t$ into $D$ intervals of equal length. Another strategy
+          is to sort the node samples along their respective values of $X_j$
+          and to partition them into $D$ subsets of equal size.
+          More elaborate strategies, also known as \textit{attribute discretization},
+          are reviewed in \citep{zighed:2000}.
+
     \end{itemize}
+
 
     % subsampling
     % binnining
