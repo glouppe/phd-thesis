@@ -916,7 +916,16 @@ algorithm should be considered with care to obtain an efficient implementation:
     complexity of Extremely Randomized Trees (see Section~\ref{sec:5:complexity-fit}).
 
 \item \textit{Skipping locally constant input variables.}\hfill \\
-    \todo{}
+    In the extreme case, recursively partitioning node samples might result in
+    input variables $X_j$ to become locally constant at $t$. That is,
+    $x_j=x^\prime_j$ for all $(\mathbf{x},y), (\mathbf{x}^\prime, y) \in {\cal
+    L}_t$. In such  a case, there is no valid split on $X_j$ and trying to find
+    one at $t$, but also at any of the descendant nodes, is a waste of
+    computational resources. Accordingly, Algorithm~\ref{algo:findsplit:random}
+    can be extended to account for variables that are known to be constant, thereby skipping
+    non-informative variables if we know in advance that no valid split can be found.
+    To stay as close as possible to the original algorithm, note however that constant
+    variables are still included when drawing $K$ variables at random.
 
 \item \textit{Split approximations.}\hfill\\
     In Chapter~\ref{ch:forest}, we showed that an increase of bias due to
@@ -931,7 +940,7 @@ algorithm should be considered with care to obtain an efficient implementation:
     between  exact best splits (as in Algorithm~\ref{algo:findsplit:x_j}) and
     random splits (as in Algorithm~\ref{algo:findsplit:et}), an intermediate
     and pragmatic solution is therefore to consider approximations of the best splits.
-    The two most strategies are based on subsampling and binning:
+    The two most strategies are based on \textit{subsampling} and \textit{binning}:
 
     \begin{itemize}
     \item Let $N_0$ denote an upper limit on the node sample size. If $N_t > N_0$,
@@ -945,7 +954,6 @@ algorithm should be considered with care to obtain an efficient implementation:
           are used, hence guaranteeing to find the same splits as in the original procedure.
           Historically, the subsampling strategy was first proposed in \citep{breiman:1984}
           in the context of single decision trees, for datasets too large to be held in memory.
-
 
     \item
     \end{itemize}
