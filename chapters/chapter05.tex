@@ -971,7 +971,13 @@ algorithm should be considered with care to obtain an efficient implementation:
 
 \subsection{Criteria}
 
-% gini , etc
+The last components of the implementation of decision trees in Scikit-Learn are
+\texttt{Criterion} objects for evaluating the goodness of splits. Supported
+criteria are \texttt{"gini"} and \texttt{"entropy"} in classification, and the
+reduction of variance \texttt{"mse"} in regression. All of them implement the
+update mechanisms described in Section~\ref{sec:best-split-ordered}, such that
+the iterative evaluation of $N_t-1$ splits on an ordered variable remains a
+$O(N_t)$ operation.
 
 
 \section{Benchmarks}
