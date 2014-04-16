@@ -389,6 +389,8 @@ method of all, which is due to the fact that only a single split variable
 is considered at each split. For $K=1$ however, ETs and PERT have identical
 time complexity.
 
+\todo{Even for $K=1$, complexity is linearithmic. This is due to the fact that trees are not all equiprobable.}
+
 
 \section{Complexity of the prediction procedure}
 \label{sec:5:complexity-predict}
@@ -984,6 +986,10 @@ update mechanisms described in Section~\ref{sec:best-split-ordered}, such that
 the iterative evaluation of $N_t-1$ splits on an ordered variable remains a
 $O(N_t)$ operation.
 
+\subsection{Parallelization}
+
+\todo{}
+
 
 \section{Benchmarks}
 \label{sec:5:benchmarks}
@@ -996,6 +1002,7 @@ $O(N_t)$ operation.
 %   - N
 %   - p
 %   - K
+%   - bootstrap
 %   - Unique values versus dupplicates
 %   - sorting algorithm
 
@@ -1015,7 +1022,8 @@ $O(N_t)$ operation.
 %   - Pierre
 %   - H20
 %   - TMVA
-% Comparison on various datasets
+% Make a table of supported features
+% Comparison on various datasets (time, accuracy)
 % Discussion of the results
 
 % Mention C4.5, party, OpenCV, clus, Sherwood, wiserf, random jungle
