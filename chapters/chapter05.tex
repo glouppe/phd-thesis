@@ -990,8 +990,8 @@ $O(N_t)$ operation.
 
 Scikit-Learn implementation of random forests supports parallelism to
 distribute computations on multi-core architectures. The simple yet effective
-approach that we implement is to consider the construction of the forest as an
-embarrassingly parallel problem, in which multiple decision trees are built
+approach that we implement is to consider the construction of a forest as an
+embarrassingly parallel problem, in which the $M$ decision trees are built
 concurrently and independently on multiple processors. Assuming no overhead due
 to parallelization, the theoretical speedup of this strategy is equal to the
 number $N_c$ of cores used for building the forest. In practice however, we will
@@ -1014,7 +1014,7 @@ assigned single nodes to develop using a producer-consumer scheme to balance
 workload. Unfortunately, this latter approach often proves to be dominated in
 practice by the overhead due to task assignment and bookkeeping activities.
 Alternatively, the construction of a tree can be distributed using an
-attribute-based decomposition, by parallelizing the search of the split at a
+attribute-based decomposition, by parallelizing the search of the $K$ best splits at a
 given node in Algorithm~\ref{algo:findsplit:random}.
 
 Using similar or hybrid approaches, let us finally note that the parallel
