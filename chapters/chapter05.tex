@@ -988,7 +988,46 @@ $O(N_t)$ operation.
 
 \subsection{Parallelization}
 
-\todo{}
+Scikit-Learn implementation of random forests supports parallelism to
+distribute computations on multi-core architectures. The simple yet effective
+approach that we implement is to consider the construction of the forest as an
+embarrassingly parallel problem, in which multiple decision trees are built
+concurrently and independently on multiple processors. Assuming no overhead due
+to parallelization, the theoretical speedup of this strategy is equal to the
+number $N_c$ of cores used for building the forest. In practice however, we will
+observe in Section~\ref{sec:5:benchmarks} that this upper bound is not always
+strictly reached due to the variance of the time required for building
+randomized trees. It may indeed happen that building trees take longer  than
+building some others, thereby underutilizing computational resources since
+cores may have finished sooner than others.
+
+More fine-grained approaches consist in building decision trees one at time,
+but using multiple processors (for a review on the topic, see
+\citep{srivastava:2002}). The node-based decomposition distributes the
+construction of a tree by building multiple nodes concurrently. In this case,
+workload can be divided between processors using a breadth-first induction
+procedure and assigning whole sub-trees to develop once the waiting queue
+contains $N_c$ nodes. Similarly however, sub-trees may take longer
+to build than others, hence underutilizing computational resources if the
+resulting decision tree is not balanced. To alleviate this issue, processors may be
+assigned single nodes to develop using a producer-consumer scheme to balance
+workload. Unfortunately, this latter approach often proves to be dominated in
+practice by the overhead due to task assignment and bookkeeping activities.
+Alternatively, the construction of a tree can be distributed using an
+attribute-based decomposition, by parallelizing the search of the split at a
+given node in Algorithm~\ref{algo:findsplit:random}.
+
+Using similar or hybrid approaches, let us finally note that the parallel
+induction of random forests extend to alternative distributed architectures,
+including GPUs~\citep{sharp:2008,liao:2013}, FPGA \citep{narayanan:2007} or
+clusters of distributed machines~\citep{mitchell:2011}.
+
+
+
+\begin{remark}{Python and the Global Interpreter Lock (GIL)}
+%\citep{masini:2011}
+\end{remark}
+
 
 
 \section{Benchmarks}
@@ -1005,6 +1044,7 @@ $O(N_t)$ operation.
 %   - bootstrap
 %   - Unique values versus dupplicates
 %   - sorting algorithm
+%   - n_jobs
 
 % Measure
 %   - Fit time
