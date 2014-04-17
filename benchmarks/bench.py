@@ -8,11 +8,11 @@ from sklearn.ensemble import ExtraTreesClassifier, ExtraTreesRegressor
 from sklearn.utils import check_random_state
 
 
-def node_count(forest):
+def leaves(forest):
     count = 0.0
 
     for tree in forest:
-        count += tree.tree_.node_count
+        count += (tree.tree_.children_left == -1).sum()
 
     return count / forest.n_estimators
 
@@ -38,7 +38,7 @@ def average_depth(forest):
     return avg / forest.n_estimators
 
 
-def bench_artificial(estimator, generator, n_train=100, n_test=10000, n_repeats=10, random_state=None):
+def bench_artificial(estimator, generator, n_train=200, n_test=10000, n_repeats=10, random_state=None):
     random_state = check_random_state(random_state)
 
     X_test, y_test = generator(n_samples=n_test, n_features=5, random_state=random_state)
@@ -47,7 +47,7 @@ def bench_artificial(estimator, generator, n_train=100, n_test=10000, n_repeats=
     results["fit_time"] = []
     results["predict_time"] = []
     results["score"] = []
-    results["node_count"] = []
+    results["leaves"] = []
     results["average_depth"] = []
 
     for i in range(n_repeats):
@@ -68,7 +68,7 @@ def bench_artificial(estimator, generator, n_train=100, n_test=10000, n_repeats=
         results["predict_time"].append((t1 - t0) / n_test)
 
         results["score"].append(estimator.score(X_test, y_test))
-        results["node_count"].append(node_count(estimator))
+        results["leaves"].append(leaves(estimator))
         results["average_depth"].append(average_depth(estimator))
 
     return results
