@@ -1,4 +1,8 @@
 import numpy as np
+import json
+from copy import deepcopy
+from functools import partial
+from itertools import product
 from time import time
 
 from sklearn.cross_validation import train_test_split
@@ -6,6 +10,10 @@ from sklearn.grid_search import GridSearchCV
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.ensemble import ExtraTreesClassifier, ExtraTreesRegressor
 from sklearn.utils import check_random_state
+
+from sklearn.datasets import make_friedman1, make_friedman2, make_friedman3
+from sklearn.metrics.scorer import accuracy_scorer, roc_auc_scorer
+from sklearn.metrics.scorer import mean_squared_error_scorer, r2_scorer
 
 
 def leaves(forest):
@@ -39,20 +47,68 @@ def average_depth(forest):
     return avg / forest.n_estimators
 
 
-def bench_artificial(estimator, generator, n_train=200, n_test=10000, n_repeats=10, random_state=None):
+def load_npz(filename, random_state=None):
+    random_state = check_random_state(random_state)
+    data = np.load(filename)
+
+    X = data["X_train"]
+    y = data["y_train"].flatten()
+
+    try:
+        if len(X_valid) == len(y_valid):
+            X_valid = data["X_valid"]
+            y_valid = data["y_valid"].flatten()
+
+            X = np.vstack((X, X_valid))
+            y = np.hstack((y, y_valid))
+
+    except:
+        pass
+
+    try:
+        if len(X_test) == len(y_test):
+            X_test = data["X_test"]
+            y_test = data["y_test"].flatten()
+
+            X = np.vstack((X, X_test))
+            y = np.hstack((y, y_test))
+
+    except:
+        pass
+
+    indices = random_state.permutation(X.shape[0])
+    half = int(0.5 * X.shape[0])
+    threequarters = int(0.75 * X.shape[0])
+
+    X_train = X[indices[:threequarters]]
+    y_train = y[indices[:threequarters]]
+    # X_valid = X[indices[half:threequarters]]
+    # y_valid = y[indices[half:threequarters]]
+    X_test = X[indices[threequarters:]]
+    y_test = y[indices[threequarters:]]
+
+    return X_train, y_train, X_test, y_test
+
+
+def bench_artificial(estimator, generator, scorers, n_train=100, n_test=10000, n_repeats=10, random_state=None):
     random_state = check_random_state(random_state)
 
-    X_test, y_test = generator(n_samples=n_test, n_features=5, random_state=random_state)
+    X_test, y_test = generator(n_samples=n_test, random_state=random_state)
 
     results = {}
-    results["fit_time"] = []
-    results["predict_time"] = []
-    results["score"] = []
+    results["time_fit"] = []
+    results["time_predict"] = []
     results["leaves"] = []
     results["average_depth"] = []
+    results["n_train"] = []
+    results["n_test"] = []
+    results["n_features"] = []
+
+    for scorer in scorers:
+        results["score_%s" % str(scorer)] = []
 
     for i in range(n_repeats):
-        X_train, y_train = generator(n_samples=n_train, n_features=5, random_state=random_state)
+        X_train, y_train = generator(n_samples=n_train, random_state=random_state)
         estimator.set_params(random_state=random_state.randint(0, 1000))
 
         X_train = np.asarray(X_train, order="f", dtype=np.float32)
@@ -61,32 +117,233 @@ def bench_artificial(estimator, generator, n_train=200, n_test=10000, n_repeats=
         t0 = time()
         estimator.fit(X_train, y_train)
         t1 = time()
-        results["fit_time"].append(t1 - t0)
+        results["time_fit"].append(t1 - t0)
 
         t0 = time()
         y_hat = estimator.predict(X_test)
         t1 = time()
-        results["predict_time"].append((t1 - t0) / n_test)
+        results["time_predict"].append((t1 - t0))
 
-        results["score"].append(estimator.score(X_test, y_test))
+        for scorer in scorers:
+            results["score_%s" % str(scorer)].append(scorer(estimator, X_test, y_test))
+
         results["leaves"].append(leaves(estimator))
         results["average_depth"].append(average_depth(estimator))
+        results["n_train"].append(len(X_train))
+        results["n_test"].append(len(X_test))
+        results["n_features"].append(X_train.shape[1])
 
     return results
 
 
+def bench_npy(estimator, filename, scorers, n_repeats=10, random_state=None):
+    random_state = check_random_state(random_state)
+
+    results = {}
+    results["time_fit"] = []
+    results["time_predict"] = []
+    results["leaves"] = []
+    results["average_depth"] = []
+    results["n_train"] = []
+    results["n_test"] = []
+    results["n_features"] = []
+
+    for scorer in scorers:
+        results["score_%s" % str(scorer)] = []
+
+    for i in range(n_repeats):
+        X_train, y_train, X_test, y_test = load_npz(filename, random_state=random_state)
+        estimator.set_params(random_state=random_state.randint(0, 1000))
+
+        X_train = np.asarray(X_train, order="f", dtype=np.float32)
+        X_test = np.asarray(X_test, dtype=np.float32)
+
+        t0 = time()
+        estimator.fit(X_train, y_train)
+        t1 = time()
+        results["time_fit"].append(t1 - t0)
+
+        t0 = time()
+        y_hat = estimator.predict(X_test)
+        t1 = time()
+        results["time_predict"].append((t1 - t0))
+
+        for scorer in scorers:
+            results["score_%s" % str(scorer)].append(scorer(estimator, X_test, y_test))
+
+        results["leaves"].append(leaves(estimator))
+        results["average_depth"].append(average_depth(estimator))
+        results["n_train"].append(len(X_train))
+        results["n_test"].append(len(X_test))
+        results["n_features"].append(X_train.shape[1])
+
+    return results
+
+
+def run_artificial_regression_n_estimators():
+    estimators = [("RandomForestRegressor", RandomForestRegressor(n_estimators=250, max_features="sqrt")),
+                  ("ExtraTreesRegressor", ExtraTreesRegressor(n_estimators=250, max_features="sqrt"))]
+    generators = [make_friedman1, make_friedman2, make_friedman3]
+    scorers = [mean_squared_error_scorer, r2_scorer]
+
+    i = 1
+    for n_estimators in map(int, np.logspace(0, 3, num=10)):
+        for (estimator_name, estimator), generator in product(estimators, generators):
+            print i, n_estimators, estimator_name, generator.__name__
+
+            estimator = deepcopy(estimator)
+            estimator.set_params(n_estimators=n_estimators)
+
+            run = {}
+            run["estimator"] = estimator_name
+            run["generator"] = generator.__name__
+            run["params"] = deepcopy(estimator.get_params(deep=False))
+            run["stats"] = bench_artificial(estimator, generator, scorers=scorers, random_state=0)
+
+            with open("output/n_estimators_%s_%s_%d_%d.json" % (estimator_name, generator.__name__, n_estimators, i), "w") as fd:
+                json.dump(run, fd)
+
+            i += 1
+
+
+def run_artificial_regression_max_features():
+    estimators = [("RandomForestRegressor", RandomForestRegressor(n_estimators=250, max_features="sqrt")),
+                  ("ExtraTreesRegressor", ExtraTreesRegressor(n_estimators=250, max_features="sqrt"))]
+    generators = [make_friedman1]
+    scorers = [mean_squared_error_scorer, r2_scorer]
+
+    i = 1
+    for max_features in range(1, 10+1):
+        for (estimator_name, estimator), generator in product(estimators, generators):
+            print i, max_features, estimator_name, generator.__name__
+
+            estimator = deepcopy(estimator)
+            estimator.set_params(max_features=max_features)
+
+            run = {}
+            run["estimator"] = estimator_name
+            run["generator"] = generator.__name__
+            run["params"] = deepcopy(estimator.get_params(deep=False))
+            run["stats"] = bench_artificial(estimator, generator, scorers=scorers, random_state=0)
+
+            with open("output/max_features_%s_%s_%d_%d.json" % (estimator_name, generator.__name__, max_features, i), "w") as fd:
+                json.dump(run, fd)
+
+            i += 1
+
+
+def run_artificial_regression_bootstrap():
+    estimators = [("RandomForestRegressor", RandomForestRegressor(n_estimators=250, max_features="sqrt")),
+                  ("ExtraTreesRegressor", ExtraTreesRegressor(n_estimators=250, max_features="sqrt"))]
+    generators = [make_friedman1, make_friedman2, make_friedman3]
+    scorers = [mean_squared_error_scorer, r2_scorer]
+
+    i = 1
+    for bootstrap in [True, False]:
+        for (estimator_name, estimator), generator in product(estimators, generators):
+            print i, bootstrap, estimator_name, generator.__name__
+
+            estimator = deepcopy(estimator)
+            estimator.set_params(bootstrap=bootstrap)
+
+            run = {}
+            run["estimator"] = estimator_name
+            run["generator"] = generator.__name__
+            run["params"] = deepcopy(estimator.get_params(deep=False))
+            run["stats"] = bench_artificial(estimator, generator, scorers=scorers, random_state=0)
+
+            with open("output/bootstrap_%s_%s_%s_%d.json" % (estimator_name, generator.__name__, bootstrap, i), "w") as fd:
+                json.dump(run, fd)
+
+            i += 1
+
+
+def run_artificial_regression_n_train():
+    estimators = [("RandomForestRegressor", RandomForestRegressor(n_estimators=250, max_features="sqrt")),
+                  ("ExtraTreesRegressor", ExtraTreesRegressor(n_estimators=250, max_features="sqrt"))]
+    generators = [make_friedman1, make_friedman2, make_friedman3]
+    scorers = [mean_squared_error_scorer, r2_scorer]
+
+    i = 1
+    for n_train in map(int, np.logspace(0, 4, num=10)):
+        for (estimator_name, estimator), generator in product(estimators, generators):
+            print i, n_train, estimator_name, generator.__name__
+
+            estimator = deepcopy(estimator)
+
+            run = {}
+            run["estimator"] = estimator_name
+            run["generator"] = generator.__name__
+            run["params"] = deepcopy(estimator.get_params(deep=False))
+            run["stats"] = bench_artificial(estimator, generator, n_train=n_train, scorers=scorers, random_state=0)
+
+            with open("output/n_train_%s_%s_%d_%d.json" % (estimator_name, generator.__name__, n_train, i), "w") as fd:
+                json.dump(run, fd)
+
+            i += 1
+
+
+def run_artificial_regression_n_features():
+    estimators = [("RandomForestRegressor", RandomForestRegressor(n_estimators=250, max_features="sqrt")),
+                  ("ExtraTreesRegressor", ExtraTreesRegressor(n_estimators=250, max_features="sqrt"))]
+    generators = [make_friedman1]
+    scorers = [mean_squared_error_scorer, r2_scorer]
+
+    i = 1
+    for n_features in map(int, np.logspace(0, 3, num=10)):
+        for (estimator_name, estimator), generator in product(estimators, generators):
+            print i, n_features, estimator_name, generator.__name__
+
+            estimator = deepcopy(estimator)
+
+            run = {}
+            run["estimator"] = estimator_name
+            run["generator"] = generator.__name__
+            run["params"] = deepcopy(estimator.get_params(deep=False))
+            run["stats"] = bench_artificial(estimator, partial(generator, n_features=n_features), n_train=n_train, scorers=scorers, random_state=0)
+
+            with open("output/n_features_%s_%s_%d_%d.json" % (estimator_name, generator.__name__, n_features, i), "w") as fd:
+                json.dump(run, fd)
+
+            i += 1
+
+
 if __name__ == "__main__":
-    from sklearn.datasets import make_friedman1
+    # Test on artifical data ==================================================
+    # REGRESSION
 
-    print "RandomForestRegressor"
-    results = bench_artificial(RandomForestRegressor(n_estimators=250, max_features="sqrt"), make_friedman1, random_state=0)
-    for k,v in results.items():
-        print k, np.mean(v), np.std(v)
-    print
+    run_artificial_regression_n_estimators()
+    run_artificial_regression_max_features()
+    run_artificial_regression_bootstrap()
+    run_artificial_regression_n_train()
+    run_artificial_regression_n_features()
 
-    print "ExtraTreesRegressor"
-    results = bench_artificial(ExtraTreesRegressor(n_estimators=250, max_features="sqrt"), make_friedman1, random_state=0)
-    for k,v in results.items():
-        print k, np.mean(v), np.std(v)
-    print
+    # CLASSIFICATION
 
+    # todo
+
+
+    # Test on real data =======================================================
+
+    # CLASSIFICATION
+
+    # todo
+
+
+    # print "RandomForestClassifier"
+    # results = bench_npy(RandomForestClassifier(n_estimators=250, max_features="sqrt"),
+    #                     "/home/gilles/PhD/db/data/diabetes.npz",
+    #                     scorers=[accuracy_scorer, roc_auc_scorer],
+    #                     random_state=0)
+    # for k,v in sorted(results.items()):
+    #     print k, np.mean(v), np.std(v)
+    # print
+
+    # print "ExtraTreesClassifier"
+    # results = bench_npy(ExtraTreesClassifier(n_estimators=250, max_features="sqrt"),
+    #                     "/home/gilles/PhD/db/data/diabetes.npz",
+    #                     scorers=[accuracy_scorer, roc_auc_scorer],
+    #                     random_state=0)
+    # for k,v in sorted(results.items()):
+    #     print k, np.mean(v), np.std(v)
+    # print
