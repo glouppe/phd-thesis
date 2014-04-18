@@ -301,7 +301,9 @@ def run_artificial_regression_n_features():
     scorers = [mean_squared_error_scorer, r2_scorer]
 
     i = 1
-    for n_features in 5+map(int, np.logspace(0, 3, num=10)):
+    for n_features in map(int, np.logspace(0, 3, num=10)):
+        n_features += 5
+
         for (estimator_name, estimator), generator in product(estimators, generators):
             print i, n_features, estimator_name, generator.__name__
 
@@ -350,11 +352,11 @@ def run_artificial_classification_n_estimators():
 def run_artificial_classification_max_features():
     estimators = [("RandomForestClassifier", RandomForestClassifier(n_estimators=250, max_features="sqrt")),
                   ("ExtraTreesClassifier", ExtraTreesClassifier(n_estimators=250, max_features="sqrt"))]
-    generators = [make_hastie_10_2, make_waveforms, make_twonorm, make_threenorm, make_ringnorm]
+    generators = [make_waveforms, make_twonorm, make_threenorm, make_ringnorm]
     scorers = [accuracy_scorer, roc_auc_scorer]
 
     i = 1
-    for max_features in range(1, 10+1):
+    for max_features in range(1, 20+1):
         for (estimator_name, estimator), generator in product(estimators, generators):
             print i, max_features, estimator_name, generator.__name__
 
