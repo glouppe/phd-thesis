@@ -90,7 +90,7 @@ def load_npz(filename, random_state=None):
     return X_train, y_train, X_test, y_test
 
 
-def bench_artificial(estimator, generator, scorers, n_train=1000, n_test=10000, n_repeats=10, random_state=None):
+def bench_artificial(estimator, generator, scorers, n_train=500, n_test=10000, n_repeats=10, random_state=None):
     random_state = check_random_state(random_state)
 
     X_test, y_test = generator(n_samples=n_test, random_state=random_state)
@@ -300,7 +300,7 @@ def run_artificial_regression_n_features():
             run["estimator"] = estimator_name
             run["generator"] = generator.__name__
             run["params"] = deepcopy(estimator.get_params(deep=False))
-            run["stats"] = bench_artificial(estimator, partial(generator, n_features=n_features), n_train=n_train, scorers=scorers, random_state=0)
+            run["stats"] = bench_artificial(estimator, partial(generator, n_features=n_features), scorers=scorers, random_state=0)
 
             with open("output/n_features_%s_%s_%d_%d.json" % (estimator_name, generator.__name__, n_features, i), "w") as fd:
                 json.dump(run, fd)
