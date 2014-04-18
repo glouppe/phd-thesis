@@ -152,8 +152,6 @@ def bench_npy(estimator, filename, scorers, n_repeats=10, random_state=None):
     results = {}
     results["time_fit"] = []
     results["time_predict"] = []
-    results["leaves"] = []
-    results["average_depth"] = []
     results["n_train"] = []
     results["n_test"] = []
     results["n_features"] = []
@@ -188,8 +186,6 @@ def bench_npy(estimator, filename, scorers, n_repeats=10, random_state=None):
             except:
                 pass
 
-        results["leaves"].append(leaves(estimator))
-        results["average_depth"].append(average_depth(estimator))
         results["n_train"].append(len(X_train))
         results["n_test"].append(len(X_test))
         results["n_features"].append(X_train.shape[1])
@@ -493,4 +489,4 @@ if __name__ == "__main__":
 
     # CLASSIFICATION
 
-    run_npy_default()
+    run_npy_default(prefix="/home/glouppe/db/")

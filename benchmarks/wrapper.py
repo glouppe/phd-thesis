@@ -13,10 +13,12 @@ rf = importr('randomForest')
 class RRandomForestClassifier(BaseEstimator, ClassifierMixin):
     def __init__(self, n_estimators=10,
                        min_samples_leaf=1,
-                       max_features="auto"):
+                       max_features="auto",
+                       random_state=None):
         self.n_estimators = n_estimators
         self.min_samples_leaf = min_samples_leaf
         self.max_features = max_features
+        self.random_state = random_state
 
     def fit(self, X, y):
         # Check params
