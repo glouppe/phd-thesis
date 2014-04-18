@@ -21,19 +21,20 @@ def average_depth(forest):
     avg = 0.0
 
     for tree in forest:
-        depths = np.zeros(tree.tree_.node_count)
+        tree = tree.tree_
+        depths = np.zeros(tree.node_count)
         queue = [(0,0)]
 
         while len(queue) > 0:
             node, depth = queue.pop(0)
             depths[node] = depth
 
-            if tree.tree_.children_left[node] != -1:
-                queue.append((tree.tree_.children_left[node], depth + 1))
-                queue.append((tree.tree_.children_right[node], depth + 1))
+            if tree.children_left[node] != -1:
+                queue.append((tree.children_left[node], depth + 1))
+                queue.append((tree.children_right[node], depth + 1))
 
-        leaves = tree.tree_.children_left == -1
-        avg += np.dot(depths[leaves], tree.tree_.weighted_n_node_samples[leaves]) / tree.tree_.weighted_n_node_samples[0]
+        leaves = tree.children_left == -1
+        avg += np.dot(depths[leaves], tree.weighted_n_node_samples[leaves]) / tree.weighted_n_node_samples[0]
 
     return avg / forest.n_estimators
 

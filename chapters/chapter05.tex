@@ -989,7 +989,7 @@ $O(N_t)$ operation.
 \subsection{Parallelization}
 
 Scikit-Learn implementation of random forests supports parallelism to
-distribute computations on multi-core architectures. The simple yet effective
+distribute computations on multi-core architectures. The simple, yet effective,
 approach that we implement is to consider the construction of a forest as an
 embarrassingly parallel problem, in which the $M$ decision trees are built
 concurrently and independently on multiple processors. Assuming no overhead due
@@ -1009,13 +1009,13 @@ queue contains $N_p$ nodes. Once again however, sub-trees may take longer to
 build than others, hence underutilizing computational resources if the
 resulting decision tree is not balanced. To alleviate this issue, processors
 may be assigned single nodes to develop using a producer-consumer scheme to
-balance workload. Unfortunately, this latter approach often proves to be
+balance workload in a fair way. Unfortunately, this latter approach often proves to be
 dominated in practice by the overhead due to task assignment and bookkeeping
 activities. Alternatively, the construction of a tree can also be distributed
 using an \textit{attribute-based decomposition}. In this case, the workload is
 divided by parallelizing the search of the $K$ best splits at a given node (see
-Algorithm~\ref{algo:findsplit:random}). (For reviews on the topic, see
-\citep{kufrin:1997,srivastava:2002}.)
+Algorithm~\ref{algo:findsplit:random}). For detailed reviews on the topic, see
+\citep{kufrin:1997,srivastava:2002}.
 
 Using similar or hybrid approaches, let us finally note that the parallel
 induction of random forests extend to other distributed architectures,
@@ -1032,8 +1032,9 @@ clusters \citep{mitchell:2011}.
 
 \subsection{Empirical complexity}
 
-% Define some artifical data generators
+% Define some artifical data generators => regression + classification
 % http://www.cs.toronto.edu/~delve/data/datasets.html
+
 % Evaluate the effect of
 %   - M
 %   - N
@@ -1042,6 +1043,9 @@ clusters \citep{mitchell:2011}.
 %   - bootstrap
 %   - Unique values versus dupplicates
 %   - sorting algorithm
+
+% In classification, complexity should be proportional to the actual
+% complexity of the capacity of the model to learn decision surface
 
 % Measure
 %   - Fit time
