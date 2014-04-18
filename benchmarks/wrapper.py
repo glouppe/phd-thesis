@@ -1,3 +1,4 @@
+import numbers
 import numpy as np
 
 from sklearn.base import BaseEstimator, ClassifierMixin
@@ -19,12 +20,11 @@ class RRandomForestClassifier(BaseEstimator, ClassifierMixin):
 
     def fit(self, X, y):
         # Check params
+        self.n_features_ = X.shape[1]
+
         if isinstance(self.max_features, str):
             if self.max_features == "auto":
-                if is_classification:
-                    max_features = max(1, int(np.sqrt(self.n_features_)))
-                else:
-                    max_features = self.n_features_
+                max_features = max(1, int(np.sqrt(self.n_features_)))
             elif self.max_features == "sqrt":
                 max_features = max(1, int(np.sqrt(self.n_features_)))
             elif self.max_features == "log2":
