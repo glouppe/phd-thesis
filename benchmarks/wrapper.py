@@ -111,9 +111,11 @@ class OpenCVRandomForestClassifier(BaseEstimator, ClassifierMixin):
         params["max_num_of_trees_in_the_forest"] = self.n_estimators
         params["min_sample_count"] = self.min_samples_split
         params["calc_var_importance"] = False
-        params["max_depth"] = 10E9 if self.max_depth is None else self.max_depth
+        params["max_depth"] = 100000 if self.max_depth is None else self.max_depth
         params["use_surrogates"] = False
-        params["termcrit_type"] = (cv2.TERM_CRITERIA_MAX_ITER, self.n_estimators, 1)
+        params["termcrit_type"] = cv2.TERM_CRITERIA_MAX_ITER
+        params["term_crit"] = (cv2.TERM_CRITERIA_MAX_ITER, self.n_estimators, 1)
+        params["regression_accuracy"] = 0
 
         # Convert data
         self.classes_ = np.unique(y)
@@ -122,7 +124,7 @@ class OpenCVRandomForestClassifier(BaseEstimator, ClassifierMixin):
         y = y.astype(np.float32)
 
         # Run
-        self.model_ = cv2.RandomTrees()
+        self.model_ = cv2.RTrees()
         self.model_.train(X, cv2.TERM_CRITERIA_MAX_ITER, y, params=params)
 
         return self
@@ -131,7 +133,7 @@ class OpenCVRandomForestClassifier(BaseEstimator, ClassifierMixin):
         X = X.astype(np.float32)
         pred = np.zeros(len(X))
 
-        for i in len(X):
+        for i in range(len(X)):
             pred[i] = self.model_.predict(X[i])
 
         pred = pred.astype(np.int32)
