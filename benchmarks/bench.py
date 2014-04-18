@@ -434,13 +434,33 @@ def run_artificial_classification_n_train():
 
 # Datatsets -------------------------------------------------------------------
 
-def run_npy_default():
+def run_npy_default(prefix="/home/gilles/PhD/db/data/"):
     datasets = ["diabetes.npz", "dig44.npz", "ionosphere.npz", "pendigits.npz",
                 "letter.npz", "liver.npz", "musk2.npz", "ring-norm.npz", "satellite.npz",
                 "segment.npz", "sonar.npz", "spambase.npz", "two-norm.npz", "vehicle.npz",
                 "vowel.npz", "waveform.npz", "cifar10.npz", "mnist3vs8.npz", "mnist4vs9.npz", "mnist.npz",
                 "isolet.npz", "arcene.npz", "breast2.npz", "madelon.npz", "marti0.npz",
                 "reged0.npz", "secom.npz", "tis.npz", "sido0.npz"]
+    estimators = [("RandomForestClassifier", RandomForestClassifier(n_estimators=250, max_features="sqrt")),
+                  ("ExtraTreesClassifier", ExtraTreesClassifier(n_estimators=250, max_features="sqrt"))]
+    scorers = [accuracy_scorer, roc_auc_scorer]
+
+    i = 1
+    for (estimator_name, estimator), dataset in product(estimators, datasets):
+        print i, estimator_name, dataset
+
+        estimator = deepcopy(estimator)
+
+        run = {}
+        run["estimator"] = estimator_name
+        run["generator"] = dataset
+        run["params"] = deepcopy(estimator.get_params(deep=False))
+        run["stats"] = bench_npy(estimator, "%s%s" % (prefix, dataset), scorers=scorers, random_state=0)
+
+        with open("output/n_train_%s_%s_%d.json" % (estimator_name, dataset, i), "w") as fd:
+            json.dump(run, fd)
+
+        i += 1
 
 
 if __name__ == "__main__":
@@ -455,35 +475,14 @@ if __name__ == "__main__":
 
     # CLASSIFICATION
 
-    run_artificial_classification_n_estimators()
-    run_artificial_classification_max_features()
-    run_artificial_classification_bootstrap()
-    run_artificial_classification_n_train()
+    # run_artificial_classification_n_estimators()
+    # run_artificial_classification_max_features()
+    # run_artificial_classification_bootstrap()
+    # run_artificial_classification_n_train()
 
 
     # Test on real data =======================================================
 
     # CLASSIFICATION
 
-
-
-    # todo
-
-
-    # print "RandomForestClassifier"
-    # results = bench_npy(RandomForestClassifier(n_estimators=250, max_features="sqrt"),
-    #                     "/home/gilles/PhD/db/data/diabetes.npz",
-    #                     scorers=[accuracy_scorer, roc_auc_scorer],
-    #                     random_state=0)
-    # for k,v in sorted(results.items()):
-    #     print k, np.mean(v), np.std(v)
-    # print
-
-    # print "ExtraTreesClassifier"
-    # results = bench_npy(ExtraTreesClassifier(n_estimators=250, max_features="sqrt"),
-    #                     "/home/gilles/PhD/db/data/diabetes.npz",
-    #                     scorers=[accuracy_scorer, roc_auc_scorer],
-    #                     random_state=0)
-    # for k,v in sorted(results.items()):
-    #     print k, np.mean(v), np.std(v)
-    # print
+    run_npy_default()
