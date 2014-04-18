@@ -11,10 +11,15 @@ from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.ensemble import ExtraTreesClassifier, ExtraTreesRegressor
 from sklearn.utils import check_random_state
 
+from sklearn.datasets import make_hastie_10_2
 from sklearn.datasets import make_friedman1, make_friedman2, make_friedman3
 from sklearn.metrics.scorer import accuracy_scorer, roc_auc_scorer
 from sklearn.metrics.scorer import mean_squared_error_scorer, r2_scorer
 
+from data import make_waveforms, make_twonorm, make_threenorm, make_ringnorm
+
+
+# Utils =======================================================================
 
 def leaves(forest):
     count = 0.0
@@ -89,6 +94,8 @@ def load_npz(filename, random_state=None):
 
     return X_train, y_train, X_test, y_test
 
+
+# Benchs ======================================================================
 
 def bench_artificial(estimator, generator, scorers, n_train=500, n_test=10000, n_repeats=10, random_state=None):
     random_state = check_random_state(random_state)
@@ -179,6 +186,10 @@ def bench_npy(estimator, filename, scorers, n_repeats=10, random_state=None):
 
     return results
 
+
+# Runs ========================================================================
+
+# Regression ------------------------------------------------------------------
 
 def run_artificial_regression_n_estimators():
     estimators = [("RandomForestRegressor", RandomForestRegressor(n_estimators=250, max_features="sqrt")),
@@ -290,7 +301,7 @@ def run_artificial_regression_n_features():
     scorers = [mean_squared_error_scorer, r2_scorer]
 
     i = 1
-    for n_features in map(int, np.logspace(0, 3, num=10)):
+    for n_features in 5+map(int, np.logspace(0, 3, num=10)):
         for (estimator_name, estimator), generator in product(estimators, generators):
             print i, n_features, estimator_name, generator.__name__
 
@@ -308,19 +319,127 @@ def run_artificial_regression_n_features():
             i += 1
 
 
+# Classification --------------------------------------------------------------
+
+def run_artificial_classification_n_estimators():
+    estimators = [("RandomForestClassifier", RandomForestClassifier(n_estimators=250, max_features="sqrt")),
+                  ("ExtraTreesClassifier", ExtraTreesClassifier(n_estimators=250, max_features="sqrt"))]
+    generators = [make_hastie_10_2, make_waveforms, make_twonorm, make_threenorm, make_ringnorm]
+    scorers = [accuracy_scorer, roc_auc_scorer]
+
+    i = 1
+    for n_estimators in map(int, np.logspace(0, 3, num=10)):
+        for (estimator_name, estimator), generator in product(estimators, generators):
+            print i, n_estimators, estimator_name, generator.__name__
+
+            estimator = deepcopy(estimator)
+            estimator.set_params(n_estimators=n_estimators)
+
+            run = {}
+            run["estimator"] = estimator_name
+            run["generator"] = generator.__name__
+            run["params"] = deepcopy(estimator.get_params(deep=False))
+            run["stats"] = bench_artificial(estimator, generator, scorers=scorers, random_state=0)
+
+            with open("output/n_estimators_%s_%s_%d_%d.json" % (estimator_name, generator.__name__, n_estimators, i), "w") as fd:
+                json.dump(run, fd)
+
+            i += 1
+
+
+def run_artificial_classification_max_features():
+    estimators = [("RandomForestClassifier", RandomForestClassifier(n_estimators=250, max_features="sqrt")),
+                  ("ExtraTreesClassifier", ExtraTreesClassifier(n_estimators=250, max_features="sqrt"))]
+    generators = [make_hastie_10_2, make_waveforms, make_twonorm, make_threenorm, make_ringnorm]
+    scorers = [accuracy_scorer, roc_auc_scorer]
+
+    i = 1
+    for max_features in range(1, 10+1):
+        for (estimator_name, estimator), generator in product(estimators, generators):
+            print i, max_features, estimator_name, generator.__name__
+
+            estimator = deepcopy(estimator)
+            estimator.set_params(max_features=max_features)
+
+            run = {}
+            run["estimator"] = estimator_name
+            run["generator"] = generator.__name__
+            run["params"] = deepcopy(estimator.get_params(deep=False))
+            run["stats"] = bench_artificial(estimator, generator, scorers=scorers, random_state=0)
+
+            with open("output/max_features_%s_%s_%d_%d.json" % (estimator_name, generator.__name__, max_features, i), "w") as fd:
+                json.dump(run, fd)
+
+            i += 1
+
+
+def run_artificial_classification_bootstrap():
+    estimators = [("RandomForestClassifier", RandomForestClassifier(n_estimators=250, max_features="sqrt")),
+                  ("ExtraTreesClassifier", ExtraTreesClassifier(n_estimators=250, max_features="sqrt"))]
+    generators = [make_hastie_10_2, make_waveforms, make_twonorm, make_threenorm, make_ringnorm]
+    scorers = [accuracy_scorer, roc_auc_scorer]
+
+    i = 1
+    for bootstrap in [True, False]:
+        for (estimator_name, estimator), generator in product(estimators, generators):
+            print i, bootstrap, estimator_name, generator.__name__
+
+            estimator = deepcopy(estimator)
+            estimator.set_params(bootstrap=bootstrap)
+
+            run = {}
+            run["estimator"] = estimator_name
+            run["generator"] = generator.__name__
+            run["params"] = deepcopy(estimator.get_params(deep=False))
+            run["stats"] = bench_artificial(estimator, generator, scorers=scorers, random_state=0)
+
+            with open("output/bootstrap_%s_%s_%s_%d.json" % (estimator_name, generator.__name__, bootstrap, i), "w") as fd:
+                json.dump(run, fd)
+
+            i += 1
+
+
+def run_artificial_classification_n_train():
+    estimators = [("RandomForestClassifier", RandomForestClassifier(n_estimators=250, max_features="sqrt")),
+                  ("ExtraTreesClassifier", ExtraTreesClassifier(n_estimators=250, max_features="sqrt"))]
+    generators = [make_hastie_10_2, make_waveforms, make_twonorm, make_threenorm, make_ringnorm]
+    scorers = [accuracy_scorer, roc_auc_scorer]
+
+    i = 1
+    for n_train in map(int, np.logspace(0, 4, num=10)):
+        for (estimator_name, estimator), generator in product(estimators, generators):
+            print i, n_train, estimator_name, generator.__name__
+
+            estimator = deepcopy(estimator)
+
+            run = {}
+            run["estimator"] = estimator_name
+            run["generator"] = generator.__name__
+            run["params"] = deepcopy(estimator.get_params(deep=False))
+            run["stats"] = bench_artificial(estimator, generator, n_train=n_train, scorers=scorers, random_state=0)
+
+            with open("output/n_train_%s_%s_%d_%d.json" % (estimator_name, generator.__name__, n_train, i), "w") as fd:
+                json.dump(run, fd)
+
+            i += 1
+
+
 if __name__ == "__main__":
     # Test on artifical data ==================================================
     # REGRESSION
 
-    run_artificial_regression_n_estimators()
-    run_artificial_regression_max_features()
-    run_artificial_regression_bootstrap()
-    run_artificial_regression_n_train()
+    # run_artificial_regression_n_estimators()
+    # run_artificial_regression_max_features()
+    # run_artificial_regression_bootstrap()
+    # run_artificial_regression_n_train()
     run_artificial_regression_n_features()
 
     # CLASSIFICATION
 
-    # todo
+    run_artificial_classification_n_estimators()
+    run_artificial_classification_max_features()
+    run_artificial_classification_bootstrap()
+    run_artificial_classification_n_train()
 
 
     # Test on real data =======================================================
