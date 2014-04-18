@@ -90,7 +90,7 @@ def load_npz(filename, random_state=None):
     return X_train, y_train, X_test, y_test
 
 
-def bench_artificial(estimator, generator, scorers, n_train=100, n_test=10000, n_repeats=10, random_state=None):
+def bench_artificial(estimator, generator, scorers, n_train=1000, n_test=10000, n_repeats=10, random_state=None):
     random_state = check_random_state(random_state)
 
     X_test, y_test = generator(n_samples=n_test, random_state=random_state)
