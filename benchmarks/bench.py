@@ -168,15 +168,19 @@ def bench_npy(estimator, filename, scorers, n_repeats=10, random_state=None):
         X_train = np.asarray(X_train, order="f", dtype=np.float32)
         X_test = np.asarray(X_test, dtype=np.float32)
 
-        t0 = time()
-        estimator.fit(X_train, y_train)
-        t1 = time()
-        results["time_fit"].append(t1 - t0)
+        try:
+            t0 = time()
+            estimator.fit(X_train, y_train)
+            t1 = time()
+            results["time_fit"].append(t1 - t0)
 
-        t0 = time()
-        y_hat = estimator.predict(X_test)
-        t1 = time()
-        results["time_predict"].append((t1 - t0))
+            t0 = time()
+            y_hat = estimator.predict(X_test)
+            t1 = time()
+            results["time_predict"].append((t1 - t0))
+
+        except:
+            pass
 
         for scorer in scorers:
             try:
@@ -434,6 +438,8 @@ def run_artificial_classification_n_train():
 
 # Datatsets -------------------------------------------------------------------
 
+from wrapper import RRandomForestClassifier
+
 def run_npy_default(prefix="/home/gilles/PhD/db/data/"):
     datasets = ["diabetes.npz", "dig44.npz", "ionosphere.npz", "pendigits.npz",
                 "letter.npz", "liver.npz", "musk2.npz", "ring-norm.npz", "satellite.npz",
@@ -443,7 +449,8 @@ def run_npy_default(prefix="/home/gilles/PhD/db/data/"):
                 "reged0.npz", "secom.npz", "tis.npz", "sido0.npz"]
 
     estimators = [("RandomForestClassifier", RandomForestClassifier(n_estimators=250, max_features="sqrt")),
-                  ("ExtraTreesClassifier", ExtraTreesClassifier(n_estimators=250, max_features="sqrt"))]
+                  ("ExtraTreesClassifier", ExtraTreesClassifier(n_estimators=250, max_features="sqrt")),
+                  ("R-randomForest", RRandomForestClassifier(n_estimators=250, max_features="sqrt"))]
     scorers = [accuracy_scorer, roc_auc_scorer]
 
     i = 1
