@@ -447,7 +447,7 @@ def run_npy_default(prefix="/home/gilles/PhD/db/data/"):
     scorers = [accuracy_scorer, roc_auc_scorer]
 
     i = 1
-    for (estimator_name, estimator), dataset in product(estimators, datasets):
+    for dataset, (estimator_name, estimator) in product(datasets, estimators):
         print i, estimator_name, dataset
 
         estimator = deepcopy(estimator)
