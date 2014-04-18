@@ -132,7 +132,10 @@ def bench_artificial(estimator, generator, scorers, n_train=500, n_test=10000, n
         results["time_predict"].append((t1 - t0))
 
         for scorer in scorers:
-            results["score_%s" % str(scorer)].append(scorer(estimator, X_test, y_test))
+            try:
+                results["score_%s" % str(scorer)].append(scorer(estimator, X_test, y_test))
+            except:
+                pass
 
         results["leaves"].append(leaves(estimator))
         results["average_depth"].append(average_depth(estimator))
@@ -176,7 +179,10 @@ def bench_npy(estimator, filename, scorers, n_repeats=10, random_state=None):
         results["time_predict"].append((t1 - t0))
 
         for scorer in scorers:
-            results["score_%s" % str(scorer)].append(scorer(estimator, X_test, y_test))
+            try:
+                results["score_%s" % str(scorer)].append(scorer(estimator, X_test, y_test))
+            except:
+                pass
 
         results["leaves"].append(leaves(estimator))
         results["average_depth"].append(average_depth(estimator))
@@ -426,6 +432,17 @@ def run_artificial_classification_n_train():
             i += 1
 
 
+# Datatsets -------------------------------------------------------------------
+
+def run_npy_default():
+    datasets = ["diabetes.npz", "dig44.npz", "ionosphere.npz", "pendigits.npz",
+                "letter.npz", "liver.npz", "musk2.npz", "ring-norm.npz", "satellite.npz",
+                "segment.npz", "sonar.npz", "spambase.npz", "two-norm.npz", "vehicle.npz",
+                "vowel.npz", "waveform.npz", "cifar10.npz", "mnist3vs8.npz", "mnist4vs9.npz", "mnist.npz",
+                "isolet.npz", "arcene.npz", "breast2.npz", "madelon.npz", "marti0.npz",
+                "reged0.npz", "secom.npz", "tis.npz", "sido0.npz"]
+
+
 if __name__ == "__main__":
     # Test on artifical data ==================================================
     # REGRESSION
@@ -434,7 +451,7 @@ if __name__ == "__main__":
     # run_artificial_regression_max_features()
     # run_artificial_regression_bootstrap()
     # run_artificial_regression_n_train()
-    run_artificial_regression_n_features()
+    # run_artificial_regression_n_features()
 
     # CLASSIFICATION
 
@@ -447,6 +464,8 @@ if __name__ == "__main__":
     # Test on real data =======================================================
 
     # CLASSIFICATION
+
+
 
     # todo
 
