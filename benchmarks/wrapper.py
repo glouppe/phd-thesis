@@ -117,6 +117,8 @@ class OpenCVRandomForestClassifier(BaseEstimator, ClassifierMixin):
         params["term_crit"] = (cv2.TERM_CRITERIA_MAX_ITER, self.n_estimators, 1)
         params["regression_accuracy"] = 0
 
+        var_types = np.array([cv2.CV_VAR_NUMERICAL] * self.n_features_ + [cv2.CV_VAR_CATEGORICAL], np.uint8)
+
         # Convert data
         self.classes_ = np.unique(y)
         y = np.searchsorted(self.classes_, y)
@@ -125,7 +127,7 @@ class OpenCVRandomForestClassifier(BaseEstimator, ClassifierMixin):
 
         # Run
         self.model_ = cv2.RTrees()
-        self.model_.train(X, cv2.TERM_CRITERIA_MAX_ITER, y, params=params)
+        self.model_.train(X, cv2.TERM_CRITERIA_MAX_ITER, y, varType=var_types, params=params)
 
         return self
 
