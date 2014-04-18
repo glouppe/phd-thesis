@@ -441,6 +441,7 @@ def run_npy_default(prefix="/home/gilles/PhD/db/data/"):
                 "vowel.npz", "waveform.npz", "cifar10.npz", "mnist3vs8.npz", "mnist4vs9.npz", "mnist.npz",
                 "isolet.npz", "arcene.npz", "breast2.npz", "madelon.npz", "marti0.npz",
                 "reged0.npz", "secom.npz", "tis.npz", "sido0.npz"]
+
     estimators = [("RandomForestClassifier", RandomForestClassifier(n_estimators=250, max_features="sqrt")),
                   ("ExtraTreesClassifier", ExtraTreesClassifier(n_estimators=250, max_features="sqrt"))]
     scorers = [accuracy_scorer, roc_auc_scorer]
