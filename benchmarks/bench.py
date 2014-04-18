@@ -465,7 +465,7 @@ def run_npy_default(prefix="/home/gilles/PhD/db/data/"):
         run["params"] = deepcopy(estimator.get_params(deep=False))
         run["stats"] = bench_npy(estimator, "%s%s" % (prefix, dataset), scorers=scorers, random_state=0)
 
-        with open("output/n_train_%s_%s_%d.json" % (estimator_name, dataset, i), "w") as fd:
+        with open("output/default_%s_%s_%d.json" % (estimator_name, dataset, i), "w") as fd:
             json.dump(run, fd)
 
         i += 1
