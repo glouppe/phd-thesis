@@ -147,20 +147,20 @@ class OpenCVRandomForestClassifier(BaseEstimator, ClassifierMixin):
 # Weka ========================================================================
 
 import tempfile
-import weka
+import weka.classifiers
+import os
 
 
-def to_arff(X, y, f):
+def to_arff(X, y, n_classes, f):
     n_features = X.shape[1]
-    classes = np.unique(y)
 
-    f.write("@RELATION tmp\n")
+    f.write("@relation tmp\n")
 
     for i in range(n_features):
-        f.write("@ATTRIBUTE feature%d NUMERIC\n" % i)
-    f.write("@ATTRIBUTE class {%s}\n" % ",".join("class%d" % c for c in classes))
+        f.write("@attribute feature%d numeric\n" % i)
+    f.write("@attribute class {%s}\n" % ",".join("class%d" % c for c in range(n_classes)))
     f.write("\n")
-    f.write("@DATA\n")
+    f.write("@data\n")
 
     for i in range(len(X)):
         for v in X[i]:
@@ -212,23 +212,30 @@ class WekaRandomForestClassifier(BaseEstimator, ClassifierMixin):
 
         # Convert data
         self.classes_ = np.unique(y)
+        self.n_classes_ = len(self.classes_)
         y = np.searchsorted(self.classes_, y)
 
-        tf = tempfile.NamedTemporaryFile(mode="w", dir="/dev/shm", delete=False)
-        to_arff(X, y, tf)
+        tf = tempfile.NamedTemporaryFile(mode="w", suffix=".arff", dir="/dev/shm", delete=False)
+        to_arff(X, y, self.n_classes_, tf)
         tf.close()
 
         # Run
         self.model_ = weka.classifiers.RandomForest(**params)
-        self.model_.train("/dev/shm/%s" % tf.name)
+        self.model_.train(tf.name)
+        os.remove(tf.name)
 
         return self
 
     def predict(self, X):
-        tf = tempfile.NamedTemporaryFile(mode="w", dir="/dev/shm", delete=False)
-        to_arff(X, None, tf)
+        tf = tempfile.NamedTemporaryFile(mode="w", suffix=".arff", dir="/dev/shm", delete=False)
+        to_arff(X, None, self.n_classes_, tf)
         tf.close()
 
-        pred = self.model_.predict(tf)
+        pred = np.zeros(len(X), dtype=np.int32)
+
+        for i, r in enumerate(self.model_.predict(tf.name)):
+            pred[i] = int(r.predicted[5])
+
+        os.remove(tf.name)
 
         return self.classes_[pred]
