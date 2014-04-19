@@ -3,6 +3,7 @@ import numpy as np
 
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.externals import six
+from sklearn.utils import check_random_state
 
 
 # R randomForest ==============================================================
@@ -139,5 +140,95 @@ class OpenCVRandomForestClassifier(BaseEstimator, ClassifierMixin):
             pred[i] = self.model_.predict(X[i])
 
         pred = pred.astype(np.int32)
+
+        return self.classes_[pred]
+
+
+# Weka ========================================================================
+
+import tempfile
+import weka
+
+
+def to_arff(X, y, f):
+    n_features = X.shape[1]
+    classes = np.unique(y)
+
+    f.write("@RELATION tmp\n")
+
+    for i in range(n_features):
+        f.write("@ATTRIBUTE feature%d NUMERIC\n" % i)
+    f.write("@ATTRIBUTE class {%s}\n" % ",".join("class%d" % c for c in classes))
+    f.write("\n")
+    f.write("@DATA\n")
+
+    for i in range(len(X)):
+        for v in X[i]:
+            f.write(str(v))
+            f.write(",")
+
+        if y is None:
+            f.write("?\n")
+        else:
+            f.write("class%d\n" % y[i])
+
+class WekaRandomForestClassifier(BaseEstimator, ClassifierMixin):
+    def __init__(self, n_estimators=10,
+                       max_depth=None,
+                       max_features="auto",
+                       random_state=None):
+        self.n_estimators = n_estimators
+        self.max_depth = max_depth
+        self.max_features = max_features
+        self.random_state = random_state
+
+    def fit(self, X, y):
+        # Check params
+        self.n_features_ = X.shape[1]
+        random_state = check_random_state(self.random_state)
+
+        if isinstance(self.max_features, str):
+            if self.max_features == "auto":
+                max_features = max(1, int(np.sqrt(self.n_features_)))
+            elif self.max_features == "sqrt":
+                max_features = max(1, int(np.sqrt(self.n_features_)))
+            elif self.max_features == "log2":
+                max_features = max(1, int(np.log2(self.n_features_)))
+            else:
+                raise ValueError(
+                    'Invalid value for max_features. Allowed string '
+                    'values are "auto", "sqrt" or "log2".')
+        elif self.max_features is None:
+            max_features = self.n_features_
+        elif isinstance(self.max_features, (numbers.Integral, np.integer)):
+            max_features = self.max_features
+        else:  # float
+            max_features = int(self.max_features * self.n_features_)
+
+        params = {}
+        params["I"] = self.n_estimators
+        params["K"] = max_features
+        params["depth"] = 0 if self.max_depth is None else self.max_depth
+
+        # Convert data
+        self.classes_ = np.unique(y)
+        y = np.searchsorted(self.classes_, y)
+
+        tf = tempfile.NamedTemporaryFile(mode="w", dir="/dev/shm", delete=False)
+        to_arff(X, y, tf)
+        tf.close()
+
+        # Run
+        self.model_ = weka.classifiers.RandomForest(**params)
+        self.model_.train("/dev/shm/%s" % tf.name)
+
+        return self
+
+    def predict(self, X):
+        tf = tempfile.NamedTemporaryFile(mode="w", dir="/dev/shm", delete=False)
+        to_arff(X, None, tf)
+        tf.close()
+
+        pred = self.model_.predict(tf)
 
         return self.classes_[pred]
