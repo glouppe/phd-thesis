@@ -186,6 +186,9 @@ def bench_npy(estimator, filename, scorers, n_repeats=10, random_state=None):
             except:
                 pass
 
+        if results["time_fit"][-1] > 3600 and i >= 2:
+            break
+
         results["n_train"].append(len(X_train))
         results["n_test"].append(len(X_test))
         results["n_features"].append(X_train.shape[1])
@@ -435,18 +438,21 @@ def run_artificial_classification_n_train():
 # Datatsets -------------------------------------------------------------------
 
 from wrapper import RRandomForestClassifier
+from wrapper import OpenCVRandomForestClassifier
 
 def run_npy_default(prefix="/home/gilles/PhD/db/data/"):
-    datasets = ["diabetes.npz", "dig44.npz", "ionosphere.npz", "pendigits.npz",
-                "letter.npz", "liver.npz", "musk2.npz", "ring-norm.npz", "satellite.npz",
-                "segment.npz", "sonar.npz", "spambase.npz", "two-norm.npz", "vehicle.npz",
-                "vowel.npz", "waveform.npz", "cifar10.npz", "mnist3vs8.npz", "mnist4vs9.npz", "mnist.npz",
+    datasets = [#"diabetes.npz", "dig44.npz", "ionosphere.npz", "pendigits.npz",
+                #"letter.npz", "liver.npz", "musk2.npz", "ring-norm.npz", "satellite.npz",
+                #"segment.npz", "sonar.npz", "spambase.npz", "two-norm.npz", "vehicle.npz",
+                #"vowel.npz", "waveform.npz",
+                "cifar10.npz", "mnist3vs8.npz", "mnist4vs9.npz", "mnist.npz",
                 "isolet.npz", "arcene.npz", "breast2.npz", "madelon.npz", "marti0.npz",
                 "reged0.npz", "secom.npz", "tis.npz", "sido0.npz"]
 
     estimators = [("RandomForestClassifier", RandomForestClassifier(n_estimators=250, max_features="sqrt")),
                   ("ExtraTreesClassifier", ExtraTreesClassifier(n_estimators=250, max_features="sqrt")),
-                  ("R-randomForest", RRandomForestClassifier(n_estimators=250, max_features="sqrt"))]
+                  ("R-randomForest", RRandomForestClassifier(n_estimators=250, max_features="sqrt")),
+                  ("OpenCV", OpenCVRandomForestClassifier(n_estimators=250, max_features="sqrt"))]
     scorers = [accuracy_scorer, roc_auc_scorer]
 
     i = 1

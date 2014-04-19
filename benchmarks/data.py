@@ -97,7 +97,7 @@ def make_threenorm(n_samples=300, random_state=None):
 
     class0 = (y == 0)
     class1 = (y == 1)
-    class2 = (y == 2) | (y == 3)
+    class2 = (y >= 2)
 
     X[class0] = random_state.normal(loc=[a]*20, size=(class0.sum(), 20))
     X[class1] = random_state.normal(loc=[-a]*20, size=(class1.sum(), 20))
