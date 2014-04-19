@@ -147,9 +147,8 @@ class OpenCVRandomForestClassifier(BaseEstimator, ClassifierMixin):
 # Weka ========================================================================
 
 import tempfile
-import weka.classifiers
 import os
-
+from weka.classifiers import Classifier
 
 def to_arff(X, y, n_classes, f):
     n_features = X.shape[1]
@@ -206,9 +205,10 @@ class WekaRandomForestClassifier(BaseEstimator, ClassifierMixin):
             max_features = int(self.max_features * self.n_features_)
 
         params = {}
-        params["I"] = self.n_estimators
-        params["K"] = max_features
-        params["depth"] = 0 if self.max_depth is None else self.max_depth
+        params["-I"] = self.n_estimators
+        params["-K"] = max_features
+        params["-depth"] = 0 if self.max_depth is None else self.max_depth
+        params["-no-cv"] = None
 
         # Convert data
         self.classes_ = np.unique(y)
@@ -220,7 +220,7 @@ class WekaRandomForestClassifier(BaseEstimator, ClassifierMixin):
         tf.close()
 
         # Run
-        self.model_ = weka.classifiers.RandomForest(**params)
+        self.model_ = Classifier(name="weka.classifiers.trees.RandomForest", ckargs=params)
         self.model_.train(tf.name)
         os.remove(tf.name)
 
