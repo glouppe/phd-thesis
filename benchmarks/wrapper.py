@@ -249,6 +249,8 @@ import sys
 sys.path.append("./ok3")
 import ok3
 
+# Note: memory should be freed through ok3.close()
+
 
 class OK3RandomForestClassifier(BaseEstimator, ClassifierMixin):
     def __init__(self, n_estimators=10,
@@ -287,13 +289,14 @@ class OK3RandomForestClassifier(BaseEstimator, ClassifierMixin):
         self.params_.randomseed = random_state.randint(1000000)
         self.params_.returnimportances = False
         self.params_.returntrees = False
+        self.params_.verbose = 0
 
         # Convert data
         self.lb_ = LabelBinarizer().fit(y)
         y = self.lb_.transform(y)
 
         # Run
-        self.X_ = X.astype(np.float32)
+        self.X_ = np.array(X, copy=True, dtype=np.float32, order="C")
         self.y_ = y.astype(np.float32)
         self.ls_ = np.arange(len(X_train), dtype=np.int32)
         w = np.array([], dtype=np.float32)
@@ -352,13 +355,14 @@ class OK3ExtraTreesClassifier(BaseEstimator, ClassifierMixin):
         self.params_.randomseed = random_state.randint(1000000)
         self.params_.returnimportances = False
         self.params_.returntrees = False
+        self.params_.verbose = 0
 
         # Convert data
         self.lb_ = LabelBinarizer().fit(y)
         y = self.lb_.transform(y)
 
         # Run
-        self.X_ = X.astype(np.float32)
+        self.X_ = np.array(X, copy=True, dtype=np.float32, order="C")
         self.y_ = y.astype(np.float32)
         self.ls_ = np.arange(len(X_train), dtype=np.int32)
         w = np.array([], dtype=np.float32)
