@@ -239,3 +239,142 @@ class WekaRandomForestClassifier(BaseEstimator, ClassifierMixin):
         os.remove(tf.name)
 
         return self.classes_[pred]
+
+
+# OK3 =========================================================================
+
+from sklearn.preprocessing import LabelBinarizer
+
+import sys
+sys.path.append("./ok3")
+import ok3
+
+
+class OK3RandomForestClassifier(BaseEstimator, ClassifierMixin):
+    def __init__(self, n_estimators=10,
+                       max_features="auto",
+                       random_state=None):
+        self.n_estimators = n_estimators
+        self.max_features = max_features
+        self.random_state = random_state
+
+    def fit(self, X, y):
+        # Check params
+        self.n_features_ = X.shape[1]
+        random_state = check_random_state(self.random_state)
+
+        if isinstance(self.max_features, str):
+            if self.max_features == "auto":
+                max_features = max(1, int(np.sqrt(self.n_features_)))
+            elif self.max_features == "sqrt":
+                max_features = max(1, int(np.sqrt(self.n_features_)))
+            elif self.max_features == "log2":
+                max_features = max(1, int(np.log2(self.n_features_)))
+            else:
+                raise ValueError(
+                    'Invalid value for max_features. Allowed string '
+                    'values are "auto", "sqrt" or "log2".')
+        elif self.max_features is None:
+            max_features = self.n_features_
+        elif isinstance(self.max_features, (numbers.Integral, np.integer)):
+            max_features = self.max_features
+        else:  # float
+            max_features = int(self.max_features * self.n_features_)
+
+        self.params_ = ok3.ok3config()
+        self.params_.init_rf(k=max_features)
+        self.params_.nbtrees = self.n_estimators
+        self.params_.randomseed = random_state.randint(1000000)
+        self.params_.returnimportances = False
+        self.params_.returntrees = False
+
+        # Convert data
+        self.lb_ = LabelBinarizer().fit(y)
+        y = self.lb_.transform(y)
+
+        # Run
+        self.X_ = X.astype(np.float32)
+        self.y_ = y.astype(np.float32)
+        self.ls_ = np.arange(len(X_train), dtype=np.int32)
+        w = np.array([], dtype=np.float32)
+
+        ok3.learn(self.X_, self.y_, self.ls_, w, self.params_)
+
+        return self
+
+    def predict(self, X):
+        X = X.astype(np.float32)
+
+        pred = ok3.predict(X, self.params_)
+
+        if len(self.lb_.classes_) > 2:
+            pred = np.argmax(pred, axis=1)
+        else:
+            pred = (pred[:, 0] > 0.5).astype(np.int32)
+
+        return self.lb_.classes_[pred]
+
+
+class OK3ExtraTreesClassifier(BaseEstimator, ClassifierMixin):
+    def __init__(self, n_estimators=10,
+                       max_features="auto",
+                       random_state=None):
+        self.n_estimators = n_estimators
+        self.max_features = max_features
+        self.random_state = random_state
+
+    def fit(self, X, y):
+        # Check params
+        self.n_features_ = X.shape[1]
+        random_state = check_random_state(self.random_state)
+
+        if isinstance(self.max_features, str):
+            if self.max_features == "auto":
+                max_features = max(1, int(np.sqrt(self.n_features_)))
+            elif self.max_features == "sqrt":
+                max_features = max(1, int(np.sqrt(self.n_features_)))
+            elif self.max_features == "log2":
+                max_features = max(1, int(np.log2(self.n_features_)))
+            else:
+                raise ValueError(
+                    'Invalid value for max_features. Allowed string '
+                    'values are "auto", "sqrt" or "log2".')
+        elif self.max_features is None:
+            max_features = self.n_features_
+        elif isinstance(self.max_features, (numbers.Integral, np.integer)):
+            max_features = self.max_features
+        else:  # float
+            max_features = int(self.max_features * self.n_features_)
+
+        self.params_ = ok3.ok3config()
+        self.params_.init_extratrees(k=max_features)
+        self.params_.nbtrees = self.n_estimators
+        self.params_.randomseed = random_state.randint(1000000)
+        self.params_.returnimportances = False
+        self.params_.returntrees = False
+
+        # Convert data
+        self.lb_ = LabelBinarizer().fit(y)
+        y = self.lb_.transform(y)
+
+        # Run
+        self.X_ = X.astype(np.float32)
+        self.y_ = y.astype(np.float32)
+        self.ls_ = np.arange(len(X_train), dtype=np.int32)
+        w = np.array([], dtype=np.float32)
+
+        ok3.learn(self.X_, self.y_, self.ls_, w, self.params_)
+
+        return self
+
+    def predict(self, X):
+        X = X.astype(np.float32)
+
+        pred = ok3.predict(X, self.params_)
+
+        if len(self.lb_.classes_) > 2:
+            pred = np.argmax(pred, axis=1)
+        else:
+            pred = (pred[:, 0] > 0.5).astype(np.int32)
+
+        return self.lb_.classes_[pred]
