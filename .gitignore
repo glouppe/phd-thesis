@@ -33,3 +33,5 @@
 *.tdo
 thesis.pdf
 classicthesis/*
+benchmarks/output/*
+benchmarks/ok3/*
