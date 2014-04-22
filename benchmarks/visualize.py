@@ -10,16 +10,16 @@ cmap_curve = brewer2mpl.get_map('RdBu', 'diverging', 3).mpl_colors
 cmap_bar = brewer2mpl.get_map('RdYlGn', 'diverging', 8).mpl_colors
 
 layout = {
-    "RandomForestClassifier": {"name": "Sckit-Learn-RF", "order": 0},
+    "RandomForestClassifier": {"name": "Scikit-Learn-RF", "order": 0},
     "RandomForestRegressor": {"name": "Scikit-Learn-RF", "order": 0},
     "ExtraTreesClassifier": {"name": "Scikit-Learn-ETs", "order": 1},
     "ExtraTreesRegressor": {"name": "Scikit-Learn-ETs", "order": 1},
     "OpenCV": {"name": "OpenCV-RF", "order": 2},
     "OpenCV-ETs": {"name": "OpenCV-ETs", "order": 3},
-    "R-randomForest": {"name": "R-RF", "order": 6},
-    "Weka": {"name": "Weka-RF", "order": 7},
     "OK3-RandomForest": {"name": "OK3-RF", "order": 4},
     "OK3-ExtraTrees": {"name": "OK3-ETs", "order": 5},
+    "R-randomForest": {"name": "R-RF", "order": 6},
+    "Weka": {"name": "Weka-RF", "order": 7},
 }
 
 
@@ -108,7 +108,7 @@ def plot_bar(all_data, y_label=None, width=0.2, filename=None):
         y_mean = np.mean(data[0][1])
         rects = ax.bar([i*width], [y_mean], width=width, label=name, color=cmap_bar[key])
         rect = rects[0]
-        plt.text(rect.get_x() + rect.get_width() / 2.0, rect.get_height(), '%.2f' % y_mean, ha='center', va='bottom')
+        plt.text(rect.get_x() + rect.get_width() / 2.0, rect.get_height(), '%.2f' % y_mean, ha='center', va='bottom', fontsize=10)
 
     if y_label is not None: ax.set_ylabel(y_label)
     ax.set_title(title)

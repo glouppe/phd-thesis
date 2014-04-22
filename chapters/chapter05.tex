@@ -1061,6 +1061,24 @@ clusters \citep{mitchell:2011}.
 
 \subsection{Comparison with other implementations}
 
+Due to their relative simplicity, random forests have been reimplemented at
+multiple occasions in various machine learning libraries and programming
+languages. In this section, we compare the Scikit-Learn implementation
+developed within this work with popular alternatives available in other machine
+learning libraries and packages.
+
+Table~\ref{table:implementations} summarizes the main open source
+implementations of random forests along with some of their supported features.
+All of them implement the original Random Forest algorithm~\citep{breiman:2001}
+and therefore also provide an interface for Bagging~\citep{breiman:1996b} since
+it corresponds to the special case $K=p$. Scikit-Learn, OpenCV and OK3 also
+offer variants like Extremely Randomized Trees~\citep{geurts:2006} or Random
+Subspaces\citep{ho:1998}. All support both classification and regression tasks,
+with the exceptions of Weka and H2O which appear to only support
+classification.
+
+% by no means, this is an exhaustive list => there are domain specific impl (eg. random jungles) or proprietary impl (stalford, etc)
+
 \begin{table}
     \footnotesize
     \centering
@@ -1071,11 +1089,11 @@ clusters \citep{mitchell:2011}.
     \hline
     \hline
     \textit{Scikit-Learn} & Bagging, RF, ETs, RS, RP & C/R & Gini, Entropy, MSE & \texttt{max\_depth}, \texttt{min\_samples\_split}, \texttt{min\_samples\_leaf}, \texttt{max\_leaf\_nodes} & \cmark & \cmark & BSD & Python & \citep{pedregosa:2011} \\
-    \textit{randomForest} & RF & C/R & Gini & \texttt{nodesize}, \texttt{maxnodes} & \cmark & \xmark & GPL & R & \citep{liaw:2002} \\
+    \textit{randomForest} & Bagging, RF & C/R & Gini & \texttt{nodesize}, \texttt{maxnodes} & \cmark & \xmark & GPL & R & \citep{liaw:2002} \\
     \textit{Weka} & Bagging, RF & C & Gini & \texttt{depth}  & \xmark & \cmark & GPL & Java & \citep{hall:2009} \\
-    \textit{OpenCV} & RF, ETs & C/R & Gini & \texttt{max\_depth}, \texttt{min\_samples\_count}, \texttt{forest\_accuracy} & \cmark & \xmark & BSD & C/C++ & \citep{bradski:2008} \\
-    \textit{OK3} & RF, ETs & C/R & MSE & \texttt{varmin},\newline \texttt{nmin} & \cmark & \xmark & Source-available & C & \citep{geurts:2006} \\
-    \textit{H2O} & RF & C & Gini,\newline Entropy & \texttt{maxDepth}  & \xmark & \cmark & Apache & Java & \citep{vitek:2013} \\
+    \textit{OpenCV} & Bagging, RF, ETs & C/R & Gini & \texttt{max\_depth}, \texttt{min\_samples\_count}, \texttt{forest\_accuracy} & \cmark & \xmark & BSD & C/C++ & \citep{bradski:2008} \\
+    \textit{OK3} & Bagging, RF, ETs & C/R & MSE & \texttt{varmin},\newline \texttt{nmin} & \cmark & \xmark & Source-available & C & \citep{geurts:2006} \\
+    \textit{H2O} & Bagging, RF & C & Gini,\newline Entropy & \texttt{maxDepth}  & \xmark & \cmark & Apache & Java & \citep{vitek:2013} \\
     \textit{TMVA} & Bagging, RF  &  C/R & 0-1 loss,\newline Gini, Entropy, MSE & \texttt{NodePurityLimit}, \texttt{NNodesMax}, \texttt{MaxDepth} & \cmark & \xmark & BSD & C++ & \citep{hoecker:2007} \\
     \textit{Orange} & Bagging, RF & C/R & GainRatio, Gini,\newline Relief, MSE & \texttt{worst\_acceptable}, \texttt{min\_susbet}, \texttt{min\_instances}, \texttt{max\_depth}, \texttt{max\_majority} & \xmark & \xmark & GPL & Python & \citep{demsar:2013} \\
     \hline
@@ -1090,11 +1108,11 @@ clusters \citep{mitchell:2011}.
 %   - randomForest (R)            OK  => à corriger
 %   - OpenCV                      OK  => à corriger
 %   - Pierre                      OK
-%   - H20
-%   - TMVA
+%   - H20                         None
+%   - TMVA                        https://dbaumgartel.wordpress.com/2014/03/14/machine-learning-examples-scikit-learn-versus-tmva-cern-root/
+%   - Orange?                     http://orange.biolab.si/doc//reference/matrix.htm
 
 % Make a table of supported features
 % Comparison on various datasets (time, accuracy)
 % Discussion of the results
 
-% Mention C4.5, party, OpenCV, clus, Sherwood, wiserf, random jungle
