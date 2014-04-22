@@ -1061,21 +1061,45 @@ clusters \citep{mitchell:2011}.
 
 \subsection{Comparison with other implementations}
 
-Due to their relative simplicity, random forests have been reimplemented at
+Due to their apparent simplicity, random forests have been reimplemented at
 multiple occasions in various machine learning libraries and programming
 languages. In this section, we compare the Scikit-Learn implementation
 developed within this work with popular alternatives available in other machine
-learning libraries and packages.
+learning packages.
 
 Table~\ref{table:implementations} summarizes the main open source
 implementations of random forests along with some of their supported features.
-All implement the original Random Forest algorithm~\citep{breiman:2001}
-and therefore also provide an interface for Bagging~\citep{breiman:1996b} since
-it corresponds to the special case $K=p$. Scikit-Learn, OpenCV and OK3 also
-offer variants like Extremely Randomized Trees~\citep{geurts:2006} or Random
-Subspaces\citep{ho:1998}. All support both classification and regression tasks,
-with the exceptions of Weka and H2O which appear to only support
-classification.
+All implement the original Random Forest algorithm~\citep{breiman:2001} and
+therefore also provide an interface for Bagging~\citep{breiman:1996b} (since it
+corresponds to the special case $K=p$). Scikit-Learn, OpenCV and OK3 also offer
+variants like Extremely Randomized Trees~\citep{geurts:2006} or Random
+Subspaces~\citep{ho:1998}. All support both classification and regression
+tasks, with the exceptions of Weka and H2O which appear to only support
+classification. From a parameter point of view, implementations mostly differ
+from each other in the impurity and stopping criteria they support. The most
+common impurity criterion is Gini (or, equivalently, MSE), but some packages,
+like TMVA or Orange, include more advanced alternatives like the gain ratio or
+implement feature selection using the Relief algorithm~\citep{kira:1992}. The
+most common stopping criteria are an upper bound on the depth of the trees
+(e.g., \texttt{max\_depth} in Scikit-Learn) along with a minimum number of
+samples required for splitting a node (e.g., \texttt{nmin} in OK3). Some
+packages also allow to set an upper limit on the number of nodes in the trees
+or to stop the construction when a fixed accuracy is reached. Despite the
+embarassing parallelism, only Scikit-Learn, Weka and H2O make it possible to
+build random forests using multiple cores. Most notably, H2O builds on top of
+Hadoop to provide a fully distributed implementation of random forests  (i.e.,
+on a cluster). For performance reasons, implementations of
+Table~\ref{table:implementations} have mostly been written in low-level
+programming languages like C, C++ or Java, but usually interface with higher
+level languages, like Python, MATLAB or R, for convenience reasons. In the case
+of OpenCV for example, the core implementation is written in C++ but can easily
+been called from Python through bindings shipped with the library. Let us
+finally note that that Table~\ref{table:implementations} is by no means an
+exhaustive list of all implementations of random forests. Domain-specific
+implementations (e.g., Random Jungle~\citep{schwarz:2010} for GWAS) and
+proprietary software (e.g., Salford Systems, which actually owns the
+\textit{Random Forests} trademark) are not listed nor evaluated here.
+
 
 % by no means, this is an exhaustive list => there are domain specific impl (eg. random jungles) or proprietary impl (stalford, etc)
 
@@ -1083,19 +1107,19 @@ classification.
     \footnotesize
     \centering
     \rotatebox{90}{
-    \begin{tabular}{| c | p{1.5cm} >{\centering}p{0.8cm} p{1.4cm} p{2.5cm} >{\centering}p{1.8cm} >{\centering}p{0.8cm} >{\centering}p{0.8cm} >{\centering}p{1.3cm} p{3.5cm} |}
+    \begin{tabular}{| c | p{1.5cm} >{\centering}p{0.8cm} p{1.8cm} p{2.5cm} >{\centering}p{1.8cm} >{\centering}p{0.8cm} >{\centering}p{0.8cm} >{\centering}p{1.3cm} p{3.5cm} |}
     \hline
         \textbf{Library} & \textbf{Algorithms} & \textbf{Tasks} & \textbf{Impurity} & \textbf{Stopping criteria} & \textbf{Variable importances} & \textbf{Multi-thread} & \textbf{Open source} & \textbf{Language} & \textbf{Reference} \\
     \hline
     \hline
-    \textit{Scikit-Learn} & Bagging, RF, ETs, RS, RP & C/R & Gini, Entropy, MSE & \texttt{max\_depth}, \texttt{min\_samples\_split}, \texttt{min\_samples\_leaf}, \texttt{max\_leaf\_nodes} & \cmark & \cmark & BSD & Python & \citep{pedregosa:2011} \\
+    \textit{Scikit-Learn} & Bagging, RF, ETs, RS, RP & C/R & Gini,\newline Entropy,\newline MSE & \texttt{max\_depth}, \texttt{min\_samples\_split}, \texttt{min\_samples\_leaf}, \texttt{max\_leaf\_nodes} & \cmark & \cmark & BSD & Python & \citep{pedregosa:2011} \\
     \textit{randomForest} & Bagging, RF & C/R & Gini & \texttt{nodesize}, \texttt{maxnodes} & \cmark & \xmark & GPL & R & \citep{liaw:2002} \\
     \textit{Weka} & Bagging, RF & C & Gini & \texttt{depth}  & \xmark & \cmark & GPL & Java & \citep{hall:2009} \\
     \textit{OpenCV} & Bagging, RF, ETs & C/R & Gini & \texttt{max\_depth}, \texttt{min\_samples\_count}, \texttt{forest\_accuracy} & \cmark & \xmark & BSD & C/C++ & \citep{bradski:2008} \\
     \textit{OK3} & Bagging, RF, ETs & C/R & MSE & \texttt{varmin},\newline \texttt{nmin} & \cmark & \xmark & Source-available & C & \citep{geurts:2006} \\
     \textit{H2O} & Bagging, RF & C & Gini,\newline Entropy & \texttt{maxDepth}  & \xmark & \cmark & Apache & Java & \citep{vitek:2013} \\
-    \textit{TMVA} & Bagging, RF  &  C/R & 0-1 loss,\newline Gini, Entropy, MSE & \texttt{NodePurityLimit}, \texttt{NNodesMax}, \texttt{MaxDepth} & \cmark & \xmark & BSD & C++ & \citep{hoecker:2007} \\
-    \textit{Orange} & Bagging, RF & C/R & GainRatio, Gini,\newline Relief, MSE & \texttt{worst\_acceptable}, \texttt{min\_susbet}, \texttt{min\_instances}, \texttt{max\_depth}, \texttt{max\_majority} & \xmark & \xmark & GPL & Python & \citep{demsar:2013} \\
+    \textit{TMVA} & Bagging, RF  &  C/R & 0-1 loss,\newline Gini, Gini~(Laplace), Entropy, MSE & \texttt{NodePurityLimit}, \texttt{NNodesMax}, \texttt{MaxDepth} & \cmark & \xmark & BSD & C++ & \citep{hoecker:2007} \\
+    \textit{Orange} & Bagging, RF & C/R & GainRatio, Gini,\newline Relief,\newline MSE & \texttt{worst\_acceptable}, \texttt{min\_susbet}, \texttt{min\_instances}, \texttt{max\_depth}, \texttt{max\_majority} & \xmark & \xmark & GPL & Python & \citep{demsar:2013} \\
     \hline
     \end{tabular}}
     \caption{Popular libraries for random forests.}
