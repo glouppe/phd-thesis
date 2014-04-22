@@ -144,6 +144,77 @@ class OpenCVRandomForestClassifier(BaseEstimator, ClassifierMixin):
         return self.classes_[pred]
 
 
+class OpenCVExtraTreesClassifier(BaseEstimator, ClassifierMixin):
+    def __init__(self, n_estimators=10,
+                       max_depth=None,
+                       min_samples_split=2,
+                       max_features="auto",
+                       random_state=None):
+        self.n_estimators = n_estimators
+        self.max_depth = max_depth
+        self.min_samples_split = min_samples_split
+        self.max_features = max_features
+        self.random_state = random_state
+
+    def fit(self, X, y):
+        # Check params
+        self.n_features_ = X.shape[1]
+
+        if isinstance(self.max_features, str):
+            if self.max_features == "auto":
+                max_features = max(1, int(np.sqrt(self.n_features_)))
+            elif self.max_features == "sqrt":
+                max_features = max(1, int(np.sqrt(self.n_features_)))
+            elif self.max_features == "log2":
+                max_features = max(1, int(np.log2(self.n_features_)))
+            else:
+                raise ValueError(
+                    'Invalid value for max_features. Allowed string '
+                    'values are "auto", "sqrt" or "log2".')
+        elif self.max_features is None:
+            max_features = self.n_features_
+        elif isinstance(self.max_features, (numbers.Integral, np.integer)):
+            max_features = self.max_features
+        else:  # float
+            max_features = int(self.max_features * self.n_features_)
+
+        params = {}
+        params["nactive_vars"] = max_features
+        params["max_num_of_trees_in_the_forest"] = self.n_estimators
+        params["min_sample_count"] = self.min_samples_split
+        params["calc_var_importance"] = False
+        params["max_depth"] = 100000 if self.max_depth is None else self.max_depth
+        params["use_surrogates"] = False
+        params["termcrit_type"] = cv2.TERM_CRITERIA_MAX_ITER
+        params["term_crit"] = (cv2.TERM_CRITERIA_MAX_ITER, self.n_estimators, 1)
+        params["regression_accuracy"] = 0
+
+        var_types = np.array([cv2.CV_VAR_NUMERICAL] * self.n_features_ + [cv2.CV_VAR_CATEGORICAL], np.uint8)
+
+        # Convert data
+        self.classes_ = np.unique(y)
+        y = np.searchsorted(self.classes_, y)
+        X = X.astype(np.float32)
+        y = y.astype(np.float32)
+
+        # Run
+        self.model_ = cv2.ERTrees()
+        self.model_.train(X, cv2.TERM_CRITERIA_MAX_ITER, y, varType=var_types, params=params)
+
+        return self
+
+    def predict(self, X):
+        X = X.astype(np.float32)
+        pred = np.zeros(len(X))
+
+        for i in range(len(X)):
+            pred[i] = self.model_.predict(X[i])
+
+        pred = pred.astype(np.int32)
+
+        return self.classes_[pred]
+
+
 # Weka ========================================================================
 
 import tempfile

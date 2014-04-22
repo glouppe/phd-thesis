@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import brewer2mpl
 
 cmap_curve = brewer2mpl.get_map('RdBu', 'diverging', 3).mpl_colors
-cmap_bar = brewer2mpl.get_map('RdYlGn', 'diverging', 7).mpl_colors
+cmap_bar = brewer2mpl.get_map('RdYlGn', 'diverging', 8).mpl_colors
 
 layout = {
     "RandomForestClassifier": {"name": "Sckit-Learn-RF", "order": 0},
@@ -15,10 +15,11 @@ layout = {
     "ExtraTreesClassifier": {"name": "Scikit-Learn-ETs", "order": 1},
     "ExtraTreesRegressor": {"name": "Scikit-Learn-ETs", "order": 1},
     "OpenCV": {"name": "OpenCV-RF", "order": 2},
-    "R-randomForest": {"name": "R-RF", "order": 5},
-    "Weka": {"name": "Weka-RF", "order": 6},
-    "OK3-RandomForest": {"name": "OK3-RF", "order": 3},
-    "OK3-ExtraTrees": {"name": "OK3-ETs", "order": 4},
+    "OpenCV-ETs": {"name": "OpenCV-ETs", "order": 3},
+    "R-randomForest": {"name": "R-RF", "order": 6},
+    "Weka": {"name": "Weka-RF", "order": 7},
+    "OK3-RandomForest": {"name": "OK3-RF", "order": 4},
+    "OK3-ExtraTrees": {"name": "OK3-ETs", "order": 5},
 }
 
 
