@@ -1065,21 +1065,19 @@ clusters \citep{mitchell:2011}.
     \footnotesize
     \centering
     \rotatebox{90}{
-    \begin{tabular}{| c | m{1.5cm} >{\centering}m{0.8cm} m{1.3cm} m{2.5cm} >{\centering}m{1.4cm} >{\centering}m{1.8cm} >{\centering}m{0.8cm} >{\centering}m{0.8cm} >{\centering}m{1.3cm} m{3.5cm} |}
+    \begin{tabular}{| c | m{1.5cm} >{\centering}m{0.8cm} m{1.4cm} m{2.5cm} >{\centering}m{1.8cm} >{\centering}m{0.8cm} >{\centering}m{0.8cm} >{\centering}m{1.3cm} m{3.5cm} |}
     \hline
-         & \textbf{Algorithms} & \textbf{Tasks} & \textbf{Impurity} & \textbf{Stopping criteria} & \textbf{Class estimates} & \textbf{Variable importances} & \textbf{Multi-thread} & \textbf{Open source} & \textbf{Language} & \textbf{Reference} \\
+        \textbf{Library} & \textbf{Algorithms} & \textbf{Tasks} & \textbf{Impurity} & \textbf{Stopping criteria} & \textbf{Variable importances} & \textbf{Multi-thread} & \textbf{Open source} & \textbf{Language} & \textbf{Reference} \\
     \hline
     \hline
-    \textit{Scikit-Learn} & Bagging, RF, ETs, RS, RP & C/R & Gini, Entropy, MSE & \texttt{max\_depth}, \texttt{min\_samples\_split}, \texttt{min\_samples\_leaf}, \texttt{max\_leaf\_nodes}, & \cmark & \cmark & \cmark & BSD & Python & \citep{pedregosa:2011} \\
-    \textit{randomForest} & RF & C/R & Gini & \texttt{nodesize}, \texttt{maxnodes} & \cmark & \cmark & \xmark & GPL & R & \citep{liaw:2002} \\
-    \textit{Weka} & Bagging, RF & C & Gini & \texttt{depth} & \xmark & \xmark & \cmark & GPL & Java & \citep{hall:2009} \\
-    \textit{OpenCV} & RF, ETs & C/R & Gini & \texttt{max\_depth}, \texttt{min\_samples\_count}, \texttt{forest\_accuracy} & \cmark & \cmark & \xmark & BSD & C/C++ & \citep{bradski:2008} \\
-    \textit{OK3} &  &  & & & & & & & &  \\
-    \textit{H2O} &  &  & & & & & & & &  \\
-    \textit{TMVA} &  &  & & & & & & & &  \\
-    \textit{Orange} &  & & &  & & & & & &  \\
-    \textit{clus} &  &  & & & & & & & &  \\
-    \textit{party} &  &  & & & & & & & &  \\
+    \textit{Scikit-Learn} & Bagging, RF, ETs, RS, RP & C/R & Gini, Entropy, MSE & \texttt{max\_depth}, \texttt{min\_samples\_split}, \texttt{min\_samples\_leaf}, \texttt{max\_leaf\_nodes} & \cmark & \cmark & BSD & Python & \citep{pedregosa:2011} \\
+    \textit{randomForest} & RF & C/R & Gini & \texttt{nodesize}, \texttt{maxnodes} & \cmark & \xmark & GPL & R & \citep{liaw:2002} \\
+    \textit{Weka} & Bagging, RF & C & Gini & \texttt{depth}  & \xmark & \cmark & GPL & Java & \citep{hall:2009} \\
+    \textit{OpenCV} & RF, ETs & C/R & Gini & \texttt{max\_depth}, \texttt{min\_samples\_count}, \texttt{forest\_accuracy} & \cmark & \xmark & BSD & C/C++ & \citep{bradski:2008} \\
+    \textit{OK3} & RF, ETs & C/R & MSE & \texttt{varmin},\newline \texttt{nmin} & \cmark & \xmark & Source-available & C & \citep{geurts:2006} \\
+    \textit{H2O} & RF & C & Gini,\newline Entropy & \texttt{maxDepth}  & \xmark & \cmark & Apache & Java & \citep{vitek:2013} \\
+    \textit{TMVA} & Bagging, RF  &  C/R & 0-1 loss,\newline Gini, Entropy, MSE & \texttt{NodePurityLimit}, \texttt{NNodesMax}, \texttt{MaxDepth} & \cmark & \xmark & BSD & C++ & \citep{hoecker:2007} \\
+    \textit{Orange} & Bagging, RF & C/R & GainRatio, Gini,\newline Relief, MSE & \texttt{worst\_acceptable}, \texttt{min\_susbet}, \texttt{min\_instances}, \texttt{max\_depth}, \texttt{max\_majority} & \xmark & \xmark & GPL & Python & \citep{demsar:2013} \\
     \hline
     \end{tabular}}
     \caption{Popular libraries for random forests.}
