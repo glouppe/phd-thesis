@@ -1079,7 +1079,7 @@ classification. From a parameter point of view, implementations mostly differ
 from each other in the impurity and stopping criteria they support. The most
 common impurity criterion is Gini (or, equivalently, MSE), but some packages,
 like TMVA or Orange, include more advanced alternatives like the gain ratio or
-implement feature selection using the Relief algorithm~\citep{kira:1992}. The
+implement feature selection, e.g., using the Relief algorithm~\citep{kira:1992}. The
 most common stopping criteria are an upper bound on the depth of the trees
 (e.g., \texttt{max\_depth} in Scikit-Learn) along with a minimum number of
 samples required for splitting a node (e.g., \texttt{nmin} in OK3). Some
@@ -1088,7 +1088,7 @@ or to stop the construction when a fixed accuracy is reached. Despite the
 embarassing parallelism, only Scikit-Learn, Weka and H2O make it possible to
 build random forests using multiple cores. Most notably, H2O builds on top of
 Hadoop to provide a fully distributed implementation of random forests  (i.e.,
-on a cluster). For performance reasons, implementations of
+on a cluster). For performance reasons, implementations listed in
 Table~\ref{table:implementations} have mostly been written in low-level
 programming languages like C, C++ or Java, but usually interface with higher
 level languages, like Python, MATLAB or R, for convenience reasons. In the case
@@ -1099,9 +1099,6 @@ exhaustive list of all implementations of random forests. Domain-specific
 implementations (e.g., Random Jungle~\citep{schwarz:2010} for GWAS) and
 proprietary software (e.g., Salford Systems, which actually owns the
 \textit{Random Forests} trademark) are not listed nor evaluated here.
-
-
-% by no means, this is an exhaustive list => there are domain specific impl (eg. random jungles) or proprietary impl (stalford, etc)
 
 \begin{table}
     \footnotesize
@@ -1126,6 +1123,13 @@ proprietary software (e.g., Salford Systems, which actually owns the
     \label{table:implementations}
 \end{table}
 
+In the experiments made below, we benchmark the Scikit-Learn implementations
+of RF and ETs against libraries listed in Table~\ref{table:implementations}.
+\todo{Suite...}
+
+
+% décrire le protocol expérimental
+
 % Compare
 %   - Scikit-Learn                OK
 %   - Weka                        OK  => à corriger pour retirer le biais
@@ -1136,7 +1140,6 @@ proprietary software (e.g., Salford Systems, which actually owns the
 %   - TMVA                        https://dbaumgartel.wordpress.com/2014/03/14/machine-learning-examples-scikit-learn-versus-tmva-cern-root/
 %   - Orange?                     http://orange.biolab.si/doc//reference/matrix.htm
 
-% Make a table of supported features
 % Comparison on various datasets (time, accuracy)
 % Discussion of the results
 
