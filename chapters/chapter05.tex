@@ -1058,7 +1058,33 @@ clusters \citep{mitchell:2011}.
 %   - number of nodes
 %   - average depth of nodes
 
+
 \subsection{Comparison with other implementations}
+
+\begin{table}
+    \small
+    \centering
+    \rotatebox{90}{
+    \begin{tabular}{| l | m{2cm} m{1.5cm} m{2.75cm} >{\centering}m{2cm} >{\centering}m{2cm} >{\centering}m{1cm} >{\centering}m{1cm} >{\centering}m{1.5cm} m{2cm} |}
+    \hline
+         & \textbf{Algorithms} & \textbf{Impurity} & \textbf{Stop} & \textbf{Class estimates} & \textbf{Variable importances} & \textbf{Multi-thread} & \textbf{Open source} & \textbf{Language} & \textbf{Reference} \\
+    \hline
+    \hline
+    \textit{Scikit-Learn} & Bagging, RF, ETs, RS, RP & \texttt{"gini"} \texttt{"entropy"} \texttt{"mse"} & \texttt{max\_depth} \texttt{min\_samples\_split} \texttt{max\_leaf\_nodes} & $\checkmark$ & $\checkmark$ & $\checkmark$ & BSD3 & Python & \citep{pedregosa:2011} \\
+    \textit{randomForest} &  &  &  & & & & & &  \\
+    \textit{Weka} &  &  &  & & & & & &  \\
+    \textit{OpenCV} &  &  &  & & & & & &  \\
+    \textit{OK3} &  &  &  & & & & & &  \\
+    \textit{H2O} &  &  &  & & & & & &  \\
+    \textit{TMVA} &  &  &  & & & & & &  \\
+    \textit{Orange} &  &  &  & & & & & &  \\
+    \textit{clus} &  &  &  & & & & & &  \\
+    \textit{party} &  &  &  & & & & & &  \\
+    \hline
+    \end{tabular}}
+    \caption{Popular libraries for random forests.}
+    \label{table:implementations}
+\end{table}
 
 % Compare
 %   - Scikit-Learn                OK
@@ -1068,6 +1094,7 @@ clusters \citep{mitchell:2011}.
 %   - Pierre                      OK
 %   - H20
 %   - TMVA
+
 % Make a table of supported features
 % Comparison on various datasets (time, accuracy)
 % Discussion of the results
