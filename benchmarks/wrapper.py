@@ -370,7 +370,7 @@ class OK3RandomForestClassifier(BaseEstimator, ClassifierMixin):
         # Run
         self.X_ = np.array(X, copy=True, dtype=np.float32, order="C")
         self.y_ = y.astype(np.float32)
-        self.ls_ = np.arange(len(X_train), dtype=np.int32)
+        self.ls_ = np.arange(len(self.X_), dtype=np.int32)
         w = np.array([], dtype=np.float32)
 
         ok3.learn(self.X_, self.y_, self.ls_, w, self.params_)
@@ -427,6 +427,7 @@ class OK3ExtraTreesClassifier(BaseEstimator, ClassifierMixin):
         self.params_.randomseed = random_state.randint(1000000)
         self.params_.returnimportances = False
         self.params_.returntrees = False
+        self.params_.savepred = 1
         self.params_.verbose = 0
 
         # Convert data
@@ -436,7 +437,7 @@ class OK3ExtraTreesClassifier(BaseEstimator, ClassifierMixin):
         # Run
         self.X_ = np.array(X, copy=True, dtype=np.float32, order="C")
         self.y_ = y.astype(np.float32)
-        self.ls_ = np.arange(len(X_train), dtype=np.int32)
+        self.ls_ = np.arange(len(self.X_), dtype=np.int32)
         w = np.array([], dtype=np.float32)
 
         ok3.learn(self.X_, self.y_, self.ls_, w, self.params_)

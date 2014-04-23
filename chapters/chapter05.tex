@@ -1078,7 +1078,7 @@ tasks, with the exceptions of Weka and H2O which appear to only support
 classification. From a parameter point of view, implementations mostly differ
 from each other in the impurity and stopping criteria they support. The most
 common impurity criterion is Gini (or, equivalently, MSE) but some packages,
-like TMVA or Orange, include alternative measures such as the entropy, the gain
+like TMVA or Orange, include alternative measures such as entropy, gain
 ratio or Relief~\citep{kira:1992}. The most common stopping criteria are an
 upper bound on the depth of the trees (e.g., \texttt{max\_depth} in Scikit-
 Learn) and a minimum number of samples required for splitting a node (e.g.,
@@ -1124,9 +1124,10 @@ proprietary software (e.g., Salford Systems, which owns the
     \label{table:implementations}
 \end{table}
 
-In the experiments made below, we benchmark the Scikit-Learn implementations
-of RF and ETs against libraries listed in Table~\ref{table:implementations}.
-\todo{Suite...}
+In the experiments carried out below, we benchmark the Scikit-Learn
+implementations of RF and ETs against all libraries listed in
+Table~\ref{table:implementations}. We do not compare against H2O since it
+requires a dedicated cloud environment. \todo{Suite...}
 
 
 % décrire le protocol expérimental
@@ -1139,7 +1140,7 @@ of RF and ETs against libraries listed in Table~\ref{table:implementations}.
 %   - Pierre                      OK
 %   - H20                         None
 %   - TMVA                        https://dbaumgartel.wordpress.com/2014/03/14/machine-learning-examples-scikit-learn-versus-tmva-cern-root/
-%   - Orange?                     http://orange.biolab.si/doc//reference/matrix.htm
+%   - Orange                      OK
 
 % Comparison on various datasets (time, accuracy)
 % Table de speedups (avec Scikit-Learn-RF comme baseline, for all datasets + on average)
