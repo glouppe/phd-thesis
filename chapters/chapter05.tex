@@ -400,7 +400,7 @@ related to the average depth of the leaves reached by the test samples.
 Assuming that both the learning set and the test set are drawn from the same
 probability distribution, the complexity analysis of the prediction procedure
 therefore reduces to the analysis of the average depth of the leaves induced by
-the learning set ${\cal L}$.
+a learning set ${\cal L}$ of size $N$.
 
 As in Section~\ref{sec:5:complexity-fit}, let us assume a fully developed
 decision tree, where each leaf contains exactly one sample from ${\cal L}$.
@@ -421,7 +421,7 @@ D(1) = 1 \\
 D(N) = 1 + \frac{1}{2} D(\frac{N}{2}) + \frac{1}{2} D(\frac{N}{2}) = 1+D(\frac{N}{2})
 \end{cases}
 \end{equation}
-In this form, the second case of the Master Theorem applies for $a=1$, $b=2$ and $k=0$.
+For this equation, the second case of the Master Theorem applies for $a=1$, $b=2$ and $k=0$.
 Accordingly, $D(N)=O(\log^{k+1} N) = O(\log N)$.
 \end{proof}
 
