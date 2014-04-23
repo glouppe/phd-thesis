@@ -360,6 +360,7 @@ class OK3RandomForestClassifier(BaseEstimator, ClassifierMixin):
         self.params_.randomseed = random_state.randint(1000000)
         self.params_.returnimportances = False
         self.params_.returntrees = False
+        self.params_.savepred = 1
         self.params_.verbose = 0
 
         # Convert data
@@ -453,3 +454,77 @@ class OK3ExtraTreesClassifier(BaseEstimator, ClassifierMixin):
             pred = (pred[:, 0] > 0.5).astype(np.int32)
 
         return self.lb_.classes_[pred]
+
+
+# Orange ======================================================================
+
+import Orange
+import orange
+import orngEnsemble
+
+
+def make_orange_dataset(X, y, n_classes):
+    classes = [str(c) for c in range(n_classes)]
+    columns = ["feature_%d" % i for i in range(X.shape[1])]
+    input_vars = map(orange.FloatVariable, tuple(columns))
+    class_var = orange.EnumVariable("y", values=classes)
+    domain = orange.Domain(input_vars, class_var)
+    examples = np.hstack((X, y.reshape(-1,1)))
+    return orange.ExampleTable(domain, examples)
+
+class OrangeRandomForestClassifier(BaseEstimator, ClassifierMixin):
+    def __init__(self, n_estimators=10,
+                       max_features="auto",
+                       random_state=None):
+        self.n_estimators = n_estimators
+        self.max_features = max_features
+        self.random_state = random_state
+
+    def fit(self, X, y):
+        # Check params
+        self.n_features_ = X.shape[1]
+
+        if isinstance(self.max_features, str):
+            if self.max_features == "auto":
+                max_features = max(1, int(np.sqrt(self.n_features_)))
+            elif self.max_features == "sqrt":
+                max_features = max(1, int(np.sqrt(self.n_features_)))
+            elif self.max_features == "log2":
+                max_features = max(1, int(np.log2(self.n_features_)))
+            else:
+                raise ValueError(
+                    'Invalid value for max_features. Allowed string '
+                    'values are "auto", "sqrt" or "log2".')
+        elif self.max_features is None:
+            max_features = self.n_features_
+        elif isinstance(self.max_features, (numbers.Integral, np.integer)):
+            max_features = self.max_features
+        else:  # float
+            max_features = int(self.max_features * self.n_features_)
+
+        # Convert data
+        self.classes_ = np.unique(y)
+        self.n_classes_ = len(self.classes_)
+        y = np.searchsorted(self.classes_, y)
+        X = X.astype(np.float32)
+
+        self.table_ = make_orange_dataset(X, y, self.n_classes_)
+
+        # Run
+        self.model_ = orngEnsemble.RandomForestLearner(self.table_,
+                                                       trees=self.n_estimators,
+                                                       attributes=max_features)
+
+        return self
+
+    def predict(self, X):
+        X = X.astype(np.float32)
+        pred = np.zeros(len(X))
+
+        for i in range(len(X)):
+            instance = Orange.data.Instance(self.table_.domain, X[i, :].tolist()+[0])
+            pred[i] = self.model_(instance)
+
+        pred = pred.astype(np.int32)
+
+        return self.classes_[pred]

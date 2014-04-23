@@ -1078,17 +1078,16 @@ tasks, with the exceptions of Weka and H2O which appear to only support
 classification. From a parameter point of view, implementations mostly differ
 from each other in the impurity and stopping criteria they support. The most
 common impurity criterion is Gini (or, equivalently, MSE) but some packages,
-like TMVA or Orange, include more advanced alternatives like gain ratio or
-implement feature selection using the Relief algorithm~\citep{kira:1992}. The
-most common stopping criteria are an upper bound on the depth of the trees
-(e.g., \texttt{max\_depth} in Scikit-Learn) and a minimum number of
-samples required for splitting a node (e.g., \texttt{nmin} in OK3). Some
-packages also allow to set an upper limit on the number of nodes in the trees
-or to stop the construction when a fixed accuracy is reached. Despite the
-embarassing parallelism, only Scikit-Learn, Weka and H2O make it possible to
-build random forests using multiple cores. Most notably, H2O builds on top of
-Hadoop to provide a fully distributed implementation of random forests  (i.e.,
-on a cluster).
+like TMVA or Orange, include alternative measures such as the entropy, the gain
+ratio or Relief~\citep{kira:1992}. The most common stopping criteria are an
+upper bound on the depth of the trees (e.g., \texttt{max\_depth} in Scikit-
+Learn) and a minimum number of samples required for splitting a node (e.g.,
+\texttt{nmin} in OK3). Some packages also allow to set an upper limit on the
+number of nodes in the trees or to stop the construction when a fixed accuracy
+is reached. Despite the embarassing parallelism, only Scikit-Learn, Weka and
+H2O make it possible to build random forests using multiple cores. Most
+notably, H2O builds on top of Hadoop to provide a fully distributed
+implementation of random forests  (i.e., on a cluster).
 
 For performance reasons, implementations listed in
 Table~\ref{table:implementations} have mostly been written in low-level
@@ -1143,5 +1142,10 @@ of RF and ETs against libraries listed in Table~\ref{table:implementations}.
 %   - Orange?                     http://orange.biolab.si/doc//reference/matrix.htm
 
 % Comparison on various datasets (time, accuracy)
+% Table de speedups (avec Scikit-Learn-RF comme baseline, for all datasets + on average)
+% - idem pour predict
+
+% Comparison of avg depth / leaves for sklearn
+
 % Discussion of the results
 
