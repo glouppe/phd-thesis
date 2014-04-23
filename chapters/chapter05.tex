@@ -395,29 +395,51 @@ time complexity.
 A second facet of the notion of complexity in decision trees is the time
 complexity for making predictions. For a single test point, this complexity
 represents the number of operations required for traversing each of the $M$
-trees, from the root to one of the leaves. Accordingly, complexity is directly
+trees, from the root to one of the leaves. As a result, complexity is directly
 related to the average depth of the leaves reached by the test samples.
 Assuming that both the learning set and the test set are drawn from the same
 probability distribution, the complexity analysis of the prediction procedure
 therefore reduces to the analysis of the average depth of the leaves induced by
 the learning set ${\cal L}$.
 
-As in Section~\ref{sec:5:complexity-fit}, let us assume a fully developed decision
-tree, where each leaf contains exactly one sample from ${\cal L}$. Likewise,
-let us derive the average depth $D(N)$ in the best, worst and average cases.
+As in Section~\ref{sec:5:complexity-fit}, let us assume a fully developed
+decision tree, where each leaf contains exactly one sample from ${\cal L}$.
+Likewise, let us derive the average depth $D(N)$ of the leaves in the best,
+worst and average cases.
 
 \begin{theorem}\label{thm:6:best:depth}
 In the best case, the average depth of the leaves is $O(\log N)$.
 \end{theorem}
 
+\begin{proof}
+For a decision tree which is perfectly balanced, node samples are recursively split
+into two subsets of $\tfrac{N_t}{2}$ samples at each node, which leads to the following
+recurrence equation in the best case:
+\begin{equation}
+\begin{cases}
+D(1) = 1 \\
+D(N) = 1 + \frac{1}{2} D(\frac{N}{2}) + \frac{1}{2} D(\frac{N}{2}) = 1+D(\frac{N}{2})
+\end{cases}
+\end{equation}
+In this form, the second case of the Master Theorem applies for $a=1$, $b=2$ and $k=0$.
+Accordingly, $D(N)=O(\log^{k+1} N) = O(\log N)$.
+\end{proof}
+
 \begin{theorem}\label{thm:6:worst:depth}
 In the worst case, the average depth of the leaves is $O(N)$.
 \end{theorem}
+
+\begin{proof}
+
+\end{proof}
 
 \begin{theorem}\label{thm:6:best:depth}
 In the average case, the average depth of the leaves is $O(\log N)$.
 \end{theorem}
 
+\begin{proof}
+
+\end{proof}
 
 
 
