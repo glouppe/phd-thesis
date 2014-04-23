@@ -6,7 +6,7 @@ import sys
 import matplotlib.pyplot as plt
 import brewer2mpl
 
-cmap_curve = brewer2mpl.get_map('RdBu', 'diverging', 3).mpl_colors
+cmap_curve = [(1.0, 0, 0), (0, 0, 1.0)]
 cmap_bar = brewer2mpl.get_map('RdYlGn', 'diverging', 8).mpl_colors
 
 layout = {
@@ -72,9 +72,9 @@ def plot_curve(all_data, x_label=None, y_label=None, width=0.2, curve=True, file
         y = [np.mean(t[1]) for t in data]
 
         if curve:
-            ax.plot(xticks, y, label=name, color=cmap_curve[i*2])
+            ax.plot(xticks, y, label=name, color=cmap_curve[i])
         else:
-            ax.bar(x, y, width=width, label=name, color=cmap_curve[i*2])
+            ax.bar(x, y, width=width, label=name, color=cmap_curve[i])
 
     if x_label is not None: ax.set_xlabel(x_label)
     if y_label is not None: ax.set_ylabel(y_label)
