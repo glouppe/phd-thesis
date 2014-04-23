@@ -389,13 +389,37 @@ method of all, which is due to the fact that only a single split variable
 is considered at each split. For $K=1$ however, ETs and PERT have identical
 time complexity.
 
-\todo{Even for $K=1$, complexity is linearithmic. This is due to the fact that trees are not all equiprobable.}
-
-
 \section{Complexity of the prediction procedure}
 \label{sec:5:complexity-predict}
 
-\todo{}
+A second facet of the notion of complexity in decision trees is the time
+complexity for making predictions. For a single test point, this complexity
+represents the number of operations required for traversing each of the $M$
+trees, from the root to one of the leaves. Accordingly, complexity is directly
+related to the average depth of the leaves reached by the test samples.
+Assuming that both the learning set and the test set are drawn from the same
+probability distribution, the complexity analysis of the prediction procedure
+therefore reduces to the analysis of the average depth of the leaves induced by
+the learning set ${\cal L}$.
+
+As in Section~\ref{sec:5:complexity-fit}, let us assume a fully developed decision
+tree, where each leaf contains exactly one sample from ${\cal L}$. Likewise,
+let us derive the average depth $D(N)$ in the best, worst and average cases.
+
+\begin{theorem}\label{thm:6:best:depth}
+In the best case, the average depth of the leaves is $O(\log N)$.
+\end{theorem}
+
+\begin{theorem}\label{thm:6:worst:depth}
+In the worst case, the average depth of the leaves is $O(N)$.
+\end{theorem}
+
+\begin{theorem}\label{thm:6:best:depth}
+In the average case, the average depth of the leaves is $O(\log N)$.
+\end{theorem}
+
+
+
 
 % seconde facette de la notion of complexity est model complexity, which has an impact on prediction time
 
@@ -405,6 +429,8 @@ time complexity.
 % discuter en fonction du nombre de feuilles
 %                      de la profondeur moyenne
 %                      du nombre d'arbres
+
+% noter que la complexité reste linéarithmique, même  pour K=1 (i.e pour des arbres totalement aléatoires)
 
 
 \section{Implementation}
@@ -874,7 +900,7 @@ algorithm should be considered with care to obtain an efficient implementation:
 
     In the context of the tree induction procedure, let us finally notice that
     partitioning node samples ${\cal L}_t$ into subsets ${\cal L}_{t_L}$ and
-    ${\cal L}_{t_R}$ not only makes them purer in terms of the ouput variable
+    ${\cal L}_{t_R}$ not only makes them purer in terms of the output variable
     $Y$, it also indirectly makes node samples more and more identical in terms
     of the values taken by the input variables. As we get deeper into the tree,
     this property can be leveraged by implementing Quicksort as a 3-way
@@ -934,7 +960,7 @@ algorithm should be considered with care to obtain an efficient implementation:
           of the possible discretization thresholds $v^\prime_k$ instead
           of exhaustively evaluating all candidate splits. In binning, this
           is performed by grouping together node samples that are close
-          to each other into bins and then evaluating only the thresholds inbetween these groups.
+          to each other into bins and then evaluating only the thresholds in-between these groups.
           The simplest strategy of all is to divide the value interval of $X_j$
           at $t$ into $D$ intervals of equal length. Another strategy
           is to sort the node samples along their respective values of $X_j$
@@ -998,7 +1024,7 @@ to parallelization, the theoretical speedup of this strategy is equal to the
 number $N_p$ of processors used for building the forest. In practice however,
 this upper bound is not always strictly reached due to the variance of the time
 required for building randomized trees. It may indeed happen that building
-trees take longer  than building some others, thereby underutilizing
+trees take longer  than building some others, thereby under-utilizing
 computational resources since jobs may have finished sooner than others.
 
 More fine-grained approaches consist in building decision trees one at time,
@@ -1007,7 +1033,7 @@ construction of a tree is distributed by building multiple nodes concurrently.
 In this case, workload can be divided between processors using a breadth-first
 induction procedure and assigning whole sub-trees to develop once the waiting
 queue contains $N_p$ nodes. Once again however, sub-trees may take longer to
-build than others, hence underutilizing computational resources if the
+build than others, hence under-utilizing computational resources if the
 resulting decision tree is not balanced. To alleviate this issue, processors
 may be assigned single nodes to develop using a producer-consumer scheme to
 balance workload in a fair way. Unfortunately, this latter approach often proves to be
@@ -1032,6 +1058,8 @@ clusters \citep{mitchell:2011}.
 \label{sec:5:benchmarks}
 
 \subsection{Empirical complexity}
+
+\todo{}
 
 % Define some artifical data generators => regression + classification
 % Regression: Friedman 1-2-3
@@ -1084,22 +1112,10 @@ upper bound on the depth of the trees (e.g., \texttt{max\_depth} in Scikit-
 Learn) and a minimum number of samples required for splitting a node (e.g.,
 \texttt{nmin} in OK3). Some packages also allow to set an upper limit on the
 number of nodes in the trees or to stop the construction when a fixed accuracy
-is reached. Despite the embarassing parallelism, only Scikit-Learn, Weka and
+is reached. Despite the embarrassing parallelism, only Scikit-Learn, Weka and
 H2O make it possible to build random forests using multiple cores. Most
 notably, H2O builds on top of Hadoop to provide a fully distributed
 implementation of random forests  (i.e., on a cluster).
-
-For performance reasons, implementations listed in
-Table~\ref{table:implementations} have mostly been written in low-level
-programming languages like C, C++ or Java, but usually interface with higher
-level languages, like Python, MATLAB or R, for convenience reasons. In the case
-of OpenCV for example, the core implementation is written in C++ but can easily
-been called from Python through bindings shipped with the library. Let us
-finally note that that Table~\ref{table:implementations} is by no means an
-exhaustive list of all implementations of random forests. Domain-specific
-implementations (e.g., Random Jungle~\citep{schwarz:2010} for GWAS) and
-proprietary software (e.g., Salford Systems, which owns the
-\textit{Random Forests} trademark) are not listed nor evaluated here.
 
 \begin{table}
     \footnotesize
@@ -1123,6 +1139,18 @@ proprietary software (e.g., Salford Systems, which owns the
     \caption{Popular libraries for random forests.}
     \label{table:implementations}
 \end{table}
+
+For performance reasons, implementations listed in
+Table~\ref{table:implementations} have mostly been written in low-level
+programming languages like C, C++ or Java, but usually interface with higher
+level languages, like Python, MATLAB or R, for convenience reasons. In the case
+of OpenCV for example, the core implementation is written in C++ but can easily
+been called from Python through bindings shipped with the library. Let us
+finally note that that Table~\ref{table:implementations} is by no means an
+exhaustive list of all implementations of random forests. Domain-specific
+implementations (e.g., Random Jungle~\citep{schwarz:2010} for GWAS) and
+proprietary software (e.g., Salford Systems, which owns the
+\textit{Random Forests} trademark) are not listed nor evaluated here.
 
 In the experiments carried out below, we benchmark the Scikit-Learn
 implementations of RF and ETs against all libraries listed in
