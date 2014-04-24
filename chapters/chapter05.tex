@@ -123,7 +123,9 @@ is studied in three cases:
       all random seeds $\theta$.  Since the analysis of this case is hardly
       feasible without strong assumptions on the structure of the problem,
       we consider instead the case where the sizes of the possible
-      partitions of a node are all equiprobable.
+      partitions of a node are all equiprobable. We believe this is a good
+      enough approximation, that should at least help us derive the order
+      of magnitude of the complexity (instead of deriving it exactly).
 
 \end{description}
 
@@ -395,12 +397,12 @@ time complexity.
 A second facet of the notion of complexity in decision trees is the time
 complexity for making predictions. For a single test point, this complexity
 represents the number of operations required for traversing each of the $M$
-trees, from the root to one of the leaves. As a result, complexity is directly
+trees, from the root to one of the leaves. As such, complexity is directly
 related to the average depth of the leaves reached by the test samples.
 Assuming that both the learning set and the test set are drawn from the same
 probability distribution, the complexity analysis of the prediction procedure
 therefore reduces to the analysis of the average depth of the leaves induced by
-a learning set ${\cal L}$ of size $N$.
+a learning set ${\cal L}$.
 
 As in Section~\ref{sec:5:complexity-fit}, let us assume a fully developed
 decision tree, where each leaf contains exactly one sample from ${\cal L}$.
@@ -418,10 +420,10 @@ recurrence equation in the best case:
 \begin{equation}
 \begin{cases}
 D(1) = 1 \\
-D(N) = 1 + \frac{1}{2} D(\frac{N}{2}) + \frac{1}{2} D(\frac{N}{2}) = 1+D(\frac{N}{2})
+D(N) = 1 + \frac{1}{2} D(\frac{N}{2}) + \frac{1}{2} D(\frac{N}{2}) = 1+D(\frac{N}{2}).
 \end{cases}
 \end{equation}
-For this equation, the second case of the Master Theorem applies for $a=1$, $b=2$ and $k=0$.
+With this equation, the second case of the Master Theorem applies for $a=1$, $b=2$ and $k=0$.
 Accordingly, $D(N)=O(\log^{k+1} N) = O(\log N)$.
 \end{proof}
 
@@ -430,27 +432,71 @@ In the worst case, the average depth of the leaves is $O(N)$.
 \end{theorem}
 
 \begin{proof}
-
+In the worst case, the recurrence equation of the average depth of the leaves is:
+\begin{equation}
+\begin{cases}
+D(1) = 1 \\
+D(N) = 1 + \frac{1}{N} D(1) + \frac{N-1}{N} D(N-1).
+\end{cases}
+\end{equation}
+Let us now introduce $S(N)=N D(N)$. From the previous equation, it comes
+\begin{align}
+S(N) &= N+1 + S(N-1) \nonumber \\
+     &= 1+ \sum_{i=2}^N i + 1 \nonumber \\
+     &= \frac{N^2}{2} + \frac{3N}{2} - 1.
+\end{align}
+Since $D(N) = \tfrac{S(N)}{N}$, we have $D(N) = \frac{1}{2} (N - \frac{2}{N} + 3) = O(N)$.
 \end{proof}
 
-\begin{theorem}\label{thm:6:best:depth}
+\begin{theorem}\label{thm:6:average:depth}
 In the average case, the average depth of the leaves is $O(\log N)$.
 \end{theorem}
 
 \begin{proof}
-
+In the average case, the recurrence equation of the average depth of the leaves is:
+\begin{equation}
+\begin{cases}
+D(1) = 1 \\
+D(N) = 1 + \frac{1}{N-1} \sum_{i=1}^{N-1} \frac{i}{N} D(i) + \frac{N-i}{N} D(N-i).
+\end{cases}
+\end{equation}
+By symmetry and by multiplying both sides by $N(N-1)$, it comes
+\begin{equation}\label{eqn:thm:6:best:depth:1}
+N(N-1) D(N) = N(N-1) + 2 \sum_{i=1}^{N-1} i D(i).
+\end{equation}
+For $N\geq3$, substituting $N$ with $N-1$ similarly yields
+\begin{equation}\label{eqn:thm:6:best:depth:2}
+(N-1)(N-2) D(N-1) = (N-1)(N-2) + 2 \sum_{i=1}^{N-2} i D(i).
+\end{equation}
+Subtracting Equation~\ref{eqn:thm:6:best:depth:2} from \ref{eqn:thm:6:best:depth:1},
+it comes after simplifications and division of both sides by $N(N-1)$
+\begin{align}
+D(N) &= D(N-1) + \frac{2}{N} \nonumber \\
+    &= 1 + 2 \sum_{i=2}^N \frac{1}{i} \nonumber \\
+    &= 2H_N - 1
+\end{align}
+where $H_N$ is the $N$-th harmonic number. Using
+\begin{equation}
+H_N \approx \log N + \gamma + \frac{1}{2N} + O(\frac{1}{N^2})
+\end{equation}
+as approximation (where $\gamma$ is the Euler-Mascheroni constant), we have $D(N) = O(\log N)$.
 \end{proof}
 
+From Theorems~\ref{thm:6:best:depth}-\ref{thm:6:average:depth}, the total time
+complexity for computing predictions out of a forest of $M$ trees is therefore
+$O(M\log N)$ in the best case and $O(MN)$ is the very worst case. In accordance
+with previous results, the analysis of the average case shows however that
+pathological cases are not dominant and that, on average, complexity behaves
+once again as as in the best case.
 
+\begin{remark}{Distribution of decision trees}
+\todo{}
+\end{remark}
 
 % seconde facette de la notion of complexity est model complexity, which has an impact on prediction time
 
 % resultats quand les arbres sont totalement aléatoires => distribution voir papier imp
 % segdewick chapter 6
-
-% discuter en fonction du nombre de feuilles
-%                      de la profondeur moyenne
-%                      du nombre d'arbres
 
 % noter que la complexité reste linéarithmique, même  pour K=1 (i.e pour des arbres totalement aléatoires)
 
