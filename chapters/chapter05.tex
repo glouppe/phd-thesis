@@ -394,9 +394,9 @@ time complexity.
 \section{Complexity of the prediction procedure}
 \label{sec:5:complexity-predict}
 
-A second facet of the notion of complexity in decision trees is the time
-complexity for making predictions. For a single test point, this complexity
-represents the number of operations required for traversing each of the $M$
+A second facet of the notion of complexity in random forests is the time
+required for making predictions. For a single test point, this complexity
+represents the number of operations for traversing each of the $M$
 trees, from the root to one of the leaves. As such, complexity is directly
 related to the average depth of the leaves reached by the test samples.
 Assuming that both the learning set and the test set are drawn from the same
@@ -487,13 +487,13 @@ complexity for computing predictions out of a forest of $M$ trees is therefore
 $O(M\log N)$ in the best case and $O(MN)$ is the very worst case. In accordance
 with previous results, the analysis of the average case shows however that
 pathological cases are not dominant and that, on average, complexity behaves
-once again as as in the best case.
+once again as in the best case.
 
-\begin{remark}{Distribution of decision trees}
+\begin{remark}{Distribution of randomized trees}
 \todo{}
 \end{remark}
 
-% seconde facette de la notion of complexity est model complexity, which has an impact on prediction time
+
 
 % resultats quand les arbres sont totalement aléatoires => distribution voir papier imp
 % segdewick chapter 6

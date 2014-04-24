@@ -219,6 +219,8 @@ class OpenCVExtraTreesClassifier(BaseEstimator, ClassifierMixin):
 
 import tempfile
 import os
+from time import time
+
 from weka.classifiers import Classifier
 
 def to_arff(X, y, n_classes, f):
@@ -280,6 +282,7 @@ class WekaRandomForestClassifier(BaseEstimator, ClassifierMixin):
         params["-K"] = max_features
         params["-depth"] = 0 if self.max_depth is None else self.max_depth
         params["-no-cv"] = None
+        params["-s"] = random_state.randint(1000000)
 
         # Convert data
         self.classes_ = np.unique(y)
