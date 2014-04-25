@@ -371,8 +371,8 @@ class OK3RandomForestClassifier(BaseEstimator, ClassifierMixin):
         y = self.lb_.transform(y)
 
         # Run
-        self.X_ = np.array(X, copy=True, dtype=np.float32, order="C")
-        self.y_ = y.astype(np.float32)
+        self.X_ = np.ascontiguousarray(X, dtype=np.float32)
+        self.y_ = np.ascontiguousarray(y, dtype=np.float32)
         self.ls_ = np.arange(len(self.X_), dtype=np.int32)
         w = np.array([], dtype=np.float32)
 
@@ -381,7 +381,7 @@ class OK3RandomForestClassifier(BaseEstimator, ClassifierMixin):
         return self
 
     def predict(self, X):
-        X = X.astype(np.float32)
+        X = np.ascontiguousarray(X, dtype=np.float32)
 
         pred = ok3.predict(X, self.params_)
 
@@ -438,8 +438,8 @@ class OK3ExtraTreesClassifier(BaseEstimator, ClassifierMixin):
         y = self.lb_.transform(y)
 
         # Run
-        self.X_ = np.array(X, copy=True, dtype=np.float32, order="C")
-        self.y_ = y.astype(np.float32)
+        self.X_ = np.ascontiguousarray(X, dtype=np.float32)
+        self.y_ = np.ascontiguousarray(y, dtype=np.float32)
         self.ls_ = np.arange(len(self.X_), dtype=np.int32)
         w = np.array([], dtype=np.float32)
 
@@ -448,7 +448,7 @@ class OK3ExtraTreesClassifier(BaseEstimator, ClassifierMixin):
         return self
 
     def predict(self, X):
-        X = X.astype(np.float32)
+        X = np.ascontiguousarray(X, dtype=np.float32)
 
         pred = ok3.predict(X, self.params_)
 
