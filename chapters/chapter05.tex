@@ -129,6 +129,15 @@ is studied in three cases:
 
 \end{description}
 
+Since the induction algorithm looks for splits that most decrease impurity, and
+as $K \to p$, balanced partitions of the nodes samples should in fact be more
+likely than partitions that are unbalanced. In practice, random forests should
+therefore approach the best case rather than the average case defined above. As
+$K \to 1$ however, and depending on the randomization, splits yield partitions that
+tend to be more equiprobable, hence approaching the average case defined above.
+As for the worst case, it should only arise in exceptional circumstances, when
+the response $Y$ is hardly separable from the inputs $X$.
+
 \begin{remark}{Master Theorem}
 Some of the results outlined in the remaining of this section make use of the
 Master Theorem~\citep{goodrich:2006}, which recall below to be self-contained.
@@ -395,14 +404,13 @@ time complexity.
 \label{sec:5:complexity-predict}
 
 A second facet of the notion of complexity in random forests is the time
-required for making predictions. For a single test point, this complexity
-represents the number of operations for traversing each of the $M$
-trees, from the root to one of the leaves. As such, complexity is directly
-related to the average depth of the leaves reached by the test samples.
-Assuming that both the learning set and the test set are drawn from the same
-probability distribution, the complexity analysis of the prediction procedure
-therefore reduces to the analysis of the average depth of the leaves induced by
-a learning set ${\cal L}$.
+required for making predictions. For a single test point, this represents the
+number of operations for traversing each of the $M$ trees, from the root to one
+of the leaves. As such, complexity is directly related to the average depth of
+the leaves reached by the test samples. Assuming that both the learning set and
+the test set are drawn from the same probability distribution, the complexity
+analysis of the prediction procedure therefore reduces to the analysis of the
+average depth of the leaves induced by a learning set ${\cal L}$.
 
 As in Section~\ref{sec:5:complexity-fit}, let us assume a fully developed
 decision tree, where each leaf contains exactly one sample from ${\cal L}$.
