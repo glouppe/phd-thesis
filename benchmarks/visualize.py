@@ -18,8 +18,8 @@ layout = {
     "OpenCV-ETs": {"name": "OpenCV-ETs", "order": 3},
     "OK3-RandomForest": {"name": "OK3-RF", "order": 4},
     "OK3-ExtraTrees": {"name": "OK3-ETs", "order": 5},
-    "R-randomForest": {"name": "R-RF", "order": 6},
-    "Weka": {"name": "Weka-RF", "order": 7},
+    "R-randomForest": {"name": "R-RF", "order": 7},
+    "Weka": {"name": "Weka-RF", "order": 6},
     "Orange": {"name": "Orange-RF", "order": 8},
 }
 
