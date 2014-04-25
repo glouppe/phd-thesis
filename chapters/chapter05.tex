@@ -500,7 +500,7 @@ with previous results, the analysis of the average case shows however that
 pathological cases are not dominant and that, on average, complexity behaves
 once again as in the best case.
 
-\begin{remark}{Distribution of randomized trees}
+\begin{remark}{Randomized trees are not equiprobable}
 When trees are built totally at random, that is when all sizes of partitions
 are equiprobable, the analysis of the average case shows that the average depth
 of the leaves remains logarithmic with size of the learning set. Assuming
@@ -514,7 +514,8 @@ trees were drawn uniformly at random from the set of all possible  trees (i.e.,
 in the case of \textit{Catalan} trees), then the average depth can be shown to
 be $O(\sqrt{N})$. The fundamental difference is that binary search trees built
 from random permutations are \textit{not} all equiprobable. There may exist
-several permutations mapping to the same binary search tree. Accordingly,
+several permutations mapping to the same binary search tree. In particular,
+short trees are more likely to occur than degeneratedly deep trees. Accordingly,
 decision trees, even built totally at random, are also not all equiprobable.
 \end{remark}
 
