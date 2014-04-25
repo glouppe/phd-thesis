@@ -129,14 +129,17 @@ is studied in three cases:
 
 \end{description}
 
-Since the induction algorithm looks for splits that most decrease impurity, and
-as $K \to p$, balanced partitions of the nodes samples should in fact be more
-likely than partitions that are unbalanced. In practice, random forests should
-therefore approach the best case rather than the average case defined above. As
-$K \to 1$ however, and depending on the randomization, splits yield partitions that
-tend to be more equiprobable, hence approaching the average case defined above.
-As for the worst case, it should only arise in exceptional circumstances, when
-the response $Y$ is hardly separable from the inputs $X$.
+Since the induction algorithm looks for splits that most decrease impurity (in
+particular, as $K\to p$) balanced partitions of the nodes samples should in
+fact be more likely than partitions that are unbalanced. In practice, random
+forests should therefore approach the best case rather than the average case
+(for which partitions are equally likely). As randomization increases however
+(e.g., as $K \to 1$), splits yield partitions that tend to be more
+equiprobable, hence approaching the average case. As such, we believe the
+complexity for the true average case should lie in-between the complexity of
+the best case and the complexity of the average case as defined above. As for
+the worst case, it should only arise in exceptional circumstances, when the
+output is hardly separable from the inputs.
 
 \begin{remark}{Master Theorem}
 Some of the results outlined in the remaining of this section make use of the
@@ -497,18 +500,23 @@ with previous results, the analysis of the average case shows however that
 pathological cases are not dominant and that, on average, complexity behaves
 once again as in the best case.
 
-% RF should have better complexity than ET (in contrast to fit)
-
 \begin{remark}{Distribution of randomized trees}
-\todo{}
+When trees are built totally at random, that is when all sizes of partitions
+are equiprobable, the analysis of the average case shows that the average depth
+of the leaves remains logarithmic with size of the learning set. Assuming
+unique input values for all samples and considering the special case $p=1$,
+the random construction of a decision tree
+is in fact equivalent to the insertion in random order of $N$ unique keys into
+a binary search tree. As shown exactly in \citep{sedgewick:2013}, the average
+depth of a binary search tree built from equiprobable permutations of $N$
+unique keys is $O(\log N)$, which corroborates our results. By contrast, if
+trees were drawn uniformly at random from the set of all possible  trees (i.e.,
+in the case of \textit{Catalan} trees), then the average depth can be shown to
+be $O(\sqrt{N})$. The fundamental difference is that binary search trees built
+from key permutations are \textit{not} all equiprobable. There may exist
+several permutations mapping to the same binary search tree. Accordingly,
+decision trees, even built totally at random, are also not all equiprobable.
 \end{remark}
-
-
-
-% resultats quand les arbres sont totalement aléatoires => distribution voir papier imp
-% segdewick chapter 6
-
-% noter que la complexité reste linéarithmique, même  pour K=1 (i.e pour des arbres totalement aléatoires)
 
 
 \section{Implementation}
@@ -801,24 +809,6 @@ defined below:
 \end{minipage}
 \end{figure}
 
-As an example, Table~\ref{table:tree-array} illustrates the array
-representation of the decision tree shown in Figure~\ref{fig:5:tree}, as built
-from the learning set ${\cal L}$ of Figure~\ref{fig:5:set}. Internal nodes
-($t_0$, $t_2$, $t_3$ and $t_6$) are nodes for which the corresponding values in
-$\texttt{left\_child}$, $\texttt{right\_child}$, $\texttt{feature}$ and
-$\texttt{threshold}$ are not empty, while leaves ($t_1$, $t_4$, $t_7$ and
-$t_8$) correspond to nodes for which these values are not defined. In the case
-of classification, the \texttt{value} array contains the number of samples of
-each class for each node. From these, class probability estimates $p_{\cal
-L}(Y=c|t)$ can be computed by dividing \texttt{value[t][c]} by the number of
-samples $\texttt{n\_samples[t]}$ in $t$. In the case of regression,
-\texttt{value[t]} would  contain the average output value for the samples in
-$t$. Finally, let us note that storing node impurities in the \texttt{impurity}
-array is not strictly necessary, since these values are only used during
-construction. Yet, storing them can prove to be valuable, e.g., for
-later inspection of the decision tree or for computing variable importances (see
-Chapter~\ref{ch:importances}) more readily.
-
 \begin{table}
     \small
     \hspace{-1.3cm}
@@ -839,6 +829,24 @@ Chapter~\ref{ch:importances}) more readily.
     \caption{Array representation of the decision tree in Figure~\ref{fig:5:tree}.}
     \label{table:tree-array}
 \end{table}
+
+As an example, Table~\ref{table:tree-array} illustrates the array
+representation of the decision tree shown in Figure~\ref{fig:5:tree}, as built
+from the learning set ${\cal L}$ of Figure~\ref{fig:5:set}. Internal nodes
+($t_0$, $t_2$, $t_3$ and $t_6$) are nodes for which the corresponding values in
+$\texttt{left\_child}$, $\texttt{right\_child}$, $\texttt{feature}$ and
+$\texttt{threshold}$ are not empty, while leaves ($t_1$, $t_4$, $t_7$ and
+$t_8$) correspond to nodes for which these values are not defined. In the case
+of classification, the \texttt{value} array contains the number of samples of
+each class for each node. From these, class probability estimates $p_{\cal
+L}(Y=c|t)$ can be computed by dividing \texttt{value[t][c]} by the number of
+samples $\texttt{n\_samples[t]}$ in $t$. In the case of regression,
+\texttt{value[t]} would  contain the average output value for the samples in
+$t$. Finally, let us note that storing node impurities in the \texttt{impurity}
+array is not strictly necessary, since these values are only used during
+construction. Yet, storing them can prove to be valuable, e.g., for
+later inspection of the decision tree or for computing variable importances (see
+Chapter~\ref{ch:importances}) more readily.
 
 By implementing the array representation as dynamic tables~\citep{cormen:2001},
 insertion of new nodes has an $O(1)$ amortized cost, while keeping memory
@@ -1154,8 +1162,6 @@ clusters \citep{mitchell:2011}.
 %   - Unique values versus dupplicates
 %   - sorting algorithm
 
-% In classification, complexity should be proportional to the actual
-% complexity of the capacity of the model to learn decision surface
 
 % Measure
 %   - Fit time
@@ -1163,6 +1169,8 @@ clusters \citep{mitchell:2011}.
 %   - Accuracy
 %   - number of nodes
 %   - average depth of nodes
+
+% RF should have better predict complexity than ET (in contrast to fit)
 
 
 \subsection{Comparison with other implementations}
