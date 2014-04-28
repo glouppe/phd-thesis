@@ -1239,15 +1239,6 @@ the node samples are more likely to be unbalanced rather than the opposite.
 This explains why on the middle plot the average depth of RF eventually gets
 larger than the depth of ETs -- which does not suffer from end-cut preference.
 
-\begin{figure}
-\hspace{-3.5cm}
-\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/bootstrap_time_fit.pdf}}
-\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/bootstrap_average_depth.pdf}}
-\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/bootstrap_mse.pdf}}
-\caption{Effect of bootstrap replicates.}
-\label{fig:5:artificial:bootstrap}
-\end{figure}
-
 Figure~\ref{fig:5:artificial:K} illustrates the effect of random variable
 selection. On the left plot, building times grow as expected in $O(K)$ with the
 number $K$ of variables randomly drawn at each node. The average depth of the
@@ -1259,10 +1250,19 @@ model when they are too strong (at $K=1$) but then become beneficial as $K$
 increases. For RF, the optimal trade-off is at $K=5$ while the lowest error can
 be achieved in ETs for $K=7$.
 
+\begin{figure}
+\hspace{-1.5cm}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/bootstrap_time_fit.pdf}}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/bootstrap_average_depth.pdf}}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/bootstrap_mse.pdf}}
+\caption{Effect of bootstrap replicates.}
+\label{fig:5:artificial:bootstrap}
+\end{figure}
+
 Finally, Figure~\ref{fig:5:artificial:bootstrap} studies the effect of using
 bootstrap replicates. For RF, learning trees from learning sets ${\cal L}^m$
-drawn with replacement from ${\cal L}$ is about $1.5$ faster than building
-trees directly on ${\cal L}$, which is in accordance with our theoretical
+drawn with replacement from ${\cal L}$ (\texttt{bootstrap=True}) is about $1.5$ faster than building
+trees directly on ${\cal L}$ (\texttt{bootstrap=False}) , which is in accordance with our theoretical
 results from Section~\ref{sec:5:complexity-fit}. The effect for ETs is less
 strong, but still leads to a non-negligible speedup. The average depth for RF
 and ETs is about $0.5$ smaller when using bootstrap replicates. Again, this is
