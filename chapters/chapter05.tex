@@ -133,7 +133,7 @@ Since the induction algorithm looks for splits that most decrease impurity (in
 particular, as $K\to p$) balanced partitions of the nodes samples should in
 fact be more likely than partitions that are unbalanced. In practice, random
 forests should therefore approach the best case rather than the average case
-(for which partitions are equally likely). As randomization increases however
+(for which partitions are equally likely). However as randomization increases
 (e.g., as $K \to 1$), splits yield partitions that tend to be more
 equiprobable, hence approaching the average case. As such, we believe the
 complexity for the true average case should lie in-between the complexity of
@@ -517,6 +517,8 @@ from random permutations are \textit{not} all equiprobable. There may exist
 several permutations mapping to the same binary search tree. In particular,
 short trees are more likely to occur than degeneratedly deep trees. Accordingly,
 decision trees, even built totally at random, are also not all equiprobable.
+Because of the recursive construction procedure, deep degenerated decision
+trees are less likely than shorter decision trees.
 \end{remark}
 
 
