@@ -3,6 +3,7 @@ import glob
 import json
 import sys
 
+import matplotlib
 import matplotlib.pyplot as plt
 import brewer2mpl
 
@@ -59,6 +60,7 @@ def groupby(filenames, group_fields, param_field, stat_field):
 
 
 def plot_curve(all_data, x_label=None, y_label=None, width=0.2, curve=True, filename=None):
+    matplotlib.rc("font", size=13)
     title = all_data.keys()[0][1]
     title = title.split(".")[0]
 
@@ -96,7 +98,7 @@ def plot_curve(all_data, x_label=None, y_label=None, width=0.2, curve=True, file
     if y_label is not None: ax.set_ylabel(y_label)
 
     ax.set_title(title)
-    ax.legend(loc="best", prop={"size": 11})
+    ax.legend(loc="best")
 
     if filename:
         plt.savefig("%s.pdf" % filename)

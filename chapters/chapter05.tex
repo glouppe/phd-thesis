@@ -1158,7 +1158,7 @@ Y = 10 \sin(\pi X_1 X_2) + 20(X_3 - 0.48)^2 + 10 X_4 + 5 X_5 + \epsilon
 \end{equation}
 where $\epsilon$ is ${\cal N}(0, 1)$. We study the effects of the number $M$ of
 trees in the forest, the number $N$ of input samples, the number $p$ of input
-variables, the number $K$ of variables drawn at each node and the effects of
+variables (by adding new irrelevant variables), the number $K$ of variables drawn at each node and the effects of
 using bootstrap replicates ${\cal L}^m$ instead of ${\cal L}$, all with respect to
 the time required for building the forest, the average depth of the leaves and
 the mean square error of the forest. Hyper-parameters are studied independently
@@ -1272,9 +1272,8 @@ logarithm by $-\log(0.632) = 0.662$. Finally, the right plot shows that using
 bootstrap replicates actually impairs performance on this problem.
 
 While not discussed here, further experiments carried out on other artificial
-data, for both regression and classification, lead to similar conclusions as
-those presented above. They all corroborate the theoretical results
-presented earlier.
+data, for both regression and classification, lead to similar conclusions. They
+all corroborate the theoretical results presented earlier.
 
 \subsection{Comparison with other implementations}
 
