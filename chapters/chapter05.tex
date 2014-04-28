@@ -1265,7 +1265,7 @@ drawn with replacement from ${\cal L}$ (\texttt{bootstrap=True}) is about $1.5$ 
 trees directly on ${\cal L}$ (\texttt{bootstrap=False}) , which is in accordance with our theoretical
 results from Section~\ref{sec:5:complexity-fit}. The effect for ETs is less
 strong, but still leads to a non-negligible speedup. The average depth for RF
-and ETs is about $0.5$ smaller when using bootstrap replicates. Again, this is
+and ETs is rhoughly $0.5$ lower when using bootstrap replicates. Again, this is
 expected since the average depth grows with $O(\log N)$ and that reducing the
 effective size of the learning set to $\widetilde{N} = 0.632N$ reduces its
 logarithm by $-\log(0.632) = 0.662$. Finally, the right plot shows that using
@@ -1321,8 +1321,8 @@ implementation of random forests  (i.e., on a cluster).
     \textit{Weka} & Bagging, RF & C & Gini & \texttt{depth}  & \xmark & \cmark & GPL & Java & \citep{hall:2009} \\
     \textit{randomForest} & Bagging, RF & C/R & Gini & \texttt{nodesize}, \texttt{maxnodes} & \cmark & \xmark & GPL & R & \citep{liaw:2002} \\
     \textit{Orange} & Bagging, RF & C/R & GainRatio, Gini,\newline Relief,\newline MSE & \texttt{worst\_acceptable}, \texttt{min\_susbet}, \texttt{min\_instances}, \texttt{max\_depth}, \texttt{max\_majority} & \xmark & \xmark & GPL & Python & \citep{demsar:2013} \\
-    \textit{H2O} & Bagging, RF & C & Gini,\newline Entropy & \texttt{maxDepth}  & \xmark & \cmark & Apache & Java & \citep{vitek:2013} \\
     \textit{TMVA} & Bagging, RF  &  C/R & 0-1 loss,\newline Gini, Gini~(Laplace), Entropy, MSE & \texttt{NodePurityLimit}, \texttt{NNodesMax}, \texttt{MaxDepth} & \cmark & \xmark & BSD & C++ & \citep{hoecker:2007} \\
+    \textit{H2O} & Bagging, RF & C & Gini,\newline Entropy & \texttt{maxDepth}  & \xmark & \cmark & Apache & Java & \citep{vitek:2013} \\
     \hline
     \end{tabular}}
     \caption{Popular libraries for random forests.}
