@@ -797,8 +797,8 @@ defined below:
 
 \begin{figure}
 \centering
-\begin{minipage}{0.55\textwidth}
-\hspace{-0.5cm}
+\begin{minipage}{0.485\textwidth}
+\hspace{-0.48cm}
 \centering
     \includegraphics[width=\textwidth]{figures/ch5_learningset.pdf}
     \caption{Binary classification task.}
@@ -1138,43 +1138,142 @@ induction of random forests extend to other distributed architectures,
 including GPUs~\citep{sharp:2008,liao:2013}, FPGA \citep{narayanan:2007} or
 clusters \citep{mitchell:2011}.
 
-% \begin{remark}{Multi-threading in Python}
-% %\citep{masini:2011}
-% \end{remark}
-
-
 \section{Benchmarks}
 \label{sec:5:benchmarks}
 
-\subsection{Empirical complexity}
+\subsection{Complexity on artificial data}
 
-\todo{}
+In this section, we study the empirical complexity of random
+forests on artifical data. Our goal is to investigate whether the
+theoretical results that have been derived in Sections~\ref{sec:5:complexity-fit}
+and \ref{sec:5:complexity-predict} hold true in practice, even without
+our assumptions necessarily satisfied.
 
-% Define some artifical data generators => regression + classification
-% Regression: Friedman 1-2-3
-% Classification: hastie_10_2, ringnorm, twonorm, threenorm, waveform
-% http://www.cs.toronto.edu/~delve/data/datasets.html
+For our experiments on simulated data, we consider the Friedman~\#1 artifical
+regression problem~\citep{friedman:1991}. It consists in $10$ independent
+input variables $X_1, \dots, X_{10}$, each uniformly distributed over $[0,1]$.
+The output $Y$ is a real-valued variable and is given by
+\begin{equation}
+Y = 10 \sin(\pi X_1 X_2) + 20(X_3 - 0.48)^2 + 10 X_4 + 5 X_5 + \epsilon
+\end{equation}
+where $\epsilon$ is ${\cal N}(0, 1)$. We study the effects of the number $M$ of
+trees in the forest, the number $N$ of input samples, the number $p$ of input
+variables, the number $K$ of variables drawn at each node and the effects of
+using bootstrap replicates ${\cal L}^m$ instead of ${\cal L}$, all with respect to
+the time required for building the forest, the average depth of the leaves and
+the mean square error of the forest. Hyper-parameters are studied independently
+for both (fully developed) Random Forests (RF) and Extremely Randomized Trees (ETs) built
+on $N=1000$ learning samples of $p=10$ input variables, with $M=250$ trees and $K=\sqrt{N}$ set by
+default. Statistics reported below are averages over 10 runs.
 
-% Evaluate the effect of
-%   - M
-%   - K
-%   - bootstrap
-%   - N
-%   - p
+\begin{figure}
+\hspace{-1.5cm}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_estimators_time_fit.pdf}}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_estimators_average_depth.pdf}}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_estimators_mse.pdf}}
+\caption{Effect of $M$ on building times, average depth and MSE.}
+\label{fig:5:artificial:M}
+\end{figure}
 
-%   - Unique values versus dupplicates
-%   - sorting algorithm
+\begin{figure}
+\hspace{-1.5cm}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_train_time_fit.pdf}}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_train_average_depth.pdf}}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_train_mse.pdf}}
+\caption{Effect of $N$ on building times, average depth and MSE.}
+\label{fig:5:artificial:N}
+\end{figure}
 
+\begin{figure}
+\hspace{-1.5cm}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_features_time_fit.pdf}}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_features_average_depth.pdf}}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_features_mse.pdf}}
+\caption{Effect of $p$ on building times, average depth and MSE.}
+\label{fig:5:artificial:p}
+\end{figure}
 
-% Measure
-%   - Fit time
-%   - Predict time
-%   - Accuracy
-%   - number of nodes
-%   - average depth of nodes
+\begin{figure}
+\hspace{-1.5cm}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/max_features_time_fit.pdf}}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/max_features_average_depth.pdf}}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/max_features_mse.pdf}}
+\caption{Effect of $K$ on building times, average depth and MSE}
+\label{fig:5:artificial:K}
+\end{figure}
 
-% RF should have better predict complexity than ET (in contrast to fit)
+Figure~\ref{fig:5:artificial:M} first illustrates the effect of the number $M$
+of trees on the time required for building a forest (on the left), the average
+depth of the trees (in the middle) and the error of the model (on the right).
+As expected, the time complexity of the induction procedure is  $O(M)$
+while the average depth of the leaves is constant with $M$ (since it has no
+effect on the structure of the individual trees). The left plot also confirms
+that ETs are faster to build than RF, even if trees in ETs are on average one
+level deeper that trees in RFs, as shown in the middle plot. Finally, the mean
+square error of the model shows to be inversely proportional to the number of
+trees in the forest, which confirms our previous results from
+Chapter~\ref{ch:forest}.
 
+Figure~\ref{fig:5:artificial:N} considers the effect of the number $N$ of
+training samples. As shown on the left plot, building times grow slightly
+faster than linearly, which appears to confirm the respective $O(N\log^2 N)$
+and $O(N\log N)$ dependencies of RF and ETs with size of the learning set (as
+derived in Section~\ref{sec:5:complexity-fit}). Similarly,  the middle plot
+confirms that the average depth of the leaves grows in $O(\log N)$ with $N$ (as
+shown in Section~\ref{sec:5:complexity-predict}). As expected, the right plot
+finally illustrates that the more the data, the better the resulting model.
+Interrestingly, it also shows that RF and ETs tend towards the same error rate as
+$N$ increases, even if RF was strictly better on less data. This
+confirms once again that finding the very best splits is not strictly necessary
+to achieve good results.
+
+Next, Figure~\ref{fig:5:artificial:p} shows the effect of irrelevant and noisy
+variables. The right plot first indicates that adding irrelevant variables
+deteriorates the accuracy of the forests. This is expected since the more the
+irrelevant variables, the higher the probability of splitting on one of them
+and therefore of fitting noise in the data. More importantly, the left and
+middle plots show that RF is more affected than ETs by the addition of noisy
+variables. This is actually a consequence of the end-cut preference of RF. When
+splitting on noisy variables, partitions of the node samples are more likely to
+be unbalanced rather than the opposite. This explains why on the middle plot
+the average depth of RF eventually gets larger than the depth of ETs -- which
+does not suffer from end-cut preference.
+
+\begin{figure}
+\hspace{-3.5cm}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/bootstrap_time_fit.pdf}}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/bootstrap_average_depth.pdf}}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/bootstrap_mse.pdf}}
+\caption{Effect of bootstrap replicates on building times, average depth and MSE.}
+\label{fig:5:artificial:bootstrap}
+\end{figure}
+
+Figure~\ref{fig:5:artificial:K} illustrates the effect of random variable
+selection. On the left plot, building times grow as expected in $O(K)$ with the
+number $K$ of variables randomly drawn at each node. The average depth of the
+tree shows that increasing $K$ slightly reduces the depth of the trees, which
+is  explained by the fact that better splits are selected as more variables are
+evaluated. Finally, the right plot again confirms results from
+Chapter~\ref{ch:forest}. Random perturbations negatively impact the resulting
+model when they are too strong (at $K=1$) but then become beneficial. For RF,
+the optimal trade-off is at $K=5$ while the lowest error can be achieved in ETs
+for $K=7$.
+
+Finally, Figure~\ref{fig:5:artificial:bootstrap} studies the effect of using
+bootstrap replicates. For RF, learning trees from learning sets ${\cal L}^m$
+drawn with replacement from ${\cal L}$ is about $1.5$ faster than building
+trees directly on ${\cal L}$, which is in accordance with our theoretical
+results from Section~\ref{sec:5:complexity-fit}. The effect for ETs is less
+strong, but still leads to a non-negligeable speedup. The average depth for RF
+and ETs is about $0.5$ smaller when using bootstrap replicates. Again, this is
+expected since the average depth grows with $O(\log N)$ and that reducing the
+effective size of the learning set to $\widetilde{N} = 0.632N$ reduces its
+logarithm by $-\log(0.632) = 0.662$. Finally, the right plot shows that using
+bootstrap replicates actually impairs performance on this problem.
+
+While not dicussed here, further experiments carried out on other artificial
+data, for both regression and classification, lead to similar conclusions as
+those presented above.
 
 \subsection{Comparison with other implementations}
 
