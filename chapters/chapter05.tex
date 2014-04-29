@@ -921,6 +921,7 @@ building a whole level of the decision tree simultaneously using multiple
 cores~\citep{liao:2013}.
 
 \subsection{Splitters}
+\label{sec:5:impl:splitters}
 
 In Scikit-Learn, \texttt{Splitter} objects implement search procedures for
 finding splits on internal nodes. In the case of decision trees, they implement
@@ -1142,6 +1143,7 @@ clusters \citep{mitchell:2011}.
 \label{sec:5:benchmarks}
 
 \subsection{Complexity on artificial data}
+\label{sec:5:benchmarks:artificial}
 
 In this section, we study the empirical complexity of random
 forests on artificial data. Our goal is to investigate whether the
@@ -1170,7 +1172,7 @@ a forest (on the left plots), the average depth of the trees (in the middle plot
 and the error of the ensemble (on the right plots).
 
 \begin{figure}
-\hspace{-1.5cm}
+\hspace{-1.75cm}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_estimators_time_fit.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_estimators_average_depth.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_estimators_mse.pdf}}
@@ -1179,7 +1181,7 @@ and the error of the ensemble (on the right plots).
 \end{figure}
 
 \begin{figure}
-\hspace{-1.5cm}
+\hspace{-1.75cm}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_train_time_fit.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_train_average_depth.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_train_mse.pdf}}
@@ -1188,7 +1190,7 @@ and the error of the ensemble (on the right plots).
 \end{figure}
 
 \begin{figure}
-\hspace{-1.5cm}
+\hspace{-1.75cm}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_features_time_fit.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_features_average_depth.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_features_mse.pdf}}
@@ -1197,7 +1199,7 @@ and the error of the ensemble (on the right plots).
 \end{figure}
 
 \begin{figure}
-\hspace{-1.5cm}
+\hspace{-1.75cm}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/max_features_time_fit.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/max_features_average_depth.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/max_features_mse.pdf}}
@@ -1252,7 +1254,7 @@ increases. For RF, the optimal trade-off is at $K=5$ while the lowest error can
 be achieved in ETs for $K=7$.
 
 \begin{figure}
-\hspace{-1.5cm}
+\hspace{-1.75cm}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/bootstrap_time_fit.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/bootstrap_average_depth.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/bootstrap_mse.pdf}}
@@ -1288,7 +1290,7 @@ learning packages.
     \footnotesize
     \centering
     \rotatebox{90}{
-    \begin{tabular}{| c | p{1.5cm} >{\centering}p{0.8cm} p{1.8cm} p{2.5cm} >{\centering}p{1.8cm} >{\centering}p{0.8cm} >{\centering}p{0.8cm} >{\centering}p{1.3cm} p{3.5cm} |}
+    \begin{tabular}{| c | p{1.75cm} >{\centering}p{0.8cm} p{1.8cm} p{2.5cm} >{\centering}p{1.8cm} >{\centering}p{0.8cm} >{\centering}p{0.8cm} >{\centering}p{1.3cm} p{3.5cm} |}
     \hline
         \textbf{Library} & \textbf{Algorithms} & \textbf{Tasks} & \textbf{Impurity} & \textbf{Stopping criteria} & \textbf{Variable importances} & \textbf{Multi-thread} & \textbf{Open source} & \textbf{Language} & \textbf{Reference} \\
     \hline
@@ -1348,16 +1350,62 @@ requires a dedicated cloud environment. Implementations are all benchmarked on
 29 well-known and publicly available datasets that were chosen a priori and
 independently of the results obtained. Overall, these datasets cover a wide
 range of conditions (including both artificial and real data), with a sample
-size ranging from 208 to 70000 and a number of variables varying from 6 to
-24496.
+size $N$ ranging from 208 to 70000 and a number $p$ of variables varying from 6
+to 24496. Implementations are evaluated for (fully developed) Random Forests
+(RF) and Extremely Randomized Trees (ETs) whenever available, using
+respectively 75\% and 25\% of the original dataset as a learning and test sets,
+$M=250$ trees and $K=\sqrt{p}$ set by default. Results reported below are
+averages over 10 runs, each time resampling the learning and test sets but
+using the same random folds accross all implementations.
+Tables~\ref{table:bench:fit} and \ref{table:bench:predict} respectively report
+the average time required for building a random forest and the average time
+required making predictions, on all 29 datasets and for all implementations.
+Computing times are reported using the Scikit-Learn implementation of RF as a
+baseline. Results in bold indicate that the implementation is the fastest on
+the dataset. Remark that times are not reported on \textsc{cifar10} for R and
+Orange because these implementations failed at building a single forest within
+$96$ hours for CPU time.
+
+With respect to RF, Table~\ref{table:bench:fit} shows that Scikit-Learn is the
+fastest on average, far before all others. OK3 is the second fastest
+implementation ($2.63\times$ slower on average), Weka is third ($2.92\times$
+slower), OpenCV is fourth ($12.37\times$ slower),  Orange is fifth
+($17.80\times$ slower) and the R implementation is last ($30.73\times$ slower).
+In particular, the R implementation shows to be very ineffective on large
+datasets, when both $N$ and $p$ are moderately large (e.g., on \textsc{mnist},
+as further illustrated in Figure~\ref{fig:5:benchmarks:mnist}). An explanation
+is that the R implementation uses pre-sorting (see Section~\ref{sec:5:impl:splitters}), which makes complexity linear
+with $p$ rather than with $K$. Regarding Orange, results can be explained by
+the fact that the implementation is purely written in Python (i.e., an
+interpreted high-level programming language), while all others are written in
+optimized low-level programming languages. With respect to ETs, the
+Scikit-Learn implementation is again the fatest, far before all others. More
+interestingly, the table also shows that ETs are usually faster to build than RF,
+which  confirms the theoretical results presented earlier. For the
+Scikit-Learn implementation, ETs are indeed empirically $\tfrac{1}{0.71} = 1.41\times$
+faster than RF on average.
+
+Table~\ref{table:bench:predict}
+
+\begin{figure}
+\hspace{-1.5cm}
+\subfloat{\includegraphics[width=0.6\textwidth]{figures/ch5_mnist_fit.pdf}}
+\subfloat{\includegraphics[width=0.6\textwidth]{figures/ch5_mnist_predict.pdf}}
+\caption{Average time required for building a forest on the \textsc{mnist} dataset (left) and average time required for making predictions (right).}
+\label{fig:5:benchmarks:mnist}
+\end{figure}
+
+% on nique tout
+% bias experimtnal du au choix des datasets
+
 
 \begin{table}
     \footnotesize
-    \hspace{-3.5cm}
+    \hspace{-1.25cm}
     \rotatebox{90}{
-\begin{tabular}{|c| c c c c c c c c c |}
+\begin{tabular}{|c| >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering\arraybackslash}p{1.75cm} |}
 \hline
-& \textbf{Sklearn-RF} & \textbf{Sklearn-ETs} & \textbf{OpenCV-RF} & \textbf{OpenCV-ETs} & \textbf{OK3-RF} & \textbf{OK3-ETs} & \textbf{Weka-RF} & \textbf{R-RF} & \textbf{Orange-RF} \\
+\textbf{Dataset} & \textbf{Sklearn-RF} & \textbf{Sklearn-ETs} & \textbf{OpenCV-RF} & \textbf{OpenCV-ETs} & \textbf{OK3-RF} & \textbf{OK3-ETs} & \textbf{Weka-RF} & \textbf{R-RF} & \textbf{Orange-RF} \\
 \hline
 \hline
 \textsc{arcene} & 1.00 & \textbf{0.77} & 26.33 & 16.73 & 0.81 & 0.85 & 8.70 & 22.84 & 4.78 \\
@@ -1402,11 +1450,11 @@ size ranging from 208 to 70000 and a number of variables varying from 6 to
 
 \begin{table}
     \footnotesize
-    \hspace{-1.25cm}
+    \hspace{-3.5cm}
     \rotatebox{90}{
-\begin{tabular}{|c| c c c c c c c c c |}
+\begin{tabular}{|c| >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering\arraybackslash}p{1.75cm} |}
 \hline
-& \textbf{Sklearn-RF} & \textbf{Sklearn-ETs} & \textbf{OpenCV-RF} & \textbf{OpenCV-ETs} & \textbf{OK3-RF} & \textbf{OK3-ETs} & \textbf{Weka-RF} & \textbf{R-RF} & \textbf{Orange-RF} \\
+\textbf{Dataset} & \textbf{Sklearn-RF} & \textbf{Sklearn-ETs} & \textbf{OpenCV-RF} & \textbf{OpenCV-ETs} & \textbf{OK3-RF} & \textbf{OK3-ETs} & \textbf{Weka-RF} & \textbf{R-RF} & \textbf{Orange-RF} \\
 \hline
 \hline
 \textsc{arcene} & 1.00 & 1.02 & \textbf{0.38} & 0.40 & 0.55 & 0.78 & 5.65 & 5.46 & 6.70 \\
@@ -1448,24 +1496,3 @@ size ranging from 208 to 70000 and a number of variables varying from 6 to
     \caption{Average time required for making predictions, relative to the Scikit-Learn implementation of the Random Forest algorithm (first column). The lower, the better.}
     \label{table:bench:predict}
 \end{table}
-
-% décrire le protocol expérimental
-
-% Compare
-%   - Scikit-Learn                OK
-%   - Weka                        OK  => à corriger pour retirer le biais
-%   - randomForest (R)            OK  => à corriger
-%   - OpenCV                      OK  => à corriger
-%   - Pierre                      OK
-%   - H20                         None
-%   - TMVA                        https://dbaumgartel.wordpress.com/2014/03/14/machine-learning-examples-scikit-learn-versus-tmva-cern-root/
-%   - Orange                      OK
-
-% Comparison on various datasets (time, accuracy)
-% Table de speedups (avec Scikit-Learn-RF comme baseline, for all datasets + on average)
-% - idem pour predict
-
-% Comparison of avg depth / leaves for sklearn
-
-% Discussion of the results
-
