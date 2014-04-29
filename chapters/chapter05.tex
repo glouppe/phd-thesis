@@ -1164,7 +1164,10 @@ the time required for building the forest, the average depth of the leaves and
 the mean square error of the forest. Hyper-parameters are studied independently
 for both (fully developed) Random Forests (RF) and Extremely Randomized Trees (ETs) built
 on $N=1000$ learning samples of $p=10$ input variables, with $M=250$ trees and $K=\sqrt{p}$ set by
-default. Statistics reported below are averages over 10 runs.
+default. Statistics reported below are averages over 10 runs. Figures~\ref{fig:5:artificial:M}-\ref{fig:5:artificial:bootstrap}
+all illustrate the effect of one the hyper-parameters with respect to the time required for building
+a forest (on the left plots), the average depth of the trees (in the middle plots)
+and the error of the ensemble (on the right plots).
 
 \begin{figure}
 \hspace{-1.5cm}
@@ -1202,17 +1205,15 @@ default. Statistics reported below are averages over 10 runs.
 \label{fig:5:artificial:K}
 \end{figure}
 
-Figure~\ref{fig:5:artificial:M} first illustrates the effect of the number $M$
-of trees on the time required for building a forest (on the left), the average
-depth of the trees (in the middle) and the error of the model (on the right).
-As expected, the time complexity of the induction procedure is  $O(M)$
-while the average depth of the leaves is constant with $M$, since the later has no
-effect on the structure of the individual trees. The left plot also confirms
-that ETs are faster to build than RF, even if trees in ETs are on average one
-level deeper that trees in RFs, as shown in the middle plot. Finally, the mean
-square error of the model shows to be inversely proportional to the number of
-trees in the forest, which confirms our previous results on variance reduction from
-Chapter~\ref{ch:forest}.
+Figure~\ref{fig:5:artificial:M} first demonstrates the effect of the number $M$
+of trees. As expected, the time complexity of the induction procedure is
+$O(M)$ while the average depth of the leaves is constant with $M$, since the
+later has no effect on the structure of the individual trees. The left plot
+also confirms that ETs are faster to build than RF, even if trees in ETs are on
+average one level deeper that trees in RFs, as shown in the middle plot.
+Finally, the mean square error of the model shows to be inversely proportional
+to the number of trees in the forest, which confirms our previous results on
+variance reduction from Chapter~\ref{ch:forest}.
 
 Figure~\ref{fig:5:artificial:N} considers the effect of the number $N$ of
 training samples. As shown on the left plot, building times grow slightly
@@ -1294,7 +1295,7 @@ tasks, with the exceptions of Weka and H2O which appear to only support
 classification. From a parameter point of view, implementations mostly differ
 from each other in the impurity and stopping criteria they support. The most
 common impurity criterion is Gini (or, equivalently, MSE) but some packages,
-like TMVA or Orange, include alternative measures such as entropy, gain
+like Orange, include alternative measures such as entropy, gain
 ratio or Relief~\citep{kira:1992}. The most common stopping criteria are an
 upper bound on the depth of the trees (e.g., \texttt{max\_depth} in Scikit-
 Learn) and a minimum number of samples required for splitting a node (e.g.,
@@ -1320,7 +1321,7 @@ implementation of random forests  (i.e., on a cluster).
     \textit{Weka} & Bagging, RF & C & Gini & \texttt{depth}  & \xmark & \cmark & GPL & Java & \citep{hall:2009} \\
     \textit{randomForest} & Bagging, RF & C/R & Gini & \texttt{nodesize}, \texttt{maxnodes} & \cmark & \xmark & GPL & R & \citep{liaw:2002} \\
     \textit{Orange} & Bagging, RF & C/R & GainRatio, Gini,\newline Relief,\newline MSE & \texttt{worst\_acceptable}, \texttt{min\_susbet}, \texttt{min\_instances}, \texttt{max\_depth}, \texttt{max\_majority} & \xmark & \xmark & GPL & Python & \citep{demsar:2013} \\
-    \textit{TMVA} & Bagging, RF  &  C/R & 0-1 loss,\newline Gini, Gini~(Laplace), Entropy, MSE & \texttt{NodePurityLimit}, \texttt{NNodesMax}, \texttt{MaxDepth} & \cmark & \xmark & BSD & C++ & \citep{hoecker:2007} \\
+    % \textit{TMVA} & Bagging, RF  &  C/R & 0-1 loss,\newline Gini, Gini~(Laplace), Entropy, MSE & \texttt{NodePurityLimit}, \texttt{NNodesMax}, \texttt{MaxDepth} & \cmark & \xmark & BSD & C++ & \citep{hoecker:2007} \\
     \textit{H2O} & Bagging, RF & C & Gini,\newline Entropy & \texttt{maxDepth}  & \xmark & \cmark & Apache & Java & \citep{vitek:2013} \\
     \hline
     \end{tabular}}
