@@ -135,7 +135,7 @@ def plot_bar(all_data, y_label=None, width=0.2, filename=None):
         plt.show()
 
 
-if __name__ == "__main__":
+def make_5_4_1():
     # Plot result on artifical data
     regression = ["make_friedman1", "make_friedman2", "make_friedman3"]
     classification = ["make_hastie_10_2", "make_waveforms", "make_twonorm", "make_threenorm", "make_ringnorm"]
@@ -155,7 +155,7 @@ if __name__ == "__main__":
              ("leaves", "Leaves"),
              ("average_depth", "Average depth")]
 
-    for dataset in ["make_friedman1"]: #regression+classification:
+    for dataset in regression+classification:
         for prefix, param_field, curve in params:
             files = [f for f in glob.glob("output/%s_*_%s*" % (prefix, dataset))]
 
@@ -174,17 +174,116 @@ if __name__ == "__main__":
                 except:
                     print "Failed!"
 
-    # # Plot results on datasets
-    # datasets = ["diabetes.npz", "dig44.npz", "ionosphere.npz", "pendigits.npz",
-    #             "letter.npz", "liver.npz", "musk2.npz", "ring-norm.npz", "satellite.npz",
-    #             "segment.npz", "sonar.npz", "spambase.npz", "two-norm.npz", "vehicle.npz",
-    #             "vowel.npz", "waveform.npz", "cifar10.npz", "mnist3vs8.npz", "mnist4vs9.npz", "mnist.npz",
-    #             "isolet.npz", "arcene.npz", "breast2.npz", "madelon.npz", "marti0.npz",
-    #             "reged0.npz", "secom.npz", "tis.npz", "sido0.npz"]
+def make_5_4_2_plots():
+    # Plot results on datasets
+    datasets = ["diabetes.npz", "dig44.npz", "ionosphere.npz", "pendigits.npz",
+                "letter.npz", "liver.npz", "musk2.npz", "ring-norm.npz", "satellite.npz",
+                "segment.npz", "sonar.npz", "spambase.npz", "two-norm.npz", "vehicle.npz",
+                "vowel.npz", "waveform.npz", "cifar10.npz", "mnist3vs8.npz", "mnist4vs9.npz", "mnist.npz",
+                "isolet.npz", "arcene.npz", "breast2.npz", "madelon.npz", "marti0.npz",
+                "reged0.npz", "secom.npz", "tis.npz", "sido0.npz"]
 
-    # for dataset in datasets:
-    #     print dataset
-    #     files = glob.glob("output/default_*_%s*" % dataset)
-    #     plot_bar(groupby(files, ["estimator", "generator"], "estimator", "stats__time_fit"), y_label="Fit time (s)", filename="figs/datasets/%s_fit" % dataset)
-    #     plot_bar(groupby(files, ["estimator", "generator"], "estimator", "stats__time_predict"), y_label="Predict time (s)", filename="figs/datasets/%s_predict" % dataset)
-    #     plot_bar(groupby(files, ["estimator", "generator"], "estimator", "stats__score_make_scorer(accuracy_score)"), y_label="Accuracy", filename="figs/datasets/%s_accuracy" % dataset)
+    for dataset in datasets:
+        print dataset
+        files = glob.glob("output/default_*_%s*" % dataset)
+        plot_bar(groupby(files, ["estimator", "generator"], "estimator", "stats__time_fit"), y_label="Fit time (s)", filename="figs/datasets/%s_fit" % dataset)
+        plot_bar(groupby(files, ["estimator", "generator"], "estimator", "stats__time_predict"), y_label="Predict time (s)", filename="figs/datasets/%s_predict" % dataset)
+        plot_bar(groupby(files, ["estimator", "generator"], "estimator", "stats__score_make_scorer(accuracy_score)"), y_label="Accuracy", filename="figs/datasets/%s_accuracy" % dataset)
+
+
+def make_5_4_2_table():
+    impls = ["RandomForestClassifier",
+             "ExtraTreesClassifier",
+             "OpenCV",
+             "OpenCV-ETs",
+             "OK3-RandomForest",
+             "OK3-ExtraTrees",
+             "Weka",
+             "R-randomForest",
+             "Orange"]
+
+    datasets = ["diabetes.npz", "dig44.npz", "ionosphere.npz", "pendigits.npz",
+                "letter.npz", "liver.npz", "musk2.npz", "ring-norm.npz", "satellite.npz",
+                "segment.npz", "sonar.npz", "spambase.npz", "two-norm.npz", "vehicle.npz",
+                "vowel.npz", "waveform.npz", "cifar10.npz", "mnist3vs8.npz", "mnist4vs9.npz", "mnist.npz",
+                "isolet.npz", "arcene.npz", "breast2.npz", "madelon.npz", "marti0.npz",
+                "reged0.npz", "secom.npz", "tis.npz", "sido0.npz"]
+
+    all_stats = {}
+
+    for dataset in datasets:
+        all_stats[dataset] = {}
+        files = glob.glob("output/default_*_%s*" % dataset)
+        data = groupby(files, ["estimator", "generator"], "estimator", "stats__time_predict")
+
+        for (estimator, _), s in data.items():
+            all_stats[dataset][estimator] = np.mean(s[0][1])
+
+    table = np.zeros((len(datasets), len(impls)))
+
+    for i, (dataset, stats) in enumerate(sorted(all_stats.items())):
+        for j, impl in enumerate(impls):
+            if impls[j] in stats:
+                table[i, j] = stats[impls[j]]
+            else:
+                table[i, j] = np.inf
+
+    speedups = np.zeros(table.shape)
+
+    for i, dataset in enumerate(sorted(datasets)):
+        for j, impl in enumerate(impls):
+            speedups[i, j] = table[i, j] / table[i, 0]
+
+    speedups = np.ma.masked_array(speedups, np.isinf(speedups))
+
+    print "\\begin{tabular}{|c|",
+    for j, impl in enumerate(impls):
+        print "c",
+    print "|}"
+    print "\\hline"
+
+    for j, impl in enumerate(impls):
+        print "&", layout[impl]["name"],
+    print "\\\\"
+    print "\\hline"
+    print "\\hline"
+
+    for i, dataset in enumerate(sorted(datasets)):
+        print "\\textsc{%s}" % dataset.split(".")[0],
+        min_j = np.argmin(speedups[i])
+
+        for j, impl in enumerate(impls):
+            if j == min_j:
+                print "& \\textbf{%.2f}" % speedups[i, j],
+            else:
+                print "& %.2f" % speedups[i, j],
+        print "\\\\"
+    print "\\hline"
+    print "\\hline"
+
+    print "\\textit{Average}",
+    means = speedups.mean(axis=0)
+    min_j = np.argmin(means)
+    for j, m in enumerate(means):
+        if j == min_j:
+            print "& \\textbf{%.2f}" % m,
+        else:
+            print "& %.2f" % m,
+    print "\\\\"
+    print "\\textit{Median}",
+    medians = np.ma.median(speedups, axis=0)
+    min_j = np.argmin(medians)
+    for j, m in enumerate(medians):
+        if j == min_j:
+            print "& \\textbf{%.2f}" % m,
+        else:
+            print "& %.2f" % m,
+    print "\\\\"
+    print "\\hline"
+    print "\\end{tabular}"
+
+if __name__ == "__main__":
+    # make_5_4_1()
+    make_5_4_2_plots()
+    #make_5_4_2_table()
+

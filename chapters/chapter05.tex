@@ -1284,28 +1284,6 @@ languages. In this section, we compare the Scikit-Learn implementation
 developed within this work with popular alternatives available in other machine
 learning packages.
 
-Table~\ref{table:implementations} summarizes the main open source
-implementations of random forests along with some of their supported features.
-All implement the original Random Forest algorithm~\citep{breiman:2001} and
-therefore also provide an interface for Bagging~\citep{breiman:1996b} (since it
-corresponds to the special case $K=p$). Scikit-Learn, OpenCV and OK3 also offer
-variants like Extremely Randomized Trees~\citep{geurts:2006} or Random
-Subspaces~\citep{ho:1998}. All support both classification and regression
-tasks, with the exceptions of Weka and H2O which appear to only support
-classification. From a parameter point of view, implementations mostly differ
-from each other in the impurity and stopping criteria they support. The most
-common impurity criterion is Gini (or, equivalently, MSE) but some packages,
-like Orange, include alternative measures such as entropy, gain
-ratio or Relief~\citep{kira:1992}. The most common stopping criteria are an
-upper bound on the depth of the trees (e.g., \texttt{max\_depth} in Scikit-
-Learn) and a minimum number of samples required for splitting a node (e.g.,
-\texttt{nmin} in OK3). Some packages also allow to set an upper limit on the
-number of nodes in the trees or to stop the construction when a fixed accuracy
-is reached. Despite the embarrassing parallelism, only Scikit-Learn, Weka and
-H2O make it possible to build random forests using multiple cores. Most
-notably, H2O builds on top of Hadoop to provide a fully distributed
-implementation of random forests  (i.e., on a cluster).
-
 \begin{table}
     \footnotesize
     \centering
@@ -1329,6 +1307,28 @@ implementation of random forests  (i.e., on a cluster).
     \label{table:implementations}
 \end{table}
 
+Table~\ref{table:implementations} summarizes the main open source
+implementations of random forests along with some of their supported features.
+All implement the original Random Forest algorithm~\citep{breiman:2001} and
+therefore also provide an interface for Bagging~\citep{breiman:1996b} (since it
+corresponds to the special case $K=p$). Scikit-Learn, OpenCV and OK3 also offer
+variants like Extremely Randomized Trees~\citep{geurts:2006} or Random
+Subspaces~\citep{ho:1998}. All support both classification and regression
+tasks, with the exceptions of Weka and H2O which appear to only support
+classification. From a parameter point of view, implementations mostly differ
+from each other in the impurity and stopping criteria they support. The most
+common impurity criterion is Gini (or, equivalently, MSE) but some packages,
+like Orange, include alternative measures such as entropy, gain
+ratio or Relief~\citep{kira:1992}. The most common stopping criteria are an
+upper bound on the depth of the trees (e.g., \texttt{max\_depth} in Scikit-
+Learn) and a minimum number of samples required for splitting a node (e.g.,
+\texttt{nmin} in OK3). Some packages also allow to set an upper limit on the
+number of nodes in the trees or to stop the construction when a fixed accuracy
+is reached. Despite the embarrassing parallelism, only Scikit-Learn, Weka and
+H2O make it possible to build random forests using multiple cores. Most
+notably, H2O builds on top of Hadoop to provide a fully distributed
+implementation of random forests  (i.e., on a cluster).
+
 For performance reasons, implementations listed in
 Table~\ref{table:implementations} have mostly been written in low-level
 programming languages like C, C++ or Java, but usually interface with higher
@@ -1344,8 +1344,110 @@ proprietary software (e.g., Salford Systems, which owns the
 In the experiments carried out below, we benchmark the Scikit-Learn
 implementations of RF and ETs against all libraries listed in
 Table~\ref{table:implementations}. We do not compare against H2O since it
-requires a dedicated cloud environment. \todo{Suite...}
+requires a dedicated cloud environment. Implementations are all benchmarked on
+29 well-known and publicly available datasets that were chosen a priori and
+independently of the results obtained. Overall, these datasets cover a wide
+range of conditions (including both artificial and real data), with a sample
+size ranging from 208 to 70000 and a number of variables varying from 6 to
+24496.
 
+\begin{table}
+    \footnotesize
+    \hspace{-3.5cm}
+    \rotatebox{90}{
+\begin{tabular}{|c| c c c c c c c c c |}
+\hline
+& \textbf{Sklearn-RF} & \textbf{Sklearn-ETs} & \textbf{OpenCV-RF} & \textbf{OpenCV-ETs} & \textbf{OK3-RF} & \textbf{OK3-ETs} & \textbf{Weka-RF} & \textbf{R-RF} & \textbf{Orange-RF} \\
+\hline
+\hline
+\textsc{arcene} & 1.00 & \textbf{0.77} & 26.33 & 16.73 & 0.81 & 0.85 & 8.70 & 22.84 & 4.78 \\
+\textsc{breast2} & 1.00 & \textbf{0.41} & 35.10 & 19.03 & 1.20 & 0.99 & 3.88 & 33.41 & 11.42 \\
+\textsc{cifar10} & 1.00 & \textbf{0.52} & 22.82 & 13.76 & 3.78 & 2.30 & 3.29 & -- & -- \\
+\textsc{diabetes} & 1.00 & 0.88 & 0.73 & 0.75 & \textbf{0.59} & 0.65 & 2.25 & 1.07 & 2.42 \\
+\textsc{dig44} & 1.00 & \textbf{0.39} & 1.01 & 0.71 & 2.68 & 2.03 & 1.70 & 1.60 & 10.85 \\
+\textsc{ionosphere} & 1.00 & 0.71 & 0.79 & 0.56 & 0.53 & \textbf{0.34} & 1.87 & 0.80 & 3.01 \\
+\textsc{isolet} & 1.00 & \textbf{0.36} & 5.39 & 3.39 & 4.48 & 2.76 & 2.24 & 8.70 & 16.58 \\
+\textsc{letter} & 1.00 & \textbf{0.94} & 2.34 & 1.82 & 9.05 & 10.57 & 3.13 & 4.43 & 21.04 \\
+\textsc{liver} & 1.00 & 0.95 & 0.38 & 0.46 & \textbf{0.33} & 0.42 & 2.80 & 0.58 & 1.42 \\
+\textsc{madelon} & 1.00 & \textbf{0.46} & 5.82 & 4.07 & 1.38 & 0.82 & 2.06 & 6.18 & 48.48 \\
+\textsc{marti0} & 1.00 & \textbf{0.31} & 5.70 & 4.45 & 1.08 & 0.55 & 1.36 & 18.99 & 7.16 \\
+\textsc{mnist} & \textbf{1.00} & 1.04 & 21.99 & 16.47 & 7.48 & 8.43 & 5.06 & 66.14 & 53.90 \\
+\textsc{mnist3vs8} & 1.00 & \textbf{0.95} & 18.74 & 13.90 & 3.32 & 3.04 & 3.68 & 54.89 & 27.80 \\
+\textsc{mnist4vs9} & 1.00 & \textbf{0.97} & 20.21 & 14.70 & 3.46 & 3.22 & 4.09 & 57.10 & 29.42 \\
+\textsc{musk2} & 1.00 & \textbf{0.44} & 4.59 & 2.44 & 2.00 & 0.95 & 1.97 & 5.48 & 22.63 \\
+\textsc{pendigits} & 1.00 & \textbf{0.61} & 1.60 & 1.12 & 3.61 & 3.09 & 2.30 & 2.64 & 9.24 \\
+\textsc{reged0} & 1.00 & \textbf{0.43} & 6.65 & 4.29 & 1.18 & 0.64 & 1.63 & 10.02 & 7.04 \\
+\textsc{ring-norm} & 1.00 & \textbf{0.22} & 0.63 & 0.43 & 1.13 & 0.42 & 1.11 & 1.21 & 9.92 \\
+\textsc{satellite} & 1.00 & \textbf{0.56} & 2.10 & 1.36 & 2.69 & 1.97 & 1.94 & 2.56 & 13.88 \\
+\textsc{secom} & 1.00 & \textbf{0.21} & 5.59 & 2.61 & 1.54 & 0.48 & 1.00 & 5.46 & 12.88 \\
+\textsc{segment} & 1.00 & \textbf{0.76} & 1.09 & 0.81 & 1.91 & 1.79 & 1.83 & 1.64 & 5.97 \\
+\textsc{sido0} & \textbf{1.00} & 1.55 & 133.11 & 140.63 & 9.70 & 8.62 & 9.69 & 468.85 & 49.11 \\
+\textsc{sonar} & 1.00 & 0.78 & 0.80 & 0.64 & 0.39 & \textbf{0.30} & 1.82 & 0.81 & 2.61 \\
+\textsc{spambase} & \textbf{1.00} & 1.41 & 4.06 & 3.36 & 2.24 & 3.25 & 2.90 & 4.59 & 15.85 \\
+\textsc{tis} & \textbf{1.00} & 1.84 & 26.83 & 24.59 & 3.73 & 4.31 & 5.41 & 74.77 & 69.51 \\
+\textsc{two-norm} & 1.00 & \textbf{0.30} & 0.98 & 0.66 & 1.12 & 0.55 & 1.21 & 1.33 & 17.12 \\
+\textsc{vehicle} & 1.00 & \textbf{0.74} & 1.40 & 1.08 & 1.63 & 1.46 & 2.23 & 1.69 & 6.51 \\
+\textsc{vowel} & 1.00 & 0.59 & 0.67 & \textbf{0.59} & 1.87 & 1.50 & 1.99 & 1.08 & 8.18 \\
+\textsc{waveform} & 1.00 & \textbf{0.43} & 1.20 & 0.94 & 1.49 & 0.98 & 1.49 & 1.50 & 9.79 \\
+\hline
+\hline
+\textit{Average} & 1.00 & \textbf{0.71} & 12.37 & 10.22 & 2.63 & 2.32 & 2.92 & 30.73 & 17.80 \\
+\textit{Median} & 1.00 & \textbf{0.61} & 4.06 & 2.44 & 1.87 & 1.46 & 2.23 & 4.51 & 11.14 \\
+\hline
+\end{tabular}
+}
+    \caption{Average time required for building a random forest, relative to the Scikit-Learn implementation of the Random Forest algorithm (first column). The lower, the better.}
+    \label{table:bench:fit}
+\end{table}
+
+\begin{table}
+    \footnotesize
+    \hspace{-1.25cm}
+    \rotatebox{90}{
+\begin{tabular}{|c| c c c c c c c c c |}
+\hline
+& \textbf{Sklearn-RF} & \textbf{Sklearn-ETs} & \textbf{OpenCV-RF} & \textbf{OpenCV-ETs} & \textbf{OK3-RF} & \textbf{OK3-ETs} & \textbf{Weka-RF} & \textbf{R-RF} & \textbf{Orange-RF} \\
+\hline
+\hline
+\textsc{arcene} & 1.00 & 1.02 & \textbf{0.38} & 0.40 & 0.55 & 0.78 & 5.65 & 5.46 & 6.70 \\
+\textsc{breast2} & \textbf{1.00} & 1.11 & 2.00 & 1.76 & 3.63 & 4.97 & 33.92 & 33.26 & 44.73 \\
+\textsc{cifar10} & \textbf{1.00} & 1.13 & 3.17 & 2.25 & 2.82 & 3.05 & 6.23 & -- & -- \\
+\textsc{diabetes} & 1.00 & 1.25 & 1.00 & 1.78 & 1.34 & 2.47 & 1.49 & \textbf{0.99} & 11.41 \\
+\textsc{dig44} & \textbf{1.00} & 1.25 & 3.60 & 4.40 & 4.62 & 5.86 & 3.25 & 1.44 & 21.86 \\
+\textsc{ionosphere} & 1.00 & 1.05 & \textbf{0.35} & 0.61 & 0.47 & 0.74 & 1.36 & 0.45 & 6.56 \\
+\textsc{isolet} & \textbf{1.00} & 1.19 & 2.21 & 2.25 & 2.03 & 2.63 & 2.92 & 2.17 & 12.28 \\
+\textsc{letter} & 1.00 & 1.15 & 2.25 & 2.71 & 3.18 & 3.87 & 2.69 & \textbf{0.85} & 14.91 \\
+\textsc{liver} & 1.00 & 1.14 & \textbf{0.49} & 0.93 & 0.62 & 1.22 & 1.54 & 0.58 & 6.01 \\
+\textsc{madelon} & \textbf{1.00} & 1.29 & 2.83 & 4.01 & 7.28 & 11.03 & 3.58 & 3.01 & 33.41 \\
+\textsc{marti0} & 1.00 & 1.10 & \textbf{0.68} & 1.00 & 0.73 & 1.09 & 3.23 & 2.42 & 9.80 \\
+\textsc{mnist} & \textbf{1.00} & 1.09 & 2.98 & 2.18 & 2.68 & 3.09 & 3.10 & 3.50 & 21.39 \\
+\textsc{mnist3vs8} & \textbf{1.00} & 1.05 & 1.74 & 1.71 & 1.90 & 2.37 & 2.55 & 3.46 & 15.76 \\
+\textsc{mnist4vs9} & \textbf{1.00} & 1.21 & 2.29 & 2.24 & 2.42 & 2.92 & 3.21 & 5.21 & 19.46 \\
+\textsc{musk2} & \textbf{1.00} & 1.15 & 2.62 & 3.31 & 3.10 & 4.18 & 2.88 & 2.07 & 29.81 \\
+\textsc{pendigits} & \textbf{1.00} & 1.18 & 2.70 & 3.72 & 3.66 & 4.97 & 2.89 & 1.03 & 22.49 \\
+\textsc{reged0} & 1.00 & 1.09 & \textbf{0.48} & 0.69 & 0.51 & 0.81 & 2.84 & 2.37 & 10.70 \\
+\textsc{ring-norm} & \textbf{1.00} & 1.48 & 4.35 & 6.24 & 5.74 & 8.29 & 3.30 & 1.59 & 28.55 \\
+\textsc{satellite} & \textbf{1.00} & 1.07 & 2.64 & 3.43 & 3.46 & 4.51 & 2.63 & 1.16 & 23.14 \\
+\textsc{secom} & \textbf{1.00} & 1.07 & 1.87 & 1.98 & 2.09 & 2.22 & 3.06 & 2.74 & 17.35 \\
+\textsc{segment} & 1.00 & 1.49 & 1.25 & 2.15 & 1.66 & 2.86 & 2.23 & \textbf{0.82} & 18.98 \\
+\textsc{sido0} & \textbf{1.00} & 1.12 & 2.02 & 2.18 & 2.52 & 2.96 & 11.25 & 184.54 & 46.13 \\
+\textsc{sonar} & 1.00 & 1.03 & \textbf{0.20} & 0.33 & 0.23 & 0.41 & 1.01 & 0.39 & 4.70 \\
+\textsc{spambase} & \textbf{1.00} & 1.38 & 2.91 & 3.90 & 4.32 & 8.89 & 3.67 & 1.73 & 26.51 \\
+\textsc{tis} & \textbf{1.00} & 1.33 & 2.70 & 2.66 & 2.82 & 3.66 & 3.40 & 3.70 & 16.65 \\
+\textsc{two-norm} & \textbf{1.00} & 1.33 & 4.09 & 5.93 & 5.35 & 7.57 & 3.52 & 1.52 & 32.80 \\
+\textsc{vehicle} & \textbf{1.00} & 1.17 & 1.74 & 2.50 & 2.26 & 3.21 & 2.57 & 1.07 & 17.61 \\
+\textsc{vowel} & 1.00 & 1.18 & 1.07 & 1.60 & 1.43 & 2.12 & 1.53 & \textbf{0.76} & 10.83 \\
+\textsc{waveform} & \textbf{1.00} & 1.35 & 3.48 & 4.95 & 4.37 & 6.34 & 3.40 & 1.52 & 24.53 \\
+\hline
+\hline
+\textit{Average} & \textbf{1.00} & 1.19 & 2.07 & 2.54 & 2.68 & 3.76 & 4.31 & 9.64 & 19.82 \\
+\textit{Median} & \textbf{1.00} & 1.15 & 2.21 & 2.24 & 2.52 & 3.05 & 3.06 & 1.66 & 18.29 \\
+\hline
+\end{tabular}
+}
+    \caption{Average time required for making predictions, relative to the Scikit-Learn implementation of the Random Forest algorithm (first column). The lower, the better.}
+    \label{table:bench:predict}
+\end{table}
 
 % décrire le protocol expérimental
 
