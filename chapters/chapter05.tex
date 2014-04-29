@@ -1355,8 +1355,7 @@ to 24496. Implementations are evaluated for (fully developed) Random Forests
 (RF) and Extremely Randomized Trees (ETs) whenever available, using
 respectively 75\% and 25\% of the original dataset as a learning and test sets,
 $M=250$ trees and $K=\sqrt{p}$ set by default. Results reported below are
-averages over 10 runs, each time resampling the learning and test sets but
-using the same random folds accross all implementations.
+averages over 10 runs, with the learning and test sets resampled at each fold.
 Tables~\ref{table:bench:fit} and \ref{table:bench:predict} respectively report
 the average time required for building a random forest and the average time
 required making predictions, on all 29 datasets and for all implementations.
@@ -1373,7 +1372,7 @@ slower), OpenCV is fourth ($12.37\times$ slower),  Orange is fifth
 ($17.80\times$ slower) and the R implementation is last ($30.73\times$ slower).
 In particular, the R implementation shows to be very ineffective on large
 datasets, when both $N$ and $p$ are moderately large (e.g., on \textsc{mnist},
-as further illustrated in Figure~\ref{fig:5:benchmarks:mnist}). An explanation
+as further illustrated in Figure~\ref{fig:5:benchmarks:mnist}). A possible explanation
 is that the R implementation uses pre-sorting (see Section~\ref{sec:5:impl:splitters}), which makes complexity linear
 with $p$ rather than with $K$. Regarding Orange, results can be explained by
 the fact that the implementation is purely written in Python (i.e., an
@@ -1385,8 +1384,6 @@ which  confirms the theoretical results presented earlier. For the
 Scikit-Learn implementation, ETs are indeed empirically $\tfrac{1}{0.71} = 1.41\times$
 faster than RF on average.
 
-Table~\ref{table:bench:predict}
-
 \begin{figure}
 \hspace{-1.5cm}
 \subfloat{\includegraphics[width=0.6\textwidth]{figures/ch5_mnist_fit.pdf}}
@@ -1395,9 +1392,22 @@ Table~\ref{table:bench:predict}
 \label{fig:5:benchmarks:mnist}
 \end{figure}
 
-% on nique tout
-% bias experimtnal du au choix des datasets
+Table~\ref{table:bench:predict} reports results regarding the average time
+required for making predictions on the test set. Again, the Scikit-Learn implementation of RF is the
+fastest implementation on average. OpenCV is second ($2.07\times$ slower on
+average), OK3 is third ($3.71\times$ slower), Weka is fourth ($4.31\times$
+slower), R is fifth ($9.64\times$ slower) and Orange is last ($19.82\times$
+slower). By contrast with fitting times, making predictions from ETs is now
+slightly slower than RF on average, which is explained by the fact that trees in ETs
+are on average deeper than in RF.
 
+In conclusions, benchmarks show that the Scikit-Learn implementation is on
+average significantly faster than OpenCV, OK3, Weka, R and Orange.  While these
+results suffer from a selection bias (i.e., they depend on the 29 selected
+datasets), we believe that the general conclusions extend to other datasets.
+More importantly, the careful design and implementation of  each and every
+component of random forests, as discussed all throughout this work, eventually
+shows to be highly rewarding in terms of computational performance.
 
 \begin{table}
     \footnotesize
