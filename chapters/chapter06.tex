@@ -310,7 +310,7 @@ have that
 For any tree $\varphi$, we have that the sum of all importances estimated by
 using an infinitely large sample $\cal L$ (or equivalently, by assuming perfect
 knowledge of the joint distribution $P(X_1, ..., X_p, Y)$) is equal to $H(Y) -
-\sum_{t \in \widetilde{\varphi})} p(t) H(Y|b(t))$, where $\widetilde{\varphi}$
+\sum_{t \in \widetilde{\varphi}} p(t) H(Y|b(t))$, where $\widetilde{\varphi}$
 denotes the set of all leaves of $\varphi$, and where $b(t)$  denotes the joint
 configuration of all input variables leading to leaf $t$. This is true because
 the impurities of all test nodes intervening in the computation of the variable
@@ -362,7 +362,7 @@ terms.
 \label{sec:6:variable-relevance}
 
 Following~\citet{kohavi:1997}, let us define as {\em relevant to $Y$ with
-respect to $V$} a variable $X_jm$ for which there exists at least one subset $B
+respect to $V$} a variable $X_j$ for which there exists at least one subset $B
 \subseteq V$ (possibly empty) such that $I(X_j;Y|B)>0$. Thus we define as {\em
 irrelevant to $Y$ with respect to $V$} a variable $X_i$ for which, for all $B
 \subseteq V$, $I(X_i; Y|B)=0$. Remark that if $X_i$ is irrelevant to $Y$ with
@@ -609,20 +609,20 @@ specific impurity measure should thus be guided by the meaning one
 wants to associate to irrelevance.
 
 Measuring impurity with Shannon entropy, i.e., taking $i(Y|t)=H(Y|t)$
-and $i(Y|B=b)=H(Y|B=b)$, one gets back all results in the paper. Given the
+and $i(Y|B=b)=H(Y|B=b)$, one gets back all previous results. Given the
 properties of conditional mutual information, irrelevance for this
 impurity measure strictly coincides with conditional independence: a
 variable $X_i$ is irrelevant to $Y$ with respect to $V$ if and only if
 $X_i\perp Y|B$ for all $B\subseteq V$.
 
 A common alternative to Shannon entropy for growing classification
-trees is Gini index (or entropy), which, in the finite and infinite
+trees is Gini index, which, in the finite and infinite
 sample cases, is written:
 \begin{align}
 i(Y|t)&= -\sum_j p(j|t) (1-p(j|t))\\
 i(Y|B=b)&= -\sum_j P(Y=j|B=b) (1-P(Y=j|B=b)).
 \end{align}
-Like Shannon entropy, this measure leads to non negative impurity
+Like the Shannon entropy, this measure leads to non negative impurity
 decreases and the corresponding notion of irrelevance is also directly
 related to conditional independence.
 
