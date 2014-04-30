@@ -20,7 +20,7 @@ variable based on a set of predictor variables. In many situations though, the
 aim is not only to make the most accurate predictions of the response but also
 to identify which predictor variables are the most important to make these
 predictions, e.g. in order to understand the underlying process. Because of
-their applicability to a wide range of problems and their capability to both
+their applicability to a wide range of problems and their capability to
 build accurate models and, at the same time, to provide variable importance
 measures, random forests have become a major data analysis tool used with
 success in various scientific areas.
@@ -53,8 +53,8 @@ the measure of importance of a variable $X_j$ as
 \begin{equation}
 \text{Imp}(X_j) = \sum_{t\in \varphi} \Delta I(\tilde{s}^j_t, t),
 \end{equation}
-where $\tilde{s}^j_t$ is the best surrogate split
-for $s_t$ -- that is the best split using variable $X_j$ to predict the actual
+where $\tilde{s}^j_t$ is the best \textit{surrogate split}
+for $s_t$, that is the closest split defined on variable $X_j$ that can mimic the actual
 split $s_t$ defined at node $t$. The use of surrogate splits was proposed to
 account for masking effects: it may indeed happen that some variable $X_{j_2}$
 never occurs in any split because it leads to splits that are slightly worse,
@@ -87,7 +87,7 @@ in the forest:
 \text{Imp}(X_j) = \frac{1}{M} \sum_{m=1}^M \sum_{t \in \varphi_{m}} 1(j_t = j) \Big[ p(t) \Delta i(s_t, t) \Big],
 \end{equation}
 where $p(t)$ is the proportion $\tfrac{N_t}{N}$ of samples
-reaching $t$ and where $j_t$ denotes the variable used for splitting node $t$. When
+reaching $t$ and where $j_t$ denotes the identifier of the variable used for splitting node $t$. When
 using the Gini index as impurity function, this measure is known as the
 \textit{Gini importance} or \textit{Mean Decrease Gini}. However, since it can
 be defined for any impurity measure $i(t)$, we will refer to Equation~\ref{eq:mdi}
@@ -107,16 +107,19 @@ importance of $X_j$ is given as:
 &\hookrightarrow - \frac{1}{N} \sum_{(\mathbf{x}_i,y_i) \in {\cal L}} L(\frac{1}{M^{-i}} \sum_{l=1}^{M^{-i}} \varphi_{{\cal L}^{m_{k_l}}}(\mathbf{x}_i), y_i)
 \end{align}
 where $\pi_j({\cal L})$ denotes a replicate of ${\cal L}$ in which in the
-values of $X_j$ have been randomly permuted. For classification, the
-permutation importance is derived similarly as in Equation~\ref{eq:mda},
-except  that the out-of-bag average predictions are
+values of $X_j$ have been randomly permuted, and where
+$m_{k_1},\dots,m_{k_{M^{-i}}}$ denote the indices of the trees that have been
+built from bootstrap replicates that do not include $(\mathbf{x}_i, y_i)$. For
+classification, the permutation importance is derived similarly as in
+Equation~\ref{eq:mda}, except  that the out-of-bag average predictions are
 replaced with the class which is the most likely, as computed from the out-of-bag
 class probability estimates. Its rationale is that randomly permuting the
-input variable $X_j$ should break its association with the response $Y$. Therefore,
-if $X_j$ is in fact associated to $Y$, permuting its values should also result
-in a substantial increase of error, as here measured by the difference between
-the out-of-bag estimates of the generalization error. That is, the larger
-the increase of error, the more important the variable, and vice-versa.
+input variable $X_j$ should break its association with the response $Y$.
+Therefore, if $X_j$ is in fact associated to $Y$, permuting its values should
+also result in a substantial increase of error, as here measured by the
+difference between the out-of-bag estimates of the generalization error. That
+is, the larger the increase of error, the more important the variable, and
+vice-versa.
 
 Thanks to popular machine learning
 softwares~\citep{breiman:2002,liaw:2002,pedregosa:2011},
@@ -149,32 +152,32 @@ variables (e.g. $X, Y, Z, W \ldots$)  and calligraphic letters (e.g. $\cal X,
 Y, Z, W \ldots$) to denote their image sets (of finite cardinality), and lower
 case letters (e.g. $x, y, z, w \ldots$) to denote one of their possible values.
 For a (finite) set of (finite) random variables $ X = \{X_{1}, \ldots ,
-X_{p}\}$, we denote by $P_{X}(x) = P_{X}(x_{1}, \ldots , x_{p})$ the
-probability $\mathbb{P}(\{ \omega \in \Omega \mid  \forall \ell : 1, \ldots, p:
-X_{\ell}(\omega) =x_{\ell}\})$, and by ${\cal X} = {\cal X}_{1} \times \cdots
+X_{p}\}$, we denote by $P_{X}(\mathbf{x}) = P_{X}(x_{1}, \ldots , x_{p})$ the
+probability $\mathbb{P}(\{ \omega \in \Omega \mid  \forall j : 1, \ldots, p:
+X_j(\omega) =x_j\})$, and by ${\cal X} = {\cal X}_{1} \times \cdots
 \times {\cal X}_{p}$ the set of joint configurations of these random variables.
 Given two sets of random variables, $X = \{X_{1}, \ldots , X_{p}\}$ and
-$Y=\{Y_{1}, \ldots , Y_{q}\}$, we denote by $P_{X \mid Y}(x \mid y) = {P_{X, Y}
-(x,  y)}/ {P_{Y}(y)}$ the conditional density of $X$ with respect to
+$Y=\{Y_{1}, \ldots , Y_{q}\}$, we denote by $P_{X \mid Y}(\mathbf{x} \mid \mathbf{y}) = {P_{X, Y}
+(\mathbf{x},  \mathbf{y})}/ {P_{Y}(\mathbf{y})}$ the conditional density of $X$ with respect to
 $Y$.\footnote{To avoid problems, we suppose that all probabilities are strictly
 positive, without fundamental limitation.}
 
 With these notations, the joint (Shannon) entropy of a set of random variables
 $X =\{X_{1}, \ldots , X_{p}\}$ is thus defined by
 \begin{equation}
-H(X)  = - \sum_{x \in {\cal X}}P_{X} (x)\log_{2}P_{X }(x),
+H(X)  = - \sum_{\mathbf{x} \in {\cal X}}P_{X} (\mathbf{x})\log_{2}P_{X}(\mathbf{x}),
 \end{equation}
 while the mean conditional entropy of a set of random variables $X = \{X_{1},
 \ldots , X_{p}\}$, given the values of another set of random variables
 $Y=\{Y_{1}, \ldots , Y_{q}\}$ is defined by
 \begin{equation}
-H(X\mid Y) = - \sum_{x \in {\cal X}} \sum_{y \in {\cal Y}} P_{X, Y} (x, y) \log_{2} P_{X \mid Y} (x  \mid y).
+H(X\mid Y) = - \sum_{\mathbf{x} \in {\cal X}} \sum_{\mathbf{y} \in {\cal Y}} P_{X, Y} (\mathbf{x}, \mathbf{y}) \log_{2} P_{X \mid Y} (\mathbf{x} \mid \mathbf{y}).
  \end{equation}
 The mutual information among the set of random variables $X =\{X_{1}, \ldots ,
 X_{p}\}$ and the set of random variables $Y=\{Y_{1}, \ldots , Y_{q}\}$ is
 defined by
  \begin{align}
- I(X; Y) &= - \sum_{x \in {\cal X}} \sum_{y \in {\cal Y}} P_{X, Y} (x, y) \log_{2} \frac{P_{X}(x) P_{Y}(y)}{P_{X,Y}(x,y)} \\
+ I(X; Y) &= - \sum_{\mathbf{x} \in {\cal X}} \sum_{\mathbf{y} \in {\cal Y}} P_{X, Y} (\mathbf{x}, \mathbf{y}) \log_{2} \frac{P_{X}(\mathbf{x}) P_{Y}(\mathbf{y})}{P_{X,Y}(\mathbf{x},\mathbf{y})} \\
  &= H(X) - H(X \mid Y) \nonumber \\
  &=  H(Y) - H(Y \mid X) \nonumber
  \end{align}
@@ -186,7 +189,7 @@ The mean conditional mutual information among the set of random variables $X
  \begin{align}
  I(X; Y \mid Z) &= H(X \mid Z) - H(X \mid Y, Z)\\
  & = H(Y \mid Z) - H(Y \mid X, Z) \nonumber\\
-& = - \sum_{x \in {\cal X}} \sum_{y \in {\cal Y}} \sum_{z \in {\cal Z}} P_{X, Y, Z} (x, y, z) \log_{2} \frac{P_{X \mid Z}(x \mid z) P_{Y\mid Z}(y \mid z)}{P_{X,Y \mid Z}(x,y \mid z)}\nonumber
+& = - \sum_{\mathbf{x} \in {\cal X}} \sum_{\mathbf{y} \in {\cal Y}} \sum_{\mathbf{z} \in {\cal Z}} P_{X, Y, Z} (\mathbf{x}, \mathbf{y}, \mathbf{z}) \log_{2} \frac{P_{X \mid Z}(\mathbf{x} \mid \mathbf{z}) P_{Y\mid Z}(\mathbf{y} \mid \mathbf{z})}{P_{X,Y \mid Z}(\mathbf{x},\mathbf{y} \mid \mathbf{z})}\nonumber
 \end{align}
 
 We also recall the chaining rule
