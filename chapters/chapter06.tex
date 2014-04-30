@@ -937,3 +937,30 @@ informative when conditioned to many others. All in all, this figure thus indeed
 confirms that importances as computed with non-totally randomized trees take
 into account only some of the conditioning sets $B$, hence biasing the measured
 importances.
+
+
+\section{Conclusions}
+
+In this chapter, we made a first step towards understanding variable importances as
+computed with a forest of randomized trees. In particular, we derived a
+theoretical characterization of the Mean Decrease Impurity importances as
+computed by totally randomized trees in asymptotic  conditions.  We showed that
+they offer a three-level decomposition of the information jointly provided by
+all input variables about the output (Section~\ref{sec:6:theory}). We then demonstrated
+(Section~\ref{sec:6:variable-relevance}) that MDI importances as computed by totally randomized
+trees exhibit desirable properties for  assessing the relevance of a variable:
+it is equal to zero if and only if the variable is irrelevant and it depends
+only on the relevant variables. We discussed the case of Random Forests and
+Extra-Trees (Section~\ref{sec:6:variants}) and finally illustrated our
+developments on an artificial but insightful example (Section~\ref{sec:6:illustration}).
+
+There remain several limitations to our framework that we would like address in
+the future. First, our results should be adapted to binary splits as used within
+an actual Random Forest-like algorithm. In this setting, any node $t$ is split
+in only two subsets, which means that any variable may then appear one or
+several times within a branch, and thus should make variable importances now
+dependent on the cardinalities of the input variables. In the same direction,
+our framework should also be extended to the case of continuous variables.
+Finally, results presented in this work are valid in an asymptotic setting only.
+An important direction of future work includes the characterization of the
+distribution of variable importances in a finite setting.
