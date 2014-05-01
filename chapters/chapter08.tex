@@ -852,11 +852,11 @@ with all features. These results are representative of the use of a
 straightforward sub-sampling of the instances to handle the memory constraint.
 On all datasets, this setting yields very poor performance when $\mu'_{\text{max}}$ is
 low. Building base estimators on re-sampled random patches thus brings a clear advantage to RP, RS and P and hence confirms the conclusions of \citet{basilico:2011} who showed that using more data indeed produces
-more accurate models than learning from a single subsample.
+more accurate models than learning from a single sub-sample.
 This
 latter experiment furthermore shows that the good performances of RP
 cannot be trivially attributed to the fact that our datasets contain so many
-instances that only processing a subsample of them would be enough. On most
+instances that only processing a sub-sample of them would be enough. On most
 problems, the slopes of the learning curves of RF and ET indeed suggest that
 convergence has not yet been reached on these datasets. Yet, important
 improvement are gained by sub-sampling random patches.
@@ -910,7 +910,7 @@ very large-scale data indeed look very promising.
 Second, the conclusions drawn in sections~\ref{sec:9:accuracy} and
 \ref{sec:9:memory} are all based on the optimal values of the parameters $\alpha_s$ and
 $\alpha_f$ tuned through an exhaustive grid search on the validation set. Our
-analyses did not account for the memory and time required for tuning these two
+analysis did not account for the memory and time required for tuning these two
 parameters. In practice, hyper-parameter tuning can not be avoided as we have
 shown that the optimal trade-off between $\alpha_f$ and $\alpha_s$ was problem dependent.
 It would therefore be interesting to design an efficient strategy to
