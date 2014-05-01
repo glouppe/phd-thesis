@@ -32,23 +32,26 @@ done and methods and algorithms have to be reinvented to take this constraint
 into account.
 
 In this context, we consider supervised learning problems for which the dataset
-is so large that it cannot be loaded into memory.
-\citet{breiman:1999} proposed the Pasting method to tackle this problem by learning an
-ensemble of models individually built on random subsets of the training
-examples, hence alleviating the memory requirements since the base models would
-be built on only small parts of the whole dataset. Earlier, \citet{ho:1998} proposed
-to learn an ensemble of models individually built on random
-subspaces (i.e., on random subsets of the features). While the first motivation
-of the Random Subspace method was to increase the diversity within the models
-of the ensemble, it can actually also be seen as way to reduce the memory
-requirements of building individual models. In this work, we propose to combine
-and leverage both approaches at the same time: learn an ensemble of models on
-\textit{random patches}, i.e., on random subsets of the samples \textit{and} of
-the input variables. Through an extensive empirical study, we show that this
-approach (1) improves or preserves comparable accuracy with respect to other
-ensemble approaches which build base models on the whole dataset while (2)
-drastically lowering the memory requirements and hence allowing an equivalent
-reduction of the global computing time.
+is so large that it cannot be loaded into memory. \citet{breiman:1999} proposed
+the Pasting method to tackle this problem by learning an ensemble of models
+individually built on random subsets of the training examples, hence
+alleviating the memory requirements since the base models would be built on
+only small parts of the whole dataset. Earlier, \citet{ho:1998} proposed to
+learn an ensemble of models individually built on random subspaces, i.e., on
+random subsets of the input variables (or \textit{features}). While the first motivation of the Random
+Subspace method was to increase the diversity within the models of the
+ensemble, it can actually also be seen as way to reduce the memory requirements
+of building individual models. In this work, we propose to combine and leverage
+both approaches at the same time: learn an ensemble of models on \textit{random
+patches}, i.e., on random subsets of the samples \textit{and} of the input
+variables. Through an extensive empirical study, we show that this approach (1)
+improves or preserves comparable accuracy with respect to other ensemble
+approaches which build base models on the whole dataset while (2) drastically
+lowering the memory requirements and hence allowing an equivalent reduction of
+the global computing time. In other words, this analysis shows that there is
+usually no need to build individual models on the whole dataset. For the same
+accuracy, models can be learned independently on small portions of the data,
+within significantly lower computational requirements.
 
 \section{Random Patches}
 \label{sec:9:rp}
@@ -82,8 +85,8 @@ While the RP algorithm can exploit any kind of base estimators, we consider in
 this work only tree-based estimators. In particular, we evaluate the RP
 algorithm using  standard classification trees (as described in
 Chapter~\ref{ch:cart}) and (single) extremely randomized
-trees~\citep{geurts:2006}. Unless otherwise stated, trees are unpruned and
-grown using Gini index as the main scoring criterion for node splitting. The
+trees~\citep{geurts:2006}. Unless stated otherwise, trees are unpruned and
+grown using Gini index as impurity criterion for node splitting. The
 parameter $K$ of extremely randomized trees within RP is set to its maximum
 value $K=\alpha_f p$ (i.e., corresponding to no further random selection of
 variables).
@@ -97,14 +100,14 @@ hyper-parameters $\alpha_s$ and $\alpha_f$ are tuned simultaneously, RP should b
 least as good as the best of the two methods, provided there is no overfitting
 associated with this tuning.
 
-When the base estimators are standard decision trees (resp. extremely
+When the base estimators are standard decision trees (resp., extremely
 randomized trees with $K=\alpha_f p$), interesting parallels can also be
-drawn between RP and the RF algorithm (resp. ET). For $\alpha_s=1.0$, the
+drawn between RP and the RF algorithm (resp., ET). For $\alpha_s=1.0$, the
 value of $\alpha_f p$ is indeed nearly equivalent to the number $K$ of
 features randomly considered when splitting a node. A major difference
 remains though. In RP, the subset of features is selected globally
-once and for all, prior to the construction of the tree. By contrast,
-in RF (resp. in ET) subsets of features are drawn locally at each
+once and for all, prior to the construction of each tree. By contrast,
+in RF (resp., in ET) subsets of features are drawn locally at each
 node. Clearly, the former approach already appears to be more
 attractive when dealing with large databases. Non-selected features
 indeed do not need to be considered at all, hence lowering the memory
@@ -116,16 +119,13 @@ sample, the number of unique training samples varies from one to
 another (while it would be fixed to $0.632 N$ in RP), and that
 samples are not all equally weighted.
 
-In addition, RP also closely relates to the SubBag algorithm~\citep{panov:2007}
+In addition, RP also closely relates to the SubBag algorithm
 which combines Bagging and RS for constructing ensembles. Using $N$
 bootstrapped samples (i.e., nearly equivalent to $\alpha_s=0.632$) and setting
-$\alpha_f=0.75$, Panov et al showed that SubBag has comparable performance to that of
+$\alpha_f=0.75$, \citet{panov:2007} showed that SubBag has comparable performance to that of
 RF. An added advantage of SubBag, and hence of RP, is that it is applicable to
 any base estimator without the need to randomize the latter.
 
-\begin{remark}{Computational complexity}
-\todo{}
-\end{remark}
 
 \section{On Accuracy}
 \label{sec:9:accuracy}
@@ -618,8 +618,8 @@ the same protocol as previously) on the dataset ${\cal L}$.
 As Figure~\ref{fig:9:surfaces} illustrates for six datasets, the
 surfaces defined by these points vary significantly from one problem to
 another. We observed four main trends. In Figures \ref{fig:surfaces:arcene},
-and \ref{fig:surfaces:cifar10} (resp. \ref{fig:surfaces:tis}), accuracy
-increases with $\alpha_s$ (resp. $\alpha_f$) while adjusting $\alpha_f$ (resp. $\alpha_s$) has no
+and \ref{fig:surfaces:cifar10} (resp., \ref{fig:surfaces:tis}), accuracy
+increases with $\alpha_s$ (resp., $\alpha_f$) while adjusting $\alpha_f$ (resp., $\alpha_s$) has no
 or limited impact. In Figure \ref{fig:surfaces:madelon}, the best strategy is
 to increase both $\alpha_s$ and $\alpha_f$. Finally, in Figures \ref{fig:surfaces:isolet}
 and \ref{fig:surfaces:mnist}, the surface features plateaus, which means that
