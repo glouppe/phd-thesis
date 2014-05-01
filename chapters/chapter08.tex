@@ -299,7 +299,7 @@ different/significantly worse than method $j$.
 \begin{figure}
     \centering
     \includegraphics[width=0.9\textwidth]{figures/ch8_rank_small.pdf}
-    \caption{Average ranks of all methods.}
+    \caption{Average ranks of all methods on small datasets.}
     \label{fig:8:small-cmp}
 \end{figure}
 
@@ -321,7 +321,7 @@ different/significantly worse than method $j$.
         RP-ET  &  12/4/0 & 1/10/5 & 12/4/0  & 5/11/0  & 12/4/0  & 2/13/1 & 10/6/0  & ---\\
     \hline
     \end{tabular}
-    \caption{Pairwise t-test comparisons.}
+    \caption{Pairwise t-test comparisons on small datasets.}
     \label{table:rp:small-ttest}
 \end{table}
 
@@ -469,7 +469,7 @@ indicates that some methods are significantly different from the others.
 \textit{Avg. rank} & 6.2307 & 3.1538 & 6.6153 & 5.6923 & 3.5384 & 2.3846 & 4.5384 & 3.8461 \\
 \hline
 \end{tabular}
-    \caption{Accuracy on large datasets (in \%).}
+    \caption{Accuracy on larger datasets (in \%).}
     \label{table:rp:accuracy-large}
 \end{table}
 
@@ -515,7 +515,7 @@ performers.
 \begin{figure}
     \centering
     \includegraphics[width=0.9\textwidth]{figures/ch8_rank_large.pdf}
-    \caption{Average ranks of all methods.}
+    \caption{Average ranks of all methods on larger datasets.}
     \label{fig:8:large-cmp}
 \end{figure}
 
@@ -537,7 +537,7 @@ performers.
                 RP-ET  & 7/6/0   & 1/11/1  & 9/4/0  & 7/5/1  & 2/10/1 & 0/13/0 & 3/9/1  & ---\\
     \hline
     \end{tabular}
-    \caption{Pairwise t-test comparisons.}
+    \caption{Pairwise t-test comparisons on larger datasets.}
     \label{table:rp:large-ttest}
 \end{table}
 
@@ -571,5 +571,367 @@ node.
 \section{On Memory}
 \label{sec:9:memory}
 
-\section{Conclusions}
+Section~\ref{sec:9:accuracy} reveals that building an ensemble of base
+estimators on random patches, instead of the whole data, is a competitive
+strategy. In the context of big data, that is when the size of the dataset is
+far bigger than the available memory, this suggests that using  random
+parts of the data of the appropriate size to build each base estimator would
+likely result in an ensemble which is actually as good as if the whole data
+could have been loaded and used.
+
+Formally, we assume a general framework where the number of data units that can
+be loaded at once into memory is constrained to be lower than a given threshold
+$\mu_{\text{max}}$. Not considering on-line algorithms within the scope of this study,
+$\mu_{\text{max}}$ can hence be viewed as the total units of data allowed to be used to
+build a single base estimator. In the context of our sampling methods, the
+amount of memory required for a patch is given by $(\alpha_s N)(\alpha_f p)$ and thus
+constraining memory by $\mu_{\text{max}}$ is equivalent to constraining the relative
+patch size $\alpha_s\alpha_f$ to be lower than $\mu'_{\text{max}}=\mu_{\text{max}}/(Np)$. While
+simplistic\footnote{e.g., the quantity of memory used by the estimator itself
+  is not taken into account.}, this framework has the advantage of clearly
+addressing one of the main difficulties behind big data, that is the lack of
+fast memory. Yet, it is also relevant in other contexts, for example when data
+is costly to access (e.g., on remote locations) or when algorithms are run on embedded systems
+with strong memory constraints.
+
+In Section \ref{sec:9:memory:sensitivity}, we first study the effects of $\alpha_s$
+and $\alpha_f$ on the accuracy of the resulting ensemble and show that it is problem
+and base estimator dependent. Second, we show that the memory requirements,
+i.e., the relative size $\alpha_s \alpha_f$ of the random patches, can often be
+drastically reduced without significantly degrading the performance of the
+ensemble (Section \ref{sec:9:memory:noloss}). Third, because the sensitivity of
+the ensemble to $\alpha_s$ and $\alpha_f$ is problem and base estimator specific, we show
+that under very strong memory constraints adjusting both parameters at the same
+time, as RP does, is no longer merely as good but actually significantly better
+than other ensemble methods (Section \ref{sec:9:memory:loss}).
+
+\subsection{Sensitivity to $\alpha_s$ and $\alpha_f$}
+\label{sec:9:memory:sensitivity}
+
+Let us first consider and analyze the sets $\{(\alpha_s, \alpha_f,
+Acc_D(\alpha_s,\alpha_f)) | \forall \alpha_s, \alpha_f\}$ for various problems, where $Acc_D(\alpha_s,\alpha_f)$ is the average
+test accuracy of an ensemble built on random patches of size $\alpha_s \alpha_f$ (using
+the same protocol as previously) on the dataset $D$.
+
+As Figure~\ref{fig:9:surfaces} illustrates for six datasets, the
+surfaces defined by these sets vary significantly from one problem to
+another. We observed four main trends. In Figures \ref{fig:surfaces:arcene},
+and \ref{fig:surfaces:cifar10} (resp. \ref{fig:surfaces:tis}), accuracy
+increases with $\alpha_s$ (resp. $\alpha_f$) while adjusting $\alpha_f$ (resp. $\alpha_s$) has no
+or limited impact. In Figure \ref{fig:surfaces:madelon}, the best strategy is
+to increase both $\alpha_s$ and $\alpha_f$. Finally, in Figures \ref{fig:surfaces:isolet}
+and \ref{fig:surfaces:mnist}, the surface features plateaus, which means that
+beyond some threshold, increasing $\alpha_s$ or $\alpha_f$ does not yield any significant
+improvement. Interestingly, in most of the cases, the optimum corresponds to a
+value $\alpha_s\alpha_f$ much smaller than 1.
+
+\begin{figure}
+\begin{center}
+        \subfloat[\textsc{arcene} (RP-ET)]{
+            \label{fig:surfaces:arcene}
+            \includegraphics[width=0.31\textwidth]{figures/ch8/figure3-a-arcene-rp-et.pdf}
+        }
+        \subfloat[\textsc{cifar10} (RP-ET)]{
+            \label{fig:surfaces:cifar10}
+            \includegraphics[width=0.31\textwidth]{figures/ch8/figure3-b-cifar10-rp-et.pdf}
+        }
+        \subfloat[\textsc{tis} (RP-ET)]{
+            \label{fig:surfaces:tis}
+            \includegraphics[width=0.31\textwidth]{figures/ch8/figure3-c-tis-rp-et.pdf}
+        }
+
+        \setcounter{subfigure}{0}
+        \subfloat[\textsc{arcene} (RP-DT)]{
+            \includegraphics[width=0.31\textwidth]{figures/ch8/figure3-a-arcene-rp-dt.pdf}
+        }
+        \subfloat[\textsc{cifar10} (RP-DT)]{
+            \includegraphics[width=0.31\textwidth]{figures/ch8/figure3-b-cifar10-rp-dt.pdf}
+        }
+        \subfloat[\textsc{tis} (RP-DT)]{
+            \includegraphics[width=0.31\textwidth]{figures/ch8/figure3-c-tis-rp-dt.pdf}
+        }
+
+
+        \subfloat[\textsc{madelon} (RP-ET)]{
+            \label{fig:surfaces:madelon}
+            \includegraphics[width=0.31\textwidth]{figures/ch8/figure3-d-madelon-rp-et.pdf}
+        }
+        \subfloat[\textsc{isolet} (RP-ET)]{
+            \label{fig:surfaces:isolet}
+            \includegraphics[width=0.31\textwidth]{figures/ch8/figure3-e-isolet-rp-et.pdf}
+        }
+        \subfloat[\textsc{mnist3vs8} (RP-ET)]{
+            \label{fig:surfaces:mnist}
+            \includegraphics[width=0.31\textwidth]{figures/ch8/figure3-f-mnist-rp-et.pdf}
+        }
+
+        \setcounter{subfigure}{3}
+        \subfloat[\textsc{madelon} (RP-DT)]{
+            \includegraphics[width=0.31\textwidth]{figures/ch8/figure3-d-madelon-rp-dt.pdf}
+        }
+        \subfloat[\textsc{isolet} (RP-DT)]{
+            \includegraphics[width=0.31\textwidth]{figures/ch8/figure3-e-isolet-rp-dt.pdf}
+        }
+        \subfloat[\textsc{mnist3vs8} (RP-DT)]{
+            \includegraphics[width=0.31\textwidth]{figures/ch8/figure3-f-mnist-rp-dt.pdf}
+        }
+\caption{Learning surfaces.}
+\label{fig:surfaces}
+\end{center}
+\end{figure}
+
+The choice of the base estimators does not have a strong impact on the aspect
+of the curves (compare the 1$^{st}$ and 3$^{rd}$ rows of sub-figures in
+Figure~\ref{fig:surfaces} with those in the 2$^{nd}$ and 4$^{th}$ rows). The only
+difference is the decrease of the accuracy of RP-DT when $\alpha_s$ and
+$\alpha_f$ grow towards $1.0$. Indeed, since the only source of randomization in RP-DT
+is patch selection, it yields in this case ensembles of identical
+trees and therefore amounts to build a single tree on the whole
+dataset. By contrast, because of the extra-randomization of the split
+thresholds in ET, there is typically no drop of accuracy for RP-ET when $\alpha_s$
+and $\alpha_f$ grow to $1.0$.
+
+Overall, this analysis suggests that not only the best pair $\alpha_s \alpha_f$ depends
+on the problem, but also that the sensitivity of the ensemble to changes to the
+size of a random patch is both problem and base estimator specific. As a
+result, these observations advocate for a method that could
+favor $\alpha_s$, $\alpha_f$ or both, and do so
+appropriately given the base estimator.
+
+\subsection{Memory reduction, without significant loss}
+\label{sec:9:memory:noloss}
+
+We proceed to study in this section the actual size of the random patches when
+the values of $\alpha_s$ and $\alpha_f$ are tuned using an independent validation
+set. Our results are summarized in Figure~\ref{fig:9:memory:original}. Each
+ellipse corresponds to one of the 29 datasets of our benchmark, whose center is
+located at $(\overline{\alpha_s}, \overline{\alpha_f})$ (i.e., the average parameter
+values over the 50 runs) and whose semi-axes correspond to the standard
+deviations of $\alpha_s$ and $\alpha_f$. Any point in the plot corresponds to a pair
+$(\alpha_s, \alpha_f)$ and thus to a relative consumption $\mu' = \alpha_s \alpha_f$ of memory. To
+ease readability, level curves are plotted for $\mu' = 0.01, 0.1, ..., 0.9$. In
+the right part of the figure, the histogram counts the number of datasets such
+that $\overline{\alpha_s}\cdot\overline{\alpha_f}$ falls in the corresponding level set.
+
+Figure~\ref{fig:9:memory:original} corroborates our previous discussion. On some
+datasets, it is better to favor $\alpha_s$ while on some other increasing $\alpha_f$ is
+a better strategy. The various sizes of the ellipses also confirm that the
+sensitivity to variations of $\alpha_s$ and $\alpha_f$ is indeed problem-specific. The
+figure also clearly highlights the fact that, even under no memory constraint, the
+optimal patches rarely consume the whole memory. A majority of ellipses indeed
+lie below the level set $\mu'=0.5$ and only a couple of them are above
+$\mu'=0.75$. With respect to ET or RF for which the base estimators are all built
+on the whole dataset, this means that ensembles of patches are not only as
+competitive but also less memory greedy. In addition, the figure also
+points out the difference between RP-ET and RP-DT as discussed in the previous
+section. To ensure diversity, RP-DT is constrained to use smaller patches than
+RP-ET, hence explaining why the ellipses in red are on average below those in
+blue. While RP-DT proved to be a bit less competitive in terms of accuracy,
+this indicates on the other hand that RP-DT may actually be more interesting
+from a memory consumption point of view.
+
+\begin{figure}
+\begin{center}
+        \subfloat[Original patches]{
+            \label{fig:9:memory:original}
+            \includegraphics[width=0.5\textwidth]{figures/ch8/figure4-none.pdf}
+        }
+        \subfloat[Reduced patches]{
+            \label{fig:9:memory:opt}
+            \includegraphics[width=0.5\textwidth]{figures/ch8/figure4-mem.pdf}
+        }
+\caption{Optimal sizes of the random patches on our benchmark.}
+\label{fig:9:memory}
+\end{center}
+\end{figure}
+
+In Section~\ref{sec:9:memory:sensitivity}, we observed plateaus or very
+gentle slopes around the optimal pair $(\alpha_s, \alpha_f)$.  From a memory point of
+view, this suggests that the random patches are likely to be reducible without
+actually degrading the accuracy of the resulting ensemble. Put otherwise, our
+interest is to find the smallest size $\alpha_s \alpha_f$ such that the accuracy of the
+resulting ensemble is not significantly worse than an ensemble built without
+such constraint. To that end, we study the extent at which the constraint $\alpha_s
+\alpha_f < \mu'_{\text{max}}$ can be strengthened without any significant drop in
+accuracy. If $\mu'_{\text{max}}$ can be reduced significantly then it would indeed mean that
+even when only small parts of the data are actually used to build single base
+estimators, competitive performance can still be achieved.
+
+Figure~\ref{fig:9:memory:opt} summarizes our results. For all datasets, $\mu'_{\text{max}}$
+was set to the lowest value such that it cannot be statistically detected that
+the average accuracy of the resulting ensemble is different from the average
+accuracy of an ensemble built with no memory constraint (at $\alpha=0.05$). With
+regard to Figure~\ref{fig:9:memory:original}, the shift of most ellipses to lower
+memory level sets confirm our first intuition. In many cases, the size of the
+random patches can indeed be reduced, often drastically, without significant
+decrease of accuracy. For more than half of the datasets, memory can indeed be
+decreased to $\mu'=0.1$ or $\mu'=0.2$. In other words, building trees on small parts
+of the data (i.e., $10\%$ or $20\%$ of the original dataset) is, for more than
+half of the datasets, enough to reach competitive accuracy. Also, the
+sensitivity to $\alpha_s$ and $\alpha_f$ is now even more patent. Some ensembles use very
+few samples ($\alpha_s < 0.1$) but with many features, while other uses many samples
+with few features ($\alpha_f < 0.1$). Again, from a memory point of view, RP-DT
+appears to be more interesting than RP-ET. The memory reduction is larger, as
+the histogram indicates. Optimized splits in the decision trees may indeed lead
+to a better exploitation of the data, hence to a potentially larger reduction of
+memory. In conclusion, while not detecting significant differences in accuracy
+does not allow to conclude that the performances are truly similar, these
+figures at least illustrate that memory requirements can be drastically reduced
+without apparent loss in accuracy.
+
+\subsection{Memory reduction, with loss}
+\label{sec:9:memory:loss}
+
+The previous section has shown that the memory consumption can be reduced up to
+some threshold $\mu'_{\text{max}}$ with no significant loss in accuracy. In this section we
+now look at the accuracy of the resulting ensemble when $\mu'_{\text{max}}$ is further
+decreased. We argue that with severe constraints, and because datasets have all a
+different sensitivity, it is even more crucial to better exploit data and thus
+to find the right trade-off between both $\alpha_s$ and $\alpha_f$, as only RP can.
+
+\begin{figure}
+\begin{center}
+        \subfloat[\textsc{arcene}]{
+        \label{fig:memc:arcene}
+            \includegraphics[width=0.5\textwidth]{figures/ch8/figure5-a-arcene.pdf}
+        }
+        \subfloat[\textsc{cifar10}]{
+        \label{fig:memc:cifar10}
+            \includegraphics[width=0.5\textwidth]{figures/ch8/figure5-b-cifar10.pdf}
+        }
+
+        \subfloat[\textsc{tis}]{
+        \label{fig:memc:tis}
+            \includegraphics[width=0.5\textwidth]{figures/ch8/figure5-c-tis.pdf}
+        }
+        \subfloat[\textsc{madelon}]{
+        \label{fig:memc:madelon}
+            \includegraphics[width=0.5\textwidth]{figures/ch8/figure5-d-madelon.pdf}
+        }
+
+        \subfloat[\textsc{isolet}]{
+        \label{fig:memc:isolet}
+            \includegraphics[width=0.5\textwidth]{figures/ch8/figure5-e-isolet.pdf}
+        }
+        \subfloat[\textsc{mnist3vs8}]{
+        \label{fig:memc:mnist}
+            \includegraphics[width=0.5\textwidth]{figures/ch8/figure5-f-mnist.pdf}
+        }
+\caption{Accuracy under memory constraint.}
+\label{fig:9:memc}
+\end{center}
+\end{figure}
+
+To illustrate our point, Figure~\ref{fig:9:memc} compares for 6 representative
+datasets the accuracy of the methods with respect to the memory constraint $\alpha_s
+\alpha_f < \mu'_{\text{max}}$.  A plain line indicates that the generalization error of the
+best resulting ensemble under memory constraint $\mu'_{\text{max}}$ is significantly (at $\alpha=0.05$)
+worse on the test sets than when there is no constraint
+(i.e., $\mu'_{\text{max}}=1$). A dotted line indicates that on average, on the test set, the
+ensemble is not significantly less accurate.
+
+As the figure shows, when $\mu'_{\text{max}}$ is low, RP-based ensembles often achieve
+the best accuracy. Only on \textsc{arcene} (Figure~\ref{fig:memc:arcene}), RS seems to be a
+better strategy, suggesting some overfitting in setting $\alpha_s$ in RP. On all 5
+other example datasets, RP is equivalent or better than RS and P for low values
+of $\mu'_{\text{max}}$, with the largest gaps appearing on \textsc{isolet}
+(Figure~\ref{fig:memc:isolet}) and \textsc{mnist3vs8} (Figure~\ref{fig:memc:mnist}). As
+already observed in the previous section, although RP-DT is not the best
+strategy when memory is unconstrained, its curve dominates the curve of RP-ET
+for small values of $\mu'_{\text{max}}$ in Figures \ref{fig:memc:cifar10},
+\ref{fig:memc:tis}, and \ref{fig:memc:madelon}. Because split thresholds are
+not randomized in RP-DT, this method is more resistant than RP-ET to the strong
+randomization induced by a very low $\mu'_{\text{max}}$ threshold.
+
+For comparison, Figure~\ref{fig:9:memc} also features the learning curves of both
+ET and RF (with $K$ optimized on the validation set), in which the trees have
+all been built on the {\it same} training sample of $\mu'_{\text{max}}N$ instances,
+with all features. These results are representative of the use of a
+straightforward sub-sampling of the instances to handle the memory constraint.
+On all datasets, this setting yields very poor performance when $\mu'_{\text{max}}$ is
+low. Building base estimators on re-sampled random patches thus brings a clear advantage to RP, RS and P and hence confirms the conclusions of Basilico
+et al who showed in~\cite{basilico:2011} that using more data indeed produces
+more accurate models than learning from a single subsample.
+This
+latter experiment furthermore shows that the good performances of RP
+cannot be trivially attributed to the fact that our datasets contain so many
+instances that only processing a subsample of them would be enough. On most
+problems, the slopes of the learning curves of RF and ET indeed suggest that
+convergence has not yet been reached on these datasets. Yet, important
+improvement are gained by sub-sampling random patches.
+Contrary to intuition, it
+also does not appear that the bigger the datasets, the lower $\mu'_{\text{max}}$ can be
+reduced without loss of accuracy. Indeed, we found no conclusive correlation
+between the size $Np$ of the dataset and the minimum value of $\mu'_{\text{max}}$ to
+reach good performance\footnote{Spearman's rank correlation coefficient is
+-0.0354 ($p-\mathrm{value}=0.8550$).}.
+Overall, these results thus indicate that
+building an ensemble on random patches is not only a good strategy when data is
+abundant and redundant but also that it works even for scarce datasets with
+limited information regarding the problem.
+
+\subsection{Conclusions}
+
+We have shown in this section that the memory requirements of sampling-based
+ensembles are intrinsically low. Better, we have shown that they can often be
+drastically decreased without significant loss in accuracy. When the size of the
+dataset is far bigger than the available memory, we have also demonstrated that
+sampling data along both samples and features, as RP does, not only competes
+with other ensemble algorithms but also significantly improves the accuracy of
+the resulting ensemble. It also brings a significant improvement over a
+straightforward sub-sampling of the instances.
+
+\section{Overall conclusions}
 \label{sec:9:conclusions}
+
+The main contribution of this work is to explore a new framework for supervised
+learning in the context of very strong memory constraints or, equivalently, very
+large datasets. To address such problems, we proposed the Random Patches
+ensemble method that builds each individual model of the ensemble from a random
+patch of the dataset obtained by drawing random subsets of both samples and
+features from the whole dataset. Through extensive experiments with tree-based
+estimators, we have shown that this strategy works as well as other popular
+randomization schemes in terms of accuracy (Section~\ref{sec:9:accuracy}), at the
+same time reduces very significantly the memory requirements to build each
+individual model (Section~\ref{sec:9:memory:noloss}), and, given its flexibility,
+attains significantly better accuracy than other methods when memory is severely
+constrained (Section~\ref{sec:9:memory:loss}). Since all models are built
+independently of each other, the approach is furthermore trivial to parallelize.
+All in all, we believe that the paradigm of our method highlights a very promising
+direction of research to address supervised learning on big data.
+
+There remain several open questions and limitations to our approach that we
+would like to address in the future. First, this study motivates our interest in
+experimenting with truly large-scale problems (of giga-scale and higher). Since
+RP already appears advantageous for small to medium datasets, the potential benefits on
+very large-scale data indeed look very promising.
+
+Second, the conclusions drawn in sections~\ref{sec:9:accuracy} and
+\ref{sec:9:memory} are all based on the optimal values of the parameters $\alpha_s$ and
+$\alpha_f$ tuned through an exhaustive grid search on the validation set. Our
+analyses did not account for the memory and time required for tuning these two
+parameters. In practice, hyper-parameter tuning can not be avoided as we have
+shown that the optimal trade-off between $\alpha_f$ and $\alpha_s$ was problem dependent.
+It would therefore be interesting to design an efficient strategy to
+automatically find and adjust the values of $\alpha_s$ and $\alpha_f$, taking into account
+the global memory constraint. Our simplistic framework also only accounts for
+the memory required to store the training set in memory and not for the total
+memory required to actually build the ensemble.
+
+We have only explored uniform sampling of patches of fixed size in our
+experiments. In the context of the Pasting approach, Breiman proposed
+an iterative instance weighting scheme that proved to be more
+efficient than uniform sampling \citep{breiman:1999}. It would be
+interesting to extend this approach when sampling both instances and
+features. Yet, parallelization would not be trivial anymore, although
+probably still possible in the line of the work in \citep{chawla:2004}.
+
+Finally, our analysis of RP is
+mostly empirical. In the future, we would like to strengthen these
+results with a more theoretical analysis. A starting point could be
+the work in \citep{zinkevich:2010} that studies a scheme similar to the
+Pasting method applied to linear models trained through parallel
+stochastic gradient descent. The extension of this work to non
+parametric tree-based estimators does not appear trivial however,
+since these latter are not well characterized
+theoretically.
