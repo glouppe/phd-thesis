@@ -608,13 +608,15 @@ than other ensemble methods (Section \ref{sec:9:memory:loss}).
 \subsection{Sensitivity to $\alpha_s$ and $\alpha_f$}
 \label{sec:9:memory:sensitivity}
 
-Let us first consider and analyze the sets $\{(\alpha_s, \alpha_f,
-Acc_D(\alpha_s,\alpha_f)) | \forall \alpha_s, \alpha_f\}$ for various problems, where $Acc_D(\alpha_s,\alpha_f)$ is the average
+Let us first consider and analyze the triplets
+\begin{equation}
+\{(\alpha_s, \alpha_f, \text{Acc}_{\cal L}(\alpha_s,\alpha_f)) | \forall \alpha_s, \alpha_f\}
+\end{equation} for various problems, where $\text{Acc}_{\cal L}(\alpha_s,\alpha_f)$ is the average
 test accuracy of an ensemble built on random patches of size $\alpha_s \alpha_f$ (using
-the same protocol as previously) on the dataset $D$.
+the same protocol as previously) on the dataset ${\cal L}$.
 
 As Figure~\ref{fig:9:surfaces} illustrates for six datasets, the
-surfaces defined by these sets vary significantly from one problem to
+surfaces defined by these points vary significantly from one problem to
 another. We observed four main trends. In Figures \ref{fig:surfaces:arcene},
 and \ref{fig:surfaces:cifar10} (resp. \ref{fig:surfaces:tis}), accuracy
 increases with $\alpha_s$ (resp. $\alpha_f$) while adjusting $\alpha_f$ (resp. $\alpha_s$) has no
@@ -676,13 +678,13 @@ value $\alpha_s\alpha_f$ much smaller than 1.
             \includegraphics[width=0.31\textwidth]{figures/ch8/figure3-f-mnist-rp-dt.pdf}
         }
 \caption{Learning surfaces.}
-\label{fig:surfaces}
+\label{fig:9:surfaces}
 \end{center}
 \end{figure}
 
 The choice of the base estimators does not have a strong impact on the aspect
 of the curves (compare the 1$^{st}$ and 3$^{rd}$ rows of sub-figures in
-Figure~\ref{fig:surfaces} with those in the 2$^{nd}$ and 4$^{th}$ rows). The only
+Figure~\ref{fig:9:surfaces} with those in the 2$^{nd}$ and 4$^{th}$ rows). The only
 difference is the decrease of the accuracy of RP-DT when $\alpha_s$ and
 $\alpha_f$ grow towards $1.0$. Indeed, since the only source of randomization in RP-DT
 is patch selection, it yields in this case ensembles of identical
@@ -849,8 +851,7 @@ all been built on the {\it same} training sample of $\mu'_{\text{max}}N$ instanc
 with all features. These results are representative of the use of a
 straightforward sub-sampling of the instances to handle the memory constraint.
 On all datasets, this setting yields very poor performance when $\mu'_{\text{max}}$ is
-low. Building base estimators on re-sampled random patches thus brings a clear advantage to RP, RS and P and hence confirms the conclusions of Basilico
-et al who showed in~\cite{basilico:2011} that using more data indeed produces
+low. Building base estimators on re-sampled random patches thus brings a clear advantage to RP, RS and P and hence confirms the conclusions of \citet{basilico:2011} who showed that using more data indeed produces
 more accurate models than learning from a single subsample.
 This
 latter experiment furthermore shows that the good performances of RP
