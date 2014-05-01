@@ -32,12 +32,12 @@ done and methods and algorithms have to be reinvented to take this constraint
 into account.
 
 In this context, we consider supervised learning problems for which the dataset
-is so large that it cannot be loaded into memory. In~\citep{breiman:1999},
-Breiman proposed the Pasting method to tackle this problem by learning an
+is so large that it cannot be loaded into memory.
+\citet{breiman:1999} proposed the Pasting method to tackle this problem by learning an
 ensemble of models individually built on random subsets of the training
 examples, hence alleviating the memory requirements since the base models would
-be built on only small parts of the whole dataset. Earlier, Ho proposed
-in~\citep{ho:1998} to learn an ensemble of models individually built on random
+be built on only small parts of the whole dataset. Earlier, \citet{ho:1998} proposed
+to learn an ensemble of models individually built on random
 subspaces (i.e., on random subsets of the features). While the first motivation
 of the Random Subspace method was to increase the diversity within the models
 of the ensemble, it can actually also be seen as way to reduce the memory
@@ -373,6 +373,200 @@ features locally does not appear here anymore as an advantage over RP
 probably because the decrease of bias that it provides does not exceed
 the increase of variance with respect to global feature selection.
 
+\subsection{Larger datasets}
+
+While the former experiments revealed promising results, it is fair to ask
+whether the conclusions that have been drawn would hold on and generalize to
+larger problems, for example when dealing with a few relevant features buried
+into hundreds or thousands of not important features (e.g., in genomic data),
+or when dealing with many correlated features (e.g., in images). To investigate
+this question, a second bench of experiments was carried out on 13 larger
+datasets (see Table~\ref{table:rp:large-data}). All but
+\textsc{madelon} are real data. In terms of dimensions, these datasets are far bigger,
+ranging from a few hundreds of samples and thousands of features, to thousands of
+samples but hundreds of features. As such, the complexity of the problems is
+expected to be greater.  We adopted the exact same protocol as for smaller
+datasets. However, to lower computing times, for datasets marked with $*$, the
+methods were run using 100 trees instead of 250 and the minimum number of
+samples required in an internal node was set to 10 in order to control
+complexity. Detailed results are provided in Table~\ref{table:rp:accuracy-large}
+and are summarized in Figure \ref{fig:8:large-cmp} and
+Table \ref{table:rp:large-ttest}, respectively in terms of average rank (the
+critical difference at $\alpha=0.05$ is now 2.9120) and Win/Draw/Loss statuses
+obtained with paired t-tests. A Friedman test (at $\alpha=0.05$) still
+indicates that some methods are significantly different from the others.
+
+\begin{table}
+    \centering
+    \footnotesize
+    \begin{tabular}{| l | c c |}
+    \hline
+    \textbf{Dataset} & $N$ & $p$ \\
+    \hline
+    \hline
+                \textsc{cifar10}*   & 60000   & 3072   \\
+                \textsc{mnist3vs8}  & 13966   & 784    \\
+                \textsc{mnist4vs9}  & 13782   & 784    \\
+                \textsc{mnist}*     & 70000   & 784    \\
+                \textsc{isolet}     & 7797    & 617    \\
+                \textsc{arcene}     & 900     & 10000  \\
+                \textsc{breast2}    & 295     & 24496  \\
+                \textsc{madelon}    & 4400    & 500    \\
+                \textsc{marti0}     & 500     & 1024   \\
+                \textsc{reged0}     & 500     & 999    \\
+                \textsc{secom}      & 1567    & 591    \\
+                \textsc{tis}        & 13375   & 927    \\
+                \textsc{sido0}*     & 12678   & 4932   \\
+    \hline
+    \end{tabular}
+    \caption{Large datasets.}
+    \label{table:rp:large-data}
+\end{table}
+
+\begin{table}
+    \centering
+    \footnotesize
+    \hspace{-3.2cm}
+\begin{tabular}{|l|cccccccc|}
+\hline
+\textbf{Validation} & RF & ET & P-DT & P-ET & RS-DT & RS-ET & RP-DT & RP-ET \\
+\hline
+\hline
+    \textsc{cifar10 }  &  45.16 (6)  &  \textbf{46.17} (1)  &  44.92 (7)  &  44.88 (8)  &  45.83 (5)  &  46.09 (3)  &  45.89 (4)  &  46.13 (2) \\
+    \textsc{mnist3v8}  &  98.42 (7)  &  98.77 (5)  &  97.63 (8)  &  98.57 (6)  &  98.79 (4)  &  98.86 (2)  &  98.81 (3)  &  \textbf{98.87} (1) \\
+    \textsc{mnist4v9}  &  98.47 (7)  &  98.82 (3)  &  97.39 (8)  &  98.47 (6)  &  98.77 (5)  &  98.89 (2)  &  98.80 (4)  &  \textbf{98.91} (1) \\
+    \textsc{mnist   }  &  96.14 (7)  &  96.56 (3)  &  94.35 (8)  &  96.19 (6)  &  96.52 (5)  &  96.57 (2)  &  96.53 (4)  &  \textbf{96.57} (1) \\
+    \textsc{isolet  }  &  93.96 (7)  &  95.07 (3)  &  90.90 (8)  &  94.23 (6)  &  94.38 (5)  &  95.15 (2)  &  94.47 (4)  &  \textbf{95.20} (1) \\
+    \textsc{arcene  }  &  73.84 (7)  &  77.76 (3)  &  73.76 (8)  &  75.12 (6)  &  76.40 (5)  &  77.60 (4)  &  79.44 (2)  &  \textbf{80.00} (1) \\
+    \textsc{breast2 }  &  69.64 (6)  &  69.91 (4)  &  70.54 (3)  &  69.83 (5)  &  69.59 (7)  &  69.54 (8)  &  \textbf{72.59} (1)  &  71.62 (2) \\
+    \textsc{madelon }  &  76.12 (8)  &  \textbf{81.41} (1)  &  78.48 (7)  &  81.06 (5)  &  80.68 (6)  &  81.29 (3)  &  81.18 (4)  &  81.36 (2) \\
+    \textsc{marti   }  &  87.66 (8)  &  87.92 (6)  &  88.08 (4)  &  88.09 (3)  &  87.77 (7)  &  88.00 (5)  &  88.19 (2)  &  \textbf{88.20} (1) \\
+    \textsc{reged   }  &  98.00 (6)  &  98.46 (2)  &  97.08 (8)  &  98.24 (5)  &  98.00 (7)  &  98.41 (3)  &  98.40 (4)  &  \textbf{98.57} (1) \\
+    \textsc{secom   }  &  93.37 (5)  &  93.36 (6)  &  93.34 (8)  &  93.42 (2)  &  93.35 (7)  &  93.40 (4)  &  93.41 (3)  &  \textbf{93.45} (1) \\
+    \textsc{tis     }  &  91.81 (5)  &  91.53 (7)  &  91.59 (6)  &  91.50 (8)  &  92.04 (3)  &  91.97 (4)  &  \textbf{92.26} (1)  &  92.06 (2) \\
+    \textsc{sido    }  &  97.46 (5)  &  97.44 (6)  &  97.36 (8)  &  97.36 (7)  &  97.47 (3)  &  97.46 (4)  &  \textbf{97.52} (1)  &  97.52 (2) \\
+\hline
+\textit{Avg. rank} & 6.4615 & 3.8461 & 7.0   & 5.6153 & 5.3076 & 3.5384 &  2.8461 & 1.3846 \\
+\hline
+\hline
+\textbf{Test} & RF & ET & P-DT & P-ET & RS-DT & RS-ET & RP-DT & RP-ET \\
+\hline
+\hline
+    \textsc{cifar10 }  &  44.87 (7)  &  45.95 (2)  &  44.75 (8)  &  44.95 (6)  &  45.86 (4)  &  \textbf{46.02} (1)  &  45.74 (5)  &  45.93 (3) \\
+    \textsc{mnist3v8}  &  98.31 (7)  &  98.64 (5)  &  97.47 (8)  &  98.48 (6)  &  98.70 (2)  &  \textbf{98.71} (1)  &  98.68 (4)  &  98.68 (3) \\
+    \textsc{mnist4v9}  &  98.33 (6)  &  98.68 (2)  &  97.16 (8)  &  98.32 (7)  &  98.59 (4)  &  \textbf{98.69} (1)  &  98.59 (5)  &  98.67 (3) \\
+    \textsc{mnist   }  &  96.10 (7)  &  96.47 (3)  &  94.30 (8)  &  96.18 (6)  &  96.47 (4)  &  \textbf{96.49} (1)  &  96.46 (5)  &  96.48 (2) \\
+    \textsc{isolet  }  &  93.87 (7)  &  \textbf{94.95} (1)  &  90.71 (8)  &  94.15 (6)  &  94.33 (4)  &  94.94 (2)  &  94.29 (5)  &  94.88 (3) \\
+    \textsc{arcene  }  &  71.04 (4)  &  \textbf{72.56} (1)  &  66.16 (8)  &  68.56 (7)  &  71.52 (3)  &  72.24 (2)  &  69.44 (6)  &  70.00 (5) \\
+    \textsc{breast2 }  &  65.86 (6)  &  \textbf{66.16} (1)  &  65.54 (8)  &  65.59 (7)  &  66.13 (2)  &  65.91 (5)  &  65.94 (4)  &  66.08 (3) \\
+    \textsc{madelon }  &  75.33 (8)  &  \textbf{80.83} (1)  &  77.86 (7)  &  80.78 (2)  &  80.06 (6)  &  80.59 (3)  &  80.06 (5)  &  80.42 (4) \\
+    \textsc{marti   }  &  87.74 (8)  &  87.85 (6)  &  \textbf{88.24} (1)  &  88.17 (2)  &  87.82 (7)  &  88.06 (4)  &  88.08 (3)  &  88.01 (5) \\
+    \textsc{reged   }  &  97.60 (5)  &  \textbf{98.20} (1)  &  96.40 (8)  &  97.92 (3)  &  97.39 (6)  &  98.00 (2)  &  97.32 (7)  &  97.82 (4) \\
+    \textsc{secom   }  &  93.30 (7)  &  93.22 (8)  &  \textbf{93.38} (1)  &  93.30 (6)  &  93.37 (2)  &  93.31 (4)  &  93.33 (3)  &  93.31 (5) \\
+    \textsc{tis     }  &  91.68 (5)  &  91.42 (7)  &  91.49 (6)  &  91.40 (8)  &  \textbf{92.05} (1)  &  91.91 (3)  &  92.05 (2)  &  91.90 (4) \\
+    \textsc{sido    }  &  97.33 (4)  &  97.33 (3)  &  97.26 (7)  &  97.26 (8)  &  \textbf{97.35} (1)  &  97.34 (2)  &  97.33 (5)  &  97.32 (6) \\
+\hline
+\textit{Avg. rank} & 6.2307 & 3.1538 & 6.6153 & 5.6923 & 3.5384 & 2.3846 & 4.5384 & 3.8461 \\
+\hline
+\end{tabular}
+    \caption{Accuracy on large datasets (in \%).}
+    \label{table:rp:accuracy-large}
+\end{table}
+
+As it may be observed from Figure~\ref{fig:8:large-cmp}, the average ranks of the
+methods are closer to each other than in the previous experiments, now ranging
+from 2.38 to 6.61, while they were previously ranging from 2.12 to 7. Methods
+are more connected by critical difference bars. This suggests that overall they
+behave more similarly to each other than before. General trends are nevertheless
+comparable to what we observed earlier. ET-based methods still seem to be the
+front-runners.  From Figure~\ref{fig:8:large-cmp}, RS-ET, ET and RP-ET are in the
+top 4, while P-DT, RF and RP-DT remain in the second half of the ranking.
+Surprisingly however, RS-DT now comes right after RS-ET and ET and just before
+RP-ET whereas it ranked penultimate on the smaller datasets. Table~\ref{table:rp:large-ttest}
+however suggests that RS-DT performs actually a little worse
+against RP-ET (1/10/2).  All in all, it thus still seems beneficial to randomize
+split thresholds on the larger datasets.
+
+Comparing ET-based variants, ET is no longer the best method on average, but RS-ET
+is (with 4/9/0 for RS-ET versus ET). This suggests than on larger datasets,
+picking features globally at random prior to the construction of the trees is as
+good, or even beat picking them locally at each node. Due to the quantitatively
+larger number of samples in a patch, and also to the larger number of redundant
+features expected in some large datasets (e.g., in \textsc{cifar10} or \textsc{mnist}), it is
+indeed less likely to build improper trees with strong biases. As a result,
+variance can be further decreased by sampling globally. In support of this
+claim, on a few problems such as \textsc{arcene}, \textsc{breast2}, or \textsc{madelon} that contain many
+irrelevant features, ET remains the best method. In that case, it is indeed more
+likely to sample globally improper random patches, and hence to build improper
+trees. The average rank of RP-ET suggests that it performs worse than RS-ET and
+thus that there is some potential overfitting when tuning $\alpha_s$ in addition to
+$\alpha_f$. This difference is however not confirmed in Table~\ref{table:rp:large-ttest}
+where the accuracies of these two methods are shown to be never significantly
+different (0/13/0). RP-ET is also on a perfect par with ET (1/11/1). Among DT-based variants,
+RP-DT, which was the best performer on small datasets, is still
+ranked above RF and P-DT, but it is now ranked below RS-DT with a win/draw/loss
+of 0/11/2. This is again due to some overfitting.
+
+While less conclusive than before, the results on larger datasets are
+consistent with what we observed earlier. In particular, they indicate that
+the Random Patches method (with ET) remains competitive with the best
+performers.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/ch8_rank_large.pdf}
+    \caption{Average ranks of all methods.}
+    \label{fig:8:large-cmp}
+\end{figure}
+
+\begin{table}
+    \centering
+    \footnotesize
+  \begin{tabular}{|l|cccccccc|}
+    \hline
+         & RF & ET & P-DT & P-ET & RS-DT & RS-ET & RP-DT & RP-ET \\
+    \hline
+    \hline
+                RF     & ---    & 1/5/7   & 8/3/2  & 2/6/5  & 0/6/7  & 0/5/8  & 0/6/7  & 0/6/7 \\
+                ET     & 7/5/1   & ---    & 9/2/2  & 7/6/0  & 3/7/3  & 0/9/4  & 5/6/2  & 1/11/1 \\
+                P-DT   & 2/3/8   & 2/2/9   & ---   & 1/5/7  & 0/3/10 & 0/3/10 & 1/3/9  & 0/4/9 \\
+                P-ET   & 5/6/2   & 0/6/7   & 7/5/1  & ---   & 0/6/7  & 0/5/8  & 2/5/6  & 1/5/7 \\
+                RS-DT  & 7/6/0   & 3/7/3   & 10/3/0 & 7/6/0  & ---   & 1/8/4  & 2/11/0 & 1/10/2 \\
+                RS-ET  & 8/5/0   & 4/9/0   & 10/3/0 & 8/5/0  & 4/8/1  & ---   & 4/8/1  & 0/13/0 \\
+                RP-DT  & 7/6/0   & 2/6/5   & 9/3/1  & 6/5/2  & 0/11/2 & 1/8/4  & ---   & 1/9/3 \\
+                RP-ET  & 7/6/0   & 1/11/1  & 9/4/0  & 7/5/1  & 2/10/1 & 0/13/0 & 3/9/1  & ---\\
+    \hline
+    \end{tabular}
+    \caption{Pairwise t-test comparisons.}
+    \label{table:rp:large-ttest}
+\end{table}
+
+\subsection{Conclusions}
+
+Overall, this extensive experimental study reveals many interesting results. The
+first and foremost result is that ensembles of randomized trees nearly always
+beat ensembles of standard decision trees. As off-the-shelf methods, we advocate
+that ensembles of such trees should be preferred to ensembles of decision trees.
+In particular, these results show that the well-known Random Forest algorithm
+does not compete with the best performers.  Far more important to our concern
+though, this study validates our RP approach. Building ensembles (of ET) on
+random patches of data is competitive in terms of accuracy. Overall, there is no
+strong statistical evidence that the method performs less well, but there is
+also no conclusive evidence that it significantly improves performance. Yet,
+results show that RP is often as good as the very best methods. Regarding the
+shape of the random patches, the strategy behind Pasting (i.e., $\alpha_s$ free and
+$\alpha_f=1.0$) proved to be (very) ineffective on many datasets while the Random
+Subspace algorithm (i.e., $\alpha_s=1.0$ and $\alpha_f$ free) always ranked among the very
+best performers. On average, RS indeed came in second on the small datasets and
+in first on the larger datasets, which tends to indicate that sampling features
+is crucial in terms of accuracy. As for patches of freely adjustable size (i.e.,
+using RP), they showed to be slightly sensitive to overfitting but proved to
+remain closely competitive with the very best methods. In addition, these
+results also suggest that sampling features globally, once and for all, prior to
+the construction of a (randomized) decision tree, does not actually impair
+performance. For instance, RS-ET or RP-ET are indeed not strongly worse, nor
+better, than ET, in which candidates features are re-sampled locally at each
+node.
 
 \section{On Memory}
 \label{sec:9:memory}
