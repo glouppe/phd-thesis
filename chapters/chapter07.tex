@@ -1,5 +1,13 @@
 \chapter{Applications}\label{ch:applications}
 
+% splitting with binary trees on non-binary variables is like having
+% binary variables and adjust the probability of selecting them
+
+% understanding bias
+% - when k>1, high cardinality variables are more likely to be selected
+% - but, even for k=1, the importance is biased? => there will be more nodes splitting on them (to exhaust all values), for binary trees
+% - masking effects (stronger in RF than in ETs)
+
 % decompose variable importances into its terms => detect interaction of a given order
 % if r is known (or estimated), can't we built more precise importances from RS for size r?
 
