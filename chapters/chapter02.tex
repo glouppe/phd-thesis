@@ -646,10 +646,18 @@ distance (also known as the \textit{margin}) to the nearest training data
 points is maximized, since in general the larger the margin the lower the
 generalization error of the model.
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/ch2_hyperplane.pdf}
+    \caption{A good separating hyperplane is an hyperplane that maximizes the distance to the nearest training data points.}
+    \label{fig:hyperplane}
+\end{figure}
+
 Mathematically, support vector machines~\citep{boser:1992,cortes:1995} are
 maximum-margin linear models of the form of Equation~\ref{eqn:linear-model}.
-Assuming without loss of generality $b=0$, support vector machines are learned by solving the following
-primal optimization problem:
+Assuming without loss of generality that ${\cal Y}=\{-1,1\}$ and that $b=0$,
+support vector machines are learned by solving the following primal
+optimization problem:
 \begin{equation}
 \min_{\mathbf{w},\xi } \left\{\frac{1}{2} \|\mathbf{w}\|^2 + C \sum_{i=1}^N \xi_i \right\}
 \end{equation}
@@ -665,20 +673,13 @@ subject to
 \begin{equation}
 0 \leq \alpha_i \leq C,
 \end{equation}
-such that ${\cal Y}=\{-1,1\}$ and where $C$ is an hyper-parameter that controls
+where $C$ is an hyper-parameter that controls
 the degree of misclassification of the model, in case classes are not linearly
 separable. From the solution of dual problem, we have
 \begin{align}
 \textbf{w} = \sum_{i=1}^N \alpha_i y_i \mathbf{x}_i,
 \end{align}
 from which the final linear model can finally be expressed.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.9\textwidth]{figures/ch2_hyperplane.pdf}
-    \caption{A good separating hyperplane is an hyperplane that maximizes the distance to the nearest training data points.}
-    \label{fig:hyperplane}
-\end{figure}
 
 Support vector machines extend to non-linear classification by projecting the
 original input space into a high-dimensional space (the so-called
