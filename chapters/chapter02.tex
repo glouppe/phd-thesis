@@ -609,22 +609,22 @@ as a linear combination of the input variables $X_1, ..., X_p$, or at least
 that the linear model is a reasonable approximation. For regression, ${\cal H}$
 includes all models $\varphi$ of the form:
 \begin{equation}
-\varphi(\mathbf{x}) = w_0 + \sum_{j=1}^p x_j w_j
+\varphi(\mathbf{x}) = b + \sum_{j=1}^p x_j w_j
 \end{equation}
 For binary classification (i.e., when ${\cal Y}=\{c_1, c_2\}$),  ${\cal H}$ includes all
 models $\varphi$ of the form:
-\begin{equation}
+\begin{equation}\label{eqn:linear-model}
 \varphi(\mathbf{x}) = \begin{cases}
-c_1 & \text{if } w_0 + \sum_{j=1}^p x_j w_j > 0\\
+c_1 & \text{if } b + \sum_{j=1}^p x_j w_j > 0\\
 c_2 & \text{otherwise}
 \end{cases}
 \end{equation}
 
 Linear methods come in many flavors but mostly differ from each other in the
-way they estimate the coefficients $w_j$, usually using some specific
+way they estimate the coefficients $b$ and $w_j$ (for $j=1,\dots,p$), usually using some specific
 optimization procedure to minimize a specific criterion. Among all of them, the
 most famous is the method of \textit{least squares}. It consists in finding the
-$w_j$ coefficients that minimize the resubstitution estimate
+$b$ and $w_j$ coefficients that minimize the resubstitution estimate
 (Equation~\ref{eqn:training-error}) using the squared error loss.
 
 Despite an apparent simplicity, linear methods often provide reliable
@@ -635,22 +635,54 @@ on (non-linear) transformations of the input variables. For more details on
 (generalized) linear methods, see the reviews of \citet{maccullagh:1989},
 \citet{hastie:2005}, \citet{bishop:2006} or \citet{duda:2012}.
 
+
 \subsection{Support vector machines}
 
-% si ls, plusieurs solutions possibles => maximiser la marge (hard margins)
-% si pas ls => soft margins
+When data points from the learning set are linearly separable, there exist
+several hyperplanes that are in fact equally as good when evaluated in resubstitution. In
+generalization however, these hyperplanes are usually not equivalent. As illustrated in
+Figure~\ref{fig:hyperplane}, a good separation is intuitively achieved when the
+distance (also known as the \textit{margin}) to the nearest training data
+points is maximized, since in general the larger the margin the lower the
+generalization error of the model.
 
-% \citep{boser:1992}   => svm (hard margins)
-% \citep{cortes:1995}  => svm (soft margins)
-
-% extension à un kernel => trouver un hyperplan dans un espace de + haute dimension
+Mathematically, support vector machines~\citep{boser:1992,cortes:1995} are maximum-margin linear models, of the form of
+Equation~\ref{eqn:linear-model}, that are learned by solving the following
+primal optimization problem:
+\begin{equation}
+\min_{\mathbf{w},\xi, b } \left\{\frac{1}{2} \|\mathbf{w}\|^2 + C \sum_{i=1}^n \xi_i \right\}
+\end{equation}
+subject to
+\begin{equation}
+y_i(\mathbf{w}\cdot\mathbf{x_i} - b) \ge 1 - \xi_i, \quad \xi_i \ge 0.
+\end{equation}
+In its dual the form, the optimization problem is
+\begin{equation}
+\max_{\alpha} \left\{ \sum_{i=1}^n \alpha_i - \frac{1}{2}\sum_{i, j} \alpha_i \alpha_j y_i y_j \mathbf{x}_i\cdot\mathbf{x}_j \right\}
+\end{equation}
+subject to
+\begin{equation}
+0 \leq \alpha_i \leq C, \quad \sum_{i=1}^N \alpha_i y_i = 0,
+\end{equation}
+such that ${\cal Y}=\{-1,1\}$ and where $C$ is an hyper-parameter that controls
+the degree of misclassification of the model, in case classes are not linearly
+separable.
 
 \begin{figure}
     \centering
     \includegraphics[width=0.9\textwidth]{figures/ch2_hyperplane.pdf}
-    \caption{Best separating hyperplane.}
+    \caption{A good separating hyperplane is an hyperplane that maximizes the distance to the nearest training data points.}
     \label{fig:hyperplane}
 \end{figure}
+
+Support vector machines extend to non-linear classification by projecting the
+original input space into a high-dimensional space (the so-called
+\textit{kernel trick}), where a separating hyperplane can hopefully be found.
+The dual optimization problem is the same, except that the dot product
+$\mathbf{x}_i\cdot\mathbf{x}_j$ is replaced by a \textit{kernel}
+$K(\mathbf{x}_i, \mathbf{x}_j)$, which corresponds the dot product of
+$\mathbf{x}_i$ and $\mathbf{x}_j$ in this new space.
+
 
 \subsection{Neural networks}
 
@@ -706,6 +738,7 @@ appropriate combination of number of units, layers and types of activation
 functions remains a delicate task, which unfortunately makes (deep) neural
 networks still difficult to use for non-experts. Reviews on recent developments
 include the works of \citet{hinton:2007}, \citet{arel:2010} or \citet{bengio:2013}.
+
 
 \subsection{Nearest neighbor methods}
 
