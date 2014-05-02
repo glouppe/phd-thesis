@@ -646,27 +646,32 @@ distance (also known as the \textit{margin}) to the nearest training data
 points is maximized, since in general the larger the margin the lower the
 generalization error of the model.
 
-Mathematically, support vector machines~\citep{boser:1992,cortes:1995} are maximum-margin linear models, of the form of
-Equation~\ref{eqn:linear-model}, that are learned by solving the following
+Mathematically, support vector machines~\citep{boser:1992,cortes:1995} are
+maximum-margin linear models of the form of Equation~\ref{eqn:linear-model}.
+Assuming without loss of generality $b=0$, support vector machines are learned by solving the following
 primal optimization problem:
 \begin{equation}
-\min_{\mathbf{w},\xi, b } \left\{\frac{1}{2} \|\mathbf{w}\|^2 + C \sum_{i=1}^n \xi_i \right\}
+\min_{\mathbf{w},\xi } \left\{\frac{1}{2} \|\mathbf{w}\|^2 + C \sum_{i=1}^N \xi_i \right\}
 \end{equation}
 subject to
 \begin{equation}
-y_i(\mathbf{w}\cdot\mathbf{x_i} - b) \ge 1 - \xi_i, \quad \xi_i \ge 0.
+y_i(\mathbf{w}\cdot\mathbf{x_i}) \ge 1 - \xi_i, \quad \xi_i \ge 0.
 \end{equation}
 In its dual the form, the optimization problem is
 \begin{equation}
-\max_{\alpha} \left\{ \sum_{i=1}^n \alpha_i - \frac{1}{2}\sum_{i, j} \alpha_i \alpha_j y_i y_j \mathbf{x}_i\cdot\mathbf{x}_j \right\}
+\max_{\alpha} \left\{ \sum_{i=1}^N \alpha_i - \frac{1}{2}\sum_{i, j} \alpha_i \alpha_j y_i y_j \mathbf{x}_i\cdot\mathbf{x}_j \right\}
 \end{equation}
 subject to
 \begin{equation}
-0 \leq \alpha_i \leq C, \quad \sum_{i=1}^N \alpha_i y_i = 0,
+0 \leq \alpha_i \leq C,
 \end{equation}
 such that ${\cal Y}=\{-1,1\}$ and where $C$ is an hyper-parameter that controls
 the degree of misclassification of the model, in case classes are not linearly
-separable.
+separable. From the solution of dual problem, we have
+\begin{align}
+\textbf{w} = \sum_{i=1}^N \alpha_i y_i \mathbf{x}_i,
+\end{align}
+from which the final linear model can finally be expressed.
 
 \begin{figure}
     \centering
