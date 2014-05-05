@@ -591,9 +591,6 @@ Nested $K$-fold cross-validation protocol for both model selection and evaluatio
 \section{Classes of learning algorithms}
 \label{sec:2:classes-of-algorithms}
 
-% As introduced in Section~\ref{sec:2:model-selection}, classes of  learning
-% algorithms can be defined in terms of the space ${\cal H}$ of hypotheses  they
-% are built upon.
 Before proceeding in the next chapters, and for the rest of
 this work, to an in-depth analysis of the class of tree-based methods,  we
 briefly review in this section some of the other learning algorithms that have
@@ -605,7 +602,7 @@ neighbor methods.
 One of the oldest class of supervised learning algorithms is the class of
 \textit{linear methods} from the field of statistics. In these methods, the central
 assumption made on ${\cal H}$ is that the output variable $Y$ can be described
-as a linear combination of the input variables $X_1, ..., X_p$, or at least
+as a linear combination of the input variables $X_1, ..., X_p$ (i.e., as an hyperplane), or at least
 that the linear model is a reasonable approximation. For regression, ${\cal H}$
 includes all models $\varphi$ of the form:
 \begin{equation}
@@ -639,11 +636,11 @@ on (non-linear) transformations of the input variables. For more details on
 \subsection{Support vector machines}
 
 When data points from the learning set are linearly separable, there exist
-several hyperplanes that are in fact equally as good when evaluated in resubstitution. In
+several hyperplanes (i.e., several linear models) that are in fact equally as good when evaluated in resubstitution. In
 generalization however, these hyperplanes are usually not equivalent. As illustrated in
 Figure~\ref{fig:hyperplane}, a good separation is intuitively achieved when the
 distance (also known as the \textit{margin}) to the nearest training data
-points is maximized, since in general the larger the margin the lower the
+points is as large as possible, since in general the larger the margin the lower the
 generalization error of the model.
 
 \begin{figure}
@@ -687,7 +684,7 @@ original input space into a high-dimensional space (the so-called
 Interestingly, the dual optimization problem is exactly the same, except that the dot product
 $\mathbf{x}_i\cdot\mathbf{x}_j$ is replaced by a \textit{kernel}
 $K(\mathbf{x}_i, \mathbf{x}_j)$, which corresponds the dot product of
-$\mathbf{x}_i$ and $\mathbf{x}_j$ in this new space.
+$\mathbf{x}_i$ and $\mathbf{x}_j$ in the new space.
 
 
 \subsection{Neural networks}
