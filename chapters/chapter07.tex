@@ -1,14 +1,32 @@
-\chapter{Decomposing variable importances}\label{ch:applications}
+\chapter{Exploring variable importances}\label{ch:applications}
 
-% splitting with binary trees on non-binary variables is like having
+\section{Insights from the decomposition}
+
+% - Along terms => Identify interactions of a given order (strongly, weakly)
+% - Along pairs => Identify interactions between variables
+
+
+\section{Importances in binary decision trees}
+
+% Splitting with binary trees on non-binary variables is like having
 % binary variables and adjust the probability of selecting them
+% => étudier les propriétés de ce truc là => biais
 
 % understanding bias
-% - when k>1, high cardinality variables are more likely to be selected
-% - but, even for k=1, the importance is biased? => there will be more nodes splitting on them (to exhaust all values), for binary trees
-% - masking effects (stronger in RF than in ETs)
+% - when k>1,
+%       * masking effects
+%       * high cardinality variables are more likely to be selected, even when both equally uninformative
+% - but, even for k=1, the importance is biased?
+%   => because trees are not equiprobable! (partial or total explanation?)
+%   => because it is not the same conditionings that are evaluated *** (a branch may comprise several values for b (i.e. B<=b plutot que B=b))
+%   => ID3-like are not biased in that sense
+% - masking effects again (stronger in RF than in ETs because not all thresholds are evaluted)
+%
+% reproduire experience de Strobl
+% - which one is biased?
 
-% decompose variable importances into its terms => detect interaction of a given order
-% if r is known (or estimated), can't we built more precise importances from RS for size r?
 
+\section{Applications}
+
+% Explain Vincent paper
 % reproduire experience de microarray dans "Manual on setting up, using, and understanding random forests v3. 1/v4"
