@@ -37,8 +37,6 @@ tree-based variable importance measures. In this chapter, we aim at filling
 this gap and present a theoretical  analysis of the Mean Decrease Impurity
 importance derived from ensembles of randomized trees.
 
-
-
 % A forest of trees is impenetrable
 % as far as simple interpretations of its mechanims go~\citep{breiman:2001}.
 
@@ -204,7 +202,7 @@ I(X ; Y \mid Z) = I(Y ;  X  \mid Z).
 
 \subsection{Asymptotic analysis}
 
-\todo{Add figures}
+%\todo{Add figures}
 
 Let us now consider the MDI  importance as defined by Equation~\ref{eq:mdi},
 and let us assume a set $V= \{X_1, ..., X_p\}$  of {\em categorical} input
@@ -226,7 +224,9 @@ used along the current branch.  Hence, in such a tree, leaves are all at the
 same depth $p$, and the set of leaves of a fully developed tree is in bijection
 with the set $\cal X$ of all possible joint configurations of the $p$ input
 variables. For example, if the input variables are all binary, the resulting
-tree will have exactly $2^{p}$ leaves.
+tree will have exactly $2^{p}$ leaves. As a result, totally randomized
+trees, as considered here, are in fact closer to trees grown with ID3~\citep{quinlan:1986}
+than trees built from the CART procedure (as described throughout Chapters~\ref{ch:cart} and \ref{ch:forest}).
 
 \begin{theorem}\label{thm:imp}
 The MDI importance of $X_j \in V$ for $Y$ as computed

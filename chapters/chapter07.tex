@@ -1,11 +1,26 @@
 \chapter{Further insights from importances}\label{ch:applications}
 
+\begin{remark}{Outline}
+In this chapter, we build upon results from Chapter~\ref{ch:importances} to
+further study variable importances as computed from random forests. In
+Section~\ref{sec:7:redundant}, we first examine importances for variables that
+are redundant. In Section~\ref{sec:7:bias}, we revisit variable importances in
+the context binary decision trees and ordered variables. In this framework, we
+highlight various sources of bias that may concurrently happen when
+importances are computed from actual random forests. Finally, we present
+Section~\ref{sec:7:applications} some succesful applications
+of variable importance measures.
+\end{remark}
+
+
 \section{Redundant variables}
+\label{sec:7:redundant}
 
 
 
 
-\section{Importances in binary decision trees}
+\section{Bias in variable importances}
+\label{sec:7:bias}
 
 % Splitting with binary trees on non-binary variables is like having
 % binary variables and adjust the probability of selecting them
@@ -31,6 +46,7 @@
 
 
 \section{Applications}
+\label{sec:7:applications}
 
 % Explain Vincent paper
 % reproduire experience de microarray dans "Manual on setting up, using, and understanding random forests v3. 1/v4"
