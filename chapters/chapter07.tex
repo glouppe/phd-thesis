@@ -4,6 +4,12 @@
 
 % - Along terms => Identify interactions of a given order (strongly, weakly)
 % - Along pairs => Identify interactions between variables
+%   Détection des directions
+
+
+\section{Redundant variables}
+
+
 
 
 \section{Importances in binary decision trees}
@@ -17,10 +23,15 @@
 %       * masking effects
 %       * high cardinality variables are more likely to be selected, even when both equally uninformative
 % - but, even for k=1, the importance is biased?
-%   => because trees are not equiprobable! (partial or total explanation?)
 %   => because it is not the same conditionings that are evaluated *** (a branch may comprise several values for b (i.e. B<=b plutot que B=b))
-%   => ID3-like are not biased in that sense
+%   => bias may be positive or negative!!
 % - masking effects again (stronger in RF than in ETs because not all thresholds are evaluted)
+%   c'est commme si on on n'utilisait jamais certaines variables de l'encodage binaire
+% - est-ce que la non-equiprobabilité des arbres est une source de biais?
+%   => étudier la fréquence des conditionnements pour s'en assurer
+
+
+% => ID3-like are not biased in that sense
 %
 % reproduire experience de Strobl
 % - which one is biased?
