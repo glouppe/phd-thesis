@@ -1,4 +1,5 @@
 *.acn
+*.pyc
 *.acr
 *.alg
 *.aux

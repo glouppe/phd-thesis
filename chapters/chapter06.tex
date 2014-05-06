@@ -716,7 +716,7 @@ to zero, which means that, in asymptotic conditions, these pruning and random
 subspace methods would still allow us identify the relevant  variables, as long
 as we have a good upper bound $q$ on $r$.
 
-\todo{If r is known (or estimated), can't we built more precise importances from RS for size r?}
+% \todo{If r is known (or estimated), can't we built more precise importances from RS for size r?}
 
 \subsection{Non-totally randomized trees}
 \label{sec:ntrt}
@@ -804,7 +804,7 @@ problem of \citep{breiman:1984} for illustrating variable importances as
 computed with totally randomized trees. We verify that they match with our
 theoretical developments and that they decompose as foretold. We also compare
 these importances with those computed by an ensemble of non-totally randomized
-trees, as discussed in section~\ref{sec:ntrt}, for increasing values of $K$.
+trees, as discussed in section~\ref{sec:ntrt}.%, for increasing values of $K$.
 
 \begin{figure}
     \centering
@@ -901,14 +901,13 @@ at $K=7$), which thus confirms that importances are differently affected.
     \label{fig:decomposition}
 \end{figure}
 
-
 To better understand why a variable is important, it is also insightful to look
 at its decomposition into its $p$ sub-importances terms, as shown in
 Figure~\ref{fig:decomposition}. Each row in the plots of the figure corresponds
-to one the $p=7$ variables and each column to a size $k$ of conditioning sets.
-As such, the value at row $m$ and column $k$ corresponds the importance of $X_j$
+to one the $p$ variables $X_1,\dots,X_7$ and each column to a size $k$ of conditioning sets.
+As such, the value at row $j$ and column $k$ corresponds the importance of $X_j$
 when conditioned with $k$ other variables (e.g., to the term $\frac{1}{C^k_p}
-\frac{1}{p-k} \sum_{B \in {\cal P}_k(V^{-m})} I(X_j;Y|B)$ in Equation~\ref{eqn:imp-full}
+\frac{1}{p-k} \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B)$ in Equation~\ref{eqn:imp-full}
 in the case of totally randomized trees). In the left plot, for
 $K=1$, the figure first illustrates how importances yielded by totally
 randomized trees decomposes along the degrees $k$ of interactions terms. We can
@@ -940,6 +939,12 @@ informative when conditioned to many others. All in all, this figure thus indeed
 confirms that importances as computed with non-totally randomized trees take
 into account only some of the conditioning sets $B$, hence biasing the measured
 importances.
+
+\todo{Insights from the decomposition}
+
+% - Along terms => Identify interactions of a given order (strongly, weakly)
+% - Along pairs => Identify interactions between variables
+%   Détection des directions
 
 
 \section{Conclusions}
