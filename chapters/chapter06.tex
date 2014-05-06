@@ -214,19 +214,24 @@ construction algorithms.
 Given a training sample ${\cal L}$ of $N$ joint observations of $X_1, ..., X_p,
 Y$ independently drawn from the joint distribution $P(X_1, ..., X_p, Y)$, let us
 assume that we infer from it an infinitely large ensemble of \textit{totally
-randomized and fully developed trees}. In this setting, a totally randomized and
-fully developed tree is defined as a decision tree in which each node $t$ is
+randomized and fully developed trees}.
+
+\begin{definition} A \emph{totally randomized and
+fully developed tree} is a decision tree in which each node $t$ is
 partitioned using a variable $X_j$ picked uniformly at random among those not
-yet used at the parent nodes of $t$, and where each $t$ is split into $|{\cal
+yet used at the parent nodes of $t$, where each node $t$ is split into $|{\cal
 X}_j|$ sub-trees, i.e., one for each possible value of ${\cal X}_j$, and where
 the recursive construction process halts only when all $p$ variables have been
-used along the current branch.  Hence, in such a tree, leaves are all at the
-same depth $p$, and the set of leaves of a fully developed tree is in bijection
-with the set $\cal X$ of all possible joint configurations of the $p$ input
-variables. For example, if the input variables are all binary, the resulting
-tree will have exactly $2^{p}$ leaves. As a result, totally randomized
-trees, as considered here, are in fact closer to trees grown with ID3~\citep{quinlan:1986}
-than trees built from the CART procedure (as described throughout Chapters~\ref{ch:cart} and \ref{ch:forest}).
+used along the current branch.
+\end{definition}
+
+In such a tree, leaves are all at the same depth $p$, and the set of leaves of
+a fully developed tree is in bijection with the set $\cal X$ of all possible
+joint configurations of the $p$ input variables. For example, if the input
+variables are all binary, the resulting tree will have exactly $2^{p}$ leaves.
+As a result, totally randomized trees, as considered here, are in fact closer
+to trees grown with ID3~\citep{quinlan:1986} than trees built from the CART
+procedure (as described throughout Chapters~\ref{ch:cart} and \ref{ch:forest}).
 
 \begin{theorem}\label{thm:imp}
 The MDI importance of $X_j \in V$ for $Y$ as computed
@@ -363,11 +368,20 @@ terms.
 \section{Relevance of variables}
 \label{sec:6:variable-relevance}
 
-Following~\citet{kohavi:1997}, let us define as {\em relevant to $Y$ with
-respect to $V$} a variable $X_j$ for which there exists at least one subset $B
-\subseteq V$ (possibly empty) such that $I(X_j;Y|B)>0$. Thus we define as {\em
-irrelevant to $Y$ with respect to $V$} a variable $X_i$ for which, for all $B
-\subseteq V$, $I(X_i; Y|B)=0$. Remark that if $X_i$ is irrelevant to $Y$ with
+Following~\citet{kohavi:1997}, let us define relevant and irrelevant variable as follows:
+
+\begin{definition}
+A variable $X_j$ is {\em relevant to $Y$ with
+respect to $V$} if there exists at least one subset $B
+\subseteq V$ (possibly empty) such that $I(X_j;Y|B)>0$.
+\end{definition}
+
+\begin{definition} A variable $X_i$ is {\em
+irrelevant to $Y$ with respect to $V$} if, for all $B
+\subseteq V$, $I(X_i; Y|B)=0$.
+\end{definition}
+
+Remark that if $X_i$ is irrelevant to $Y$ with
 respect to $V$, then by definition it is also irrelevant to $Y$ with respect to
 any subset of $V$. However, if $X_j$ is relevant to $Y$ with respect to $V$,
 then it is not necessarily relevant to $Y$ with respect to all  subsets of $V$.
