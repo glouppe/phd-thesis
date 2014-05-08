@@ -438,8 +438,8 @@ To simplify notations in the analysis below, let us denote the mean prediction a
 $X=\mathbf{x}$ of a single randomized model $\varphi_{{\cal L},\theta_m}$ and its
 respective prediction variance as:
 \begin{align}
-\mu_{{\cal L},\theta_m} &= \mathbb{E}_{{\cal L},\theta_m} \{ \varphi_{{\cal L},\theta_m}(\mathbf{x}) \} \\
-\sigma^2_{{\cal L},\theta_m} &= \text{Var}_{{\cal L},\theta_m} \{ \varphi_{{\cal L},\theta_m}(\mathbf{x}) \}
+\mu_{{\cal L},\theta_m}(\mathbf{x}) &= \mathbb{E}_{{\cal L},\theta_m} \{ \varphi_{{\cal L},\theta_m}(\mathbf{x}) \} \\
+\sigma^2_{{\cal L},\theta_m}(\mathbf{x}) &= \text{Var}_{{\cal L},\theta_m} \{ \varphi_{{\cal L},\theta_m}(\mathbf{x}) \}
 \end{align}
 
 \subsubsection{Regression}
@@ -457,16 +457,16 @@ stays therefore the same, no matter the learning algorithm:
 
 The (squared) bias term is the (squared) difference between the prediction of the Bayes model
 and the average prediction of the model. For an ensemble, the average prediction
-is in fact the same as the average prediction of an individual model. Indeed,
+is in fact the same as the average prediction of the corresponding randomized individual model. Indeed,
 \begin{align}
 \mathbb{E}_{{\cal L},\theta_1,\dots,\theta_M} \{ \psi_{{\cal L},\theta_1,\dots,\theta_M}(\mathbf{x}) \} &= \mathbb{E}_{{\cal L},\theta_1,\dots,\theta_M} \{ \frac{1}{M} \sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x}) \} \nonumber \\
 &= \frac{1}{M} \sum_{m=1}^M \mathbb{E}_{{\cal L},\theta_m} \{ \varphi_{{\cal L},\theta_m}(\mathbf{x}) \} \nonumber \\
-&= \mu_{{\cal L},\theta}
+&= \mu_{{\cal L},\theta}(\mathbf{x})
 \end{align}
 since random variables $\theta_m$ are independent but drawn from the
 same distribution. As a result,
 \begin{equation}
-\text{bias}^2(\mathbf{x}) = (\varphi_B(\mathbf{x}) - \mu_{{\cal L},\theta})^2,
+\text{bias}^2(\mathbf{x}) = (\varphi_B(\mathbf{x}) - \mu_{{\cal L},\theta}(\mathbf{x}))^2,
 \end{equation}
 which indicates that the bias of an ensemble of randomized models is the same
 as the bias of any of the randomized models. Put otherwise, combining
@@ -478,14 +478,13 @@ improving the accuracy of the ensemble. Before considering the variance of
 $\psi_{{\cal L},\theta_1,\dots,\theta_M}(\mathbf{x})$ however, let us first
 derive the correlation coefficient $\rho(\mathbf{x})$ between the predictions
 of two randomized models built on the same learning set, but grown from two
-independent random seeds $\theta_i$ and $\theta_j$. From the definition of the Pearson's correlation
+independent random seeds $\theta^\prime$ and $\theta^{\prime\prime}$. From the definition of the Pearson's correlation
 coefficient, it comes:
 \begin{align}
-\rho(\mathbf{x}) &= \frac{\mathbb{E}_{{\cal L},\theta_i,\theta_j} \{ (\varphi_{{\cal L}, \theta_i}(\mathbf{x}) - \mu_{{\cal L},\theta_i}) (\varphi_{{\cal L}, \theta_j}(\mathbf{x}) - \mu_{{\cal L},\theta_j}) \}}{\sigma_{{\cal L},\theta_i} \sigma_{{\cal L},\theta_j}} \nonumber \\
-&= \frac{\mathbb{E}_{{\cal L},\theta_i,\theta_j} \{ \varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x}) - \varphi_{{\cal L},\theta_i}(\mathbf{x}) \mu_{{\cal L},\theta_j} - \varphi_{{\cal L},\theta_j}(\mathbf{x}) \mu_{{\cal L},\theta_i} + \mu_{{\cal L},\theta_i} \mu_{{\cal L},\theta_j} \}}{\sigma^2_{{\cal L},\theta}} \nonumber \\
-&= \frac{\mathbb{E}_{{\cal L},\theta_i,\theta_j} \{ \varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x}) \} - \mu^2_{{\cal L},\theta}}{\sigma^2_{{\cal L},\theta}} \label{eqn:4:correlation}
+\rho(\mathbf{x}) &= \frac{\mathbb{E}_{{\cal L},\theta^\prime,\theta^{\prime\prime}} \{ (\varphi_{{\cal L}, \theta^\prime}(\mathbf{x}) - \mu_{{\cal L},\theta^\prime}(\mathbf{x})) (\varphi_{{\cal L}, \theta^{\prime\prime}}(\mathbf{x}) - \mu_{{\cal L},\theta^{\prime\prime}}(\mathbf{x})) \}}{\sigma_{{\cal L},\theta^\prime}(\mathbf{x}) \sigma_{{\cal L},\theta^{\prime\prime}}(\mathbf{x})} \nonumber \\
+&= \frac{\mathbb{E}_{{\cal L},\theta^\prime,\theta^{\prime\prime}} \{ \varphi_{{\cal L},\theta^\prime}(\mathbf{x}) \varphi_{{\cal L},\theta^{\prime\prime}}(\mathbf{x}) \} - \mu^2_{{\cal L},\theta}(\mathbf{x})}{\sigma^2_{{\cal L},\theta}(\mathbf{x})} \label{eqn:4:correlation}
 \end{align}
-since random variables $\theta_i$ and $\theta_j$ are drawn from the same
+since random variables $\theta^\prime$ and $\theta^{\prime\prime}$ are drawn from the same
 distribution. Intuitively, $\rho(\mathbf{x})$ represents the strength of the
 random perturbations introduced in the learning algorithm. When it is close to
 $1$, predictions of two randomized models are highly correlated, suggesting
@@ -501,16 +500,18 @@ L},\theta_1,\dots,\theta_M}(\mathbf{x})$ can now be derived as follows:
 \begin{align}
 \text{var}(\mathbf{x}) &= \text{Var}_{{\cal L},\theta_1,\dots,\theta_M} \{ \frac{1}{M} \sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x})  \} \nonumber \\
 &= \frac{1}{M^2} \Bigg[ \mathbb{E}_{{\cal L},\theta_1,\dots,\theta_M} \{ (\sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x}))^2 \} - \mathbb{E}_{{\cal L},\theta_1,\dots,\theta_M} \{ \sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x}) \}^2 \Bigg] \nonumber \\
-&= \frac{1}{M^2} \Bigg[ \mathbb{E}_{{\cal L},\theta_1,\dots,\theta_M} \{ \sum_{i,j} \varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x}) \} - (M \mu_{{\cal L},\theta})^2 \Bigg] \nonumber \\
-&= \frac{1}{M^2} \Bigg[ \sum_{i,j} \mathbb{E}_{{\cal L},\theta_i,\theta_j} \{  \varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x}) \} - M^2 \mu^2_{{\cal L},\theta} \Bigg] \nonumber \\
-&= \frac{1}{M^2} \Bigg[ M \mathbb{E}_{{\cal L},\theta} \{ \varphi_{{\cal L},\theta}(\mathbf{x})^2 \} + (M^2-M) \mathbb{E}_{{\cal L},\theta_i,\theta_j} \{  \varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x}) \}  - M^2 \mu^2_{{\cal L},\theta} \Bigg] \nonumber \\
-&= \frac{1}{M^2} \Bigg[ M (\sigma^2_{{\cal L},\theta} + \mu^2_{{\cal L},\theta}) + (M^2-M)(\rho(\mathbf{x}) \sigma^2_{{\cal L},\theta} + \mu^2_{{\cal L},\theta}) - M^2 \mu^2_{{\cal L},\theta} \Bigg] \nonumber \\
-&= \frac{\sigma^2_{{\cal L},\theta}}{M} + \rho(\mathbf{x})\sigma^2_{{\cal L},\theta} - \rho(\mathbf{x}) \frac{\sigma^2_{{\cal L},\theta}}{M} \nonumber \\
-&= \rho(\mathbf{x}) \sigma^2_{{\cal L},\theta} + \frac{1 - \rho(\mathbf{x})}{M} \sigma^2_{{\cal L},\theta} \label{eqn:4:variance-hastie}
+&= \frac{1}{M^2} \Bigg[ \mathbb{E}_{{\cal L},\theta_1,\dots,\theta_M} \{ \sum_{i,j} \varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x}) \} - (M \mu_{{\cal L},\theta}(\mathbf{x}))^2 \Bigg] \nonumber \\
+&= \frac{1}{M^2} \Bigg[ \sum_{i,j} \mathbb{E}_{{\cal L},\theta_i,\theta_j} \{  \varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x}) \} - M^2 \mu^2_{{\cal L},\theta}(\mathbf{x}) \Bigg] \nonumber \\
+&= \frac{1}{M^2} \Bigg[ M \mathbb{E}_{{\cal L},\theta} \{ \varphi_{{\cal L},\theta}(\mathbf{x})^2 \} \nonumber \\
+&\quad \hookrightarrow + (M^2-M) \mathbb{E}_{{\cal L},\theta^\prime,\theta^{\prime\prime}} \{  \varphi_{{\cal L},\theta^\prime}(\mathbf{x}) \varphi_{{\cal L},\theta^{\prime\prime}}(\mathbf{x}) \}  - M^2 \mu^2_{{\cal L},\theta}(\mathbf{x}) \Bigg] \nonumber \\
+&= \frac{1}{M^2} \Bigg[ M (\sigma^2_{{\cal L},\theta}(\mathbf{x}) + \mu^2_{{\cal L},\theta}(\mathbf{x})) \nonumber \\
+&\quad \hookrightarrow + (M^2-M)(\rho(\mathbf{x}) \sigma^2_{{\cal L},\theta}(\mathbf{x}) + \mu^2_{{\cal L},\theta}(\mathbf{x})) - M^2 \mu^2_{{\cal L},\theta}(\mathbf{x}) \Bigg] \nonumber \\
+&= \frac{\sigma^2_{{\cal L},\theta}(\mathbf{x})}{M} + \rho(\mathbf{x})\sigma^2_{{\cal L},\theta}(\mathbf{x}) - \rho(\mathbf{x}) \frac{\sigma^2_{{\cal L},\theta}(\mathbf{x})}{M} \nonumber \\
+&= \rho(\mathbf{x}) \sigma^2_{{\cal L},\theta}(\mathbf{x}) + \frac{1 - \rho(\mathbf{x})}{M} \sigma^2_{{\cal L},\theta}(\mathbf{x}) \label{eqn:4:variance-hastie}
 \end{align}
 As the size of the ensemble gets arbitrarily large, i.e., as $M \to \infty$,
 the variance of the ensemble reduces to $\rho(\mathbf{x})
-\sigma^2_{{\cal L},\theta}$. Under the assumption that randomization has some
+\sigma^2_{{\cal L},\theta}(\mathbf{x})$. Under the assumption that randomization has some
 effect on the predictions of randomized models, i.e., assuming
 $\rho(\mathbf{x}) < 1$, the variance of an ensemble is therefore strictly
 smaller than the variance of an individual model. As a result, the expected
@@ -519,10 +520,10 @@ of a randomized model. As such, improvements in predictions are
 solely the result of variance reduction, since both $\text{noise}(\mathbf{x})$
 and $\text{bias}^2(\mathbf{x})$ remain unchanged. Additionally, when random
 effects are strong, i.e., when $\rho(\mathbf{x}) \to 0$, variance reduces to
-$\smash{\tfrac{\sigma^2_{{\cal L},\theta}}{M}}$, which can further be driven to $0$ by
+$\smash{\tfrac{\sigma^2_{{\cal L},\theta}(\mathbf{x})}{M}}$, which can further be driven to $0$ by
 increasing the size of the ensemble. On the other hand, when random effects are weak,
 i.e., when $\rho(\mathbf{x}) \to 1$, then variance reduces to $\sigma^2_{{\cal
-L},\theta}$ and building an ensemble brings no benefit. Put otherwise, the stronger the random effects, the larger
+L},\theta}(\mathbf{x})$ and building an ensemble brings no benefit. Put otherwise, the stronger the random effects, the larger
 the reduction of variance due to ensembling, and vice-versa.
 
 In summary, the expected generalization error of an ensemble additively
@@ -538,7 +539,7 @@ where
 \begin{align*}
 \text{noise}(\mathbf{x}) &= Err(\varphi_B(\mathbf{x})), \\
 \text{bias}^2(\mathbf{x}) &= (\varphi_B(\mathbf{x}) - \mathbb{E}_{{\cal L},\theta} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} )^2, \\
-\text{var}(\mathbf{x}) &= \rho(\mathbf{x}) \sigma^2_{{\cal L},\theta} + \frac{1 - \rho(\mathbf{x})}{M} \sigma^2_{{\cal L},\theta}.
+\text{var}(\mathbf{x}) &= \rho(\mathbf{x}) \sigma^2_{{\cal L},\theta}(\mathbf{x}) + \frac{1 - \rho(\mathbf{x})}{M} \sigma^2_{{\cal L},\theta}(\mathbf{x}).
 \end{align*}
 \end{theorem}
 
@@ -546,7 +547,7 @@ In light of Theorem~\ref{thm:bias-variance:ensemble}, the core principle of
 ensemble methods is thus to introduce random perturbations in order to
 decorrelate as much as possible the predictions of the individual models,
 thereby maximizing variance reduction. However, random perturbations need to be
-carefully chosen so as to increase bias at least as possible.  The crux of the
+carefully chosen so as to increase bias as little as possible.  The crux of the
 problem is to find the right trade-off between randomness and bias.
 
 \begin{remark}{Alternative variance decomposition}
@@ -1042,7 +1043,7 @@ no general conclusion should be drawn from this toy regression problem.)
 
 As confirmed by Figure~\ref{fig:variance} for RF, variance also additively decomposes  into
 \begin{equation}
-\text{var}(\mathbf{x}) = \rho(\mathbf{x}) \sigma^2_{{\cal L},\theta} + \tfrac{1 - \rho(\mathbf{x})}{M} \sigma^2_{{\cal L},\theta}.
+\text{var}(\mathbf{x}) = \rho(\mathbf{x}) \sigma^2_{{\cal L},\theta}(\mathbf{x}) + \tfrac{1 - \rho(\mathbf{x})}{M} \sigma^2_{{\cal L},\theta}(\mathbf{x}).
 \end{equation}
 The first term is the variance due to the learning set ${\cal L}$ and remains
 constant as the number $M$ of trees increases. The second term is the variance
@@ -1050,7 +1051,7 @@ due to random effects and decreases as $M$ increases. Of particular interest is
 variance at $M=1$, which corresponds to the variance of a single decision tree.
 As the figure clearly shows, averaging several decision trees into an ensemble
 allows to significantly reduce this quantity. At the limit, when $M\to \infty$,
-variance tends to $\rho(\mathbf{x}) \sigma^2_{{\cal L},\theta}$, as shown by
+variance tends to $\rho(\mathbf{x}) \sigma^2_{{\cal L},\theta}(\mathbf{x})$, as shown by
 the dotted line and as expected from Theorem~\ref{thm:bias-variance:ensemble}.
 
 
