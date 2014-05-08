@@ -482,6 +482,7 @@ independent random seeds $\theta^\prime$ and $\theta^{\prime\prime}$. From the d
 coefficient, it comes:
 \begin{align}
 \rho(\mathbf{x}) &= \frac{\mathbb{E}_{{\cal L},\theta^\prime,\theta^{\prime\prime}} \{ (\varphi_{{\cal L}, \theta^\prime}(\mathbf{x}) - \mu_{{\cal L},\theta^\prime}(\mathbf{x})) (\varphi_{{\cal L}, \theta^{\prime\prime}}(\mathbf{x}) - \mu_{{\cal L},\theta^{\prime\prime}}(\mathbf{x})) \}}{\sigma_{{\cal L},\theta^\prime}(\mathbf{x}) \sigma_{{\cal L},\theta^{\prime\prime}}(\mathbf{x})} \nonumber \\
+&= \frac{\mathbb{E}_{{\cal L},\theta^\prime,\theta^{\prime\prime}} \{ \varphi_{{\cal L},\theta^\prime}(\mathbf{x}) \varphi_{{\cal L},\theta^{\prime\prime}}(\mathbf{x}) - \varphi_{{\cal L},\theta^\prime}(\mathbf{x}) \mu_{{\cal L},\theta^{\prime\prime}}(\mathbf{x}) - \varphi_{{\cal L},\theta^{\prime\prime}}(\mathbf{x}) \mu_{{\cal L},\theta^\prime}(\mathbf{x}) + \mu_{{\cal L},\theta^\prime}(\mathbf{x}) \mu_{{\cal L},\theta^{\prime\prime}}(\mathbf{x}) \}}{\sigma^2_{{\cal L},\theta}(\mathbf{x})} \nonumber \\
 &= \frac{\mathbb{E}_{{\cal L},\theta^\prime,\theta^{\prime\prime}} \{ \varphi_{{\cal L},\theta^\prime}(\mathbf{x}) \varphi_{{\cal L},\theta^{\prime\prime}}(\mathbf{x}) \} - \mu^2_{{\cal L},\theta}(\mathbf{x})}{\sigma^2_{{\cal L},\theta}(\mathbf{x})} \label{eqn:4:correlation}
 \end{align}
 since random variables $\theta^\prime$ and $\theta^{\prime\prime}$ are drawn from the same
@@ -566,21 +567,25 @@ conclusions.  The stronger the random effects, the larger the variance with
 respect to $\theta$, and hence the larger of reduction of variance due
 to ensembling.
 
-Decompositions \ref{eqn:4:variance-hastie} and \ref{eqn:4:variance-geurts} are equivalent if
-\begin{equation}
-\rho(\mathbf{x}) = \frac{\text{Var}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}}{\text{Var}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \} + \mathbb{E}_{\cal L} \{ \text{Var}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}}
+Decompositions \ref{eqn:4:variance-hastie} and \ref{eqn:4:variance-geurts} are equivalent if Equation~\ref{eqn:4:correlation}
+is equivalent to
+\begin{equation}\label{eqn:4:correlation-bis}
+\rho(\mathbf{x}) = \frac{\text{Var}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}}{\text{Var}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \} + \mathbb{E}_{\cal L} \{ \text{Var}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}}.
 \end{equation}
-which is true given the fact that
+From the law of total variance, the denominator of Equation~\ref{eqn:4:correlation} expands
+to the denominator of Equation~\ref{eqn:4:correlation-bis}:
 \begin{equation}
-\sigma^2_{{\cal L},\theta} = \text{Var}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \} + \mathbb{E}_{\cal L} \{ \text{Var}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}
-\end{equation} using the law of total variance, the definition of $\rho(\mathbf{x})$ from Equation~\ref{eqn:4:correlation} and the fact that
+\sigma^2_{{\cal L},\theta}(\mathbf{x}) = \text{Var}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \} + \mathbb{E}_{\cal L} \{ \text{Var}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}
+\end{equation}
+Similarly, the numerator of Equation~\ref{eqn:4:correlation-bis} can be reexpressed
+as the numerator of Equation~\ref{eqn:4:correlation}, thereby proving the equivalence:
 \begin{align}
 & \text{Var}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \} \nonumber \\
 &= \mathbb{E}_{\cal L} \{ (\mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} - \mathbb{E}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x})\} \})^2 \} \nonumber \\
-&= \mathbb{E}_{\cal L} \{ (\mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} - \mu_{{\cal L},\theta})^2 \} \nonumber \\
-&= \mathbb{E}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \}^2 \} - \mu^2_{{\cal L},\theta} \nonumber \\
-&= \mathbb{E}_{\cal L} \{ \mathbb{E}_{\theta_i|{\cal L}} \{ \varphi_{{\cal L},\theta_i}(\mathbf{x}) \} \mathbb{E}_{\theta_j|{\cal L}} \{ \varphi_{{\cal L},\theta_j}(\mathbf{x}) \} \} - \mu^2_{{\cal L},\theta} \nonumber \\
-&= \mathbb{E}_{{\cal L},\theta_i,\theta_j} \{ \varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x}) \} - \mu^2_{{\cal L},\theta}.
+&= \mathbb{E}_{\cal L} \{ (\mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} - \mu_{{\cal L},\theta}(\mathbf{x}))^2 \} \nonumber \\
+&= \mathbb{E}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \}^2 \} - \mu^2_{{\cal L},\theta}(\mathbf{x}) \nonumber \\
+&= \mathbb{E}_{\cal L} \{ \mathbb{E}_{\theta^\prime|{\cal L}} \{ \varphi_{{\cal L},\theta^\prime}(\mathbf{x}) \} \mathbb{E}_{\theta^{\prime\prime}|{\cal L}} \{ \varphi_{{\cal L},\theta^{\prime\prime}}(\mathbf{x}) \} \} - \mu^2_{{\cal L},\theta}(\mathbf{x}) \nonumber \\
+&= \mathbb{E}_{{\cal L},\theta^\prime,\theta^{\prime\prime}} \{ \varphi_{{\cal L},\theta^\prime}(\mathbf{x}) \varphi_{{\cal L},\theta^{\prime\prime}}(\mathbf{x}) \} - \mu^2_{{\cal L},\theta}(\mathbf{x}).
 \end{align}
 In this form, $\rho(\mathbf{x})$ is interpreted as the ratio between the variance
 due to the learning set  and the total variance, accounting for
@@ -596,12 +601,11 @@ the predictions.
 The decomposition of the expected generalization error of an ensemble in
 classification directly follows from theorems~\ref{thm:bias-variance:classification} and
 \ref{thm:bias-variance:ensemble}.
-
-Provided that the expected probability estimate $\mathbb{E}_{{\cal L},\theta}\{
-p_{{\cal L},\theta}(Y=\varphi_B(\mathbf{x}) \}$ for the majority class remains
-strictly greater than $0.5$ in a randomized model, then building an ensemble
-reduces the variance of the estimate (as shown in Equation~\ref{eqn:4:variance-hastie}),
-which results in a decrease of the misclassification error.
+Building an ensemble always reduces the variance of the class probability estimate
+$\mathbb{E}_{{\cal L},\theta}\{ \widehat{p}_{{\cal
+L},\theta}(Y=\varphi_B(\mathbf{x}) \}$ (as shown in Equation~\ref{eqn:4:variance-hastie}), which results in a decrease of the misclassification error
+if the expected estimate remains strictly greater than $0.5$ in a
+randomized model.
 
 
 \section{Random Forests}
