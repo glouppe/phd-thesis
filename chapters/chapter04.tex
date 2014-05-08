@@ -29,13 +29,13 @@ can be expressed as
 Err(\varphi_{\cal L}(\mathbf{x})) = \mathbb{E}_{Y|X=\mathbf{x}} \{ L(Y, \varphi_{\cal L}(\mathbf{x})) \}.\label{eqn:4:generalization-error:x}
 \end{equation}
 
-In regression, this latter form of the expected prediction error additively
-decomposes into bias and variance terms which together constitute a very useful
-framework for diagnosing the prediction error of a model. In classification, a
-similar decomposition is more difficult to obtain. Yet, the
-concepts of bias and variance can be transposed in several ways to
-classification, thereby providing comparable frameworks for studying the
-prediction error of classifiers.
+In regression, for the squared error loss, this latter form of the expected
+prediction error additively decomposes into bias and variance terms which
+together constitute a very useful framework for diagnosing the prediction error
+of a model. In classification, for the zero-one loss, a similar decomposition
+is more difficult to obtain. Yet, the concepts of bias and variance can be
+transposed in several ways to classification, thereby providing comparable
+frameworks for studying the prediction error of classifiers.
 
 
 \subsection{Regression}
@@ -58,12 +58,12 @@ since $\mathbb{E}_{Y|X=\mathbf{x}} \{ Y - \varphi_B(\mathbf{x}) \} =
 of the Bayes model in regression. In this form, the first term in the last
 expression of Equation~\ref{eqn:4:decomp1} corresponds to the (irreducible)
 residual error  at $X=\mathbf{x}$ while the second term represents the
-discrepancy of $\varphi_{\cal L}$ from the Bayes model. The further from the
+discrepancy of $\varphi_{\cal L}$ from the Bayes model. The farther from the
 Bayes model, the more sub-optimal the model and the larger the error.
 
 If we further assume that the learning set ${\cal L}$ is itself a random
 variable (sampled from the population $\Omega$) and that the learning algorithm is deterministic, then the expected
-discrepancy with the Bayes model can further be re-expressed in terms of the
+discrepancy over ${\cal L}$ with the Bayes model can further be re-expressed in terms of the
 average prediction $\mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \}$
 over the models learned from all possible learning sets of size $N$:
 \begin{align}
