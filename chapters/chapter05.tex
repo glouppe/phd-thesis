@@ -1163,7 +1163,7 @@ trees in the forest, the number $N$ of input samples, the number $p$ of input
 variables (by adding new irrelevant variables), the number $K$ of variables drawn at each node and the effects of
 using bootstrap replicates ${\cal L}^m$ instead of ${\cal L}$, each with respect to
 the time required for building the forest, the average depth of the leaves and
-the mean square error of the forest. Hyper-parameters are studied independently
+the mean squared error of the forest. Hyper-parameters are studied independently
 for both (fully developed) Random Forests (RF) and Extremely Randomized Trees (ETs) built
 on $N=1000$ learning samples of $p=10$ input variables, with $M=250$ trees and $K=\sqrt{p}$ set by
 default. Statistics reported below are averages over 10 runs. Figures~\ref{fig:5:artificial:M}-\ref{fig:5:artificial:bootstrap}
@@ -1213,7 +1213,7 @@ $O(M)$ while the average depth of the leaves is constant with $M$, since the
 later has no effect on the structure of the individual trees. The left plot
 also confirms that ETs are faster to build than RF, even if trees in ETs are on
 average one level deeper that trees in RFs, as shown in the middle plot.
-Finally, the mean square error of the model shows to be inversely proportional
+Finally, the mean squared error of the model shows to be inversely proportional
 to the number of trees in the forest, which confirms our previous results on
 variance reduction from Chapter~\ref{ch:forest}.
 

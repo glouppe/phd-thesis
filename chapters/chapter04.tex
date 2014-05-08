@@ -81,7 +81,7 @@ L}(\mathbf{x}) \} = 0$. In summary, the expected generalization error additively
 decomposes as formulated in Theorem~\ref{thm:bias-variance}.
 
 \begin{theorem}\label{thm:bias-variance}
-For the square error loss, the bias-variance decomposition of the expected
+For the squared error loss, the bias-variance decomposition of the expected
 generalization error $\mathbb{E}_{\cal L} \{ Err(\varphi_{\cal L}(\mathbf{x}))
 \}$ at $X=\mathbf{x}$ is
 \begin{equation}
@@ -164,7 +164,7 @@ neither too low nor too large.
 \subsection{Classification}
 \label{sec:bias-variance:classification}
 
-In direct analogy with the bias-variance decomposition for the square error
+In direct analogy with the bias-variance decomposition for the squared error
 loss, similar decompositions have been proposed in the literature for the
 expected generalization error based on the zero-one loss, i.e., for
 $\mathbb{E}_{\cal L}\{ \mathbb{E}_{Y|X=\mathbf{x}} \{ 1(\varphi_{\cal L}(x)
@@ -199,7 +199,7 @@ explicit for the case of binary classification. Let us first decompose the
 expected classification error into an irreducible part associated with the
 random nature of the output $Y$ and a reducible part that depends on
 $\varphi_{\cal L}(\mathbf{x})$, in analogy with Equation~\ref{eqn:4:decomp1}
-for the square error loss. (Note that, to simplify notations, we assume that
+for the squared error loss. (Note that, to simplify notations, we assume that
 all probabilities based on the random variable $Y$ is with respect to the
 distribution of $Y$ at $X=\mathbf{x}$.)
 \begin{align}
@@ -325,7 +325,7 @@ $\mathbb{E}_{\cal L} \{ . \}$ and variances $\text{Var}_{\cal L} \{ . \}$ with
 their respective counterparts $\mathbb{E}_{{\cal L},\theta} \{ . \}$ and
 $\text{Var}_{{\cal L},\theta} \{ . \}$ computed over the joint distribution of
 ${\cal L}$ and $\theta$. In regression, the bias-variance decomposition
-of the square error loss thus becomes:
+of the squared error loss thus becomes:
 \begin{equation}
 \mathbb{E}_{{\cal L},\theta} \{ Err(\varphi_{{\cal L},\theta}(\mathbf{x})) \} = \text{noise}(\mathbf{x}) + \text{bias}^2(\mathbf{x}) + \text{var}(\mathbf{x}),
 \end{equation}
@@ -504,7 +504,7 @@ the reduction of variance due to ensembling, and vice-versa.
 In summary, the expected generalization error of an ensemble additively
 decomposes as stated in Theorem~\ref{thm:bias-variance:ensemble}.
 \begin{theorem}\label{thm:bias-variance:ensemble}
-For the square error loss, the bias-variance decomposition of the expected
+For the squared error loss, the bias-variance decomposition of the expected
 generalization error $\mathbb{E}_{\cal L} \{ Err( \psi_{{\cal L},\theta_1,\dots,\theta_M}(\mathbf{x}))
 \}$ at $X=\mathbf{x}$ of an ensemble of $M$ randomized models $\varphi_{{\cal L},\theta_m}$ is
 \begin{equation}

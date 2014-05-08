@@ -991,7 +991,7 @@ not that significant.
 
 When the output variable $Y$ is quantitative, Proposition~\ref{prop:any-split-reduce-regression}
 shows that splitting $t$ in any way reduces the
-square error loss on the training set. In particular, the reduction is positive as long as
+squared error loss on the training set. In particular, the reduction is positive as long as
 the values assigned to the child nodes are different from the value at $t$.
 Contrary to classification, this only happens in rare circumstances (i.e., when
 the mean output values at the child nodes coincide with the mean output value
@@ -1003,7 +1003,7 @@ regression.
 
 \begin{definition}
 In regression, the impurity function $i_R(t)$ based on the local resubstitution estimate
-defined on the square error loss is:
+defined on the squared error loss is:
 \begin{equation}\label{eqn:impurity:variance}
 i_R(t) = \frac{1}{N_t} \sum_{\mathbf{x}, y \in {\cal L}_t} (y - \widehat{y}_t)^2
 \end{equation}
