@@ -181,16 +181,15 @@ satisfactory framework as in regression (for reviews, see
 An interesting connection with Theorem~\ref{thm:bias-variance} however is to
 remark that classification algorithms usually work by computing estimates
 \begin{equation}
-p_{\cal L}(Y=c|X=\mathbf{x})
+\widehat{p}_{\cal L}(Y=c|X=\mathbf{x})
 \end{equation}
 of the conditional class probability (e.g.,
-$p_{\cal L}(Y=c|X=\mathbf{x}) = p(c|t)$ in decision trees, where $t$ is the
-leaf reached by $\mathbf{x}$) and then deriving a classification rule by
+$\widehat{p}_{\cal L}(Y=c|X=\mathbf{x}) = p(c|t)$ in decision trees, as defined in Section~\ref{sec:3:assignment}) and then deriving a classification rule by
 predicting the class that maximizes this estimate, that is:
 \begin{equation}\label{eqn:4:classificaton-rule}
-\varphi_{\cal L}(\mathbf{x}) = \argmax_{c \in {\cal Y}} p_{\cal L}(Y=c|X=\mathbf{x})
+\varphi_{\cal L}(\mathbf{x}) = \argmax_{c \in {\cal Y}} \widehat{p}_{\cal L}(Y=c|X=\mathbf{x})
 \end{equation}
-As such, a direction for studying classification models is the relate the
+As such, a direction for studying classification models is to relate the
 bias-variance decomposition of these numerical estimates to the expected
 misclassification error of classification rule~\ref{eqn:4:classificaton-rule}.
 
@@ -221,10 +220,10 @@ second term is the increased error due to the misestimation of the optimal
 decision boundary. The probability $P_{\cal L}(\varphi_{\cal L}(\mathbf{x})\neq
 \varphi_B(\mathbf{x}))$  is the probability for the model of making a decision
 which is different from the decision of the Bayes model. This happens
-when the estimate $p_{\cal L}(Y=\varphi_B(\mathbf{x}))$ is lower
+when the estimate $\widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x}))$ is lower
 than $0.5$, that is:
 \begin{equation}\label{eqn:4:prob-diff-from-bayes}
-P_{\cal L}(\varphi_{\cal L}(\mathbf{x})\neq \varphi_B(\mathbf{x})) = P_{\cal L}(p_{\cal L}(Y=\varphi_B(\mathbf{x})) < 0.5)
+P_{\cal L}(\varphi_{\cal L}(\mathbf{x})\neq \varphi_B(\mathbf{x})) = P_{\cal L}(\widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x})) < 0.5)
 \end{equation}
 As Figure~\ref{fig:estimate-distribution} illustrates, probability~\ref{eqn:4:prob-diff-from-bayes}
 in fact corresponds to the tail area on the left side
@@ -242,11 +241,11 @@ assumption is certainly not satisfied in all cases, but the qualitative
 conclusions are still generally valid. When the computations of the estimates
 involve some averaging process, e.g., as further developed in the case of
 ensemble of randomized trees, this approximation is however fairly reasonable.}
-that the estimate $p_{\cal L}(Y=\varphi_B(\mathbf{x}))$ is normally distributed,
+that the estimate $\widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x}))$ is normally distributed,
 then probability~\ref{eqn:4:prob-diff-from-bayes} can be computed explicitly
 from its mean and variance:
 \begin{equation}
-P_{\cal L}(p_{\cal L}(Y=\varphi_B(\mathbf{x})) < 0.5) = \Phi(\frac{0.5 - \mathbb{E}_{\cal L}\{ p_{\cal L}(Y=\varphi_B(\mathbf{x})) \}}{\sqrt{\text{Var}_{\cal L}\{ p_{\cal L}(Y=\varphi_B(\mathbf{x})) \}}})
+P_{\cal L}(\widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x})) < 0.5) = \Phi(\frac{0.5 - \mathbb{E}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x})) \}}{\sqrt{\text{Var}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x})) \}}})
 \end{equation}
 where $\Phi(x)=\frac{1}{\sqrt{2\pi}} \int_{-\infty}^x \exp(-\frac{t^2}{2}) dt$
 is the cumulative distribution function of the standard normal distribution.
@@ -260,7 +259,7 @@ generalization error $\mathbb{E}_{\cal L} \{ Err(\varphi_{\cal L}(\mathbf{x}))
 
 \begin{align}
 \mathbb{E}_{\cal L} \{ Err(\varphi_{\cal L}(\mathbf{x})) \} &= P(\varphi_B(\mathbf{x})\neq Y) \\
-                                                            &+ \Phi(\frac{0.5 - \mathbb{E}_{\cal L}\{ p_{\cal L}(Y=\varphi_B(\mathbf{x})) \}}{\sqrt{\text{Var}_{\cal L}\{ p_{\cal L}(Y=\varphi_B(\mathbf{x})) \}}}) (2 P(\varphi_B(\mathbf{x}) = Y) - 1) \nonumber
+                                                            &+ \Phi(\frac{0.5 - \mathbb{E}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x})) \}}{\sqrt{\text{Var}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x})) \}}}) (2 P(\varphi_B(\mathbf{x}) = Y) - 1) \nonumber
 \end{align}
 \end{theorem}
 
@@ -269,21 +268,21 @@ direct connection between the regression variance of the estimates and the
 classification error of the resulting model. In practice, this decomposition
 has important consequences:
 \begin{itemize}
-\item When the expected probability estimate $\mathbb{E}_{\cal L}\{ p_{\cal L}(Y=\varphi_B(\mathbf{x}) \}$
+\item When the expected probability estimate $\mathbb{E}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x}) \}$
       for the true majority class is greater than $0.5$, a reduction of
       variance of the estimate results in a decrease of the total misclassification
-      error. If $\text{Var}_{\cal L}\{ p_{\cal L}(Y=\varphi_B(\mathbf{x})) \} \to 0$,
+      error. If $\text{Var}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x})) \} \to 0$,
       then $\Phi \to 0$ and the expected generalization error tends to the error of the Bayes model.
       In particular, the generalization error can be driven to its minimum
-      value whatever the regression bias of the estimate (at least as long as $\mathbb{E}_{\cal L}\{ p_{\cal L}(Y=\varphi_B(\mathbf{x}) \} > 0.5$).
-\item Conversely, when $\mathbb{E}_{\cal L}\{ p_{\cal L}(Y=\varphi_B(\mathbf{x}) \} < 0.5$,
+      value whatever the regression bias of the estimate (at least as long as $\mathbb{E}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x}) \} > 0.5$).
+\item Conversely, when $\mathbb{E}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x}) \} < 0.5$,
       a decrease of variance might actually increase the total misclassification error.
       If $\text{Var}_{\cal L}\{ p_{\cal L}(Y=\varphi_B(\mathbf{x})) \} \to 0$,
       then $\Phi \to 1$ and the error is maximal.
 \end{itemize}
 
 
-\section{Ensemble methods}
+\section{Ensemble methods based on randomization}
 \label{sec:4:ensemble}
 
 Both theorems~\ref{thm:bias-variance} and \ref{thm:bias-variance:classification}
@@ -293,7 +292,7 @@ would therefore consist in driving down the prediction variance, provided the
 respective bias can be kept the same or not be increased too much.
 
 As it happens, \textit{ensemble methods} constitute a beautifully simple way to
-do just that. Specifically, the core principle of ensemble methods is to
+do just that. Specifically, the core principle of ensemble methods based on randomization is to
 introduce random perturbations into the learning procedure in order to produce
 several different models from a single learning set ${\cal L}$ and then to
 combine the predictions of those models to form the prediction of the ensemble.
@@ -338,8 +337,8 @@ where
 
 In this form, variance now accounts for both the prediction variability due to
 the randomness of the learning set ${\cal L}$ and the variability due to the
-randomness of the learning algorithm itself. As a result, the variance of a
-randomized algorithm is usually strictly larger than the variance of its
+randomness of the learning algorithm itself. As such, the variance of a
+randomized algorithm is typically larger than the variance of its
 deterministic counterpart. Depending on the strength of randomization, bias
 also usually increases, but often to a smaller extent than variance.
 
@@ -359,23 +358,48 @@ $\psi_{{\cal L},\theta_1,\dots,\theta_M}$, such that the expected
 generalization error of the ensemble is (hopefully) smaller than the expected
 generalization error of the individual randomized models.
 
-In regression, the most common way to combine the randomized models into an
-ensemble is to average their predictions to form the final prediction:
-\begin{equation}
+In regression, for the squared error loss, the most common way to combine the
+randomized models into an ensemble is to average their predictions to form the
+final prediction:
+\begin{equation}\label{eqn:4:averaging}
 \psi_{{\cal L},\theta_1,\dots,\theta_M}(\mathbf{x}) = \frac{1}{M} \sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x})
 \end{equation}
+The rationale is that the average prediction is the prediction that minimizes the average
+squared error with respect to the individual predictions of the models.
 
-In classification, predictions are usually aggregated by considering the
+\begin{remark}{Ambiguity decomposition}
+For prediction averaging, as defined in Equation~\ref{eqn:4:averaging},
+the \textit{ambiguity decomposition}~\citep{krogh:1995}
+guarantees the generalization error of the ensemble to be lower
+than the average generalization error of its constituents. Formally,
+the ambiguity decomposition states that
+\begin{equation}
+Err(\psi_{{\cal L},\theta_1,\dots,\theta_M}) = \overline{E} - \overline{A}
+\end{equation}
+where
+\begin{align}
+\overline{E} &= \frac{1}{M} \sum_{m=1}^M Err(\varphi_{{\cal L},\theta_m}), \\
+\overline{A} &= \mathbb{E}_{X} \{ \frac{1}{M} \sum_{m=1}^M (\varphi_{{\cal L},\theta_m}(X) - \psi_{{\cal L},\theta_1,\dots,\theta_M}(X))^2 \}.
+\end{align}
+The first term is the average generalization of the individual models. The second term is the ensemble ambiguity and
+corresponds to the variance of the individual predictions around the prediction of the ensemble. Since $\overline{A}$ is non-negative,
+the generalization error is therefore smaller than the average generalization
+error of its constituents.
+\end{remark}
+
+In classification, for the zero-one loss, predictions are usually aggregated by considering the
 models in the ensemble as a committee  and then resorting to majority voting to
 form the final prediction:
 \begin{equation}\label{eqn:4:majority-vote}
 \psi_{{\cal L},\theta_1,\dots,\theta_M}(\mathbf{x}) = \argmax_{c \in {\cal Y}}  \sum_{m=1}^M 1(\varphi_{{\cal L},\theta_m}(\mathbf{x})=c)
 \end{equation}
-When individual models provide class probability estimates $p_{{\cal L},\theta m}(Y=c|X=\mathbf{x})$,
+Similarly, the rationale is that the majority prediction is the prediction that minimizes
+the average zero-one error with respect to the individual predictions of the models.
+When individual models provide class probability estimates $\widehat{p}_{{\cal L},\theta m}(Y=c|X=\mathbf{x})$,
 a natural alternative to majority voting consists in averaging the class probability estimates
 and then predict the class which is the most likely:
 \begin{equation}\label{eqn:4:avg-estimate}
-\psi_{{\cal L},\theta_1,\dots,\theta_M}(\mathbf{x}) = \argmax_{c \in {\cal Y}} \frac{1}{M} \sum_{m=1}^M p_{{\cal L},\theta m}(Y=c|X=\mathbf{x})
+\psi_{{\cal L},\theta_1,\dots,\theta_M}(\mathbf{x}) = \argmax_{c \in {\cal Y}} \frac{1}{M} \sum_{m=1}^M \widehat{p}_{{\cal L},\theta m}(Y=c|X=\mathbf{x})
 \end{equation}
 As empirically investigated by \citet{breiman:1996b}, both approaches yield
 results that are virtually identical. From a practical point of view however,
@@ -391,14 +415,14 @@ assumed to be combined through Equation~\ref{eqn:4:avg-estimate} unless
 mentioned otherwise.
 
 \begin{remark}{Condorcet's jury theorem}
-The rationale behind majority voting, as defined in Equation~\ref{eqn:4:majority-vote},
+Majority voting, as defined in Equation~\ref{eqn:4:majority-vote},
 finds its origins in the \textit{Condorcet's jury theorem}
 from the field of political science. Let consider a group of $M$ voters that
 wishes to reach a decision by majority vote. The theorem states that if each
 voter has an independent  probability $p > \tfrac{1}{2}$ of voting for the
 correct decision, then adding more voters increases the probability of
 the majority decision to be correct. When $M \to \infty$, the probability that the decision
-taken by group is correct approaches $1$. Conversely, if $p < \tfrac{1}{2}$, then
+taken by the group is correct approaches $1$. Conversely, if $p < \tfrac{1}{2}$, then
 each voter is more likely to vote incorrectly and increasing $M$ makes things
 worse.
 \end{remark}
