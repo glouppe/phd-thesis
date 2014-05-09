@@ -882,6 +882,14 @@ constitute a computationally efficient alternative to $K$-fold cross-validation,
 reducing to $M$ the number of invocations of the learning
 algorithm, instead of otherwise having to build $KM$ base models.
 
+As discussed earlier, bootstrap replicates reduce the effective size of the
+learning set ${\cal L}$, which may sometimes have a negative impact, e.g. when
+${\cal L}$ is too small. As shown experimentally in \citep{louppe:2012},
+bootstrapping is in fact rarely crucial for random forests to obtain good
+accuracy. On the contrary, not using bootstrap samples usually yield better
+results which, depending on the application, should be put in balance with the
+benefits of getting out-of-bag estimates.
+
 \subsection{Variable importances}
 
 In most machine learning tasks, the goal is not only to find the most accurate
