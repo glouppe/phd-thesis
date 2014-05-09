@@ -232,7 +232,7 @@ of the decision threshold (at 0.5) of the distribution of the estimate.
 \begin{figure}
     \centering
     \includegraphics[width=0.9\textwidth]{figures/ch4_estimate_distribution.pdf}
-    \caption{Probability distribution of $p_{\cal L}(Y=\varphi_B(\mathbf{x}))$.}
+    \caption{Probability distribution of $\widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x}))$.}
     \label{fig:estimate-distribution}
 \end{figure}
 
@@ -277,7 +277,7 @@ has important consequences:
       value whatever the regression bias of the estimate (at least as long as $\mathbb{E}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x}) \} > 0.5$).
 \item Conversely, when $\mathbb{E}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x}) \} < 0.5$,
       a decrease of variance might actually increase the total misclassification error.
-      If $\text{Var}_{\cal L}\{ p_{\cal L}(Y=\varphi_B(\mathbf{x})) \} \to 0$,
+      If $\text{Var}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x})) \} \to 0$,
       then $\Phi \to 1$ and the error is maximal.
 \end{itemize}
 
@@ -365,7 +365,7 @@ final prediction:
 \psi_{{\cal L},\theta_1,\dots,\theta_M}(\mathbf{x}) = \frac{1}{M} \sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x})
 \end{equation}
 The rationale is that the average prediction is the prediction that minimizes the average
-squared error with respect to the individual predictions of the models.
+squared error with respect to the individual predictions of the models. In that sense, the average prediction is the closest prediction with respect to all individual predictions.
 
 \begin{remark}{Ambiguity decomposition}
 For prediction averaging, as defined in Equation~\ref{eqn:4:averaging},
@@ -381,9 +381,9 @@ where
 \overline{E} &= \frac{1}{M} \sum_{m=1}^M Err(\varphi_{{\cal L},\theta_m}), \\
 \overline{A} &= \mathbb{E}_{X} \{ \frac{1}{M} \sum_{m=1}^M (\varphi_{{\cal L},\theta_m}(X) - \psi_{{\cal L},\theta_1,\dots,\theta_M}(X))^2 \}.
 \end{align}
-The first term is the average generalization of the individual models. The second term is the ensemble ambiguity and
+The first term is the average generalization error of the individual models. The second term is the ensemble ambiguity and
 corresponds to the variance of the individual predictions around the prediction of the ensemble. Since $\overline{A}$ is non-negative,
-the generalization error is therefore smaller than the average generalization
+the generalization error of the ensemble is therefore smaller than the average generalization
 error of its constituents.
 \end{remark}
 
@@ -394,7 +394,7 @@ form the final prediction:
 \psi_{{\cal L},\theta_1,\dots,\theta_M}(\mathbf{x}) = \argmax_{c \in {\cal Y}}  \sum_{m=1}^M 1(\varphi_{{\cal L},\theta_m}(\mathbf{x})=c)
 \end{equation}
 Similarly, the rationale is that the majority prediction is the prediction that minimizes
-the average zero-one error with respect to the individual predictions of the models.
+the average zero-one error with respect to the individual predictions.
 When individual models provide class probability estimates $\widehat{p}_{{\cal L},\theta m}(Y=c|X=\mathbf{x})$,
 a natural alternative to majority voting consists in averaging the class probability estimates
 and then predict the class which is the most likely:
