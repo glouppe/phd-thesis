@@ -624,7 +624,7 @@ and high variance, making them very likely to benefit from the averaging
 process. As we will review in this section, random forests methods mostly
 differ from each other in the way they introduce random perturbations into the
 induction procedure. As highlighted in the previous section, the difficulty is
-to inject enough randomness in order to minimize $\rho(\mathbf{x})$ while
+to inject randomness while minimizing $\rho(\mathbf{x})$ and
 simultaneously maintaining a low bias in the randomized decision trees.
 
 \subsection{Randomized induction algorithms}
@@ -642,7 +642,7 @@ simultaneously maintaining a low bias in the randomized decision trees.
     expanded using the classical ID3 induction procedure.
 
 \item \citet{breiman:1996b}: \hfill \\
-    In a now famous technical report, \citet{breiman:1996b} was the first to
+    In a now famous technical report, \citet{breiman:1996b} was one of the earliest to
     show, both theoretically and empirically, that aggregating multiple
     versions of an estimator into an ensemble can give substantial gains in
     accuracy. He notes and shows that the average model $\mathbb{E}_{\cal L}\{
@@ -751,7 +751,7 @@ simultaneously maintaining a low bias in the randomized decision trees.
     While the original principles are due to several authors (as discussed
     above), Breiman is often cited as the father of forests of randomized trees. Parts of
     this recognition are certainly due to the pioneer theoretical analysis that
-    has always complemented his empirical analysis of algorithms. By contrast
+    has always complemented his empirical analysis of algorithms. In contrast
     with other authors, another reason might also be his efficient software
     implementation~\citep{breiman:2002} that was made freely available,
     allowing users outside of the machine learning community to quickly and
@@ -840,10 +840,10 @@ simultaneously maintaining a low bias in the randomized decision trees.
     feature extraction. As in Bagging~\citep{breiman:1996b}, individual decision
     trees are built on bootstrap replicates ${\cal L}^m$ of the learning set
     ${\cal L}$. To further enhance diversity (i.e., to further decorrelate the
-    predictions of the constituents of the ensemble), the input variables are
-    then randomly split into $q$  subsets, principal component analysis (PCA)
-    is run separately on each subset, and a new set $\widetilde{{\cal L}^m}$ of $p$ extracted input
-    variables is constructed by pooling all principal components. In this
+    predictions of the constituents of the ensemble), for each of the $M$ bootstrap replicates, input variables are
+    randomly partitioned into $q$  subsets of $\tfrac{p}{q}$ variables, principal component analysis (PCA)
+    is run separately on each subset, and a new set $\smash{\widetilde{{\cal L}^m}}$ of $p$ extracted input
+    variables is constructed by pooling all principal components from the $q$ projections. In this
     way, bootstrap replicates ${\cal L}^m$ are each independently transformed
     linearly into a new input space using $q$  axis rotations. In this
     framework,  decision trees are particularly suited because they are
