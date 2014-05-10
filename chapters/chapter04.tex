@@ -882,13 +882,12 @@ constitute a computationally efficient alternative to $K$-fold cross-validation,
 reducing to $M$ the number of invocations of the learning
 algorithm, instead of otherwise having to build $KM$ base models.
 
-As discussed earlier, bootstrap replicates reduce the effective size of the
-learning set ${\cal L}$, which may sometimes have a negative impact, e.g. when
-${\cal L}$ is too small. As shown experimentally in \citep{louppe:2012},
-bootstrapping is in fact rarely crucial for random forests to obtain good
-accuracy. On the contrary, not using bootstrap samples usually yield better
-results which, depending on the application, should be put in balance with the
-benefits of getting out-of-bag estimates.
+While out-of-bag estimates constitute an helpful tool, their benefits should be
+put in balance with the potential decrease of accuracy that the use of
+bootstrap replicates may induce. As shown experimentally in
+\citep{louppe:2012}, bootstrapping is in fact rarely crucial for random forests
+to obtain good accuracy. On the contrary, not using bootstrap samples usually
+yield better results.
 
 \subsection{Variable importances}
 
@@ -979,11 +978,13 @@ Interestingly, $\phi$ provides a non-linear transformation to a sparse very
 high-dimensional space, taking somehow into account the structure of the
 problem. If two samples are structurally similar, then they will end up in the
 same leafs and their representations in the projected space will be close, even
-if they may in fact appear quite dissimilar in the original space. In practical
+if they may in fact appear quite dissimilar in the original space. \todo{Discussion avec \citep{geurts:2006} 5.2.} In practical
 applications (e.g., in computer vision), such forest-based transforms have
 proven to be helpful and efficient embeddings, e.g., when combined with linear
 methods or support vector machines, even when trees in the forest are built
 totally at random~\citep{moosmann:2006,maree:2013}.
+
+
 
 \section{Illustration}
 \label{sec:4:illustration}
