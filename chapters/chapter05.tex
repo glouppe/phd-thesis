@@ -132,18 +132,22 @@ is studied in three cases:
 \end{description}
 
 Since the induction algorithm looks for splits that most decrease impurity (in
-particular, as $K\to p$) balanced partitions of the nodes samples should in
-fact be more likely than partitions that are unbalanced. In practice, random
-forests should therefore approach the best case rather than the average case
-(for which partitions are equally likely). However as randomization increases
-(e.g., as $K \to 1$), splits yield partitions that tend to be more
-equiprobable, hence approaching the average case. As such, we believe the
-complexity for the true average case should lie in-between the complexity of
-the best case and the complexity of the average case as defined above. As for
-the worst case, it should only arise in exceptional circumstances, when the
-output is hardly separable from the inputs.
-
-\todo{Rewrite proofs more formally.}
+particular, as $K\to p$), we argue that balanced partitions of the nodes
+samples should  be more likely than partitions that are unbalanced (such a
+claim is however highly data dependent). In practice, random forests should
+therefore approach the best case rather than the average case (for which
+partitions are equally likely). However as randomization increases (e.g., as $K
+\to 1$), splits yield partitions that tend to be more equiprobable, hence
+approaching the average case. As such, we believe the complexity for the true
+average case should lie in-between the complexity of the best case and the
+complexity of the average case as defined above. As for the worst case, it
+should only arise in exceptional circumstances, when the output is nearly
+independent from the inputs. In particular, due to the end-cut preference of
+classicial impurity criteria, such worst splits are in fact more likely to be
+selected (see \citep{breiman:1984}, Theorem 11.1) if none of the $K$ selected
+variables are informative with respect to the output. Note that this effect is
+less pronounced in ETs because thresholds are drawn at random rather than being
+optimized locally (as in RF).
 
 \begin{remark}{Master Theorem}
 Some of the results outlined in the remaining of this section make use of the
