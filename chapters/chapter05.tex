@@ -23,7 +23,7 @@ operations required for building models from data.
 Given the exponential growth in the number of possible partitions of $N$
 samples, we chose in Section~\ref{sec:3:splitting-rules} to restrict splitting
 rules to binary splits defined on single variables. Not only this is sufficient
-for reaching good accuracy (as discussed in Section~\ref{sec:4:consistency}),
+for reaching good accuracy (as discussed in the previous chapter),
 it also allows for time complexity to effectively remain within reasonable bounds.
 
 Formally, let $T(N)$ denotes the time complexity for building a decision tree from a
@@ -80,12 +80,14 @@ In the original CART induction procedure~\citep{breiman:1984}
 (Algorithms~\ref{algo:findsplit} and \ref{algo:findsplit:x_j}), finding a split
 $s$  requires, for each of the $p$ variables $X_j$ (for $j=1,\dots,p$), to sort
 the values $x_{i,j}$ of all $N$ node samples (for $i=1,\dots,N$) and then to
-iterate over these in order to find the best threshold $v$. The most costly
-operation is sorting, whose time complexity is at worst $O(N \log N)$. As a
-result, the overall within-node complexity is $c(N) = O(p N \log N)$. In a
-randomized tree as built with the Random Forest algorithm~\citep{breiman:2001}
-(RF, Algorithm~\ref{algo:findsplit:random}), the search of the best split $s$
-is carried out in the same way, but only on $K \leq p$ of the input variables,
+iterate over these in order to find the best threshold $v$. Assuming that the
+value of the impurity criterion can computed iteratively for consecutive
+thresholds, the most costly operation
+is sorting, whose time complexity is at worst $O(N \log N)$. As a result, the
+overall within-node complexity is $c(N) = O(p N \log N)$. In a randomized tree
+as built with the Random Forest algorithm~\citep{breiman:2001} (RF,
+Algorithm~\ref{algo:findsplit:random}), the search of the best split $s$ is
+carried out in the same way, but only on $K \leq p$ of the input variables,
 resulting in a within-node complexity $c(N) = O(K N \log N)$. In Extremely
 Randomized Trees~\citep{geurts:2006} (ETs, Algorithm~\ref{algo:findsplit:et}),
 discretization thresholds are drawn at random within the minimum and maximum
@@ -93,9 +95,9 @@ node sample values of $X_j$, making sort no longer necessary. As such, the
 within-node complexity reduces to the time required for finding these lower and
 upper bounds, which can be done in linear time, hence $c(N)=O(KN)$. Finally, in
 Perfect Random Tree Ensembles~\citep{cutler:2001} (PERT,
-Algorithm~\ref{algo:findsplit:pert}), cut-points $v$ are set midway between
-two randomly drawn samples, which can be done in constant time, independently
-of the number $N$ of node samples. Yet, the within-node complexity is lower
+Algorithm~\ref{algo:findsplit:pert}), cut-points $v$ are set midway between two
+randomly drawn samples, which can be done in constant time, independently of
+the number $N$ of node samples. Yet, the within-node complexity is lower
 bounded by the time required for partitioning the node samples into ${t_L}$ and
 ${t_R}$, hence $c(N)=O(N)$.
 
@@ -119,7 +121,7 @@ is studied in three cases:
 
 \item \textit{Average case.}\hfill\\
       The average case corresponds to the average time
-      complexity, as taken over all possible learning sets ${\cal L}$ and
+      complexity, as taken over all possible learning sets ${\cal L}$ (of a given size) and
       all random seeds $\theta$.  Since the analysis of this case is hardly
       feasible without strong assumptions on the structure of the problem,
       we consider instead the case where the sizes of the possible
@@ -143,7 +145,7 @@ output is hardly separable from the inputs.
 
 \begin{remark}{Master Theorem}
 Some of the results outlined in the remaining of this section make use of the
-Master Theorem~\citep{goodrich:2006}, which recall below to be self-contained.
+Master Theorem~\citep{bentley:1980,goodrich:2006}, which is recalled below to be self-contained.
 
 \begin{theorem}
 Let consider the recurrence equation
@@ -348,7 +350,7 @@ As a result, $T(N) = O(KN \log N)$ in the average case.
 From Theorems~\ref{thm:6:best:knlogn}-\ref{thm:6:average:kn}, the total time
 complexity for building an ensemble of $M$ randomized trees can finally be
 derived. As summarized in Table~\ref{table:complexity-fit}, complexity remains
-within reasonable bounds for all variants studied in this work. In the best
+within polynimial time for all variants studied in this work. In the best
 case, complexity is linear with the number of split variables considered at
 each node (i.e., $O(K)$) and linearithmic or quasilinear with the number of
 (unique) samples effectively used to build each tree (i.e., $O(N\log N)$ or
@@ -358,7 +360,7 @@ the context of large datasets. Reassuringly, the analysis of the average case
 shows that pathological cases are not dominant and that, on average, complexity
 behaves as in the best case.
 
-\begin{table}
+\begin{table}[b]
     \centering
     \begin{tabular}{| c | c c c |}
     \hline
@@ -401,7 +403,10 @@ becomes linearithmic instead of quasilinear. With respect to RF,
 speedup is asymptotically $O(\log N)$. Finally, PERT shows to be the fastest
 method of all, which is due to the fact that only a single split variable
 is considered at each split. For $K=1$ however, ETs and PERT have identical
-time complexity.
+time complexity. Note that the analysis presented here is only valid
+asymptotically. In pratice, constant factors might lead to different
+observed results, though they should not significantly deviate  from our conclusions if
+algorithms are all implemented from a common codebase.
 
 \section{Complexity of the prediction procedure}
 \label{sec:5:complexity-predict}
@@ -1090,6 +1095,8 @@ algorithm should be considered with care to obtain an efficient implementation:
     \ref{thm:6:average:kn} for $K=p$. Neglecting constant factors, the ratio between the two
     implementations is $O(\frac{p}{K\log \widetilde{N}})$, which might not necessarily
     lead to faster building times depending on $K$ and the size of the problem.
+    For this reason, pre-sorting is in fact not used within the Scikit-Learn implementation
+    of random forests.
 
 \end{description}
 
@@ -1125,7 +1132,7 @@ induction procedure and assigning whole sub-trees to develop once the waiting
 queue contains $N_p$ nodes. Once again however, sub-trees may take longer to
 build than others, hence under-utilizing computational resources if the
 resulting decision tree is not balanced. To alleviate this issue, processors
-may be assigned single nodes to develop using a producer-consumer scheme to
+may be assigned single nodes to develop (that is, one at a time) using a producer-consumer scheme to
 balance workload in a fair way. Unfortunately, this latter approach often proves to be
 dominated in practice by the overhead due to task assignment and bookkeeping
 activities. Alternatively, the construction of a tree can also be distributed
@@ -1171,42 +1178,6 @@ all illustrate the effect of one the hyper-parameters with respect to the time r
 a forest (on the left plots), the average depth of the trees (in the middle plots)
 and the error of the ensemble (on the right plots).
 
-\begin{figure}
-\hspace{-1.75cm}
-\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_estimators_time_fit.pdf}}
-\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_estimators_average_depth.pdf}}
-\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_estimators_mse.pdf}}
-\caption{Effect of the number $M$ of trees.}
-\label{fig:5:artificial:M}
-\end{figure}
-
-\begin{figure}
-\hspace{-1.75cm}
-\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_train_time_fit.pdf}}
-\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_train_average_depth.pdf}}
-\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_train_mse.pdf}}
-\caption{Effect of the size $N$ of the learning set.}
-\label{fig:5:artificial:N}
-\end{figure}
-
-\begin{figure}
-\hspace{-1.75cm}
-\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_features_time_fit.pdf}}
-\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_features_average_depth.pdf}}
-\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_features_mse.pdf}}
-\caption{Effect of the number $p$ of input variables.}
-\label{fig:5:artificial:p}
-\end{figure}
-
-\begin{figure}
-\hspace{-1.75cm}
-\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/max_features_time_fit.pdf}}
-\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/max_features_average_depth.pdf}}
-\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/max_features_mse.pdf}}
-\caption{Effect of $K$ in random variable selection.}
-\label{fig:5:artificial:K}
-\end{figure}
-
 Figure~\ref{fig:5:artificial:M} first demonstrates the effect of the number $M$
 of trees. As expected, the time complexity of the induction procedure is
 $O(M)$ while the average depth of the leaves is constant with $M$, since the
@@ -1230,17 +1201,45 @@ $N$ increases, even if RF was strictly better on less data. This
 confirms once again that finding the very best splits is not strictly necessary
 to achieve good results.
 
+\begin{figure}
+\hspace{-4cm}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_estimators_time_fit.pdf}}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_estimators_average_depth.pdf}}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_estimators_mse.pdf}}
+\caption{Effect of the number $M$ (= \texttt{n\_estimators})  of trees ($N=1000$, $p=10$, $K=\sqrt{p}$).}
+\label{fig:5:artificial:M}
+\end{figure}
+
+\begin{figure}
+\hspace{-4cm}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_train_time_fit.pdf}}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_train_average_depth.pdf}}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_train_mse.pdf}}
+\caption{Effect of the size $N$ (= \texttt{n\_train}) of the learning set ($M=250$, $p=10$, $K=\sqrt{p}$).}
+\label{fig:5:artificial:N}
+\end{figure}
+
+\begin{figure}
+\hspace{-4cm}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_features_time_fit.pdf}}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_features_average_depth.pdf}}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_features_mse.pdf}}
+\caption{Effect of the number $p$ (= \texttt{n\_features}) of input variables ($N=1000$, $M=250$, $K=\sqrt{p}$).}
+\label{fig:5:artificial:p}
+\end{figure}
+
 Next, Figure~\ref{fig:5:artificial:p} shows the effect of irrelevant and noisy
 variables. The right plot first indicates that adding irrelevant variables
 deteriorates the accuracy of the forests. This is expected since the more the
 irrelevant variables, the higher the probability of splitting on one of them
 and therefore of fitting noise in the data. More importantly, the left and
 middle plots show that RF is more affected than ETs by the addition of noisy
-variables. This is actually a consequence of the end-cut preference of RF. When
+variables. This is actually a consequence of the end-cut preference of the classical impurity criteria. When
 splitting on noisy variables and looking for the best threshold, partitions of
 the node samples are more likely to be unbalanced rather than the opposite.
 This explains why on the middle plot the average depth of RF eventually gets
-larger than the depth of ETs -- which does not suffer from end-cut preference.
+larger than the depth of ETs -- which suffers less from end-cut preference since
+thresholds are not optimized locally.
 
 Figure~\ref{fig:5:artificial:K} illustrates the effect of random variable
 selection. On the left plot, building times grow as expected in $O(K)$ with the
@@ -1255,10 +1254,19 @@ be achieved in ETs for $K=7$.
 
 \begin{figure}
 \hspace{-1.75cm}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/max_features_time_fit.pdf}}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/max_features_average_depth.pdf}}
+\subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/max_features_mse.pdf}}
+\caption{Effect of $K$ (= \texttt{max\_features}) in random variable selection ($N=1000$, $M=250$, $p=10$).}
+\label{fig:5:artificial:K}
+\end{figure}
+
+\begin{figure}
+\hspace{-1.75cm}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/bootstrap_time_fit.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/bootstrap_average_depth.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/bootstrap_mse.pdf}}
-\caption{Effect of bootstrap replicates.}
+\caption{Effect of bootstrap replicates ($N=1000$, $M=250$, $p=10$, $K=\sqrt{p}$).}
 \label{fig:5:artificial:bootstrap}
 \end{figure}
 
@@ -1297,7 +1305,7 @@ learning packages.
     \hline
     \textit{Scikit-Learn} & Bagging, RF, ETs, RS, RP & C/R & Gini,\newline Entropy,\newline MSE & \texttt{max\_depth}, \texttt{min\_samples\_split}, \texttt{min\_samples\_leaf}, \texttt{max\_leaf\_nodes} & \cmark & \cmark & BSD & Python & \citep{pedregosa:2011} \\
     \textit{OpenCV} & Bagging, RF, ETs & C/R & Gini & \texttt{max\_depth}, \texttt{min\_samples\_count}, \texttt{forest\_accuracy} & \cmark & \xmark & BSD & C/C++ & \citep{bradski:2008} \\
-    \textit{OK3} & Bagging, RF, ETs & C/R & MSE & \texttt{varmin},\newline \texttt{nmin} & \cmark & \xmark & Source-available & C & \citep{geurts:2006} \\
+    \textit{OK3} & Bagging, RF, ETs & C/R & MSE & \texttt{varmin},\newline \texttt{nmin},\newline \texttt{maxnbsplits} & \cmark & \xmark & Source-available & C & \citep{geurts:2006} \\
     \textit{Weka} & Bagging, RF & C & Gini & \texttt{depth}  & \xmark & \cmark & GPL & Java & \citep{hall:2009} \\
     \textit{randomForest} & Bagging, RF & C/R & Gini & \texttt{nodesize}, \texttt{maxnodes} & \cmark & \xmark & GPL & R & \citep{liaw:2002} \\
     \textit{Orange} & Bagging, RF & C/R & GainRatio, Gini,\newline Relief,\newline MSE & \texttt{worst\_acceptable}, \texttt{min\_susbet}, \texttt{min\_instances}, \texttt{max\_depth}, \texttt{max\_majority} & \xmark & \xmark & GPL & Python & \citep{demsar:2013} \\
@@ -1347,7 +1355,7 @@ In the experiments carried out below, we benchmark the Scikit-Learn
 implementations of RF and ETs against all libraries listed in
 Table~\ref{table:implementations}. We do not compare against H2O since it
 requires a dedicated cloud environment. Implementations are all benchmarked on
-29 well-known and publicly available datasets that were chosen a priori and
+29 well-known and publicly available classification datasets that were chosen a priori and
 independently of the results obtained. Overall, these datasets cover a wide
 range of conditions (including both artificial and real data), with a sample
 size $N$ ranging from 208 to 70000 and a number $p$ of variables varying from 6
@@ -1411,7 +1419,7 @@ shows to be highly rewarding in terms of computational performance.
 
 \begin{table}
     \footnotesize
-    \hspace{-1.25cm}
+    \hspace{-3.5cm}
     \rotatebox{90}{
 \begin{tabular}{|c| >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering\arraybackslash}p{1.75cm} |}
 \hline
@@ -1460,7 +1468,7 @@ shows to be highly rewarding in terms of computational performance.
 
 \begin{table}
     \footnotesize
-    \hspace{-3.5cm}
+    \hspace{-1.25cm}
     \rotatebox{90}{
 \begin{tabular}{|c| >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering\arraybackslash}p{1.75cm} |}
 \hline
