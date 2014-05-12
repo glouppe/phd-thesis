@@ -38,3 +38,4 @@ benchmarks/output/*
 benchmarks/ok3/*
 benchmarks/figs/*
 benchmarks/resources/*
+scripts/.ipynb_checkpoints/*
