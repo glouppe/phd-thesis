@@ -802,6 +802,24 @@ defined below:
 
 \end{description}
 
+As an example, Table~\ref{table:tree-array} illustrates the array
+representation of the decision tree shown in Figure~\ref{fig:5:tree}, as built
+from the learning set ${\cal L}$ of Figure~\ref{fig:5:set}. Internal nodes
+($t_0$, $t_2$, $t_3$ and $t_6$) are nodes for which the corresponding values in
+$\texttt{left\_child}$, $\texttt{right\_child}$, $\texttt{feature}$ and
+$\texttt{threshold}$ are not empty, while leaves ($t_1$, $t_4$, $t_7$ and
+$t_8$) correspond to nodes for which these values are not defined. In the case
+of classification, the \texttt{value} array contains the number of samples of
+each class for each node. From these, class probability estimates $p_{\cal
+L}(Y=c|t)$ can be computed by dividing \texttt{value[t][c]} by the number of
+samples $\texttt{n\_samples[t]}$ in $t$. In the case of regression,
+\texttt{value[t]} would  contain the average output value for the samples in
+$t$. Finally, let us note that storing node impurities in the \texttt{impurity}
+array is not strictly necessary, since these values are only used during
+construction. Yet, storing them can prove to be valuable, e.g., for
+later inspection of the decision tree or for computing variable importances (see
+Chapter~\ref{ch:importances}) more readily.
+
 \begin{figure}
 \centering
 \begin{minipage}{0.55\textwidth}
@@ -839,24 +857,6 @@ defined below:
     \caption{Array representation of the decision tree in Figure~\ref{fig:5:tree}.}
     \label{table:tree-array}
 \end{table}
-
-As an example, Table~\ref{table:tree-array} illustrates the array
-representation of the decision tree shown in Figure~\ref{fig:5:tree}, as built
-from the learning set ${\cal L}$ of Figure~\ref{fig:5:set}. Internal nodes
-($t_0$, $t_2$, $t_3$ and $t_6$) are nodes for which the corresponding values in
-$\texttt{left\_child}$, $\texttt{right\_child}$, $\texttt{feature}$ and
-$\texttt{threshold}$ are not empty, while leaves ($t_1$, $t_4$, $t_7$ and
-$t_8$) correspond to nodes for which these values are not defined. In the case
-of classification, the \texttt{value} array contains the number of samples of
-each class for each node. From these, class probability estimates $p_{\cal
-L}(Y=c|t)$ can be computed by dividing \texttt{value[t][c]} by the number of
-samples $\texttt{n\_samples[t]}$ in $t$. In the case of regression,
-\texttt{value[t]} would  contain the average output value for the samples in
-$t$. Finally, let us note that storing node impurities in the \texttt{impurity}
-array is not strictly necessary, since these values are only used during
-construction. Yet, storing them can prove to be valuable, e.g., for
-later inspection of the decision tree or for computing variable importances (see
-Chapter~\ref{ch:importances}) more readily.
 
 By implementing the array representation as dynamic tables~\citep{cormen:2001},
 insertion of new nodes has an $O(1)$ amortized cost, while keeping memory
@@ -985,7 +985,7 @@ algorithm should be considered with care to obtain an efficient implementation:
     implemented using the median-of-three as pivot~\citep{bentley:1993}, hence
     yielding better partitions and further improving performance.
 
-    \begin{figure}
+    \begin{figure}[b]
         \centering
         \includegraphics[width=0.9\textwidth]{figures/ch5_sort.pdf}
         \caption{3-way partition in Quicksort. Once $\texttt{i=r}$, elements that are identical
@@ -1222,7 +1222,7 @@ to achieve good results.
 \end{figure}
 
 \begin{figure}
-\hspace{-4cm}
+\hspace{-1.75cm}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_features_time_fit.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_features_average_depth.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_features_mse.pdf}}
@@ -1243,17 +1243,6 @@ This explains why on the middle plot the average depth of RF eventually gets
 larger than the depth of ETs -- which suffers less from end-cut preference since
 thresholds are not optimized locally.
 
-Figure~\ref{fig:5:artificial:K} illustrates the effect of random variable
-selection. On the left plot, building times grow as expected in $O(K)$ with the
-number $K$ of variables randomly drawn at each node. The average depth of the
-tree shows that increasing $K$ slightly reduces the depth of the trees, which
-is  explained by the fact that better splits are selected as more variables are
-evaluated. Finally, the right plot again confirms results from
-Chapter~\ref{ch:forest}. Random perturbations negatively impact the resulting
-model when they are too strong (at $K=1$) but then become beneficial as $K$
-increases. For RF, the optimal trade-off is at $K=5$ while the lowest error can
-be achieved in ETs for $K=7$.
-
 \begin{figure}
 \hspace{-1.75cm}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/max_features_time_fit.pdf}}
@@ -1271,6 +1260,17 @@ be achieved in ETs for $K=7$.
 \caption{Effect of bootstrap replicates ($N=1000$, $M=250$, $p=10$, $K=\sqrt{p}$).}
 \label{fig:5:artificial:bootstrap}
 \end{figure}
+
+Figure~\ref{fig:5:artificial:K} illustrates the effect of random variable
+selection. On the left plot, building times grow as expected in $O(K)$ with the
+number $K$ of variables randomly drawn at each node. The average depth of the
+tree shows that increasing $K$ slightly reduces the depth of the trees, which
+is  explained by the fact that better splits are selected as more variables are
+evaluated. Finally, the right plot again confirms results from
+Chapter~\ref{ch:forest}. Random perturbations negatively impact the resulting
+model when they are too strong (at $K=1$) but then become beneficial as $K$
+increases. For RF, the optimal trade-off is at $K=5$ while the lowest error can
+be achieved in ETs for $K=7$.
 
 Finally, Figure~\ref{fig:5:artificial:bootstrap} studies the effect of using
 bootstrap replicates. For RF, learning trees from learning sets ${\cal L}^m$
