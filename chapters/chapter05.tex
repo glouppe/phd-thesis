@@ -134,7 +134,7 @@ is studied in three cases:
 Since the induction algorithm looks for splits that most decrease impurity (in
 particular, as $K\to p$), we argue that balanced partitions of the nodes
 samples should  be more likely than partitions that are unbalanced (such a
-claim is however highly data dependent). In practice, random forests should
+claim is however highly data dependent). Under this assumption, random forests should
 therefore approach the best case rather than the average case (for which
 partitions are equally likely). However as randomization increases (e.g., as $K
 \to 1$), splits yield partitions that tend to be more equiprobable, hence
