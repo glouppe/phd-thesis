@@ -16,7 +16,33 @@ of variable importance measures.
 \section{Redundant variables}
 \label{sec:7:redundant}
 
+In a typical supervised learning task, it is not uncommon for input variables
+to be correlated and to share common bits of information. In that sense,
+variables are often \textit{partially redundant}, i.e., some of the variables
+share some of the same information about the ouput variable $Y$. In some
+circumstances, redundancy can also be \textit{total}  or
+\textit{complete}, i.e., some of the variables convey the exact same
+information with respect to the output variable $Y$. As we show in this
+section, redundancy may have a significant effect in random forests, both with
+respect to the accuracy of the ensemble and to variable importance measures.
 
+Formally, let us define the total redundancy of two variables $X_i$, $X_j$ as
+follows:
+
+\begin{definition}
+Two variables $X_i, X_j$ are totally redundant if the mutual information $I(X_i;X_j)$ is maximum.
+\end{definition}
+
+Intuitively, two variables $X_i$ and $X_j$ are therefore (totally) redundant
+if one can perfectly explains the other and vice-versa.
+
+% problem setting: ajouter
+% expliquer l'effect sur le choix du split
+% dériver les nouvelles formules
+
+% conclusion de l'analyse : faire gaffe à l'inteprétation des importances!
+%                           des variables peu importantes peuvent l'être
+%                           parce qu'elles contiennent une info qui est redondante
 
 
 \section{Bias in variable importances}
