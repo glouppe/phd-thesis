@@ -16,25 +16,30 @@ of variable importance measures.
 \section{Redundant variables}
 \label{sec:7:redundant}
 
-In a typical supervised learning task, it is not uncommon for input variables
-to be correlated and to share common bits of information. In that sense,
-variables are often \textit{partially redundant}, i.e., some of the variables
-share some of the same information about the ouput variable $Y$. In some
-circumstances, redundancy can also be \textit{total}  or
-\textit{complete}, i.e., some of the variables convey the exact same
-information with respect to the output variable $Y$. As we show in this
-section, redundancy may have a significant effect in random forests, both with
-respect to the accuracy of the ensemble and to variable importance measures.
+In supervised learning tasks, it is typical for input variables to be
+correlated, at least to some extent, and to share common bits of information.
+In that sense, variables are often \textit{partially redundant}, i.e.,
+variables may share some of the same information about the ouput variable $Y$.
+In the extreme, redundancy is \textit{total}  or \textit{complete}, with some
+of the variables conveying exactly the same information with respect to the
+output variable $Y$. In this section, we study redundancy in random forests and
+show that it may have a significant effect on both the accuracy of the ensemble
+and variable importance measures.
 
-Formally, let us define the total redundancy of two variables $X_i$, $X_j$ as
-follows:
+As a guiding example for our discussion, let us consider a set of input
+variables and let us study the effect of adding redundant variables on the
+structure of randomized trees built in a random forest. Intuitively, two
+variables $X_i$ and $X_j$ are redundant if one can perfectly explains the other
+and vice-versa. Formally, we define redundancy as follows:
 
 \begin{definition}
-Two variables $X_i, X_j$ are totally redundant if the mutual information $I(X_i;X_j)$ is maximum.
+Two variables $X_i, X_j$ are totally redundant if the mutual information
+$I(X_i;X_j)$ is maximum.
 \end{definition}
 
-Intuitively, two variables $X_i$ and $X_j$ are therefore (totally) redundant
-if one can perfectly explains the other and vice-versa.
+In this framework, a variable and a copy this variable are therefore totally
+redundant. With respect to random forests, adding copies...
+
 
 % problem setting: ajouter
 % expliquer l'effect sur le choix du split
