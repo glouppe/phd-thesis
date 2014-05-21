@@ -122,11 +122,61 @@ ensemble of fully developed totally randomized trees built on $V\cup
 \end{proposition}
 
 \begin{proof}
-
+From Theorem~\ref{thm:imp}, the variable importance of $X_j$ is
+\begin{align}
+\text{Imp}(X_j) &= \sum_{k=0}^{p-1+1} \frac{1}{C_{p+1}^k} \frac{1}{p+1-k} \sum_{B \in {\cal P}_k(V^{-j} \cup \{X_j^\prime\})} I(X_j;Y|B) \nonumber \\
+&= \sum_{k=0}^{p-1} \frac{1}{C_{p+1}^k} \frac{1}{p+1-k} \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B) \nonumber \\
+&= \sum_{k=0}^{p-1} \frac{p-k}{p+1} \frac{1}{C_{p}^k} \frac{1}{p-k} \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B)
+\end{align}
+since from Lemma~\ref{lemma:red1}, $I(X_j;Y|B\cup X_j^\prime)=0$ for all $B \in {\cal P}(V^{-j})$.
 \end{proof}
 
+\begin{lemma}\label{lemma:red2}
+Let $X_i$ and $X_j$ be totally redundant variables. For any conditioning set
+$B$ and for any variable $X_l$,
+\begin{equation}
+I(X_l;Y|B,X_i) = I(X_l;Y|B, X_j) = I(X_l;Y|B, X_i, X_j) \label{lemma:red2:eqn}
+\end{equation}
+\end{lemma}
 
-% dériver les nouvelles formules
+\begin{proof}
+From the chaining rule of the mutual information, we have
+\begin{align}
+I(X_i,X_j,X_l;Y|B) &= I(X_l;Y|B) + I(X_i,X_j;Y|B,X_l) \nonumber \\
+                   &= I(X_l;Y|B) + I(X_i;Y|B,X_l) + I(X_i;Y|B, X_j, X_l) \nonumber \\
+                   &= I(X_l;Y|B) + I(X_i;Y|B,X_l) \quad\text{(Lemma~\ref{lemma:red1})} \nonumber \\
+                   &= I(X_i, X_l;Y|B) \nonumber \\
+                   &= I(X_i;Y|B) + I(X_l;Y|B,X_i) \label{lemma:red2:eqn1}.
+\end{align}
+By symmetry,
+\begin{equation}\label{lemma:red2:eqn2}
+I(X_i,X_j,X_l;Y|B) = I(X_j;Y|B) + I(X_l;Y|B,X_j),
+\end{equation}
+which proves that $I(X_l;Y|B,X_i) = I(X_l;Y|B, X_j)$, by combining both equations
+and using the fact that $I(X_i;Y|B) = I(X_j;Y|B)$ (Lemma~\ref{lemma:red1}).
+
+From the chaining rule, we also have
+\begin{align}
+I(X_i,X_j,X_l;Y|B) &= I(X_i, X_j;Y|B) + I(X_l;Y|B,X_i,X_j) \nonumber \\
+                   &= I(X_i; Y|B) + I(X_j;Y|B, X_i) + I(X_l;Y|B,X_i,X_j) \nonumber \\
+                   &= I(X_i; Y|B) + I(X_l;Y|B,X_i,X_j).
+\end{align}
+By combining this last equation with Equation~\ref{lemma:red2:eqn1},
+we finally have $I(X_l;Y|B,X_i) = I(X_l;Y|B,X_i,X_j)$, which proves
+Lemma~\ref{lemma:red2}.
+\end{proof}
+
+\begin{proposition}\label{prop:red:other}
+Let $X_j\in V$ be relevant variable with respect to $Y$ and $V$ and let
+$X_j^\prime \notin V$ be a totally redundant variable with respect to $X_j$.
+The infinite sample size importance of $X_l \in V$ as computed with an infinite
+ensemble of fully developed totally randomized trees built on $V\cup
+\{X_j^\prime\}$ is
+\begin{align}
+\text{Imp}(X_l) &= \sum_{k=0}^{p-2} \frac{p-k}{p+1} \frac{1}{C_p^k} \frac{1}{p-k} \sum_{B \in {\cal P}_k(V^{-l} \setminus X_j)} I(X_l;Y|B) + \\
+                & \hookrightarrow \sum_{k=0}^{p-2}  \left[ \sum_{k'=1}^2 \frac{C^{k'}_2}{C_{p+1}^{k+k'}} \frac{1}{p+1-(k+k')} \right]  \sum_{B \in {\cal P}_k(V^{-l}\setminus X_j)} I(X_l;Y|B\cup X_j) \nonumber
+\end{align}
+\end{proposition}
 
 % conclusion de l'analyse : faire gaffe à l'inteprétation des importances!
 %                           des variables peu importantes peuvent l'être
