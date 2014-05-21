@@ -126,7 +126,7 @@ From Theorem~\ref{thm:imp}, the variable importance of $X_j$ is
 \begin{align}
 \text{Imp}(X_j) &= \sum_{k=0}^{p-1+1} \frac{1}{C_{p+1}^k} \frac{1}{p+1-k} \sum_{B \in {\cal P}_k(V^{-j} \cup \{X_j^\prime\})} I(X_j;Y|B) \nonumber \\
 &= \sum_{k=0}^{p-1} \frac{1}{C_{p+1}^k} \frac{1}{p+1-k} \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B) \nonumber \\
-&= \sum_{k=0}^{p-1} \frac{p-k}{p+1} \frac{1}{C_{p}^k} \frac{1}{p-k} \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B)
+&= \sum_{k=0}^{p-1} \frac{p-k}{p+1} \frac{1}{C_{p}^k} \frac{1}{p-k} \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B),
 \end{align}
 since from Lemma~\ref{lemma:red1}, $I(X_j;Y|B\cup X_j^\prime)=0$ for all $B \in {\cal P}(V^{-j})$.
 \end{proof}
@@ -174,9 +174,28 @@ ensemble of fully developed totally randomized trees built on $V\cup
 \{X_j^\prime\}$ is
 \begin{align}
 \text{Imp}(X_l) &= \sum_{k=0}^{p-2} \frac{p-k}{p+1} \frac{1}{C_p^k} \frac{1}{p-k} \sum_{B \in {\cal P}_k(V^{-l} \setminus X_j)} I(X_l;Y|B) + \\
-                & \hookrightarrow \sum_{k=0}^{p-2}  \left[ \sum_{k'=1}^2 \frac{C^{k'}_2}{C_{p+1}^{k+k'}} \frac{1}{p+1-(k+k')} \right]  \sum_{B \in {\cal P}_k(V^{-l}\setminus X_j)} I(X_l;Y|B\cup X_j) \nonumber
+                & \hookrightarrow \sum_{k=0}^{p-2}  \left[ \sum_{k'=1}^2 \frac{C^{k'}_2}{C_{p+1}^{k+k'}} \frac{1}{p+1-(k+k')} \right]  \sum_{B \in {\cal P}_k(V^{-l}\setminus X_j)} I(X_l;Y|B\cup X_j). \nonumber
 \end{align}
 \end{proposition}
+
+\begin{proof}
+From Lemma~\ref{lemma:red2}, conditioning by either $X_j$, $X_j^\prime$ or by
+both  variables yield terms $I(X_l;Y|B,X_j)$, $I(X_l;Y|B,X_j^\prime)$ and
+$I(X_l;Y|B,X_j,X_j^\prime)$ that are all equal. From Theorem~\ref{thm:imp}, the
+variable importance of $X_l$ can therefore be rewritten as follows:
+
+\begin{align}
+\text{Imp}(X_l) &= \sum_{k=0}^{p-1+1} \frac{1}{C_{p+1}^k} \frac{1}{p+1-k} \sum_{B \in {\cal P}_k(V^{-l}\cup X_j^\prime)} I(X_l;Y|B) \nonumber \\
+           &= \sum_{k=0}^{p-2} \sum_{k'=0}^2 \frac{1}{C_{p+1}^{k+k'}} \frac{1}{p+1-(k+k')} \sum_{\substack{B \in {\cal P}_k(V^{-l} \setminus X_j)\\ B' \in {\cal P}_{k'}(\{X_j, X_j^\prime\})} } I(X_l;Y|B \cup B') \nonumber \\
+           &= \sum_{k=0}^{p-2} \frac{1}{C_{p+1}^k} \frac{1}{p+1-k} \sum_{B \in {\cal P}_k(V^{-l} \setminus X_j)} I(X_l;Y|B) + \nonumber \\
+           & \hookrightarrow \sum_{k=0}^{p-2} \left[ \sum_{k'=1}^2 \frac{C^{k'}_2}{C_{p+1}^{k+k'}} \frac{1}{p+1-(k+k')} \right] \sum_{B \in {\cal P}_k(V^{-l} \setminus X_j)} I(X_l;Y|B \cup X_j) \nonumber \\
+           &= \sum_{k=0}^{p-2} \frac{p-k}{p+1} \frac{1}{C_p^k} \frac{1}{p-k} \sum_{B \in {\cal P}_k(V^{-l} \setminus X_j)} I(X_l;Y|B) + \nonumber \\
+           & \hookrightarrow \sum_{k=0}^{p-2}  \left[ \sum_{k'=1}^2 \frac{C^{k'}_2}{C_{p+1}^{k+k'}} \frac{1}{p+1-(k+k')} \right]  \sum_{B \in {\cal P}_k(V^{-l}\setminus X_j)} I(X_l;Y|B\cup X_j). \nonumber
+\end{align}
+\end{proof}
+
+% interpretation
+% extension à C copies => conclusions qualitatives similaires
 
 % conclusion de l'analyse : faire gaffe à l'inteprétation des importances!
 %                           des variables peu importantes peuvent l'être
