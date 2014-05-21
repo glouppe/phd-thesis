@@ -16,33 +16,116 @@ of variable importance measures.
 \section{Redundant variables}
 \label{sec:7:redundant}
 
-In supervised learning tasks, it is typical for input variables to be
+In most machine learning problems, it is typical for input variables to be
 correlated, at least to some extent, and to share common bits of information.
-In that sense, variables are often \textit{partially redundant}, i.e.,
+In image classification for instance, pixels are usually highly correlated and
+individually represent nearly the same information as their neighbors. In that
+sense, variables are often \textit{partially redundant}, i.e., some of the
 variables may share some of the same information about the ouput variable $Y$.
-In the extreme, redundancy is \textit{total}  or \textit{complete}, with some
-of the variables conveying exactly the same information with respect to the
-output variable $Y$. In this section, we study redundancy in random forests and
-show that it may have a significant effect on both the accuracy of the ensemble
-and variable importance measures.
+In the extreme case, redundancy is \textit{total}  or \textit{complete}, with
+some of the variables redundantly conveying exactly the same information with
+respect to the output variable $Y$. In this section, we study redundancy in
+random forests and show that it may have a significant effect on both the
+accuracy of the ensemble and variable importance measures.
 
 As a guiding example for our discussion, let us consider a set of input
-variables and let us study the effect of adding redundant variables on the
-structure of randomized trees built in a random forest. Intuitively, two
-variables $X_i$ and $X_j$ are redundant if one can perfectly explains the other
-and vice-versa. Formally, we define redundancy as follows:
+variables and let us discuss the effect of adding redundant variables on the
+structure of randomized trees. Intuitively, two variables $X_i$ and $X_j$ are
+redundant if one can perfectly explains the other and vice-versa. Formally, we
+define redundancy as follows:
 
 \begin{definition}
 Two variables $X_i, X_j$ are totally redundant if the mutual information
 $I(X_i;X_j)$ is maximum.
 \end{definition}
 
-In this framework, a variable and a copy this variable are therefore totally
-redundant. With respect to random forests, adding copies...
+In particular, a variable $X_j$ and its copy $X_j^\prime$ are totally
+redundant. With respect to random forests, adding copies of variables (e.g.,
+duplicating $X_j$, hence resulting in a new set of $p+1$ input variables) has
+no effect when the selection of the split is deterministic (e.g., in RF for $K$
+set to the maximum value). No matter the number of totally redundant variables,
+the best split that is selected is always the same, even if the same splits
+need to be recomputed multiple times due to redundancy. When the choice of the
+best split is stochastic however (e.g., for $K$ strictly smaller than the total number
+of variables), adding multiple copies of a variable $X_j$ results in
+splits that may be biased towards this variable (or one of its copies), which
+in turn may have a significant effect on the resulting accuracy of the
+ensemble. For a fixed value of $K$, it is indeed not difficult to see that
+adding copies of $X_j$ increases the probability of $X_j$, or of one of its
+copies, to be in the random subset of $K$ input variables on which to look for
+splits. As a corollary, it therefore also simultaneously decreases the
+probability of any of the others to be selected, hence biasing
+the structure of resulting decision trees. Note that the resulting net effect
+on accuracy depends on the nature of duplicated variable. If $X_j$ is very
+informative with respect to the input, then favouring splits on $X_j$ by
+adding copies may result in an increase of accuracy. By contrast, if $X_j$
+is irrelevant, then adding  copies increases the risk of overfitting.
+
+With respect to variable importances, the effect of adding redundant variables
+can be derived both qualitatively and quantitavely using results from
+Chapter~\ref{ch:importances}. From Theorem~\ref{thm:relevant}, we already know
+that adding irrelevant variables does not change the resulting variable
+importances. Adding copies of a relevant variable however, has an effect on
+both the importance of the duplicated variable and on the importance of the
+remaining variables. As in the previous chapter, let us assume a set $V= \{X_1,
+..., X_p\}$  of categorical input variables and a categorical output $Y$, for
+which we derive the MDI importance, as computed from totally randomized and
+fully developed trees built on an infinitely large dataset.
+
+\begin{lemma}\label{lemma:red1}
+Let $X_i$ and $X_j$ be totally redundant variables. For any conditioning set
+$B$,
+\begin{align}
+& I(X_i;Y|B,X_j) = I(X_j;Y|B, X_i) = 0 \label{lemma:red1:eqn1} \\
+& I(X_i;Y|B) = I(X_j;Y|B) \label{lemma:red1:eqn2}.
+\end{align}
+\end{lemma}
+
+\begin{proof}
+By definition, if $X_i$ and $X_j$ are totally redundant, then
+\begin{equation}
+I(X_i;X_j) = H(X_i) - H(X_i|X_j)
+\end{equation}
+is maximum, which happens when $H(X_i|X_j) = 0$ since $H$ is non-negative.
+By symmetry of the mutual information, we similarly have $H(X_j|X_i)=0$,
+and therefore $H(X_i)=H(X_j)$. Using the same argument, this directly extends
+to any conditioning set $B$, giving:
+\begin{align}
+& H(X_i|B,X_j) = 0\\
+& H(X_j|B,X_i) = 0\\
+& H(X_i|B) = H(X_j|B)
+\end{align}
+
+From these, it follows that,
+\begin{align}
+& I(X_i;Y|B,X_j) = H(X_i|B, X_j) - H(X_i|B,X_j,Y) = 0 - 0, \\
+& I(X_j;Y|B,X_i) = H(X_j|B, X_i) - H(X_j|B,X_i,Y) = 0 - 0,
+\end{align}
+which proves Equation~\ref{lemma:red1:eqn1}. We also have
+\begin{align}
+I(X_i;Y|B) &= H(X_i|B) - H(X_i|B,Y) \\
+           &= H(X_j|B) - H(X_j|B,Y) \\
+           &= I(X_j;Y|B),
+\end{align}
+which proves Equation~\ref{lemma:red1:eqn2}.
+\end{proof}
+
+\begin{proposition}\label{prop:red:self}
+Let $X_j\in V$ be relevant variable with respect to $Y$ and $V$ and let
+$X_j^\prime \notin V$ be a totally redundant variable with respect to $X_j$.
+The infinite sample size importance of $X_j$ as computed with an infinite
+ensemble of fully developed totally randomized trees built on $V\cup
+\{X_j^\prime\}$ is
+\begin{equation}
+\text{Imp}(X_j) = \sum_{k=0}^{p-1} \frac{p-k}{p+1} \frac{1}{C_p^k} \frac{1}{p-k} \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B)
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+
+\end{proof}
 
 
-% problem setting: ajouter
-% expliquer l'effect sur le choix du split
 % dériver les nouvelles formules
 
 % conclusion de l'analyse : faire gaffe à l'inteprétation des importances!
