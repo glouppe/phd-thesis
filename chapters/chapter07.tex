@@ -194,6 +194,17 @@ variable importance of $X_l$ can therefore be rewritten as follows:
 \end{align}
 \end{proof}
 
+Proposition~\ref{prop:red:self} shows that the importance of $X_j$ decreases
+when the input variables are expanded with a redundant variable. Intuitively,
+this result is in fact expected since the same information is then conveyed
+within two variables. It also shows that the terms in the total importance are
+not all reweighted in the same way. The weight of the terms corresponding to
+small conditioning sets remains nearly unchanged (i.e., for small values of
+$k$, $\tfrac{p-k}{p+1}$ is close to $1$), while the weight of the terms of
+large conditioning sets is greatly impacted (i.e., for large values of $k$,
+$\tfrac{p-k}{p+1}$ tends to $0$)
+
+
 % interpretation
 % extension à C copies => conclusions qualitatives similaires
 
