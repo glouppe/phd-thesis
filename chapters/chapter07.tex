@@ -172,7 +172,7 @@ $X_j^\prime \notin V$ be a totally redundant variable with respect to $X_j$.
 The infinite sample size importance of $X_l \in V$ as computed with an infinite
 ensemble of fully developed totally randomized trees built on $V\cup
 \{X_j^\prime\}$ is
-\begin{align}
+\begin{align}\label{prop:red:other:eqn}
 \text{Imp}(X_l) &= \sum_{k=0}^{p-2} \frac{p-k}{p+1} \frac{1}{C_p^k} \frac{1}{p-k} \sum_{B \in {\cal P}_k(V^{-l} \setminus X_j)} I(X_l;Y|B) + \\
                 & \hookrightarrow \sum_{k=0}^{p-2}  \left[ \sum_{k'=1}^2 \frac{C^{k'}_2}{C_{p+1}^{k+k'}} \frac{1}{p+1-(k+k')} \right]  \sum_{B \in {\cal P}_k(V^{-l}\setminus X_j)} I(X_l;Y|B\cup X_j). \nonumber
 \end{align}
@@ -195,22 +195,41 @@ variable importance of $X_l$ can therefore be rewritten as follows:
 \end{proof}
 
 Proposition~\ref{prop:red:self} shows that the importance of $X_j$ decreases
-when the input variables are expanded with a redundant variable. Intuitively,
-this result is in fact expected since the same information is then conveyed
-within two variables. It also shows that the terms in the total importance are
-not all reweighted in the same way. The weight of the terms corresponding to
-small conditioning sets remains nearly unchanged (i.e., for small values of
-$k$, $\tfrac{p-k}{p+1}$ is close to $1$), while the weight of the terms of
-large conditioning sets is greatly impacted (i.e., for large values of $k$,
-$\tfrac{p-k}{p+1}$ tends to $0$)
+when a redundant variable $X_j^\prime$ is added to the set of input variables.
+Intuitively, this result is in fact expected since the same information is then
+conveyed within two variables (i.e., in $X_j$ and its copy $X_j^\prime$). It
+also shows that the terms in the total importance are not all modified in the
+same way. The weight of the terms corresponding to small conditioning sets
+remains nearly unchanged (i.e., for small values of $k$, $\tfrac{p-k}{p+1}$ is
+close to $1$), while the weight of the terms of large conditioning sets is
+greatly impacted (i.e., for large values of $k$, $\tfrac{p-k}{p+1}$ tends to
+$0$).
+
+As shown by Proposition~\ref{prop:red:other}, the effect of adding a redundant
+variable $X_j^\prime$ on the importance of the other variables $X_l$ (for
+$l\neq j$) is twofold. The first part of Equation~\ref{prop:red:other:eqn}
+shows that the weight of all terms that do not include $X_j$ (or its copy)
+strictly decreases by a factor $\tfrac{p-k}{p+1}$. The second part of
+Equation~\ref{prop:red:other:eqn} shows that the the weight of all terms that
+include $X_j$ (or its copy) increases, since several equivalent conditioning
+sets (i.e., $B\cup \{X_j\}$, $B\cup \{X_j\}^\prime$ and $B\cup \{X_j,
+X_j^\prime\}$) can now appear within the branches of a tree. Like for
+Proposition~\ref{prop:red:self}, impurity terms are not all modified in the
+same way and changes depend on the size $k$ of the conditioning set $B$.
+Overall, the net effect on the total importance of $X_l$ is therefore a
+compromise between these opposing changes. If the weighted sum of the
+$I(X_l;Y|B,X_j)$ terms is low with respect to the sum of the terms that do not
+include $X_j$ (or its copy), then the decrease effect dominates and the
+importance of $X_l$ should be smaller. By contrast, if the $I(X_l;Y|B,X_j)$
+terms are larger, then the increase effect dominates and the resulting
+importance is larger.
 
 
 % interpretation
 % extension à C copies => conclusions qualitatives similaires
 
 % conclusion de l'analyse : faire gaffe à l'inteprétation des importances!
-%                           des variables peu importantes peuvent l'être
-%                           parce qu'elles contiennent une info qui est redondante
+%                           une variable peu importante peut quand même contenir de l'info (masquée due aux redondances)
 
 
 \section{Bias in variable importances}
