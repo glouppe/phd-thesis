@@ -111,7 +111,7 @@ which proves Equation~\ref{lemma:red1:eqn2}.
 \end{proof}
 
 \begin{proposition}\label{prop:red:self}
-Let $X_j\in V$ be relevant variable with respect to $Y$ and $V$ and let
+Let $X_j\in V$ be a relevant variable with respect to $Y$ and $V$ and let
 $X_j^\prime \notin V$ be a totally redundant variable with respect to $X_j$.
 The infinite sample size importance of $X_j$ as computed with an infinite
 ensemble of fully developed totally randomized trees built on $V\cup
@@ -167,7 +167,7 @@ Lemma~\ref{lemma:red2}.
 \end{proof}
 
 \begin{proposition}\label{prop:red:other}
-Let $X_j\in V$ be relevant variable with respect to $Y$ and $V$ and let
+Let $X_j\in V$ be a relevant variable with respect to $Y$ and $V$ and let
 $X_j^\prime \notin V$ be a totally redundant variable with respect to $X_j$.
 The infinite sample size importance of $X_l \in V$ as computed with an infinite
 ensemble of fully developed totally randomized trees built on $V\cup
@@ -225,20 +225,20 @@ terms are larger, then the increase effect dominates and the resulting
 importance is larger.
 
 Propositions~\ref{prop:red:self} and \ref{prop:red:other} can be extended to
-the case where $N_c$ redundant variables are added to the input variables
-instead of one, leading to the general Proposition~\ref{prop:red:general}. From
-this result, the same qualitative conclusions can drawn, except that the
-decrease or increase effects discussed above are even stronger as more
-redundant variables are added.
+the case where $N_c$ redundant variables $X_j^c$ (for $c=1,\dots,N_c$) are
+added to the input variables instead of one, leading to the general
+Proposition~\ref{prop:red:general}. From this result, the same qualitative
+conclusions can drawn, except that the decrease or increase effects discussed
+above are even stronger as more redundant variables are added.
 
 \begin{proposition}\label{prop:red:general}
-Let $X_j\in V$ be relevant variable with respect to $Y$ and $V$ and let
+Let $X_j\in V$ be a relevant variable with respect to $Y$ and $V$ and let
 $X_j^c \notin V$ (for $c=1,\dots,N_c$) be $N_c$ totally redundant variables with respect to $X_j$.
 The infinite sample size importances of $X_j$ and $X_l \in V$ as computed with an infinite
 ensemble of fully developed totally randomized trees built on $V\cup
 \{X_j^1,\dots,X_j^{N_c}\}$ are
 \begin{align*}
-\text{Imp}(X_j)  &= \sum_{k=0}^{p-1} \left[ \frac{C^k_p (p-k)}{C^k_{p+C}(p+N_c-k)}  \right] \frac{1}{C_p^k} \frac{1}{p-k} \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B), \\
+\text{Imp}(X_j)  &= \sum_{k=0}^{p-1} \left[ \frac{C^k_p (p-k)}{C^k_{p+N_c}(p+N_c-k)}  \right] \frac{1}{C_p^k} \frac{1}{p-k} \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B), \\
 \text{Imp}(X_l) &= \sum_{k=0}^{p-2} \left[ \frac{C^k_p (p-k)}{C^k_{p+N_c}(p+N_c-k)}  \right] \frac{1}{C_p^k} \frac{1}{p-k} \sum_{B \in {\cal P}_k(V^{-l} \setminus X_j)} I(X_l;Y|B) + \\
                 & \hookrightarrow \sum_{k=0}^{p-2}  \left[ \sum_{k'=1}^{N_c+1} \frac{C^{k'}_{N_c+1}}{C_{p+N_c}^{k+k'}} \frac{1}{p+N_c-(k+k')} \right]  \sum_{B \in {\cal P}_k(V^{-l}\setminus X_j)} I(X_l;Y|B\cup X_j).
 \end{align*}
@@ -251,7 +251,25 @@ and \ref{prop:red:other}.
 \end{proof}
 
 As an illustrative example, let us reconsider the LED classification problem
-from Section~\ref{sec:6:illustration}.
+from Section~\ref{sec:6:illustration}, and for which $X_5$ was found to be the
+most important variable. As shown in Figure~\ref{fig:7:red:led}, adding
+variables that are redundant with $X_5$ makes its importance decrease, as
+predicted by our theoretical result from Propositions~\ref{prop:red:self} and
+\ref{prop:red:general}. When 5 or more copies of $X_5$ are added, the
+importance of $X_5$ is the smallest of all, as if $X_5$ had become less
+informative. Similarly, we observe that the importance of the other variables
+remain about the same or slightly decrease, as if they all had become a bit
+less informative. With regards to our previous results in Propositions
+\ref{prop:red:other} and \ref{prop:red:general}, this indicates that the
+importance due to the $I(X_l;Y|B)$ terms prevails from  the importance due to
+the $I(X_l;Y|B,X_5^c)$ terms. As a matter of fact, this example highlights a
+fundamental property of variable importances as computed in a random forest:
+importance measures are computed not only with respect to the output $Y$, but
+also with respect to all the other input variables that define the problem. In
+particular, a variable which is not important is not necessarily uninformative,
+as the example illustrates. A variable may be considered as less important
+because the  information it conveys is also redundantly conveyed in other
+variables, and not necessarily because it has no information.
 
 \begin{figure}
 \centering
@@ -261,6 +279,19 @@ from Section~\ref{sec:6:illustration}.
 \label{fig:7:red:led}
 \end{figure}
 
+As a second example, Figure~\ref{fig:7:red:xor} illustrates redundancy effects
+for a XOR classification problem defined on two variables $X_1$ and $X_2$.
+Again, the importance of the duplicated variable $X_1$  decreases as redundant
+variables are added, which confirms our results from
+Propositions~\ref{prop:red:self} and \ref{prop:red:general}. More
+interestingly, we now observe that the importance of the other variable, $X_2$,
+increases as copies of $X_1$ are added. For this problem, the
+$I(X_2;Y|B,X_1^c)$ terms are prevalent with respect to the $I(X_2;Y|B)$ terms
+(which is in fact unique and equal to $0$), thereby artifically increasing the
+overall importance of $X_2$ as redundancy augments, as expected from
+Propositions \ref{prop:red:other} and \ref{prop:red:general}.
+
+
 \begin{figure}
 \centering
 \includegraphics[width=0.9\textwidth]{figures/ch7_red_xor.pdf}
@@ -269,12 +300,6 @@ from Section~\ref{sec:6:illustration}.
          the importance of $X_2$.}
 \label{fig:7:red:xor}
 \end{figure}
-
-% extension à C copies => conclusions qualitatives similaires
-
-% conclusion de l'analyse : faire gaffe à l'inteprétation des importances!
-%                           une variable peu importante peut quand même contenir de l'info (masquée due aux redondances)
-% imp are relative to the other variables
 
 
 \section{Bias in variable importances}

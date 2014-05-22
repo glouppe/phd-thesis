@@ -1,10 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
-# import brewer2mpl
-# cmap = brewer2mpl.get_map('RdYlGn', 'diverging', 7).mpl_colors
-cmap = [(0, 0, 1.0), (1.0, 0, 0)]
+import brewer2mpl
+cmap = brewer2mpl.get_map('RdYlGn', 'diverging', 7).mpl_colors
+#cmap = [(0, 0, 1.0), (1.0, 0, 0)]
 
-def feature_importances(X, y, n_trees=5000):
+def feature_importances(X, y, n_trees=500):
     from sklearn.ensemble import ExtraTreesClassifier
     clf = ExtraTreesClassifier(n_estimators=n_trees, max_features=1, criterion="entropy").fit(X, y)
     imp = np.zeros(X.shape[1])
@@ -31,8 +31,8 @@ def plot_with_dupplicate(X, y, duplicate=0, n_copies=10):
     plt.legend(loc="best")
     plt.show()
 
-# from demo import make_led
-# X, y = make_led()
-X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
-y = np.array([1, 0, 0, 1])
-plot_with_dupplicate(X, y, duplicate=0, n_copies=10)
+from demo import make_led
+X, y = make_led()
+# X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+# y = np.array([1, 0, 0, 1])
+plot_with_dupplicate(X, y, duplicate=4, n_copies=100)
