@@ -8,7 +8,7 @@ are redundant. In Section~\ref{sec:7:bias}, we revisit variable importances in
 the context of binary decision trees and ordered variables. In this framework, we
 highlight various sources of bias that may concurrently happen when
 importances are computed from actual random forests. Finally, we present in
-Section~\ref{sec:7:applications} some succesful applications
+Section~\ref{sec:7:applications} some successful applications
 of variable importance measures.
 \end{remark}
 
@@ -21,7 +21,7 @@ correlated, at least to some extent, and to share common bits of information.
 In image classification for instance, pixels are usually highly correlated and
 individually represent nearly the same information as their neighbors. In that
 sense, variables are often \textit{partially redundant}, i.e., some of the
-variables may share some of the same information about the ouput variable $Y$.
+variables may share some of the same information about the output variable $Y$.
 In the extreme case, redundancy is \textit{total}  or \textit{complete}, with
 some of the variables redundantly conveying exactly the same information with
 respect to the output variable $Y$. In this section, we study redundancy in
@@ -57,12 +57,12 @@ splits. As a corollary, it therefore also simultaneously decreases the
 probability of any of the others to be selected, hence biasing
 the structure of resulting decision trees. Note that the resulting net effect
 on accuracy depends on the nature of duplicated variable. If $X_j$ is very
-informative with respect to the input, then favouring splits on $X_j$ by
+informative with respect to the input, then favoring splits on $X_j$ by
 adding copies may result in an increase of accuracy. By contrast, if $X_j$
 is irrelevant, then adding  copies increases the risk of overfitting.
 
 With respect to variable importances, the effect of adding redundant variables
-can be derived both qualitatively and quantitavely using results from
+can be derived both qualitatively and quantitatively using results from
 Chapter~\ref{ch:importances}. From Theorem~\ref{thm:relevant}, we already know
 that adding irrelevant variables does not change the resulting variable
 importances. Adding copies of a relevant variable however, has an effect on
@@ -287,7 +287,7 @@ Propositions~\ref{prop:red:self} and \ref{prop:red:general}. More
 interestingly, we now observe that the importance of the other variable, $X_2$,
 increases as copies of $X_1$ are added. For this problem, the
 $I(X_2;Y|B,X_1^c)$ terms are prevalent with respect to the $I(X_2;Y|B)$ terms
-(which is in fact unique and equal to $0$), thereby artifically increasing the
+(which is in fact unique and equal to $0$), thereby artificially increasing the
 overall importance of $X_2$ as redundancy augments, as expected from
 Propositions \ref{prop:red:other} and \ref{prop:red:general}.
 
