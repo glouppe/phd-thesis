@@ -224,12 +224,57 @@ importance of $X_l$ should be smaller. By contrast, if the $I(X_l;Y|B,X_j)$
 terms are larger, then the increase effect dominates and the resulting
 importance is larger.
 
+Propositions~\ref{prop:red:self} and \ref{prop:red:other} can be extended to
+the case where $N_c$ redundant variables are added to the input variables
+instead of one, leading to the general Proposition~\ref{prop:red:general}. From
+this result, the same qualitative conclusions can drawn, except that the
+decrease or increase effects discussed above are even stronger as more
+redundant variables are added.
 
-% interpretation
+\begin{proposition}\label{prop:red:general}
+Let $X_j\in V$ be relevant variable with respect to $Y$ and $V$ and let
+$X_j^c \notin V$ (for $c=1,\dots,N_c$) be $N_c$ totally redundant variables with respect to $X_j$.
+The infinite sample size importances of $X_j$ and $X_l \in V$ as computed with an infinite
+ensemble of fully developed totally randomized trees built on $V\cup
+\{X_j^1,\dots,X_j^{N_c}\}$ are
+\begin{align*}
+\text{Imp}(X_j)  &= \sum_{k=0}^{p-1} \left[ \frac{C^k_p (p-k)}{C^k_{p+C}(p+N_c-k)}  \right] \frac{1}{C_p^k} \frac{1}{p-k} \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B), \\
+\text{Imp}(X_l) &= \sum_{k=0}^{p-2} \left[ \frac{C^k_p (p-k)}{C^k_{p+N_c}(p+N_c-k)}  \right] \frac{1}{C_p^k} \frac{1}{p-k} \sum_{B \in {\cal P}_k(V^{-l} \setminus X_j)} I(X_l;Y|B) + \\
+                & \hookrightarrow \sum_{k=0}^{p-2}  \left[ \sum_{k'=1}^{N_c+1} \frac{C^{k'}_{N_c+1}}{C_{p+N_c}^{k+k'}} \frac{1}{p+N_c-(k+k')} \right]  \sum_{B \in {\cal P}_k(V^{-l}\setminus X_j)} I(X_l;Y|B\cup X_j).
+\end{align*}
+\end{proposition}
+
+\begin{proof}
+Omitted here, but Proposition~\ref{prop:red:general} can be proved
+by generalizing for $N_c$ the proofs of Propositions~\ref{prop:red:self}
+and \ref{prop:red:other}.
+\end{proof}
+
+As an illustrative example, let us reconsider the LED classification problem
+from Section~\ref{sec:6:illustration}.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{figures/ch7_red_led.pdf}
+\caption{Adding copies of $X_5$ on the LED classification task. The more
+         redundant variables are added, the lesser the importance of $X_5$.}
+\label{fig:7:red:led}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{figures/ch7_red_xor.pdf}
+\caption{Adding copies of $X_1$ on a XOR classification task. The more redundant
+         variables are added, the lesser the importance of $X_1$, but the larger
+         the importance of $X_2$.}
+\label{fig:7:red:xor}
+\end{figure}
+
 % extension à C copies => conclusions qualitatives similaires
 
 % conclusion de l'analyse : faire gaffe à l'inteprétation des importances!
 %                           une variable peu importante peut quand même contenir de l'info (masquée due aux redondances)
+% imp are relative to the other variables
 
 
 \section{Bias in variable importances}
