@@ -308,11 +308,15 @@ and therefore taken into account several times within the total importances. As
 such, we advise to complement the interpretation with a systematic
 decomposition of variable importance scores, e.g., as previously done in
 Figure~\ref{fig:decomposition}, in order to better understand why a variable is
-in fact important.
+in fact important and to possibly detect redundancy.
 
 
 \section{Bias in variable importances}
 \label{sec:7:bias}
+
+% décrire strobl => high cardinalité implique high importance POUR UNE VAR IRRELEVAnt
+% commencer par un exemple qui montre que ça tient pas la route
+%   - pq ce serait le cas pour K=1? (autant pour RFs et que pour ETs)
 
 % Splitting with binary trees on non-binary variables is like having
 % binary variables and adjust the probability of selecting them
@@ -322,6 +326,10 @@ in fact important.
 % - when k>1,
 %       * masking effects
 %       * high cardinality variables are more likely to be selected, even when both equally uninformative
+%           => true for RF, not for ETs?
+%           => if two variable are equally relevant with respect to I(X;Y|B), then cardinality does not matter
+%           => however, if they are irrelevant, the larger one is expected to be selected because there is more chance memorize data
+%              l'effet s'atténue à mesure que N augmente
 % - but, even for k=1, the importance is biased?
 %   => because it is not the same conditionings that are evaluated *** (a branch may comprise several values for b (i.e. B<=b plutot que B=b))
 %   => bias may be positive or negative!!
@@ -329,7 +337,18 @@ in fact important.
 %   c'est commme si on on n'utilisait jamais certaines variables de l'encodage binaire
 % - est-ce que la non-equiprobabilité des arbres est une source de biais?
 %   => étudier la fréquence des conditionnements pour s'en assurer
+% - N is finite => we do not consider all splits
+%               => I(X;Y) is estimated
 
+% strobl: les variables irrelevant de grande cardinalité sont plus importantes
+% => normal dans le cas fini => on peut mémoriser le dataset avec une variable
+% continue pour un LS fini
+
+
+% piste de recherche: approximer splits exhaustifs par des splits limités à n branches max
+% bonus: pour n=2, on retrouverait le cas binaire
+% quelle est l'erreur d'approximer?
+% comment former les paquets à mettre dans chaque branche?
 
 % => ID3-like are not biased in that sense
 %
