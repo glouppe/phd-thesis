@@ -30,11 +30,13 @@ def feature_importances(X, y, cls, n_trees=500):
 def generate_strobl_null(n_samples=120):
     X = np.array([v for v in product(range(2), range(4), range(10), range(20), range(2))]).astype(np.int32)
     X, y = X[:, :-1], X[:, -1]
-    X = np.hstack((np.random.rand(len(X), 1), X))
 
     #indices = np.random.permutation(X.shape[0])[:n_samples]
     indices = np.random.randint(0, X.shape[0], n_samples)
-    return X[indices], y[indices].astype(np.int32)
+    X, y = X[indices], y[indices].astype(np.int32)
+    X = np.hstack((np.random.rand(len(X), 1), X))
+
+    return X, y
 
 # Generate all importances
 models = [("ID3", partial(RandomizedID3Ensemble, base_estimator=RandomizedID3Classifier(k=1))),

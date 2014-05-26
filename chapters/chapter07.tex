@@ -387,8 +387,6 @@ ETs).
 \end{figure}
 
 
-
-
 % * bias due to masking effects, caused by the variable selection (K>1)
 %   S: K=1
 %
@@ -396,11 +394,14 @@ ETs).
 %   - this seems logical when K>1 (page14+ strobl, masking effects due to selection)
 %   - but why is this still true for K=1?
 %   - montrer par un exemple (e.g., reproduire strobl)
-%   - montrer cependant que l'effet s'atténue à mesure que N augmente (choisir une méthode, fixer max_depth)
+%   - montrer cependant que l'effet s'atténue à mesure que N augmente (choisir une méthode, fixer max_depth avec ou sans)
 %       * pour chaque valeur de X, on finit par retrouver toutes les valeurs de y)
 %   - et/ou en limitant la profondeur
 %   => due to a misestimation of  I(X;Y)
-%      noter que l'erreur est d'autant plus qu'on splitte de façon exhaustive
+%      noter que l'erreur est d'autant grande plus qu'on splitte de façon exhaustive
+%   => Effet du à la misestimation de I(X;Y) en raison d'un nombre trop peu important de samples
+%      condition à la consistence: faire en sorte que les feuilles grandissent moins vite que N
+%       e.g. fixer max_depth ou min_samples_leaf
 %   S: limiter la profondeur
 %   S: exhaustive splits
 %   S: characterize in a finite setting
@@ -423,6 +424,8 @@ ETs).
 %
 % Solutions:
 % - ID3-like are not biased in that sense
+%
+% Related work
 
 % ---
 % piste de recherche: approximer splits exhaustifs par des splits limités à n branches max
