@@ -317,14 +317,15 @@ in fact important and to possibly detect redundancy.
 As shown in the previous chapters, the guided selection of the split variable
 (i.e., for $K>1$) is necessary for balancing bias and variance in  randomized
 decision trees and to produce accurate ensembles. In particular, we studied
-that decision trees built with too much randomization lead to an increase of
-bias which cannot be compensated by a reciprocal decrease of variance. By
-contrast, we also showed in Section~\ref{sec:ntrt} that when variable selection
-is not totally random, masking effects induce a bias with respect to variable
-importances, since it forces some of the branches to never be built, and
-therefore some of the conditioning sets $B \in {\cal P}(V)$ to never be taken
-into account.  In this section, we revisit this problem and show that variable
-selection is in fact not the only cause of bias in variable importances.
+that decision trees built with too much randomization usually lead to an
+increase of bias which cannot be compensated by a reciprocal decrease of
+variance. By contrast, we also showed in Section~\ref{sec:ntrt} that when
+variable selection is not totally random, masking effects induce a bias with
+respect to variable importances, since it forces some of the branches to never
+be built, and therefore some of the conditioning sets $B \in {\cal P}(V)$ to
+never be taken into account.  In this section, we revisit this problem and show
+that variable selection is in fact not the only cause of bias in variable
+importances.
 
 \begin{table}
     \centering
@@ -365,19 +366,22 @@ conditions, we proved in Theorem~\ref{thm:irrelevant} that the importance of
 irrelevant variables is strictly equal to $0$. For a finite value of $N$
 however, this result does not hold, as Figure~\ref{fig:7:bias:null} indeed
 confirms. We observe that the importance of none of the variables is in fact
-close to $0$. More importantly, we also observe that the larger the cardinality of the variable
-(i.e., the larger its number of unique values), the larger its importance. In
-their study, \citet{strobl:2007b} argue that this bias is due to variable
-selection: \textit{variables with more potential cut-points are more likely to
-produce a good criterion value by chance, as in a multiple testing situation}.
-As a result, variables of higher cardinality are more likely to be chosen for
+close to $0$. More importantly, we also observe that the larger the cardinality
+of the variable (i.e., the larger its number of unique values), the larger its
+importance. For example, the importance of $X_1$ (for which samples all have
+unique values) or of $X_5$ (which counts up to $40$ unique values) appears up
+to $3$ times larger as the importance of $X_2$ (which is binary). In their
+study, \citet{strobl:2007b} argue that this bias is due to variable selection:
+\textit{variables with more potential cut-points are more likely to produce a
+good criterion value by chance, as in a multiple testing situation}. As a
+result, variables of higher cardinality are more likely to be chosen for
 splitting than those of lower cardinality. While this bias has been known for
 long in decision trees~\citep{kononenko:1995,kim:2001,hothorn:2006}, we argue
 that it is not the actual cause of bias in variable importances. Indeed, this
-argument does directly explain why similar trends are observed when no variable
-selection is performed (i.e., for ID3 or for $K=1$) nor when cut-points are
-chosen at random, independently of the cardinality of the variable (i.e., in
-ETs).
+argument does not directly explain why similar trends are observed when no
+variable selection is performed (i.e., for ID3 or for $K=1$) nor why it
+similarly  happens when cut-points are chosen at random, independently of the
+cardinality of the variable (i.e., in ETs).
 
 \begin{figure}
 \centering
