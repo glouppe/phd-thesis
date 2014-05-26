@@ -314,31 +314,41 @@ in fact important and to possibly detect redundancy.
 \section{Bias in variable importances}
 \label{sec:7:bias}
 
+
+
+% * bias due to masking effects, caused by the variable selection (K>1)
+%   S: K=1
+%
 % * bias towards high cardinality, for irrelevant variables
-%   - this seems logical when K>1
+%   - this seems logical when K>1 (page14+ strobl, masking effects due to selection)
 %   - but why is this still true for K=1?
 %   - montrer par un exemple (e.g., reproduire strobl)
 %   - montrer cependant que l'effet s'atténue à mesure que N augmente
-%       (pour chaque valeur de X, on finit par retrouver toutes les valeurs de y)
-%
-% * bias due to masking effects, caused by the variable selection (K>1)
+%       * pour chaque valeur de X, on finit par retrouver toutes les valeurs de y)
+%   - et/ou en limitant la profondeur
+%   => due to a misestimation of  I(X;Y)
+%   S: limiter la profondeur
+%   S: exhaustive splits
+%   S: characterize in a finite setting
 %
 % * bias due to the conditioning sets that are evaluated
 %   - splitting in binary trees on non-binary variables is like having
 %     several binary variables, and to adjust the probability of selecting them
-%   - (a branch may comprise several values for b (i.e. B<=b plutot que B=b))
+%   - a branch may comprise several values for b (i.e. B<=b plutot que B=b)
+%     trouver un exemple qui montre que ça biaise
+%   S: exhaustive splits
 %
 % * bias due to masking effects, caused by the selection of the thresholds
 %   - c'est commme si on on n'utilisait jamais certaines variables de l'encodage binaire
 %   - bias may be positive or negative (eg, for ETs)
-%
-% * N is finite => we do not consider all splits
-%               => I(X;Y) is estimated
+%   - ~= biais du à la discrétization => ID3 n'en souffre pas
+%   S: exhaustive splits
 %
 % * est-ce que la non-equiprobabilité des arbres est une source de biais?
 %   - étudier la fréquence des conditionnements pour s'en assurer
 %
-% => ID3-like are not biased in that sense
+% Solutions:
+% - ID3-like are not biased in that sense
 
 % ---
 % piste de recherche: approximer splits exhaustifs par des splits limités à n branches max

@@ -30,8 +30,9 @@ MAX_INT = np.iinfo("i").max
 class RandomizedID3Classifier(BaseEstimator, ClassifierMixin):
     """Simplistic implementation of an ID3 randomized tree."""
 
-    def __init__(self, k=1, random_state=None):
+    def __init__(self, k=1, max_depth=None, random_state=None):
         self.k = k
+        self.max_depth = max_depth
         self.random_state = random_state
         self.tree_ = None
 
@@ -55,11 +56,11 @@ class RandomizedID3Classifier(BaseEstimator, ClassifierMixin):
     def predict(self, X):
         raise NotImplementedError
 
-    def _partition(self, X, y, variables, n_samples):
+    def _partition(self, X, y, variables, n_samples, depth=0):
         rng = self.random_state_
 
         # Leaf
-        if len(variables) == 0:
+        if len(variables) == 0 or (self.max_depth is not None and depth >= self.max_depth):
             values = 1. * np.bincount(y, minlength=self.n_classes_) / len(y)
             return (values, len(y))
 
@@ -102,9 +103,10 @@ class RandomizedID3Classifier(BaseEstimator, ClassifierMixin):
                     [self._partition(c_X,
                                      c_y,
                                      variables,
-                                     n_samples) for c_X,
-                                                    c_y,
-                                                    _ in best_children])
+                                     n_samples,
+                                     depth=depth+1) for c_X,
+                                                        c_y,
+                                                        _ in best_children])
 
     @property
     def feature_importances_(self):
@@ -127,12 +129,13 @@ class RandomizedID3Classifier(BaseEstimator, ClassifierMixin):
 class RandomizedID3Ensemble(BaseEnsemble, ClassifierMixin):
     """Simplistic implementation of an ensemble of ID3 randomized trees."""
 
-    def __init__(self, base_estimator=None, n_estimators=10, random_state=None):
+    def __init__(self, base_estimator=None, n_estimators=10, max_depth=None, random_state=None):
         super(RandomizedID3Ensemble, self).__init__(
             base_estimator=base_estimator,
             n_estimators=n_estimators,
-            estimator_params=tuple())
+            estimator_params=("max_depth",))
 
+        self.max_depth = max_depth
         self.random_state = random_state
 
     def _validate_estimator(self):
