@@ -314,6 +314,18 @@ in fact important and to possibly detect redundancy.
 \section{Bias in variable importances}
 \label{sec:7:bias}
 
+As shown in the previous chapters, the guided selection of the split variable
+(i.e., for $K>1$) is necessary for balancing bias and variance in  randomized
+decision trees, thereby producing accurate ensembles. In particular, we studied
+that decision trees built with too much randomization lead to an increase of
+bias which cannot be compensated by a reciprocal decrease of variance. In
+Section~\ref{sec:ntrt} however, we have shown that masking effects due variable
+selection also induce a bias with respect to variable importances, since it
+forces some of the branches of never being built, and therefore some of the
+conditioning sets $B \in {\cal P}(V)$ to never be taken into account.  In this
+section, we revisit this problem and show that variable selection is in fact
+not the only cause of bias.
+
 
 
 % * bias due to masking effects, caused by the variable selection (K>1)
@@ -327,6 +339,7 @@ in fact important and to possibly detect redundancy.
 %       * pour chaque valeur de X, on finit par retrouver toutes les valeurs de y)
 %   - et/ou en limitant la profondeur
 %   => due to a misestimation of  I(X;Y)
+%      noter que l'erreur est d'autant plus qu'on splitte de façon exhaustive
 %   S: limiter la profondeur
 %   S: exhaustive splits
 %   S: characterize in a finite setting
@@ -336,7 +349,7 @@ in fact important and to possibly detect redundancy.
 %     several binary variables, and to adjust the probability of selecting them
 %   - a branch may comprise several values for b (i.e. B<=b plutot que B=b)
 %     trouver un exemple qui montre que ça biaise
-%   S: exhaustive splits
+%   S: exhaustive splits => seulement si N large, splits intermédiaires
 %
 % * bias due to masking effects, caused by the selection of the thresholds
 %   - c'est commme si on on n'utilisait jamais certaines variables de l'encodage binaire
