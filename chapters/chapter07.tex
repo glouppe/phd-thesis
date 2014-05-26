@@ -316,15 +316,76 @@ in fact important and to possibly detect redundancy.
 
 As shown in the previous chapters, the guided selection of the split variable
 (i.e., for $K>1$) is necessary for balancing bias and variance in  randomized
-decision trees, thereby producing accurate ensembles. In particular, we studied
+decision trees and to produce accurate ensembles. In particular, we studied
 that decision trees built with too much randomization lead to an increase of
-bias which cannot be compensated by a reciprocal decrease of variance. In
-Section~\ref{sec:ntrt} however, we have shown that masking effects due variable
-selection also induce a bias with respect to variable importances, since it
-forces some of the branches of never being built, and therefore some of the
-conditioning sets $B \in {\cal P}(V)$ to never be taken into account.  In this
-section, we revisit this problem and show that variable selection is in fact
-not the only cause of bias.
+bias which cannot be compensated by a reciprocal decrease of variance. By
+contrast, we also showed in Section~\ref{sec:ntrt} that when variable selection
+is not totally random, masking effects induce a bias with respect to variable
+importances, since it forces some of the branches to never be built, and
+therefore some of the conditioning sets $B \in {\cal P}(V)$ to never be taken
+into account.  In this section, we revisit this problem and show that variable
+selection is in fact not the only cause of bias in variable importances.
+
+\begin{table}
+    \centering
+    \begin{tabular}{| c c c |}
+    \hline
+    & $X_1$ & $\sim{\cal N}(0, 1)$ \\
+    & $X_2$ & $\sim{\cal M}(2)$ \\
+    & $X_3$ & $\sim{\cal M}(4)$ \\
+    & $X_4$ & $\sim{\cal M}(10)$ \\
+    & $X_5$ & $\sim{\cal M}(20)$ \\
+    \hline
+    \hline
+    {\it null case}  & $Y$ & $\sim{\cal B}(0.5)$ \\
+    {\it power case} & $Y|X_2=0$ &  $\sim{\cal B}(0.5-\text{relevance})$ \\
+                     & $Y|X_2=1$ &  $\sim{\cal B}(0.5+\text{relevance})$ \\
+    \hline
+    \end{tabular}
+    \caption{Input variables are independent random variables as defined from
+    the table. ${\cal N}(0, 1)$ is the standard normal
+    distribution. ${\cal M}(k)$ is the multinomial distribution with values in $\{0, \dots, k-1\}$
+    and equal probabilities. ${\cal B}(p)$ is the binomial distribution. In the
+    null case, $Y$ is independent from $X_1, \dots, X_5$. In the power case, $Y$
+    depends on the value $X_2$ while other input variables remain irrelevant.}
+    \label{table:simulation}
+\end{table}
+
+To guide our discussion, let us revisit the simulation studies from
+\citep{strobl:2007b} which considers a binary output variable $Y$ and five
+input variables $X_1,\dots,X_5$, as defined in Table~\ref{table:simulation}.
+Let us first analyze the case where $Y$ is independent from $X_1, \dots, X_5$,
+i.e., such that none of the input variables are informative with respect to the
+output. For a randomly sampled dataset ${\cal L}$ of $N=120$ samples,
+Figure~\ref{fig:7:bias:null} plots variable importances for different kinds of
+random forests. ID3 corresponds to totally randomized trees, as defined in
+Section~\ref{sec:6:theory}, RF corresponds to Random Forest with bootstrap
+sampling and ETs corresponds to Extremely Randomized Trees. In asymptotic
+conditions, we proved in Theorem~\ref{thm:irrelevant} that the importance of
+irrelevant variables is strictly equal to $0$. For a finite value of $N$
+however, this result does not hold, as Figure~\ref{fig:7:bias:null} indeed
+confirms. We observe that the importance of none of the variables is in fact
+close to $0$. More importantly, we also observe that the larger the cardinality of the variable
+(i.e., the larger its number of unique values), the larger its importance. In
+their study, \citet{strobl:2007b} argue that this bias is due to variable
+selection: \textit{variables with more potential cut-points are more likely to
+produce a good criterion value by chance, as in a multiple testing situation}.
+As a result, variables of higher cardinality are more likely to be chosen for
+splitting than those of lower cardinality. While this bias has been known for
+long in decision trees~\citep{kononenko:1995,kim:2001,hothorn:2006}, we argue
+that it is not the actual cause of bias in variable importances. Indeed, this
+argument does directly explain why similar trends are observed when no variable
+selection is performed (i.e., for ID3 or for $K=1$) nor when cut-points are
+chosen at random, independently of the cardinality of the variable (i.e., in
+ETs).
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{figures/ch7_bias_null.pdf}
+\caption{Variable importances for $Y$ independent of $X_1, \dots, X_5$. ($N=120$, $M=500$)}
+\label{fig:7:bias:null}
+\end{figure}
+
 
 
 
@@ -335,7 +396,7 @@ not the only cause of bias.
 %   - this seems logical when K>1 (page14+ strobl, masking effects due to selection)
 %   - but why is this still true for K=1?
 %   - montrer par un exemple (e.g., reproduire strobl)
-%   - montrer cependant que l'effet s'atténue à mesure que N augmente
+%   - montrer cependant que l'effet s'atténue à mesure que N augmente (choisir une méthode, fixer max_depth)
 %       * pour chaque valeur de X, on finit par retrouver toutes les valeurs de y)
 %   - et/ou en limitant la profondeur
 %   => due to a misestimation of  I(X;Y)
