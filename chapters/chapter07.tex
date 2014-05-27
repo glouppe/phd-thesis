@@ -314,18 +314,34 @@ in fact important and to possibly detect redundancy.
 \section{Bias in variable importances}
 \label{sec:7:bias}
 
+In this section, we study sources of bias in variable importances and show that
+variable selection (as previously discussed in Section~\ref{sec:ntrt}) is in
+fact not the only cause of bias.
+
+\subsection{Bias due to variable selection}
+
 As shown in the previous chapters, the guided selection of the split variable
 (i.e., for $K>1$) is necessary for balancing bias and variance in  randomized
 decision trees and to produce accurate ensembles. In particular, we studied
 that decision trees built with too much randomization usually lead to an
 increase of bias which cannot be compensated by a reciprocal decrease of
 variance. By contrast, we also showed in Section~\ref{sec:ntrt} that when
-variable selection is not totally random, masking effects induce a bias with
-respect to variable importances, since it forces some of the branches to never
-be built, and therefore some of the conditioning sets $B \in {\cal P}(V)$ to
-never be taken into account.  In this section, we revisit this problem and show
-that variable selection is in fact not the only cause of bias in variable
-importances.
+variable selection is not totally random (i.e., as soon as $K>1$), masking
+effects induce a bias with respect to variable importances, since it forces
+some of the branches to never be built, and therefore some of the conditioning
+sets $B \in {\cal P}(V)$ to never be taken into account. As a consequence,
+random forests whose parameter $K$ has been tuned to maximize accuracy may
+yield variable importances that are biased. Variable importances may be over-
+or underestimated. In particular, it can be shown (see Section~\ref{sec:ntrt})
+that a relevant variable may be null with regards to its importance, thereby
+making it undistinguishable from irrelevant variables, and that the importance
+of relevant variables becomes dependent on the number of irrelevant variables.
+
+\subsection{Bias due to impurity misestimations}
+
+To guide our discussion, let us revisit the simulation studies from
+\citep{strobl:2007b} which considers a binary output variable $Y$ and five
+input variables $X_1,\dots,X_5$, as defined in Table~\ref{table:simulation}.
 
 \begin{table}
     \centering
@@ -352,29 +368,26 @@ importances.
     \label{table:simulation}
 \end{table}
 
-To guide our discussion, let us revisit the simulation studies from
-\citep{strobl:2007b} which considers a binary output variable $Y$ and five
-input variables $X_1,\dots,X_5$, as defined in Table~\ref{table:simulation}.
 Let us first analyze the case where $Y$ is independent from $X_1, \dots, X_5$,
 i.e., such that none of the input variables are informative with respect to the
 output. For a randomly sampled dataset ${\cal L}$ of $N=120$ samples,
 Figure~\ref{fig:7:bias:null} plots variable importances for different kinds of
-random forests. ID3 corresponds to totally randomized trees, as defined in
-Section~\ref{sec:6:theory}, RF corresponds to Random Forest with bootstrap
-sampling and ETs corresponds to Extremely Randomized Trees. In asymptotic
-conditions, we proved in Theorem~\ref{thm:irrelevant} that the importance of
-irrelevant variables is strictly equal to $0$. For a finite value of $N$
-however, this result does not hold, as Figure~\ref{fig:7:bias:null} indeed
-confirms. We observe that the importance of none of the variables is in fact
-close to $0$. More importantly, we also observe that the larger the cardinality
-of the variable (i.e., the larger its number of unique values), the larger its
-importance. For example, the importance of $X_1$ (for which samples all have
-unique values) or of $X_5$ (which counts up to $40$ unique values) appears up
-to $3$ times larger as the importance of $X_2$ (which is binary). In their
-study, \citet{strobl:2007b} argue that this bias is due to variable selection:
-\textit{variables with more potential cut-points are more likely to produce a
-good criterion value by chance, as in a multiple testing situation}. As a
-result, variables of higher cardinality are more likely to be chosen for
+random forests. ID3 corresponds to multiway totally randomized trees, as
+defined in Section~\ref{sec:6:theory}, RF corresponds to Random Forest with
+bootstrap sampling and ETs corresponds to Extremely Randomized Trees. In
+asymptotic conditions, we proved in Theorem~\ref{thm:irrelevant} that the
+importance of irrelevant variables is strictly equal to $0$. For a finite value
+of $N$ however, this result does not hold, as Figure~\ref{fig:7:bias:null}
+indeed confirms. We observe that the importance of none of the variables is in
+fact close to $0$. More importantly, we also observe that the larger the
+cardinality of the variable (i.e., the larger its number of unique values), the
+larger its importance. For example, the importance of $X_1$ (for which samples
+all have unique values) or of $X_5$ (which counts up to $40$ unique values)
+appears nearly $3$ times larger as the importance of $X_2$ (which is binary).
+In their study, \citet{strobl:2007b} argue that this bias is due to variable
+selection: \textit{variables with more potential cut-points are more likely to
+produce a good criterion value by chance, as in a multiple testing situation}.
+As a result, variables of higher cardinality are more likely to be chosen for
 splitting than those of lower cardinality. While this bias has been known for
 long in decision trees~\citep{kononenko:1995,kim:2001,hothorn:2006}, we argue
 that it is not the actual cause for the bias observed here. Indeed, this
@@ -389,6 +402,12 @@ cardinality of the variable (e.g., in ETs).
 \caption{Variable importances for $Y$ independent of $X_1, \dots, X_5$. ($N=120$, $M=500$)}
 \label{fig:7:bias:null}
 \end{figure}
+
+% I est misestimé
+% - car on a pas assez d'échantillons par noeud
+% - agravé par le fait qu'on développe totalement les arbres
+
+% on peut exhauster plus vite
 
 
 % * bias due to masking effects, caused by the variable selection (K>1)
@@ -409,7 +428,9 @@ cardinality of the variable (e.g., in ETs).
 %   S: limiter la profondeur
 %   S: exhaustive splits
 %   S: characterize in a finite setting
-%
+
+\subsection{Bias due to the tree structure}
+
 % * bias due to the conditioning sets that are evaluated
 %   - splitting in binary trees on non-binary variables is like having
 %     several binary variables, and to adjust the probability of selecting them
@@ -417,6 +438,9 @@ cardinality of the variable (e.g., in ETs).
 %     trouver un exemple qui montre que ça biaise
 %   S: exhaustive splits => seulement si N large, splits intermédiaires
 %
+
+\subsection{Bias due to threshold selection}
+
 % * bias due to masking effects, caused by the selection of the thresholds
 %   - c'est commme si on on n'utilisait jamais certaines variables de l'encodage binaire
 %   - bias may be positive or negative (eg, for ETs)
