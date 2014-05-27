@@ -413,31 +413,49 @@ cardinality of the variable (e.g., in ETs).
 For multiway splits like in ID3, bias in variable importances can be traced to the
 misestimations of the mutual information terms
 \begin{equation}
-\Delta i(s, t) \approx I(X_j;Y|t),
+\Delta i(s, t) \approx I(X_j;Y|t)
 \end{equation}
-due to the finite size $N_t$ of the set of node samples used to evaluate
-impurity decrease. As shown in  \citep{goebel:2005}, when $X_j$ and $Y$ are
-independent random variables (i.e., when $X_j$ is irrelevant), the distribution
-of finite sample size estimates of their mutual information  follows
-approximately a gamma distribution whose mean is linearly proportional to the
-cardinalities $|{\cal X}_j|$ and $|{\cal Y}|$  of $X_j$ and $Y$ and inversely
-proportional to $N_t$. As a result, the weighted mean of
-all such estimated impurity terms $I(X_j;Y|t)$, for all nodes $t$ where $X_j$
-is the split variable, and resulting in the total importance $\text{Imp}(X_j)$,
-is also linearly dependent on the cardinality of $X_j$. In particular, for ID3,
-this result explains why variables of high cardinality in
+due to the finite size $N_t$ of the node samples. As shown in
+\citep{goebel:2005}, when $X_j$ and $Y$ are independent random variables (i.e.,
+when $X_j$ is irrelevant), the distribution of finite sample size estimates of
+their mutual information  follows approximately a gamma distribution whose mean
+is linearly proportional to the cardinalities $|{\cal X}_j|$ and $|{\cal Y}|$
+of $X_j$ and $Y$ and inversely proportional to $N_t$. As a result, the weighted
+mean of all such estimated impurity terms $I(X_j;Y|t)$, for all nodes $t$ where
+$X_j$ is the split variable, and resulting in the total importance
+$\text{Imp}(X_j)$, is also linearly dependent on the cardinality of $X_j$. In
+particular, for ID3, this result explains why variables of high cardinality in
 Figure~\ref{fig:7:bias:null} appear as more important than those of lower
 cardinality. Indeed, the closer the number of unique values with respect to the
 total number of samples, the larger the impurity decrease when splitting
 exhaustively on this variable. In the extreme case, when values for $X_j$ are
 all unique, splitting on the variable perfectly memorizes the values of $Y$,
-resulting in child nodes that are all pure and maximizing the estimated mutual
-information. As such, this explains why $X_1$, whose values are all unique,
-appears as the most important variable.
+resulting in child nodes that are all pure, therefore maximizing the estimated
+mutual information. As such, this explains why $X_1$, whose values are all
+unique, appears as the most important variable.
 
 For binary splits (i.e., for RF and ETs, but not for ID3) the mutual
-information $I(X_j;Y|t)$ is not directly estimated at each node. Rather,
-$\Delta i(s, t)$ corresponds ...
+information $I(X_j;Y|t)$ is not directly estimated at each node. Rather, in the
+case of ordered variables, $\Delta i(s, t)$ corresponds to an estimate of the
+mutual information $I(X_j\leq v;Y|t)$ of the binary split $X_j \leq v$. Under
+the simplifying assumption that binary splits on the same variable are all
+directly consecutive in the decision tree,  it is easy to see that recursive
+binary partitioning eventually ends up emulating direct multiway exhaustive
+splits. Using an argument similar to the one used for proving
+Theorem~\ref{thm:sum-of-imp}, intermediate impurity terms between the first split and the last
+of those splits cancel each other when summing up the importances, which indeed
+amounts to collect an actual estimate of $I(X_j;Y|t)$ from the binary splits.
+For the same reasons as before, variables of high cardinality are therefore
+biased in the same way. (As we will study in Section~\ref{sec:bias:tree}, this
+assumption does not hold in practice, making the importances from binary
+decision trees strictly different from multiway decision trees. Yet, the
+qualitative conclusions are still valid since variables of high cardinality can
+be reused far more many times within the same tree than variables of low
+cardinality.)
+
+In both situations, the origin of the problem stems from the fact
+that node impurity is misestimated when the size of the node samples
+is too small.
 
 
 % I est misestimé
@@ -468,6 +486,7 @@ $\Delta i(s, t)$ corresponds ...
 %   S: characterize in a finite setting
 
 \subsection{Bias due to the tree structure}
+\label{sec:bias:tree}
 
 % * bias due to the conditioning sets that are evaluated
 %   - splitting in binary trees on non-binary variables is like having
