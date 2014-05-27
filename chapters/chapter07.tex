@@ -315,8 +315,11 @@ in fact important and to possibly detect redundancy.
 \label{sec:7:bias}
 
 In this section, we study sources of bias in variable importances and show that
-variable selection (as previously discussed in Section~\ref{sec:ntrt}) is in
-fact not the only cause of bias.
+variable selection (as previously discussed in Section~\ref{sec:ntrt}) is  not
+the only cause of bias. In practice, complementary forces due to masking
+effects, impurity misestimations and the structure of the trees make variable
+importances deviate from the theoretical results found in asymptotic conditions
+for totally randomized trees.
 
 \subsection{Bias due to variable selection}
 
@@ -325,17 +328,19 @@ As shown in the previous chapters, the guided selection of the split variable
 decision trees and to produce accurate ensembles. In particular, we studied
 that decision trees built with too much randomization usually lead to an
 increase of bias which cannot be compensated by a reciprocal decrease of
-variance. By contrast, we also showed in Section~\ref{sec:ntrt} that when
-variable selection is not totally random (i.e., as soon as $K>1$), masking
-effects induce a bias with respect to variable importances, since it forces
-some of the branches to never be built, and therefore some of the conditioning
-sets $B \in {\cal P}(V)$ to never be taken into account. As a consequence,
-random forests whose parameter $K$ has been tuned to maximize accuracy may
-yield variable importances that are biased. Variable importances may be over-
-or underestimated. In particular, it can be shown (see Section~\ref{sec:ntrt})
-that a relevant variable may be null with regards to its importance, thereby
-making it undistinguishable from irrelevant variables, and that the importance
-of relevant variables becomes dependent on the number of irrelevant variables.
+variance, making it necessary to adjust the value of $K$ to find the
+appropriate trade-off. By contrast, we also showed in Section~\ref{sec:ntrt}
+that when variable selection is not totally random (i.e., as soon as $K>1$),
+masking effects induce a bias with respect to variable importances, since it
+forces some of the branches to never be built, and therefore some of the
+conditioning sets $B \in {\cal P}(V)$ to never be taken into account. As a
+consequence, random forests whose parameter $K$ has been tuned to maximize
+accuracy may yield variable importances that are biased. Importances may be
+over- or underestimated. More specifically, it can be shown (see
+Section~\ref{sec:ntrt}) that a relevant variable may be null with regards to
+its importance, thereby making it indistinguishable from irrelevant variables,
+and that the importance of relevant variables becomes dependent on the number
+of irrelevant variables.
 
 \subsection{Bias due to impurity misestimations}
 
@@ -368,6 +373,14 @@ input variables $X_1,\dots,X_5$, as defined in Table~\ref{table:simulation}.
     \label{table:simulation}
 \end{table}
 
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{figures/ch7_bias_null.pdf}
+\caption{Variable importances for $Y$ independent of $X_1, \dots, X_5$. ($N=120$, $M=500$)}
+\label{fig:7:bias:null}
+\end{figure}
+
 Let us first analyze the case where $Y$ is independent from $X_1, \dots, X_5$,
 i.e., such that none of the input variables are informative with respect to the
 output. For a randomly sampled dataset ${\cal L}$ of $N=120$ samples,
@@ -378,12 +391,14 @@ bootstrap sampling and ETs corresponds to Extremely Randomized Trees. In
 asymptotic conditions, we proved in Theorem~\ref{thm:irrelevant} that the
 importance of irrelevant variables is strictly equal to $0$. For a finite value
 of $N$ however, this result does not hold, as Figure~\ref{fig:7:bias:null}
-indeed confirms. We observe that the importance of none of the variables is in
-fact close to $0$. More importantly, we also observe that the larger the
-cardinality of the variable (i.e., the larger its number of unique values), the
-larger its importance. For example, the importance of $X_1$ (for which samples
-all have unique values) or of $X_5$ (which counts up to $40$ unique values)
-appears nearly $3$ times larger as the importance of $X_2$ (which is binary).
+indeed confirms. In contrast with what would be expected, we observe that the
+importance of none of the variables is in fact close to $0$. More importantly,
+we also observe that the larger the cardinality of the variable (i.e., the
+larger its number of unique values), the larger its importance. For example,
+the importance of $X_1$ (for which samples all have unique values) or of $X_5$
+(which counts up to $40$ unique values) appears nearly $3$ times larger as the
+importance of $X_2$ (which is binary).
+
 In their study, \citet{strobl:2007b} argue that this bias is due to variable
 selection: \textit{variables with more potential cut-points are more likely to
 produce a good criterion value by chance, as in a multiple testing situation}.
@@ -393,19 +408,30 @@ long in decision trees~\citep{kononenko:1995,kim:2001,hothorn:2006}, we argue
 that it is not the actual cause for the bias observed here. Indeed, this
 argument does not directly explain why similar trends are also observed when no
 variable selection is performed (e.g., for ID3 or for $K=1$) nor why it
-similarly  happens when cut-points are chosen at random, independently of the
+similarly happens when cut-points are chosen at random, independently of the
 cardinality of the variable (e.g., in ETs).
 
-\begin{figure}
-\centering
-\includegraphics[width=0.9\textwidth]{figures/ch7_bias_null.pdf}
-\caption{Variable importances for $Y$ independent of $X_1, \dots, X_5$. ($N=120$, $M=500$)}
-\label{fig:7:bias:null}
-\end{figure}
+In this experiment, bias in variable importances can actually be traced to the
+misestimations of the mutual information terms
+\begin{equation}
+\Delta i(s, t) \approx I(X_j;Y|t)
+\end{equation}
+due to the finite
+size $N_t$ of the set of node samples at $t$. As shown in  \citep{goebel:2005},
+when $X_j$ and $Y$ are independent random variables (i.e., when $X_j$ is
+irrelevant), the distribution of finite sample size estimates of their mutual
+information  follows approximately a gamma distribution whose mean is linearly
+proportional to the cardinalities $|{\cal X}_j|$ and $|{\cal Y}|$  of $X_j$ and
+$Y$ and inversely proportional to the size $N_t$ of the sample. As a result,
+the weighted mean of all such estimated impurity terms $I(X_j;Y|t)$, for all nodes $t$
+where $X_j$ is the split variable, resulting in the total importance
+$\text{Imp}(X_j)$,  is also linearly dependent on the cardinality of $X_j$. In
+particular, ...
 
 % I est misestimé
 % - car on a pas assez d'échantillons par noeud
 % - agravé par le fait qu'on développe totalement les arbres
+% - conséquence pour celle de grande cardinalité \citep{goebel:2005}
 
 % on peut exhauster plus vite
 
