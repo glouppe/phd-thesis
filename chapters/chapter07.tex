@@ -335,8 +335,8 @@ masking effects induce a bias with respect to variable importances, since it
 forces some of the branches to never be built, and therefore some of the
 conditioning sets $B \in {\cal P}(V)$ to never be taken into account. As a
 consequence, random forests whose parameter $K$ has been tuned to maximize
-accuracy may yield variable importances that are biased. Importances may be
-over- or underestimated. More specifically, it can be shown (see
+accuracy may yield variable importances that are biased (either
+over- or underestimated). More specifically, it can be shown (see
 Section~\ref{sec:ntrt}) that a relevant variable may be null with regards to
 its importance, thereby making it indistinguishable from irrelevant variables,
 and that the importance of relevant variables becomes dependent on the number
@@ -478,27 +478,32 @@ early stopping criterion, and not to variable selection.
 \centering
 \includegraphics[width=0.9\textwidth]{figures/ch7_bias_depth.pdf}
 \caption{Variable importances of $X_1, \dots, X_5$ when varying both the
-    maximum depth of trees and the degree of relevance of $X_2$. (ETs, $K=1$, $N=120$, $M=500$)}
+    maximum depth of the trees and the degree of relevance of $X_2$. (ETs, $K=1$, $N=120$, $M=500$)}
 \label{fig:7:bias:depth}
 \end{figure}
 
 As an illustrative example, Figure~\ref{fig:7:bias:depth} reconsiders the
 simulation study of Table~\ref{table:simulation} for ETs  built with no
-variable selection ($K=1$), when varying both the maximum depth of trees (from
-$\texttt{max\_depth}=1$ to $9$) and the relevance of $X_2$ with respect to
-$Y$.
+variable selection ($K=1$), when varying both the maximum depth of the trees
+(from $\texttt{max\_depth}=1$ to $9$) and the relevance of $X_2$ with respect
+to $Y$. For the null case, when $\text{relevance}=0$, limiting the depth of the
+trees correctly fixes the bias that was observed before. For shallow trees (for
+$\texttt{max\_depth} \leq 4$), the importances of all five input variables are
+close to 0, as expected from irrelevant variables. However, when the depth of
+the decision trees increases, importances deviate and bias proportional to the
+cardinality of the variables appear as discussed before. When $X_2$ is a
+relevant variable, its importance is expected to be strictly positive and at
+least as large as the importances of the irrelevant variables. For
+$\text{relevance}=0.1$, the importance $X_2$ appears just slightly larger than
+the importances of the other variables when $\texttt{max\_depth} \leq 3$. For
+deeper trees  however, noise dominates and the importance of the irrelevant
+variables is larger due to misestimations of the impurity terms. As  relevance
+increases, $X_2$ is correctly identified as a relevant variable. In particular,
+the more relevant $X_2$, that is the stronger the signal, the deeper trees can
+be built until the importance of $X_2$ is made unrecognizable from the
+irrelevant variables.
 
-
-% agravé ar des arbres totalement développés
-% early stop to have good estimations
-
-
-% I est misestimé
-% - car on a pas assez d'échantillons par noeud
-% - agravé par le fait qu'on développe totalement les arbres
-% - conséquence pour celle de grande cardinalité \citep{goebel:2005}
-
-% on peut exhauster plus vite
+In conclusion, MDI importances...
 
 
 % * bias due to masking effects, caused by the variable selection (K>1)
