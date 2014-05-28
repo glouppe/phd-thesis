@@ -583,6 +583,10 @@ are formulated as follows:
 \item Set $t$ as a terminal node if the maximum decrease in impurity is less than
 a fixed threshold $\beta$. That is, if $p(t) \Delta i(s^*, t) < \beta$.
 
+\item Set $t$ as a terminal node if $t$ there is no split such that $t_L$ and
+$t_R$ both count a least $N_\text{leaf}$ samples. ($N_\text{leaf}$ is also
+known as \texttt{min\_samples\_leaf}.)
+
 \end{enumerate}
 
 In all of the above, stopping criteria are defined in terms of user-defined
@@ -957,12 +961,13 @@ measures how often a randomly chosen object $\mathbf{x}\in {\cal L}_t$ would be
 incorrectly classified if it were randomly labeled by a class $c\in{\cal Y}$ according
 to the distribution $p(y|t)$.
 
-\begin{figure}
+\begin{figure}[h]
 \centering
 \includegraphics[width=0.9\textwidth]{figures/ch3_impurity_comparison.pdf}
 \caption{Comparison of $i_E(t)$, $i_H(t)$ and $i_G(t)$.}
 \label{fig:3:toy:impurity:comparison}
 \end{figure}
+
 
 While the Shannon entropy~\ref{eqn:impurity:shannon} and the Gini
 index~\ref{eqn:impurity:gini} are robust and reliable impurity functions
@@ -985,6 +990,7 @@ studies~\citep{mingers:1989b,miyakawa:1989,mantaras:1991} have shown that,
 while the impurity function may have a significant impact on the structure of
 the decision tree, improvements in terms of classification accuracy are usually
 not that significant.
+
 
 \subsubsection{Regression}
 \label{sec:3:criteria:regression}
@@ -1154,6 +1160,16 @@ $\smash{\Delta i(s^{v^\prime_{k}}_j, t)}$ in a limited number of operations.
 
 \end{itemize}
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/ch3_split_ordered_invariant.pdf}
+    \caption{Loop invariant of Algorithm~\ref{algo:findsplit:x_j}. At the end of each
+    iteration, $\smash{\Delta i(s^{v^\prime_k}_j, t)}$ has been computed from the
+    statistics of the previous split at $v^\prime_{k-1}$  and compared to the
+    best reduction in impurity $\Delta$ found so far within the splits at $v^\prime_{0}=-\infty$ to $v^\prime_{k-1}$.}
+    \label{fig:3:split:invariant}
+\end{figure}
+
 Starting from the initial partition $v^\prime_0=-\infty$, that is where $t_L$
 is empty and $t_R$ corresponds to $t$, and using the above update equations to
 switch from $\smash{v^\prime_k}$ to $\smash{ v^\prime_{k+1}}$, the search of
@@ -1194,16 +1210,6 @@ Find the best split $s^*_j$ on $X_j$ that partitions ${\cal L}_t$.
 \end{algorithmic}
 }
 \end{algorithm}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.9\textwidth]{figures/ch3_split_ordered_invariant.pdf}
-    \caption{Loop invariant of Algorithm~\ref{algo:findsplit:x_j}. At the end of each
-    iteration, $\smash{\Delta i(s^{v^\prime_k}_j, t)}$ has been computed from the
-    statistics of the previous split at $v^\prime_{k-1}$  and compared to the
-    best reduction in impurity $\Delta$ found so far within the splits at $v^\prime_{0}=-\infty$ to $v^\prime_{k-1}$.}
-    \label{fig:3:split:invariant}
-\end{figure}
 
 As we will see later in
 Chapter~\ref{ch:complexity}, the algorithm complexity is upper bounded by the

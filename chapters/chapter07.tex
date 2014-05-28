@@ -420,19 +420,21 @@ due to the finite size $N_t$ of the node samples. As shown in
 when $X_j$ is irrelevant), the distribution of finite sample size estimates of
 their mutual information  follows approximately a gamma distribution whose mean
 is linearly proportional to the cardinalities $|{\cal X}_j|$ and $|{\cal Y}|$
-of $X_j$ and $Y$ and inversely proportional to $N_t$. As a result, the weighted
-mean of all such estimated impurity terms $I(X_j;Y|t)$, for all nodes $t$ where
-$X_j$ is the split variable, and resulting in the total importance
-$\text{Imp}(X_j)$, is also linearly dependent on the cardinality of $X_j$. In
-particular, for ID3, this result explains why variables of high cardinality in
-Figure~\ref{fig:7:bias:null} appear as more important than those of lower
-cardinality. Indeed, the closer the number of unique values with respect to the
-total number of samples, the larger the impurity decrease when splitting
-exhaustively on this variable. In the extreme case, when values for $X_j$ are
-all unique, splitting on the variable perfectly memorizes the values of $Y$,
-resulting in child nodes that are all pure, therefore maximizing the estimated
-mutual information. As such, this explains why $X_1$, whose values are all
-unique, appears as the most important variable.
+of $X_j$ and $Y$ and inversely proportional to $N_t$.
+As a result, estimates get larger as $X_j$ counts many unique values, and
+become even larger as nodes are deep in the tree (since $N_t$ gets smaller).
+Consequently, the weighted mean of all such estimated impurity terms
+$I(X_j;Y|t)$, for all nodes $t$ where $X_j$ is the split variable, and
+resulting in the total importance $\text{Imp}(X_j)$, is also linearly dependent
+on the cardinality of $X_j$. For ID3, this result explains why variables of
+high cardinality in Figure~\ref{fig:7:bias:null} appear as more important than
+those of lower cardinality. Intuitively, the closer the number of unique values
+with respect to the total number of samples, the larger the impurity decrease
+when splitting exhaustively on this variable. In the extreme case, when values
+for $X_j$ are all unique, splitting on the variable perfectly memorizes the
+values of $Y$, resulting in child nodes that are all pure, therefore maximizing
+the estimated mutual information. As such, this explains why $X_1$, whose
+values are all unique, appears as the most important variable.
 
 For binary splits (i.e., for RF and ETs, but not for ID3) the mutual
 information $I(X_j;Y|t)$ is not directly estimated at each node. Rather, in the
@@ -441,21 +443,54 @@ mutual information $I(X_j\leq v;Y|t)$ of the binary split $X_j \leq v$. Under
 the simplifying assumption that binary splits on the same variable are all
 directly consecutive in the decision tree,  it is easy to see that recursive
 binary partitioning eventually ends up emulating direct multiway exhaustive
-splits. Using an argument similar to the one used for proving
-Theorem~\ref{thm:sum-of-imp}, intermediate impurity terms between the first split and the last
-of those splits cancel each other when summing up the importances, which indeed
-amounts to collect an actual estimate of $I(X_j;Y|t)$ from the binary splits.
-For the same reasons as before, variables of high cardinality are therefore
-biased in the same way. (As we will study in Section~\ref{sec:bias:tree}, this
-assumption does not hold in practice, making the importances from binary
-decision trees strictly different from multiway decision trees. Yet, the
-qualitative conclusions are still valid since variables of high cardinality can
-be reused far more many times within the same tree than variables of low
-cardinality.)
+splits. Using an argument similar to the proof of Theorem~\ref{thm:sum-of-imp},
+intermediate impurity terms between the first split and the last of those
+splits cancel each other when summing up the importances, which finally amounts
+to collect an actual estimate of $I(X_j;Y|t)$ from the binary splits. For the
+same reasons as before, variables of high cardinality are therefore biased in
+the same way. (As we will study in Section~\ref{sec:bias:tree}, this assumption
+does not hold in practice, making the importances from binary decision trees
+strictly different from those of multiway decision trees. Yet, the qualitative
+conclusions are still valid since variables of high cardinality can be reused
+far more many times within the same tree than variables of low cardinality.)
 
-In both situations, the origin of the problem stems from the fact
-that node impurity is misestimated when the size of the node samples
-is too small.
+In both situations, the origin of the problem stems from the fact that node
+impurity is misestimated when the size $N_t$ of the node samples is too small.
+To a large extent, the issue is aggravated by the fact that trees are fully
+developed by default, making impurity terms collected near the leaves usually
+unreliable. As a precaution, a safe and effective solution for the bias problem
+therefore simply consists in collecting impurity terms only for those nodes
+where the impurity estimates can be considered as reliable. Equivalently, the
+construction of the tree can also be stopped early, when impurity estimates
+become unreliable, e.g., using one of the stopping criteria defined in
+Section~\ref{sec:3:stop}. Among all alternatives, conditional inference
+trees~\citep{hothorn:2006} make use of statistical tests for assessing the
+independence of $X_j$ and $Y$ at a pre-specified level of confidence $\alpha$.
+If the null hypothesis cannot be rejected, then recursive partitioning halts.
+In particular, variable importances collected from such trees were shown
+experimentally by \citet{strobl:2007b} not to suffer from bias. The authors
+argue that it is due the unbiased variable selection mechanisms also
+implemented in conditional inference trees. By contrast, we argue that, by and
+large, the absence of bias in importances from such trees is mostly due to the
+early stopping criterion, and not to variable selection.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{figures/ch7_bias_depth.pdf}
+\caption{Variable importances of $X_1, \dots, X_5$ when varying both the
+    maximum depth of trees and the degree of relevance of $X_2$. (ETs, $K=1$, $N=120$, $M=500$)}
+\label{fig:7:bias:depth}
+\end{figure}
+
+As an illustrative example, Figure~\ref{fig:7:bias:depth} reconsiders the
+simulation study of Table~\ref{table:simulation} for ETs  built with no
+variable selection ($K=1$), when varying both the maximum depth of trees (from
+$\texttt{max\_depth}=1$ to $9$) and the relevance of $X_2$ with respect to
+$Y$.
+
+
+% agravé ar des arbres totalement développés
+% early stop to have good estimations
 
 
 % I est misestimé
