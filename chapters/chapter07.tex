@@ -443,16 +443,25 @@ mutual information $I(X_j\leq v;Y|t)$ of the binary split $X_j \leq v$. Under
 the simplifying assumption that binary splits on the same variable are all
 directly consecutive in the decision tree,  it is easy to see that recursive
 binary partitioning eventually ends up emulating direct multiway exhaustive
-splits. Using an argument similar to the proof of Theorem~\ref{thm:sum-of-imp},
-intermediate impurity terms between the first split and the last of those
-splits cancel each other when summing up the importances, which finally amounts
-to collect an actual estimate of $I(X_j;Y|t)$ from the binary splits. For the
-same reasons as before, variables of high cardinality are therefore biased in
-the same way. (As we will study in Section~\ref{sec:bias:tree}, this assumption
-does not hold in practice, making the importances from binary decision trees
-strictly different from those of multiway decision trees. Yet, the qualitative
-conclusions are still valid since variables of high cardinality can be reused
-far more many times within the same tree than variables of low cardinality.)
+splits, as illustrated in Figure~\ref{fig:7:splits}. Using an argument similar
+to the proof of Theorem~\ref{thm:sum-of-imp}, intermediate impurity terms
+between the first split and the last of those splits cancel each other when
+summing up the importances, which finally amounts to collect an actual estimate
+of $I(X_j;Y|t)$ from the binary splits. For the same reasons as before,
+variables of high cardinality are therefore biased in the same way. (As we will
+study in Section~\ref{sec:bias:tree}, this assumption does not hold in
+practice, making the importances from binary decision trees strictly different
+from those of multiway decision trees. Yet, the qualitative conclusions are
+still valid since variables of high cardinality can be reused far more many
+times than variables of low cardinality before all possible splits are
+exhausted.)
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=1.0]{figures/ch7_splits.pdf}
+    \caption{Consecutive binary splits on the same variable are equivalent to direct multiway splits.}
+    \label{fig:7:splits}
+\end{figure}
 
 In both situations, the origin of the problem stems from the fact that node
 impurity is misestimated when the size $N_t$ of the node samples is too small.
@@ -492,41 +501,30 @@ $\texttt{max\_depth} \leq 4$), the importances of all five input variables are
 close to 0, as expected from irrelevant variables. However, when the depth of
 the decision trees increases, importances deviate and bias proportional to the
 cardinality of the variables appear as discussed before. When $X_2$ is a
-relevant variable, its importance is expected to be strictly positive and at
-least as large as the importances of the irrelevant variables. For
-$\text{relevance}=0.1$, the importance $X_2$ appears just slightly larger than
-the importances of the other variables when $\texttt{max\_depth} \leq 3$. For
-deeper trees  however, noise dominates and the importance of the irrelevant
-variables is larger due to misestimations of the impurity terms. As  relevance
-increases, $X_2$ can more clearly be identified as a relevant variable. In
-particular, the more relevant $X_2$, that is the stronger the signal, the
-deeper trees can be built unti $X_2$ is made unrecognizable from the irrelevant
-variables.
+relevant variable (i.e., for $\text{relevance}>0$), its importance is expected
+to be strictly positive and at least as large as the importances of the
+irrelevant variables. For $\text{relevance}=0.1$, the importance $X_2$ appears
+just slightly larger than the importances of the other variables when
+$\texttt{max\_depth} \leq 3$. For deeper trees  however, noise dominates and
+the importance of the irrelevant variables is larger due to misestimations of
+the impurity terms. As  relevance increases, $X_2$ can more clearly be
+identified as a relevant variable. In particular, the more relevant $X_2$, that
+is the stronger the signal, the deeper trees can be built until $X_2$ is made
+unrecognizable from the irrelevant variables.
 
-In conclusion, MDI importances...
-
-
-% * bias due to masking effects, caused by the variable selection (K>1)
-%   S: K=1
-%
-% * bias towards high cardinality, for irrelevant variables
-%   - this seems logical when K>1 (page14+ strobl, masking effects due to selection)
-%   - but why is this still true for K=1?
-%   - montrer par un exemple (e.g., reproduire strobl)
-%   - montrer cependant que l'effet s'atténue à mesure que N augmente (choisir une méthode, fixer max_depth avec ou sans)
-%       * pour chaque valeur de X, on finit par retrouver toutes les valeurs de y)
-%   - et/ou en limitant la profondeur
-%   => due to a misestimation of  I(X;Y)
-%      noter que l'erreur est d'autant grande plus qu'on splitte de façon exhaustive
-%   => Effet du à la misestimation de I(X;Y) en raison d'un nombre trop peu important de samples
-%      condition à la consistence: faire en sorte que les feuilles grandissent moins vite que N
-%       e.g. fixer max_depth ou min_samples_leaf
-%   S: limiter la profondeur
-%   S: exhaustive splits
-%   S: characterize in a finite setting
+In conclusion, evaluating impurity on small samples lead to overestimations
+of the mutual information, resulting in biased variable importances.
+In particular, the higher the cardinality of the variable, the higher
+the larger the misestimations. To minimize this effect, caution should be
+taken by only considering impurity terms that were computed from a large
+enough sample. This can be guaranteed, e.g., by stopping the construction
+of the tree early, or making leaves grow more slowly than the size $N$ of the
+learning set.
 
 \subsection{Bias due to the tree structure}
 \label{sec:bias:tree}
+
+
 
 % * bias due to the conditioning sets that are evaluated
 %   - splitting in binary trees on non-binary variables is like having

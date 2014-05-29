@@ -1,0 +1,40 @@
+\documentclass{article}
+\usepackage{pstricks}
+\usepackage{pst-plot}
+\pagestyle{empty}
+\begin{document}
+    \begin{pspicture}(15,15)
+    %\psgrid[subgriddiv=1,griddots=10,gridlabels=7pt]
+    % Binary split
+    % Arrows
+    \psline[linewidth=0.5pt]{->}(4,12)(3.2,10.4)
+    \psline[linewidth=0.5pt]{->}(4,12)(4.8,10.4)
+    \psline[linewidth=0.5pt]{->}(3,10)(3.8,8.4)
+    \psline[linewidth=0.5pt]{->}(3,10)(2.2,8.4)
+    % Nodes
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](4,12){0.4}
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](3,10){0.4}
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](5,10){0.4}
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](2,8){0.4}
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](4,8){0.4}
+    % Text
+    \rput(3,11.3){$X_j \leq 1$}
+    \rput(5,11.3){$X_j > 1$}
+    \rput(2,9.3){$X_j \leq 0$}
+    \rput(4,9.3){$X_j > 0$}
+    % N-ary split
+    % Arrows
+    \psline[linewidth=0.5pt]{->}(10,12)(8.2,10.4)
+    \psline[linewidth=0.5pt]{->}(10,12)(10,10.5)
+    \psline[linewidth=0.5pt]{->}(10,12)(11.8,10.4)
+    % Nodes
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](10,12){0.4}
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](8,10){0.4}
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](10,10){0.4}
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](12,10){0.4}
+    % Text
+    \rput(8.5,11.3){$X_j = 0$}
+    \rput(10,11){$X_j = 1$}
+    \rput(11.5,11.3){$X_j = 2$}
+    \end{pspicture}
+\end{document}
