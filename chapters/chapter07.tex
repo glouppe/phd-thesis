@@ -521,9 +521,50 @@ enough sample. This can be guaranteed, e.g., by stopping the construction
 of the tree early, or making leaves grow more slowly than the size $N$ of the
 learning set.
 
-\subsection{Bias due to the tree structure}
+\subsection{Bias due to the binary tree structure}
 \label{sec:bias:tree}
 
+Previous developments from Chapter~\ref{ch:importances} studied variable
+importances for fully developed totally randomized trees and multiway
+exhaustive splits. In practice however, random forests rely on binary
+splits for building trees rather than on multiway splits. In terms of impurity,
+this results in additional terms that were not previously accounted for, hence
+yielding variable importances that are strictly different from those computed
+from totally randomized trees.
+
+\begin{table}
+    \centering
+    \begin{tabular}{| c c | c |}
+    \hline
+    $x_1$ & $x_2$ & $y$ \\
+    \hline
+    \hline
+    0 & 0 & 0 \\
+    1 & 1 & 1 \\
+    2 & 1 & 1 \\
+    \hline
+    \end{tabular}
+    \caption{Toy classification on two input variables.}
+    \label{table:simulation:bias:tree}
+\end{table}
+
+As an illustrative example, let us consider a toy classification problem
+composed of a ternary input variable $X_1$ and of a binary input variable
+$X_2$. Let us further assume that input samples are uniformly drawn from
+Table~\ref{table:simulation:bias:tree}.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=1.0]{figures/ch7_trees_id3.pdf}
+    \caption{Totally randomized trees built from Table~\ref{table:simulation:bias:tree}. Both trees are equiprobable.}
+    \label{fig:7:bias:trees:id3}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[scale=1.0]{figures/ch7_trees_ets.pdf}
+    \caption{Extremely randomized trees buit from Table~\ref{table:simulation:bias:tree}. The two first trees are generated with probability $\tfrac{1}{4}$ while the third tree is generated with probability $\tfrac{1}{2}$.}
+    \label{fig:7:bias:trees:ets}
+\end{figure}
 
 
 % * bias due to the conditioning sets that are evaluated
