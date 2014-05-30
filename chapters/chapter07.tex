@@ -544,11 +544,11 @@ from totally randomized trees.
     2 & 1 & 1 \\
     \hline
     \end{tabular}
-    \caption{Toy classification on two input variables.}
+    \caption{Toy problem. All $3$ possible samples are equiprobable.}
     \label{table:simulation:bias:tree}
 \end{table}
 
-As an illustrative example, let us consider a toy classification problem
+As a simplistic but illustrative example, let us consider a toy classification problem
 composed of a ternary input variable $X_1$ and of a binary input variable
 $X_2$. Let us further assume that input samples are uniformly drawn from
 Table~\ref{table:simulation:bias:tree}.
@@ -561,8 +561,9 @@ Table~\ref{table:simulation:bias:tree}.
 \end{figure}
 \begin{figure}
     \centering
-    \includegraphics[scale=1.0]{figures/ch7_trees_ets.pdf}
-    \caption{Extremely randomized trees buit from Table~\ref{table:simulation:bias:tree}. The two first trees are generated with probability $\tfrac{1}{4}$ while the third tree is generated with probability $\tfrac{1}{2}$.}
+    \includegraphics[scale=1.0]{figures/ch7_trees_ets.pdf}\vspace{1cm}\\
+    \includegraphics[scale=1.0]{figures/ch7_trees_ets2.pdf}
+    \caption{Extremely randomized trees buit from Table~\ref{table:simulation:bias:tree}. From left to right, top to bottom, trees are respectively generated with probability $\tfrac{1}{8}$, $\tfrac{1}{8}$, $\tfrac{1}{4}$ and $\tfrac{1}{2}$.}
     \label{fig:7:bias:trees:ets}
 \end{figure}
 
