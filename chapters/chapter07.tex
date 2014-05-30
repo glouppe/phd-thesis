@@ -521,7 +521,7 @@ enough sample. This can be guaranteed, e.g., by stopping the construction
 of the tree early, or making leaves grow more slowly than the size $N$ of the
 learning set.
 
-\subsection{Bias due to the binary tree structure}
+\subsection{Bias due to binary trees and threshold selection}
 \label{sec:bias:tree}
 
 Previous developments from Chapter~\ref{ch:importances} studied variable
@@ -534,73 +534,119 @@ from totally randomized trees.
 
 \begin{table}
     \centering
-    \begin{tabular}{| c c | c |}
+    \begin{tabular}{| c | c c |}
     \hline
-    $x_1$ & $x_2$ & $y$ \\
+    $y$ & $x_1$ & $x_2$ \\
     \hline
     \hline
     0 & 0 & 0 \\
     1 & 1 & 1 \\
-    2 & 1 & 1 \\
+    1 & 2 & 1 \\
     \hline
     \end{tabular}
     \caption{Toy problem. All $3$ possible samples are equiprobable.}
     \label{table:simulation:bias:tree}
 \end{table}
 
-As a simplistic but illustrative example, let us consider a toy classification problem
-composed of a ternary input variable $X_1$ and of a binary input variable
-$X_2$. Let us further assume that input samples are uniformly drawn from
-Table~\ref{table:simulation:bias:tree}.
-
 \begin{figure}
     \centering
     \includegraphics[scale=1.0]{figures/ch7_trees_id3.pdf}
-    \caption{Totally randomized trees built from Table~\ref{table:simulation:bias:tree}. Both trees are equiprobable.}
+    \caption{Totally randomized trees built from Table~\ref{table:simulation:bias:tree}. Both decision trees are equiprobable.}
     \label{fig:7:bias:trees:id3}
 \end{figure}
 \begin{figure}
     \centering
     \includegraphics[scale=1.0]{figures/ch7_trees_ets.pdf}\vspace{1cm}\\
     \includegraphics[scale=1.0]{figures/ch7_trees_ets2.pdf}
-    \caption{Extremely randomized trees buit from Table~\ref{table:simulation:bias:tree}. From left to right, top to bottom, trees are respectively generated with probability $\tfrac{1}{8}$, $\tfrac{1}{8}$, $\tfrac{1}{4}$ and $\tfrac{1}{2}$.}
+    \caption{Extremely randomized trees ($K=1$) built from Table~\ref{table:simulation:bias:tree}. From left to right, top to bottom, decision trees are respectively generated with probability $\tfrac{1}{8}$, $\tfrac{1}{8}$, $\tfrac{1}{4}$ and $\tfrac{1}{2}$.}
     \label{fig:7:bias:trees:ets}
 \end{figure}
 
+As a simplistic but illustrative example, let us consider a toy classification
+problem composed of a ternary input variable $X_1$ and of a binary input
+variable $X_2$. Let us further assume that input samples are uniformly drawn
+from Table~\ref{table:simulation:bias:tree}, which defines the output as $Y =
+X_1 < 1$ and $X_2$ as a copy of $Y$. With totally randomized trees and
+exhaustive splits, two equiprobable decision trees can be built, as represented
+in Figure~\ref{fig:7:bias:trees:id3}. In both of them, splitting either on
+$X_1$ or on $X_2$ at the root node results in child nodes that are pure, hence
+halting the construction process. The measured variable importances are
+\begin{align*}
+\text{Imp}(X_1) = \frac{1}{2} I(X_1;Y), \\
+\text{Imp}(X_2) = \frac{1}{2} I(X_2;Y).
+\end{align*}
+By contrast, using binary splits and Extremely Randomized Trees (for $K=1$) results in $4$ different decision trees, as
+represented in Figure~\ref{fig:7:bias:trees:ets}. When splitting on $X_1$ at
+the root node, two binary splits are now possible with equal probability: $t_L = X_1 \leq 0, t_R = X_1 > 0$ or
+$t_L = X_1 \leq 1, t_R = X_1 > 1$. In the former case, the resulting child nodes are pure,
+hence halting the construction process. In the latter case, the right child
+(corresponding to $X_1 > 1$) is pure, while the left child is not. For this
+node, recursive partitioning proceeds and a second binary split can be made either on
+$X_1$ or on $X_2$.  Overall, the measured variable
+importances in these trees are
+\begin{align*}
+\text{Imp}(X_1) &= \frac{2}{8} I(X_1 \leq 1;Y) + \frac{1}{8} P(X_1 \leq 1) I(X_1 \leq 0;Y|X_1 \leq 1) + \frac{1}{4} I(X_1 \leq 0;Y)\\
+\text{Imp}(X_2) &= \frac{1}{2} I(X_2;Y) + \frac{1}{8} P(X_1 \leq 1) I(X_2;Y|X_1\leq 1),
+\end{align*}
+which makes them strictly different from the importances collected in totally
+randomized trees. In particular, importances now account for conditioning
+sets that may include several values of a given variable. For instance,
+the importance of $X_2$ includes $I(X_2;Y|X_1\leq 1)$, which measures
+the mutual information between $X_2$ and $Y$ when $X_1$ is either equal
+to $0$ or $1$. With multiway exhaustive splits, these conditioning
+sets are not considered because branches correspond to single values only.
+Similarly, importances also account for binarized mutual information terms such as
+$I(X_1 \leq 1;Y)$. Again, these are not evaluated in totally randomized trees
+because of the multiway splits.
 
-% * bias due to the conditioning sets that are evaluated
-%   - splitting in binary trees on non-binary variables is like having
-%     several binary variables, and to adjust the probability of selecting them
-%   - a branch may comprise several values for b (i.e. B<=b plutot que B=b)
-%     trouver un exemple qui montre que ça biaise
-%   S: exhaustive splits => seulement si N large, splits intermédiaires
-%
+Accordingly, threshold selection in binary splits has a dominant effect on
+variable importances since it controls how the original variables are
+binarized. In ETs, all intermediate thresholds $v$ are possible, resulting in a
+combinatorial number of additional impurity terms $I(X_j \leq v_j;Y|\cdot)$ and
+$I(\cdot;Y|X_j \leq v_j, \cdot)$. In RF, only the best threshold is selected
+locally at each node, resulting in fewer additional impurity terms $I(X_j <
+v_j^*;Y|\cdot)$ and $I(\cdot;Y|X_j < v_j^*,\cdot)$ by masking all others.
 
-\subsection{Bias due to threshold selection}
+As a last example, Figure~\ref{fig:7:bias:trees} illustrates variable
+importances for $X_1$ and $X_2$ when increasing the cardinality of $X_1$ on the
+toy problem. That is, let us redefine the output as $Y = X_1 < \tfrac{|{\cal
+X}_1|}{2}$ while keeping $X_2$ as a binary variable defined as a copy of $Y$.
+Assuming that $|{\cal X}_1|$ is even athat all input samples are equiprobable,
+the importances yielded by totally randomized and trees with multiway splits
+remain the same as before. For ETs however, increasing $|{\cal X}_1|$ induces
+new impurity terms that are now accounted for in the importances. As the figure
+shows, increasing the cardinality of $X_1$ makes its importance decrease, but
+also simultaneously makes the importance of $X_2$ increase. Indeed, splitting
+on $X_2$ always yield child nodes that are pure, which is not the case when
+splitting randomly on $X_1$. For RF, only the best thresholds are selected,
+yielding child nodes that are always pure, as for totally randomized trees.
+A such, their importances respectively appear as equal.
 
-% * bias due to masking effects, caused by the selection of the thresholds
-%   - c'est commme si on on n'utilisait jamais certaines variables de l'encodage binaire
-%   - bias may be positive or negative (eg, for ETs)
-%   - ~= biais du à la discrétization => ID3 n'en souffre pas
-%   S: exhaustive splits
-%
-% * est-ce que la non-equiprobabilité des arbres est une source de biais?
-%   - étudier la fréquence des conditionnements pour s'en assurer
-%
-% Solutions:
-% - ID3-like are not biased in that sense
-%
-% Related work
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{figures/ch7_bias_trees.pdf}
+\caption{Variable importances of $X_1$ and $X_2$ when increasing the cardinality of $X_1$.}
+\label{fig:7:bias:trees}
+\end{figure}
 
-% ---
-% piste de recherche: approximer splits exhaustifs par des splits limités à n branches max
-% bonus: pour n=2, on retrouverait le cas binaire
-% quelle est l'erreur d'approximer?
-% comment former les paquets à mettre dans chaque branche?
-
+Overall, these additional effects due binary splits make variable importances
+computed from classical random forests more difficult to interpret than
+importances derived from totally randomized trees. While they can still be used
+to identify relevant variables, caution should be taken when interpreting the
+amplitude of importance measures. As our last example illustrates, the
+importance of a variable may be misleadingly low or misleadingly high because
+of combinatorial effects solely due to the possible ways variables can be
+binarized through the threshold selection algorithm.
 
 \section{Applications}
 \label{sec:7:applications}
+
+In spite of various concurrent effects that may arise in practice (due to
+masking, redundancy, impurity misestimations or binary splits), variable
+importance measures have been used with success in a wide range of scientific
+applications.
+
+\todo{}
 
 % Explain Vincent paper
 % reproduire experience de microarray dans "Manual on setting up, using, and understanding random forests v3. 1/v4"
