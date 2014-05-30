@@ -566,14 +566,16 @@ As a simplistic but illustrative example, let us consider a toy classification
 problem composed of a ternary input variable $X_1$ and of a binary input
 variable $X_2$. Let us further assume that input samples are uniformly drawn
 from Table~\ref{table:simulation:bias:tree}, which defines the output as $Y =
-X_1 < 1$ and $X_2$ as a copy of $Y$. With totally randomized trees and
-exhaustive splits, two equiprobable decision trees can be built, as represented
-in Figure~\ref{fig:7:bias:trees:id3}. In both of them, splitting either on
-$X_1$ or on $X_2$ at the root node results in child nodes that are pure, hence
-halting the construction process. The measured variable importances are
+X_1 < 1$ and $X_2$ as a copy of $Y$. With respect to $Y$, both variables are as
+informative and one should expect their importances to be the same.  With
+totally randomized trees and exhaustive splits, two equiprobable decision trees
+can be built, as represented in Figure~\ref{fig:7:bias:trees:id3}. In both of
+them, splitting either on $X_1$ or on $X_2$ at the root node results in child
+nodes that are pure, hence halting the construction process. As expected, the measured
+variable importances are the same:
 \begin{align*}
-\text{Imp}(X_1) = \frac{1}{2} I(X_1;Y), \\
-\text{Imp}(X_2) = \frac{1}{2} I(X_2;Y).
+\text{Imp}(X_1) &= \frac{1}{2} I(X_1;Y) = \frac{1}{2} H(Y), \\
+\text{Imp}(X_2) &= \frac{1}{2} I(X_2;Y) = \frac{1}{2} H(Y).
 \end{align*}
 By contrast, using binary splits and Extremely Randomized Trees (for $K=1$) results in $4$ different decision trees, as
 represented in Figure~\ref{fig:7:bias:trees:ets}. When splitting on $X_1$ at
@@ -590,7 +592,7 @@ importances in these trees are
 \end{align*}
 which makes them strictly different from the importances collected in totally
 randomized trees. In particular, importances now account for conditioning
-sets that may include several values of a given variable. For instance,
+sets that may include several values fot the same variable. For instance,
 the importance of $X_2$ includes $I(X_2;Y|X_1\leq 1)$, which measures
 the mutual information between $X_2$ and $Y$ when $X_1$ is either equal
 to $0$ or $1$. With multiway exhaustive splits, these conditioning
@@ -605,38 +607,41 @@ binarized. In ETs, all intermediate thresholds $v$ are possible, resulting in a
 combinatorial number of additional impurity terms $I(X_j \leq v_j;Y|\cdot)$ and
 $I(\cdot;Y|X_j \leq v_j, \cdot)$. In RF, only the best threshold is selected
 locally at each node, resulting in fewer additional impurity terms $I(X_j <
-v_j^*;Y|\cdot)$ and $I(\cdot;Y|X_j < v_j^*,\cdot)$ by masking all others.
+v_j^*;Y|\cdot)$ and $I(\cdot;Y|X_j < v_j^*,\cdot)$ (and masking all others).
 
 As a last example, Figure~\ref{fig:7:bias:trees} illustrates variable
 importances for $X_1$ and $X_2$ when increasing the cardinality of $X_1$ on the
 toy problem. That is, let us redefine the output as $Y = X_1 < \tfrac{|{\cal
 X}_1|}{2}$ while keeping $X_2$ as a binary variable defined as a copy of $Y$.
-Assuming that $|{\cal X}_1|$ is even athat all input samples are equiprobable,
-the importances yielded by totally randomized and trees with multiway splits
-remain the same as before. For ETs however, increasing $|{\cal X}_1|$ induces
-new impurity terms that are now accounted for in the importances. As the figure
-shows, increasing the cardinality of $X_1$ makes its importance decrease, but
-also simultaneously makes the importance of $X_2$ increase. Indeed, splitting
-on $X_2$ always yield child nodes that are pure, which is not the case when
-splitting randomly on $X_1$. For RF, only the best thresholds are selected,
-yielding child nodes that are always pure, as for totally randomized trees.
-A such, their importances respectively appear as equal.
+Assuming that all input samples are equiprobable, the importances yielded by
+totally randomized trees with multiway splits remain the same as before. For
+ETs however, increasing $|{\cal X}_1|$ induces new impurity terms that are now
+accounted for in the importances. As the figure shows, increasing the
+cardinality of $X_1$ makes its importance decrease, but also simultaneously
+makes the importance of $X_2$ increase. Indeed, splitting on $X_2$ always yield
+child nodes that are pure, which is not necessarily the case when splitting
+randomly on $X_1$. For RF, only the best thresholds are selected, yielding in
+this case in child nodes that are always pure, as for totally randomized trees. As
+such, their importances respectively appear as equal.
 
 \begin{figure}
 \centering
 \includegraphics[width=0.9\textwidth]{figures/ch7_bias_trees.pdf}
-\caption{Variable importances of $X_1$ and $X_2$ when increasing the cardinality of $X_1$.}
+\caption{Variable importances of $X_1$ and $X_2$ when increasing the cardinality of $X_1$. High cardinality does not necessarily mean high importance.}
 \label{fig:7:bias:trees}
 \end{figure}
 
 Overall, these additional effects due binary splits make variable importances
 computed from classical random forests more difficult to interpret than
 importances derived from totally randomized trees. While they can still be used
-to identify relevant variables, caution should be taken when interpreting the
-amplitude of importance measures. As our last example illustrates, the
-importance of a variable may be misleadingly low or misleadingly high because
-of combinatorial effects solely due to the possible ways variables can be
-binarized through the threshold selection algorithm.
+to identify the most relevant variables, caution should be taken when
+interpreting the amplitude of importance measures. As our last example
+illustrates, the importance of a variable may be misleadingly low or
+misleadingly high because of combinatorial effects, solely due to the possible
+ways variables are binarized. With regards to the results of the previous
+section however, evaluating mutual information through binarization reduces
+the effective cardinality of the measured variable, thereby mitigating
+misestimations effects.
 
 \section{Applications}
 \label{sec:7:applications}
