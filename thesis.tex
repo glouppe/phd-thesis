@@ -80,7 +80,7 @@
 % Front pages =================================================================
 \include{frontback/titlepage}
 \cleardoublepage\include{frontback/abstract}
-\cleardoublepage\include{frontback/publications}
+%\cleardoublepage\include{frontback/publications}
 \cleardoublepage\include{frontback/acknowledgments}
 \pagestyle{scrheadings}
 \cleardoublepage\include{frontback/toc}
@@ -110,6 +110,13 @@
 %\ctparttex{}
 \part{Subsampling data}\label{part:3}
 \include{chapters/chapter08}
+
+\addtocontents{toc}{\protect\vspace*{\baselineskip}\protect}
+\cleardoublepage
+\makeatletter
+\def\toclevel@chapter{-1}
+\makeatother
+\include{chapters/chapter09}
 
 
 % Back pages ==================================================================

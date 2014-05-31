@@ -1,11 +1,5 @@
 \chapter{Introduction}\label{ch:introduction}
 
-\begin{itemize}
-\item \todo{Explicit contributions}
-\item \todo{Motivate tree-based methods (why not others?).}
-\item \todo{Research on RF seems to have flattened in comparison to other fields. Why so? Is there anything left to discover?}
-\end{itemize}
-
 In various fields of science, technology and humanities, as in biology,
 meteorology, medicine or finance to cite a few, experts aim at predicting a
 phenomenon based on past observations or measurements. For instance,
@@ -105,30 +99,63 @@ Accordingly, this work aims at revisiting decision trees and random forests to
 hopefully shed new light on their learning capabilities, inner workings and
 interpretability.
 
+\section{Thesis outline}
+
 Part~\textsc{\ref{part:1}} of this manuscript is first dedicated to a thorough
 treatment of decision trees and forests of randomized trees. We begin in
 Chapter~\ref{ch:background} by outlining fundamental concepts of machine
 learning, and then proceed in Chapters~\ref{ch:cart} and \ref{ch:forest} with a
 comprehensive review of the algorithms at the core of decision trees and random
 forests. We discuss the learning capabilities of these models and carefully
-study the complementary effects of their algorithmic components. All throughout
-these chapters, implementation details are considered and treated with care in
-order to make the description as precise and rigorous as possible.
-Chapter~\ref{ch:complexity} concludes this first part with a space and time
-complexity analysis of random forests (and their variants), along with a
-detailed comparison of existing implementations. Part~\textsc{\ref{part:2}}
-then analyzes and discusses the interpretability of random forests. In
-Chapter~\ref{ch:importances}, we study variable importances as computed with a
-forest of randomized trees and study how these scores can be interpreted in
-order to reveal the underlying predictive structure learned from the data. In
-particular, we derive a theoretical framework from which we prove theoretical
-and practical properties of variable importances. In
+study the complementary effects of their algorithmic components. In particular,
+Chapter~\ref{ch:forest} includes original contributions on the bias-variance
+analysis of ensemble methods. Chapter~\ref{ch:complexity} concludes this first
+part with an original space and time complexity analysis of random forests (and
+their variants), along with a thorough discussion of implementation details.
+
+Part~\textsc{\ref{part:2}} then analyzes and discusses the interpretability of
+random forests. In Chapter~\ref{ch:importances}, we study variable importances
+as computed with a forest of randomized trees and study how these scores can be
+interpreted in order to reveal the underlying predictive structure learned from
+the data. In particular, we derive a theoretical framework from which we prove
+theoretical and practical properties of variable importances. In
 chapter~\ref{ch:applications}, we then exploit this framework to further study
 variable importances as derived from actual random forests and then present
-some successful applications. Finally, Part~\textsc{\ref{part:3}}
-addresses limitations of random forests in the context or large datasets.
-Through extensive experiments, we show in Chapter~\ref{ch:random-patches} that
-subsampling strategies provides on par performance while simultaneously
-lowering the memory requirements.
+some successful applications. Part~\textsc{\ref{part:2}} constitutes
+the main contributions of this dissertation.
 
+Finally, Part~\textsc{\ref{part:3}} addresses limitations of random forests in
+the context or large datasets. Through extensive experiments, we show in
+Chapter~\ref{ch:random-patches} that subsampling strategies provides on par
+performance while simultaneously lowering the memory requirements. This
+chapter presents original work.
 
+\section{Publications}
+
+This dissertation summarizes several contributions to random forests
+algorithms. Publications that have directly stemmed from this work include:
+
+\begin{itemize}
+\item \citep{louppe:2012} \textit{Ensembles on random patches}, Louppe Gilles and Geurts Pierre, 2012.
+
+\item \citep{louppe:2013} \textit{Understanding variable importances in forests of randomized trees}, Louppe Gilles, Wehenkel Louis, Sutera Antonio and Geurts Pierre, 2013.
+
+\item \citep{buitinck:2013} \textit{API design for machine learning software: experiences from the scikit-learn project}, Buitinck Lars, Louppe Gilles, Blondel Mathieu et al., 2013.
+\item \citep{botta:2014} \textit{Exploiting SNP Correlations within Random Forest for Genome-Wide Association Studies}, Botta Vincent, Louppe Gilles, Geurts Pierre and Wehenkel Louis, 2014.
+\end{itemize}
+
+During the course of this thesis, several fruitful collaborations have also
+led to the following publications. These are not discussed within
+this dissertation.
+
+\begin{itemize}
+
+\item \citep{louppe:2010} \textit{A zealous parallel gradient descent algorithm}, Louppe Gilles and Geurts Pierre, 2010.
+
+\item \citep{geurts:2011} \textit{Learning to rank with extremely randomized trees}, Geurts Pierre and Louppe Gilles, 2011.
+
+\item \citep{maree:2014} \textit{A hybrid human-computer approach for large-scale image-based measurements using web services and machine learning}, Mar{\'e}e Rapha{\"e}l, Rollus Loic, Stevens Benjamin et al., 2014.
+
+\item \citep{amy:2014} \textit{Solar Energy Prediction: An International Contest to Initiate Interdisciplinary Research on Compelling Meteorological Problems}, Amy McGovern, David John Gagne II, Lucas Eustaquio et al., 2014. \textit{Submitted.}
+
+\end{itemize}
