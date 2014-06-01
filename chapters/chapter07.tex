@@ -532,35 +532,7 @@ this results in additional terms that were not previously accounted for, hence
 yielding variable importances that are strictly different from those computed
 from totally randomized trees.
 
-\begin{table}
-    \centering
-    \begin{tabular}{| c | c c |}
-    \hline
-    $y$ & $x_1$ & $x_2$ \\
-    \hline
-    \hline
-    0 & 0 & 0 \\
-    1 & 1 & 1 \\
-    1 & 2 & 1 \\
-    \hline
-    \end{tabular}
-    \caption{Toy problem. All $3$ possible samples are equiprobable.}
-    \label{table:simulation:bias:tree}
-\end{table}
 
-\begin{figure}
-    \centering
-    \includegraphics[scale=1.0]{figures/ch7_trees_id3.pdf}
-    \caption{Totally randomized trees built from Table~\ref{table:simulation:bias:tree}. Both decision trees are equiprobable.}
-    \label{fig:7:bias:trees:id3}
-\end{figure}
-\begin{figure}
-    \centering
-    \includegraphics[scale=1.0]{figures/ch7_trees_ets.pdf}\vspace{1cm}\\
-    \includegraphics[scale=1.0]{figures/ch7_trees_ets2.pdf}
-    \caption{Extremely randomized trees ($K=1$) built from Table~\ref{table:simulation:bias:tree}. From left to right, top to bottom, decision trees are respectively generated with probability $\tfrac{1}{8}$, $\tfrac{1}{8}$, $\tfrac{1}{4}$ and $\tfrac{1}{2}$.}
-    \label{fig:7:bias:trees:ets}
-\end{figure}
 
 As a simplistic but illustrative example, let us consider a toy classification
 problem composed of a ternary input variable $X_1$ and of a binary input
@@ -601,6 +573,36 @@ Similarly, importances also account for binarized mutual information terms such 
 $I(X_1 \leq 1;Y)$. Again, these are not evaluated in totally randomized trees
 because of the multiway splits.
 
+\begin{table}
+    \centering
+    \begin{tabular}{| c | c c |}
+    \hline
+    $y$ & $x_1$ & $x_2$ \\
+    \hline
+    \hline
+    0 & 0 & 0 \\
+    1 & 1 & 1 \\
+    1 & 2 & 1 \\
+    \hline
+    \end{tabular}
+    \caption{Toy problem. All $3$ possible samples are equiprobable.}
+    \label{table:simulation:bias:tree}
+\end{table}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=1.0]{figures/ch7_trees_id3.pdf}
+    \caption{Totally randomized trees built from Table~\ref{table:simulation:bias:tree}. Both decision trees are equiprobable.}
+    \label{fig:7:bias:trees:id3}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[scale=1.0]{figures/ch7_trees_ets.pdf}\vspace{1cm}\\
+    \includegraphics[scale=1.0]{figures/ch7_trees_ets2.pdf}
+    \caption{Extremely randomized trees ($K=1$) built from Table~\ref{table:simulation:bias:tree}. From left to right, top to bottom, decision trees are respectively generated with probability $\tfrac{1}{8}$, $\tfrac{1}{8}$, $\tfrac{1}{4}$ and $\tfrac{1}{2}$.}
+    \label{fig:7:bias:trees:ets}
+\end{figure}
+
 Accordingly, threshold selection in binary splits has a dominant effect on
 variable importances since it controls how the original variables are
 binarized. In ETs, all intermediate thresholds $v$ are possible, resulting in a
@@ -627,7 +629,7 @@ such, their importances respectively appear as equal.
 \begin{figure}
 \centering
 \includegraphics[width=0.9\textwidth]{figures/ch7_bias_trees.pdf}
-\caption{Variable importances of $X_1$ and $X_2$ when increasing the cardinality of $X_1$. High cardinality does not necessarily mean high importance.}
+\caption{Variable importances of $X_1$ and $X_2$ when increasing the cardinality of $X_1$. High cardinality does not necessarily mean high importance. }
 \label{fig:7:bias:trees}
 \end{figure}
 
