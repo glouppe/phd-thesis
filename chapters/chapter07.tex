@@ -526,52 +526,15 @@ learning set.
 
 Previous developments from Chapter~\ref{ch:importances} studied variable
 importances for fully developed totally randomized trees and multiway
-exhaustive splits. In practice however, random forests rely on binary
-splits for building trees rather than on multiway splits. In terms of impurity,
-this results in additional terms that were not previously accounted for, hence
-yielding variable importances that are strictly different from those computed
-from totally randomized trees.
-
-
-
-As a simplistic but illustrative example, let us consider a toy classification
-problem composed of a ternary input variable $X_1$ and of a binary input
-variable $X_2$. Let us further assume that input samples are uniformly drawn
-from Table~\ref{table:simulation:bias:tree}, which defines the output as $Y =
-X_1 < 1$ and $X_2$ as a copy of $Y$. With respect to $Y$, both variables are as
-informative and one should expect their importances to be the same.  With
-totally randomized trees and exhaustive splits, two equiprobable decision trees
-can be built, as represented in Figure~\ref{fig:7:bias:trees:id3}. In both of
-them, splitting either on $X_1$ or on $X_2$ at the root node results in child
-nodes that are pure, hence halting the construction process. As expected, the measured
-variable importances are the same:
-\begin{align*}
-\text{Imp}(X_1) &= \frac{1}{2} I(X_1;Y) = \frac{1}{2} H(Y), \\
-\text{Imp}(X_2) &= \frac{1}{2} I(X_2;Y) = \frac{1}{2} H(Y).
-\end{align*}
-By contrast, using binary splits and Extremely Randomized Trees (for $K=1$) results in $4$ different decision trees, as
-represented in Figure~\ref{fig:7:bias:trees:ets}. When splitting on $X_1$ at
-the root node, two binary splits are now possible with equal probability: $t_L = X_1 \leq 0, t_R = X_1 > 0$ or
-$t_L = X_1 \leq 1, t_R = X_1 > 1$. In the former case, the resulting child nodes are pure,
-hence halting the construction process. In the latter case, the right child
-(corresponding to $X_1 > 1$) is pure, while the left child is not. For this
-node, recursive partitioning proceeds and a second binary split can be made either on
-$X_1$ or on $X_2$.  Overall, the measured variable
-importances in these trees are
-\begin{align*}
-\text{Imp}(X_1) &= \frac{2}{8} I(X_1 \leq 1;Y) + \frac{1}{8} P(X_1 \leq 1) I(X_1 \leq 0;Y|X_1 \leq 1) + \frac{1}{4} I(X_1 \leq 0;Y)\\
-\text{Imp}(X_2) &= \frac{1}{2} I(X_2;Y) + \frac{1}{8} P(X_1 \leq 1) I(X_2;Y|X_1\leq 1),
-\end{align*}
-which makes them strictly different from the importances collected in totally
-randomized trees. In particular, importances now account for conditioning
-sets that may include several values fot the same variable. For instance,
-the importance of $X_2$ includes $I(X_2;Y|X_1\leq 1)$, which measures
-the mutual information between $X_2$ and $Y$ when $X_1$ is either equal
-to $0$ or $1$. With multiway exhaustive splits, these conditioning
-sets are not considered because branches correspond to single values only.
-Similarly, importances also account for binarized mutual information terms such as
-$I(X_1 \leq 1;Y)$. Again, these are not evaluated in totally randomized trees
-because of the multiway splits.
+exhaustive splits. In practice however, random forests usually rely on binary
+splits rather than on multiway splits. In terms of impurity, this results in
+additional and distinct information terms that were not previously accounted
+for, because i) a same variable can be reused several times along the same
+branch and ii) binary splits discretize the information contained in a
+variable, making variable importances dependent on the threshold selection
+strategy. In lack of a rigorous theoretical framework, we give in this section
+preliminary insights on variable importances for binary decision trees,
+hopefully shedding some light on their interpretation.
 
 \begin{table}
     \centering
@@ -589,19 +552,59 @@ because of the multiway splits.
     \label{table:simulation:bias:tree}
 \end{table}
 
+As a simplistic but illustrative example, let us consider a toy classification
+problem composed of a ternary input variable $X_1$ and of a binary input
+variable $X_2$. Let us further assume that input samples are uniformly drawn
+from Table~\ref{table:simulation:bias:tree}, which defines the output as $Y =
+X_1 < 1$ and $X_2$ as a copy of $Y$. With respect to $Y$, both variables are as
+informative and one should expect their importances to be the same.  With
+totally randomized trees and exhaustive splits, two equiprobable decision trees
+can be built, as represented in Figure~\ref{fig:7:bias:trees:id3}. In both of
+them, splitting either on $X_1$ or on $X_2$ at the root node results in child
+nodes that are pure, hence halting the construction process. As expected, the measured
+variable importances are the same:
+\begin{align*}
+\text{Imp}(X_1) &= \frac{1}{2} I(X_1;Y) = \frac{1}{2} H(Y), \\
+\text{Imp}(X_2) &= \frac{1}{2} I(X_2;Y) = \frac{1}{2} H(Y).
+\end{align*}
+
 \begin{figure}
     \centering
     \includegraphics[scale=1.0]{figures/ch7_trees_id3.pdf}
-    \caption{Totally randomized trees built from Table~\ref{table:simulation:bias:tree}. Both decision trees are equiprobable.}
+    \caption{Totally randomized trees built from Table~\ref{table:simulation:bias:tree}. Both decision trees are equiprobable. The resulting variable importances indicate that both $X_1$ and $X_2$ are as important. }
     \label{fig:7:bias:trees:id3}
 \end{figure}
 \begin{figure}
     \centering
     \includegraphics[scale=1.0]{figures/ch7_trees_ets.pdf}\vspace{1cm}\\
     \includegraphics[scale=1.0]{figures/ch7_trees_ets2.pdf}
-    \caption{Extremely randomized trees ($K=1$) built from Table~\ref{table:simulation:bias:tree}. From left to right, top to bottom, decision trees are respectively generated with probability $\tfrac{1}{8}$, $\tfrac{1}{8}$, $\tfrac{1}{4}$ and $\tfrac{1}{2}$.}
+    \caption{Extremely randomized trees ($K=1$) built from Table~\ref{table:simulation:bias:tree}. From left to right, top to bottom, decision trees are respectively generated with probability $\tfrac{1}{8}$, $\tfrac{1}{8}$, $\tfrac{1}{4}$ and $\tfrac{1}{2}$. The resulting variable importances indicate that $X_2$ is now more important than $X_1$. }
     \label{fig:7:bias:trees:ets}
 \end{figure}
+
+By contrast, using binary splits and Extremely Randomized Trees (for $K=1$) results in $4$ different decision trees, as
+represented in Figure~\ref{fig:7:bias:trees:ets}. When splitting on $X_1$ at
+the root node, two binary splits are now possible with equal probability: $t_L = X_1 \leq 0, t_R = X_1 > 0$ or
+$t_L = X_1 \leq 1, t_R = X_1 > 1$. In the former case, the resulting child nodes are pure,
+hence halting the construction process. In the latter case, the right child
+(corresponding to $X_1 > 1$) is pure, while the left child is not. For this
+node, recursive partitioning proceeds and a second binary split can be made either on
+$X_1$ or on $X_2$.  Overall, the measured variable
+importances in these trees are
+\begin{align*}
+\text{Imp}(X_1) &= \frac{2}{8} I(X_1 \leq 1;Y) + \frac{1}{8} P(X_1 \leq 1) I(X_1 \leq 0;Y|X_1 \leq 1) + \frac{1}{4} I(X_1 \leq 0;Y)\\
+\text{Imp}(X_2) &= \frac{1}{2} I(X_2;Y) + \frac{1}{8} P(X_1 \leq 1) I(X_2;Y|X_1\leq 1),
+\end{align*}
+which makes them strictly different from the importances collected in totally
+randomized trees. In particular, due to the binarization of the split
+variables, importances now account for conditioning sets that may include
+several values of a same variable. For instance, the importance of $X_2$
+includes $I(X_2;Y|X_1\leq 1)$, which measures the mutual information between
+$X_2$ and $Y$ when $X_1$ is either equal to $0$ or $1$. With multiway
+exhaustive splits, these conditioning sets are not considered because branches
+correspond to single values only. Similarly, importances also account for
+binarized mutual information terms such as $I(X_1 \leq 1;Y)$. Again, these are
+not evaluated in totally randomized trees because of the multiway splits.
 
 Accordingly, threshold selection in binary splits has a dominant effect on
 variable importances since it controls how the original variables are
@@ -611,27 +614,27 @@ $I(\cdot;Y|X_j \leq v_j, \cdot)$. In RF, only the best threshold is selected
 locally at each node, resulting in fewer additional impurity terms $I(X_j <
 v_j^*;Y|\cdot)$ and $I(\cdot;Y|X_j < v_j^*,\cdot)$ (and masking all others).
 
-As a last example, Figure~\ref{fig:7:bias:trees} illustrates variable
-importances for $X_1$ and $X_2$ when increasing the cardinality of $X_1$ on the
-toy problem. That is, let us redefine the output as $Y = X_1 < \tfrac{|{\cal
-X}_1|}{2}$ while keeping $X_2$ as a binary variable defined as a copy of $Y$.
-Assuming that all input samples are equiprobable, the importances yielded by
-totally randomized trees with multiway splits remain the same as before. For
-ETs however, increasing $|{\cal X}_1|$ induces new impurity terms that are now
-accounted for in the importances. As the figure shows, increasing the
-cardinality of $X_1$ makes its importance decrease, but also simultaneously
-makes the importance of $X_2$ increase. Indeed, splitting on $X_2$ always yield
-child nodes that are pure, which is not necessarily the case when splitting
-randomly on $X_1$. For RF, only the best thresholds are selected, yielding in
-this case in child nodes that are always pure, as for totally randomized trees. As
-such, their importances respectively appear as equal.
-
 \begin{figure}
 \centering
 \includegraphics[width=0.9\textwidth]{figures/ch7_bias_trees.pdf}
 \caption{Variable importances of $X_1$ and $X_2$ when increasing the cardinality of $X_1$. High cardinality does not necessarily mean high importance. }
 \label{fig:7:bias:trees}
 \end{figure}
+
+As a last example, Figure~\ref{fig:7:bias:trees} illustrates variable
+importances for $X_1$ and $X_2$ when increasing the cardinality of $X_1$ on the
+previous toy problem. That is, let us redefine the output as $Y = X_1 <
+\tfrac{|{\cal X}_1|}{2}$ while keeping $X_2$ as a binary variable defined as a
+copy of $Y$. Assuming that all input samples are equiprobable, the importances
+yielded by totally randomized trees with multiway splits remain the same as
+before. For ETs however, increasing $|{\cal X}_1|$ induces even more new impurity terms
+that are now accounted for in the importances. As the figure shows, increasing
+the cardinality of $X_1$ makes its importance decrease, but also simultaneously
+makes the importance of $X_2$ increase. Indeed, splitting on $X_2$ always yield
+child nodes that are pure, which is unlikely to be the case when splitting
+randomly on $X_1$. For RF, only the best thresholds are selected, yielding in
+this case child nodes that are always pure, as for totally randomized trees.
+As such, their importances respectively appear as equal as the figure confirms.
 
 Overall, these additional effects due binary splits make variable importances
 computed from classical random forests more difficult to interpret than
@@ -642,7 +645,7 @@ illustrates, the importance of a variable may be misleadingly low or
 misleadingly high because of combinatorial effects, solely due to the possible
 ways variables are binarized. With regards to the results of the previous
 section however, evaluating mutual information through binarization reduces
-the effective cardinality of the measured variable, thereby mitigating
+the effective cardinality of the measured random variable, thereby mitigating
 misestimations effects.
 
 \section{Applications}
@@ -655,7 +658,8 @@ applications.
 
 %citer les applications princiaples, papiers de reviews, etc
 %   touw:2013, boulesteix:2012
-% van anh
+% identifier relevant variables (snps, microarrays)
+% van anh (network inference)
 % explain vincent paper
 
 \todo{}
