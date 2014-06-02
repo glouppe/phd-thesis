@@ -662,7 +662,7 @@ with success in a wide range of scientific applications.
     Within the past 10 or 20 years, typical machine learning problems have
     grown from a few tens of input variables to domains exploring hundreds of
     thousands of variables, often comprising noisy, irrelevant or redundant
-    predictors, mixed with both numerical and categorical variables and involving
+    predictors, mixing both numerical and categorical variables and involving
     complex interaction effects. In this context, the feature selection problem
     consists in identifying a subset of the original input variables that are
     useful for building a good model~\citep{guyon:2003,liu:2005}. The
@@ -703,25 +703,15 @@ with success in a wide range of scientific applications.
           be done by discarding all variables whose importances is null, as shown by Theorem~\ref{thm:relevant}.
           In a finite setting however, bias due impurity misestimations (as previously discussed in Section~\ref{sec:7:bias:high})
           makes it more difficult to identify variables that are truly
-          relevant since their importances might appear as lower as the
-          importance of noisy or irrelevant variables. Yet, several options
+          relevant since their importances might appear be lower than the
+          importance measures of noisy or irrelevant variables. Yet, several options
           are available for controlling and limiting false positives,
           such as stopping the construction process when impurity
           estimations become statistically unreliable (Section~\ref{sec:7:bias:high}), comparing the importances
-          of original input variables to artificial contrasts~\citep{tuv:2006}
+          of the original input variables to artificial contrasts~\citep{tuv:2006}
           or robustly controlling the conditional error rate through permutation
-          tests~\citep{van:2008}.
-
+          tests \citep{van:2008}.
     \end{itemize}
-
-    % citep{van:2008}
-    % combination avec rfe guyon:2002, tuv:2009
-
-
-    % choix du seuil => statistical tests (van anh, contrasts)
-    %\citep{guyon:2003}
-    %\citep{liu:2005}
-    %\citep{tuv:2009}
 
 \item \textit{Biomark identification.} \hfill \\
     \todo{}
