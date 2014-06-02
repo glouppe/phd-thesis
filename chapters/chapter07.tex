@@ -385,7 +385,7 @@ Let us first analyze the case where $Y$ is independent from $X_1, \dots, X_5$,
 i.e., such that none of the input variables are informative with respect to the
 output. For a randomly sampled dataset ${\cal L}$ of $N=120$ samples,
 Figure~\ref{fig:7:bias:null} plots variable importances for different kinds of
-random forests. ID3 corresponds to multiway totally randomized trees, as
+random forests. TRT corresponds to multiway totally randomized trees, as
 defined in Section~\ref{sec:6:theory}, RF corresponds to Random Forest with
 bootstrap sampling and ETs corresponds to Extremely Randomized Trees. In
 asymptotic conditions, we proved in Theorem~\ref{thm:irrelevant} that the
@@ -407,11 +407,11 @@ splitting than those of lower cardinality. While this bias has been known for
 long in decision trees~\citep{kononenko:1995,kim:2001,hothorn:2006}, we argue
 that it is not the actual cause for the bias observed here. Indeed, this
 argument does not directly explain why similar trends are also observed when no
-variable selection is performed (e.g., for ID3 or for $K=1$) nor why it
+variable selection is performed (e.g., for TRT or for $K=1$) nor why it
 similarly happens when cut-points are chosen at random, independently of the
 cardinality of the variable (e.g., in ETs).
 
-For multiway splits like in ID3, bias in variable importances can be traced to the
+For multiway splits like in TRT, bias in variable importances can be traced to the
 misestimations of the mutual information terms
 \begin{equation}
 \Delta i(s, t) \approx I(X_j;Y|t)
@@ -427,7 +427,7 @@ become even larger as nodes are deep in the tree (since $N_t$ gets smaller).
 Consequently, the weighted mean of all such estimated impurity terms
 $I(X_j;Y|t)$, for all nodes $t$ where $X_j$ is the split variable, and
 resulting in the total importance $\text{Imp}(X_j)$, is also linearly dependent
-on the cardinality of $X_j$. For ID3, this result explains why variables of
+on the cardinality of $X_j$. For TRT, this result explains why variables of
 high cardinality in Figure~\ref{fig:7:bias:null} appear as more important than
 those of lower cardinality. Intuitively, the closer the number of unique values
 with respect to the total number of samples, the larger the impurity decrease
@@ -437,7 +437,7 @@ values of $Y$, resulting in child nodes that are all pure, therefore maximizing
 the estimated mutual information. As such, this explains why $X_1$, whose
 values are all unique, appears as the most important variable.
 
-For binary splits (i.e., for RF and ETs, but not for ID3) the mutual
+For binary splits (i.e., for RF and ETs, but not for TRT) the mutual
 information $I(X_j;Y|t)$ is not directly estimated at each node. Rather, in the
 case of ordered variables, $\Delta i(s, t)$ corresponds to an estimate of the
 mutual information $I(X_j\leq v;Y|t)$ of the binary split $X_j \leq v$. Under
@@ -472,17 +472,18 @@ unreliable. As a precaution, a safe and effective solution for the bias problem
 therefore simply consists in collecting impurity terms only for those nodes
 where the impurity estimates can be considered as reliable. Equivalently, the
 construction of the tree can also be stopped early, when impurity estimates
-become unreliable, e.g., using one of the stopping criteria defined in
-Section~\ref{sec:3:stop}. Among all alternatives, conditional inference
-trees~\citep{hothorn:2006} make use of statistical tests for assessing the
-independence of $X_j$ and $Y$ at a pre-specified level of confidence $\alpha$.
-If the null hypothesis cannot be rejected, then recursive partitioning halts.
-In particular, variable importances collected from such trees were shown
-experimentally by \citet{strobl:2007b} not to suffer from bias. The authors
-argue that it is due the unbiased variable selection mechanisms also
-implemented in conditional inference trees. By contrast, we argue that, by and
-large, the absence of bias in importances from such trees is mostly due to the
-early stopping criterion, and not to variable selection.
+become unreliable, e.g., by limiting the depth of the tree, controlling for the
+minimum number of samples in internal nodes or using any of the other  stopping
+criteria defined in Section~\ref{sec:3:stop}. Among all alternatives,
+conditional inference trees~\citep{hothorn:2006} make use of statistical tests
+for assessing the independence of $X_j$ and $Y$ at a pre-specified level of
+confidence $\alpha$. If the null hypothesis cannot be rejected, then recursive
+partitioning halts. In particular, variable importances collected from such
+trees were shown experimentally by \citet{strobl:2007b} not to suffer from
+bias. The authors argue that it is due the unbiased variable selection
+mechanisms also implemented in conditional inference trees. By contrast, we
+argue that, by and large, the absence of bias in importances from such trees is
+mostly due to the early stopping criterion, and not to variable selection.
 
 \begin{figure}
 \centering
@@ -513,14 +514,13 @@ identified as a relevant variable. In particular, the more relevant $X_2$, that
 is the stronger the signal, the deeper trees can be built until $X_2$ is made
 unrecognizable from the irrelevant variables.
 
-In conclusion, evaluating impurity on small samples lead to over-estimations
-of the mutual information, resulting in biased variable importances.
-In particular, the higher the cardinality of the variable, the higher
-the larger the misestimations. To minimize this effect, caution should be
-taken by only considering impurity terms that were computed from a large
-enough sample. This can be guaranteed, e.g., by stopping the construction
-of the tree early, or making leaves grow more slowly than the size $N$ of the
-learning set.
+In conclusion, evaluating impurity on small samples lead to over-estimations of
+the mutual information, resulting in biased variable importances. In
+particular, the higher the cardinality of the variable,  the larger the
+misestimations. To minimize this effect, caution should be taken by only
+considering impurity terms that were computed from a large enough sample. This
+can be guaranteed, e.g., by stopping the construction of the tree early, or
+making leaves grow more slowly than the size $N$ of the learning set.
 
 \subsection{Bias due to binary trees and threshold selection}
 \label{sec:bias:tree}
@@ -649,20 +649,21 @@ section however, evaluating mutual information through binarization reduces
 the effective cardinality of the measured random variable, thereby mitigating
 misestimations effects.
 
-\begin{remark}{Encoding of $N$-ary variables to binary variables}
+\begin{remark}{Encoding $N$-ary variables into binary variables}
 Partitioning node samples with binary splits on $N$-ary input variables is
 equivalent to individually transforming each input variable $X_j$ into a set of
-$b_j$ binary input variables $\{X_j^{m} | m=1,\dots,b_j\}$, each encoding for one the possible splits. If we
-consider the binarized learning set ${\cal L}^\prime$, for which all $p$ the
-input variables have been transformed into $\sum b_j$ binary variables, then
-our theoretical framework for totally randomized trees and exhaustive splits can
-be applied and Theorem~\ref{thm:imp} could possibly be adapted. The only difference lies in the way binary variables are drawn at
+$b_j$ binary input variables $\{X_j^{m} | m=1,\dots,b_j\}$, each encoding for
+one the possible splits, and then partitioning node samples using of one these new
+variables. If we consider the binarized learning set ${\cal L}^\prime$, for
+which all $p$ the input variables have been transformed into $\sum b_j$ binary
+variables, then our theoretical framework for totally randomized trees and
+exhaustive splits can be applied and Theorem~\ref{thm:imp} could possibly be
+adapted. The only difference lies in the way binary variables are drawn at
 random:  instead of splitting randomly on one of the $\sum b_j$ variables,
-first one of the $p$ original variables is drawn uniformly at random, second of
-its $b_j$ binary variables is selected for splitting the current node.
-In this setting, the importance of $X_j$ therefore amounts to sum of importances
-$\sum \text{Imp}(X_j^m)$ of its binary variables.
-\end{remark}
+first, one of the $p$ original variables is drawn uniformly at random; second, one of
+its $b_j$ binary variables is selected for splitting the current node. In this
+setting, the importance of $X_j$ therefore amounts to the sum of importances $\sum
+\text{Imp}(X_j^m)$ of its binary variables. \end{remark}
 
 \section{Applications}
 \label{sec:7:applications}
@@ -701,8 +702,8 @@ with success in a wide range of scientific applications.
            is to keep only those variables whose importances $\text{Imp}(X_j)$
            is greater than some manually defined threshold.
 
-    \item If the goal is to improve the accuracy, a good subset
-          of variables can typically be found by tuning the value $\alpha$ so as to
+    \item If the goal is to improve accuracy, a good subset
+          of variables can typically be found by tuning the threshold $\alpha$ so as to
           minimize some user-defined criterion (e.g., the zero-one loss in classification
           or the squared error loss in regression) for the model built on the
           subset $\{X_j | \text{Imp}(X_j) > \alpha \}$.
@@ -716,10 +717,9 @@ with success in a wide range of scientific applications.
           that are relevant, in order to better understand the underlying
           relations with the output $Y$. In asymptotic conditions, this could
           be done by discarding all variables whose importances is null, as shown by Theorem~\ref{thm:relevant}.
-          In a finite setting however, bias due impurity misestimations (as previously discussed in Section~\ref{sec:7:bias:high})
+          In a finite setting however, bias due masking effects or impurity misestimations (as previously discussed in Section~\ref{sec:7:bias})
           makes it more difficult to identify variables that are truly
-          relevant since their importances might appear be lower than the
-          importance measures of noisy or irrelevant variables. Yet, several options
+          relevant since their importances might appear to be lower than those of irrelevant variables. Yet, several options
           are available for controlling and limiting false positives,
           such as stopping the construction process when impurity
           estimations become statistically unreliable (Section~\ref{sec:7:bias:high}), comparing the importances
@@ -728,7 +728,7 @@ with success in a wide range of scientific applications.
           tests \citep{van:2008}.
     \end{itemize}
 
-\item \textit{Biomark identification.} \hfill \\
+\item \textit{Biomarker identification.} \hfill \\
     \todo{}
 
 \item \textit{Network inference.} \hfill \\
