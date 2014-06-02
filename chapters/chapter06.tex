@@ -859,7 +859,7 @@ we see that a large value of $K$ yields importances that can be either
 overestimated (e.g., at $K=7$, the importances of $X_2$ and $X_5$ are larger
 than at $K=1$) or underestimated due to masking effects (e.g., at $K=7$, the
 importances of $X_1$, $X_3$, $X_4$ and $X_6$ are smaller than at $K=1$, as if
-they were less important). It can also be observed that masking effects may even
+they were less important). As Figure~\ref{fig:order} illustrates, it can also be observed that masking effects may even
 induce changes in the variable rankings (e.g., compare the rankings at $K=1$ and
 at $K=7$), which thus confirms that importances are differently affected.
 
@@ -907,6 +907,13 @@ at $K=7$), which thus confirms that importances are differently affected.
     \caption{Variable importances as computed with an ensemble of randomized trees, for increasing values of $K$. Importances at $K=1$ follow their theoretical values, as predicted by Equation~\ref{eqn:imp-full} in Theorem~\ref{thm:imp}. However, as $K$ increases,  importances diverge due to masking effects. In accordance with Theorem~\ref{thm:sum-of-imp}, their sum is also always equal to $I(X_{1}, \ldots, X_{7}; Y) = H(Y) = \log_{2}(10)= 3.321$ since inputs allow to perfectly predict the output.}
     \label{table:imp}
 \end{table}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/ch6_order.pdf}
+    \caption{Variable importances as computed with an ensemble of randomized trees, for increasing values of $K$. Importances at $K=1$ follow their theoretical values, as predicted by Equation~\ref{eqn:imp-full} in Theorem~\ref{thm:imp}. However, as $K$ increases,  importances diverge due to masking effects.}
+    \label{fig:order}
+\end{figure}
 
 \begin{figure}
     \centering
