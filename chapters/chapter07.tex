@@ -649,6 +649,21 @@ section however, evaluating mutual information through binarization reduces
 the effective cardinality of the measured random variable, thereby mitigating
 misestimations effects.
 
+\begin{remark}{Encoding of $N$-ary variables to binary variables}
+Partitioning node samples with binary splits on $N$-ary input variables is
+equivalent to individually transforming each input variable $X_j$ into a set of
+$b_j$ binary input variables $\{X_j^{m} | m=1,\dots,b_j\}$, each encoding for one the possible splits. If we
+consider the binarized learning set ${\cal L}^\prime$, for which all $p$ the
+input variables have been transformed into $\sum b_j$ binary variables, then
+our theoretical framework for totally randomized trees and exhaustive splits can
+be applied and Theorem~\ref{thm:imp} could possibly be adapted. The only difference lies in the way binary variables are drawn at
+random:  instead of splitting randomly on one of the $\sum b_j$ variables,
+first one of the $p$ original variables is drawn uniformly at random, second of
+its $b_j$ binary variables is selected for splitting the current node.
+In this setting, the importance of $X_j$ therefore amounts to sum of importances
+$\sum \text{Imp}(X_j^m)$ of its binary variables.
+\end{remark}
+
 \section{Applications}
 \label{sec:7:applications}
 
@@ -724,6 +739,7 @@ with success in a wide range of scientific applications.
 %citer les applications princiaples, papiers de reviews, etc
 %   touw:2013, boulesteix:2012
 % identifier relevant variables (snps, microarrays)
+
 % van anh (network inference)
 % explain vincent paper
 
