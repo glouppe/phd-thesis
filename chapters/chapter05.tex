@@ -1212,7 +1212,7 @@ to achieve good results.
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_estimators_time_fit.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_estimators_average_depth.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_estimators_mse.pdf}}
-\caption{Effect of the number $M$ (= \texttt{n\_estimators})  of trees ($N=1000$, $p=10$, $K=\sqrt{p}$).}
+\caption{Effect of the number $M$ (= \texttt{n\_estimators})  of trees on training time (left), average depth (middle) and mean squared error (right). $N=1000$, $p=10$, $K=\sqrt{p}$.}
 \label{fig:5:artificial:M}
 \end{figure}
 
@@ -1221,7 +1221,7 @@ to achieve good results.
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_train_time_fit.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_train_average_depth.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_train_mse.pdf}}
-\caption{Effect of the size $N$ (= \texttt{n\_train}) of the learning set ($M=250$, $p=10$, $K=\sqrt{p}$).}
+\caption{Effect of the size $N$ (= \texttt{n\_train}) of the learning set on training time (left), average depth (middle) and mean squared error (right). $M=250$, $p=10$, $K=\sqrt{p}$.}
 \label{fig:5:artificial:N}
 \end{figure}
 
@@ -1230,7 +1230,7 @@ to achieve good results.
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_features_time_fit.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_features_average_depth.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_features_mse.pdf}}
-\caption{Effect of the number $p$ (= \texttt{n\_features}) of input variables ($N=1000$, $M=250$, $K=\sqrt{p}$).}
+\caption{Effect of the number $p$ (= \texttt{n\_features}) of input variables on training time (left), average depth (middle) and mean squared error (right). $N=1000$, $M=250$, $K=\sqrt{p}$.}
 \label{fig:5:artificial:p}
 \end{figure}
 
@@ -1252,7 +1252,7 @@ thresholds are not optimized locally.
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/max_features_time_fit.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/max_features_average_depth.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/max_features_mse.pdf}}
-\caption{Effect of $K$ (= \texttt{max\_features}) in random variable selection ($N=1000$, $M=250$, $p=10$).}
+\caption{Effect of $K$ (= \texttt{max\_features}) in random variable selection on training time (left), average depth (middle) and mean squared error (right). $N=1000$, $M=250$, $p=10$.}
 \label{fig:5:artificial:K}
 \end{figure}
 
@@ -1261,7 +1261,7 @@ thresholds are not optimized locally.
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/bootstrap_time_fit.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/bootstrap_average_depth.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/bootstrap_mse.pdf}}
-\caption{Effect of bootstrap replicates ($N=1000$, $M=250$, $p=10$, $K=\sqrt{p}$).}
+\caption{Effect of bootstrap replicates on training time (left), average depth (middle) and mean squared error (right). $N=1000$, $M=250$, $p=10$, $K=\sqrt{p}$.}
 \label{fig:5:artificial:bootstrap}
 \end{figure}
 
@@ -1412,7 +1412,7 @@ fastest implementation on average. OpenCV is second ($2.07\times$ slower on
 average), OK3 is third ($3.71\times$ slower), Weka is fourth ($4.31\times$
 slower), R is fifth ($9.64\times$ slower) and Orange is last ($19.82\times$
 slower). By contrast with fitting times, making predictions from ETs is now
-slightly slower than RF on average, which is explained by the fact that trees in ETs
+slightly slower than RF, which is explained by the fact that trees in ETs
 are on average deeper than in RF.
 
 In conclusions, benchmarks show that the Scikit-Learn implementation is on
