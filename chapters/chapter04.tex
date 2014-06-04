@@ -388,21 +388,22 @@ error of its constituents.
 \end{remark}
 
 In classification, for the zero-one loss, predictions are usually aggregated by considering the
-models in the ensemble as a committee  and then resorting to majority voting to
+models in the ensemble as a committee  and then resorting to \textit{majority voting} to
 form the final prediction:
 \begin{equation}\label{eqn:4:majority-vote}
 \psi_{{\cal L},\theta_1,\dots,\theta_M}(\mathbf{x}) = \argmax_{c \in {\cal Y}}  \sum_{m=1}^M 1(\varphi_{{\cal L},\theta_m}(\mathbf{x})=c)
 \end{equation}
 Similarly, the rationale is that the majority prediction is the prediction that minimizes
 the average zero-one error with respect to the individual predictions.
-When individual models provide class probability estimates $\widehat{p}_{{\cal L},\theta m}(Y=c|X=\mathbf{x})$,
-a natural alternative to majority voting consists in averaging the class probability estimates
+Alternatively, when individual models provide class probability estimates $\widehat{p}_{{\cal L},\theta m}(Y=c|X=\mathbf{x})$,
+\textit{soft voting}~\citep{zhou:2012}
+consists in averaging the class probability estimates
 and then predict the class which is the most likely:
 \begin{equation}\label{eqn:4:avg-estimate}
 \psi_{{\cal L},\theta_1,\dots,\theta_M}(\mathbf{x}) = \argmax_{c \in {\cal Y}} \frac{1}{M} \sum_{m=1}^M \widehat{p}_{{\cal L},\theta m}(Y=c|X=\mathbf{x})
 \end{equation}
 As empirically investigated by \citet{breiman:1996b}, both approaches yield
-results that are virtually identical. From a practical point of view however,
+results that are nearly identical. From a practical point of view however,
 Equation~\ref{eqn:4:avg-estimate} has the advantage of providing accurate class
 probability estimates for the ensemble, which may prove to be useful in
 critical applications, e.g., when (estimates of) the certainty about
@@ -411,7 +412,7 @@ combining predictions in this way makes it easy to study the expected
 generalization error of the ensemble -- it suffices to plug the averaged
 estimates into Theorem~\ref{thm:bias-variance:classification}. For these
 reasons, and for the rest of this work, predictions in classification are now
-assumed to be combined through Equation~\ref{eqn:4:avg-estimate} unless
+assumed to be combined with soft voting (see Equation~\ref{eqn:4:avg-estimate}) unless
 mentioned otherwise.
 
 \begin{remark}{Condorcet's jury theorem}
@@ -715,7 +716,7 @@ simultaneously maintaining a low bias in the randomized decision trees.
     \end{algorithm}
     When the output $Y$ can be explained in several ways, this randomized
     algorithm generates trees that are each structurally different, yet
-    individually good. As result, bias usually increases only slightly, while
+    individually good. As a result, bias usually increases only slightly, while
     the increased variance due to randomization can be cancelled out through averaging. The
     optimal trade-off between these quantities can otherwise be adjusted by
     tuning the value of $K$. As $K \to 1$, the larger the bias but the larger the
@@ -786,7 +787,7 @@ simultaneously maintaining a low bias in the randomized decision trees.
     efficient ensemble method since there is no impurity criterion to evaluate
     when splitting the nodes of a tree. Regarding accuracy, experimental
     comparisons in \citep{cutler:2001} show that PERT is often nearly as good as
-    Random Forests~\citep{breiman:2001}, while resulting however in random
+    Random Forests \citep{breiman:2001}, while resulting however in random
     trees that are typically larger than  decision trees grown with
     less randomization. The simplicity of the method also allows for an amenable
     theoretical analysis of forests of randomized trees, as carried out in \citep{zhao:2000}.
@@ -837,20 +838,25 @@ simultaneously maintaining a low bias in the randomized decision trees.
 \item \citet{rodriguez:2006}: \hfill \\
     In a different direction, \citet{rodriguez:2006} propose in
     \textit{Rotation Forests} to generate randomized decision trees based on
-    feature extraction. As in Bagging~\citep{breiman:1996b}, individual decision
-    trees are built on bootstrap replicates ${\cal L}^m$ of the learning set
-    ${\cal L}$. To further enhance diversity (i.e., to further decorrelate the
-    predictions of the constituents of the ensemble), for each of the $M$ bootstrap replicates, input variables are
-    randomly partitioned into $q$  subsets of $\tfrac{p}{q}$ variables, principal component analysis (PCA)
-    is run separately on each subset, and a new set $\smash{\widetilde{{\cal L}^m}}$ of $p$ extracted input
-    variables is constructed by pooling all principal components from the $q$ projections. In this
-    way, bootstrap replicates ${\cal L}^m$ are each independently transformed
-    linearly into a new input space using $q$  axis rotations. In this
-    framework,  decision trees are particularly suited because they are
-    sensitive to changes in the input space and still can be very accurate.
-    As reported in \citep{rodriguez:2006,kuncheva:2007}, Rotation Forests
-    favorably compare with other tree-based ensemble methods, yielding
-    results that are often as good, sometimes better, than Random Forests~\citep{breiman:2001}.
+    feature extraction. As in Bagging~\citep{breiman:1996b}, individual
+    decision trees are built on bootstrap replicates ${\cal L}^m$ of the
+    learning set ${\cal L}$. To further enhance diversity (i.e., to further
+    decorrelate the predictions of the constituents of the ensemble), for each
+    of the $M$ bootstrap replicates, input variables are randomly partitioned
+    into $q$  subsets of $\tfrac{p}{q}$ variables, principal component analysis
+    (PCA) is run separately on each subset, and a new set
+    $\smash{\widetilde{{\cal L}^m}}$ of $p$ extracted input variables is
+    constructed by pooling all principal components from the $q$ projections.
+    In this way, bootstrap replicates ${\cal L}^m$ are each independently
+    transformed linearly into a new input space using $q$  axis rotations. In
+    this framework,  decision trees are particularly suited because they are
+    sensitive to changes in the input space and still can be very accurate. As
+    reported in \citep{rodriguez:2006,kuncheva:2007}, Rotation Forests
+    favorably compare with other tree-based ensemble methods, yielding results
+    that are often as good, sometimes better, than Random
+    Forests~\citep{breiman:2001}. In terms of complexity however, the computational
+    overhead due to the $q$ axis rotations should not be overlooked when
+    resources are limited.
 
 \end{description}
 
@@ -880,7 +886,7 @@ good or even more precise than $K$-fold cross-validation
 estimates~\citep{wolpert:1999}. In practice, out-of-bag estimates also
 constitute a computationally efficient alternative to $K$-fold cross-validation,
 reducing to $M$ the number of invocations of the learning
-algorithm, instead of otherwise having to build $KM$ base models.
+algorithm, instead of otherwise having to build $K\times M$ base models.
 
 While out-of-bag estimates constitute an helpful tool, their benefits should
 however be put in balance with the potential decrease of accuracy that the use
