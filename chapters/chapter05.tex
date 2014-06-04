@@ -33,7 +33,7 @@ building two sub-trees respectively from $N_{t_L}$ and $N_{t_R}$ samples. Withou
 loss of generality, let us assume that the learning samples all have distinct
 input values, such that it is possible to build a fully developed decision tree
 where each leaf contains exactly one sample. Under this assumption, determining
-time complexity therefore amounts to solve the recurrence equation
+time complexity therefore boils down to solve the recurrence equation
 \begin{equation}\label{eqn:complexity:rec}
 \begin{cases}
 T(1) = O(1) \\
@@ -48,7 +48,7 @@ operation requires at least to iterate over all $N$ samples, which sets a
 linear lower bound on time complexity within a node, i.e., $c(N)=\Omega(N)$. As
 for finding the split $s$, this can be achieved in several ways, as outlined in
 the previous chapters  for several randomized variants of the induction
-procedure. As we will see, not only this is an impact on the accuracy of the
+procedure. As we will see, not only this has an impact on the accuracy of the
 resulting model, it also drives the time complexity of the induction procedure.
 
 \begin{remark}{Big O notations}
@@ -81,7 +81,7 @@ In the original CART induction procedure~\citep{breiman:1984}
 $s$  requires, for each of the $p$ variables $X_j$ (for $j=1,\dots,p$), to sort
 the values $x_{i,j}$ of all $N$ node samples (for $i=1,\dots,N$) and then to
 iterate over these in order to find the best threshold $v$. Assuming that the
-value of the impurity criterion can computed iteratively for consecutive
+value of the impurity criterion can be computed iteratively for consecutive
 thresholds, the most costly operation
 is sorting, whose time complexity is at worst $O(N \log N)$. As a result, the
 overall within-node complexity is $c(N) = O(p N \log N)$. In a randomized tree
@@ -646,7 +646,7 @@ is attach the given parameters to the object. For the sake of model inspection,
 hyper-parameters are set as public attributes, which is especially important in
 model selection settings. Default hyper-parameter values are provided for all
 built-in estimators. These defaults are set to be relevant in many common
-situations in order to make estimators effective \textit{out-of- box}.
+situations in order to make estimators effective \textit{out-of-the-box}.
 
 Actual learning is performed by the \texttt{fit} method. This method is called
 with training data (e.g., supplied as two arrays \texttt{X\_train} and
@@ -919,7 +919,8 @@ procedure switches from a depth-first construction of the tree to a \textit
 can be defined as the maximum number \texttt{max\_leaf\_nodes} of leaves in the
 tree. If nodes are expanded in best-first order, then the resulting tree only
 includes the most significant splits, thereby pre-pruning all (seemingly)
-irrelevant branches without wasting computational resources.
+irrelevant branches without wasting computational resources. Alternatives also
+include prioritizing nodes according to their impurity $i(t)$ or their size $N_t$.
 
 Likewise,  the stack $S$ in Algorithm~\ref{algo:induction} can be replaced by a
 deque data structure, in which case the induction procedure switches to a
@@ -1351,7 +1352,7 @@ programming languages like C, C++ or Java, but usually interface with higher
 level languages, like Python, MATLAB or R, for convenience reasons. In the case
 of OpenCV for example, the core implementation is written in C++ but can easily
 been called from Python through bindings shipped with the library. Let us
-finally note that that Table~\ref{table:implementations} is by no means an
+finally note that Table~\ref{table:implementations} is by no means an
 exhaustive list of all implementations of random forests. Domain-specific
 implementations (e.g., Random Jungle~\citep{schwarz:2010} for GWAS or TMVA~\citep{hoecker:2007} in particle physics) and
 proprietary software (e.g., Salford Systems, which owns the
