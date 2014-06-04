@@ -1,21 +1,23 @@
 \documentclass{article}
 \usepackage{pstricks}
 \usepackage{pst-plot}
+\usepackage{color}
+\definecolor{myblue}{rgb}{0.0,0.0,1.0}
 \pagestyle{empty}
 \begin{document}
     \begin{pspicture}(20,15)
     %\psgrid[subgriddiv=1,griddots=10,gridlabels=7pt]
     % Arrows
-    \psline[linewidth=0.5pt]{->}(10,12)(8.3,11.3)
+    \psline[linewidth=0.5pt,linecolor=myblue]{->}(10,12)(8.3,11.3)
     \psline[linewidth=0.5pt]{->}(10,12)(11.7,11.3)
     \psline[linewidth=0.5pt]{->}(8,11)(7,9.35)
-    \psline[linewidth=0.5pt]{->}(8,11)(9,9.35)
+    \psline[linewidth=0.5pt,linecolor=myblue]{->}(8,11)(9,9.35)
     % Nodes
-    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](10,12){0.4}
-    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](8,11){0.4}
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=myblue](10,12){0.4}
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=myblue](8,11){0.4}
     \psframe[fillstyle=solid,linewidth=1pt,linecolor=black](11.7,10.7)(12.3,11.3)
     \psframe[fillstyle=solid,linewidth=1pt,linecolor=black](6.7,8.7)(7.3,9.3)
-    \psframe[fillstyle=solid,linewidth=1pt,linecolor=black](8.7,8.7)(9.3,9.3)
+    \psframe[fillstyle=solid,linewidth=1pt,linecolor=myblue](8.7,8.7)(9.3,9.3)
     % Text
     \rput(10,12){$t_0$}
     \rput(8,11){$t_1$}

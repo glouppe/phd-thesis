@@ -18,7 +18,7 @@ specializations of the general framework presented here.
 \section{Introduction}
 \label{sec:3:introduction}
 
-\todo{Add figures (see David Matheson for splits, traversal, etc)}
+%\todo{Add figures (see David Matheson for splits, traversal, etc)}
 
 Since always, artificial intelligence has been driven by the ambition to
 understand and uncover complex relations in data. That is, to find models that
@@ -142,18 +142,20 @@ known as \emph{leaves}.
 \end{definition}
 
 \begin{definition}
-A \emph{binary tree} is a rooted tree where all internal nodes exactly
-have two children.
+A \emph{binary tree} is a rooted tree where all internal nodes
+have exactly two children.
 \end{definition}
 
 In those terms, a \textit{tree-structured model} (or \textit{decision tree})
 can be defined as a model $\varphi: {\cal X} \mapsto {\cal Y}$ represented by a
 rooted tree (often binary, but not necessarily), where any node $t$ represents
 a subspace ${\cal X}_t \subseteq {\cal X}$ of the input space, with the root
-node $t_0$ corresponding to ${\cal X}$ itself. Internal nodes $t$ are labeled with a
-\textit{split} $s_t$ (taken from a set of questions ${\cal Q}$) dividing the
-space ${\cal X}_t$ they each represent into disjoint subspaces respectively
-corresponding to each of their children. For instance, the set of all binary
+node $t_0$ corresponding to ${\cal X}$ itself.
+Internal nodes $t$ are labeled with a
+\textit{split} $s_t$ taken from a set of questions ${\cal Q}$. It divides the
+space ${\cal X}_t$ that node $t$ represents into disjoint subspaces respectively
+corresponding to each of its children.
+For instance, the set of all binary
 splits is the set ${\cal Q}$ of questions $s$ of the form \textit{``Is
 $\mathbf{x} \in {\cal X}_A?$''}, where ${\cal X}_A \subset {\cal X}$ is some
 subset of the input space. Any split $s$ of this form divides ${\cal X}_t$ into
@@ -221,7 +223,7 @@ each set $\widehat{{\cal X}_{c_k}}$ is obtained from the union of the subspaces
 ${\cal X}_t$ of all terminal nodes $t$ such that $\widehat{y}_t = c_k$. In this
 case, $\widehat{{\cal X}_{c_1}} = {\cal X}_{t_4}$ while $\widehat{{\cal
 X}_{c_2}} = {\cal X}_{t_2} \cup {\cal X}_{t_3}$. As shown in
-Figure~\ref{fig:3:partition}, the partition engendered by  $\varphi$ on ${\cal
+Figure~\ref{fig:3:partition}, the partition induced by  $\varphi$ on ${\cal
 X}$ divides the input space into subspaces that are more and more class
 homogeneous, starting from ${\cal X}$ at the root node,  then ${\cal X}_{t_1}
 \cup {\cal X}_{t_2}$ at the second level of tree and finally $({\cal X}_{t_3}
@@ -230,7 +232,7 @@ Section~\ref{sec:3:splitting-rules}, the partition is in this case made of
 rectangles because of the nature of the splits $s_t \in {\cal Q}$ dividing the nodes.
 Predictions are made by propagating instances through the tree and using as
 output value the value labeling the terminal nodes in which they fall
-into. For example, an object $\mathbf{x}=(x_1=0.2, x_2=0.7)$ falls into $t_4$
+into. For example, as shown in blue in Figure~\ref{fig:3:tree}, an object $\mathbf{x}=(x_1=0.2, x_2=0.7)$ falls into $t_4$
 and therefore $\varphi(\mathbf{x}) = \widehat{y}_{t_4} = c_1$.
 
 Finally, let us note that from a graph theory point of view, decision trees
@@ -242,9 +244,9 @@ recombined.
 \section{Induction of decision trees}
 \label{sec:3:induction}
 
-Learning a decision tree ideally amounts to determine the tree structure which
-produces the partition which is closest to the partition engendered by $Y$ over
-${\cal X}$. Since it is unknown however, the construction of a decision tree is usually
+Learning a decision tree ideally amounts to determine the tree structure
+producing the partition which is closest to the partition engendered by $Y$ over
+${\cal X}$. Since it is unknown, the construction of a decision tree is usually
 driven instead with the objective of finding a model which partitions the
 learning set ${\cal L}$ as best as possible. Among all decision trees $\varphi
 \in {\cal H}$ however, there may exist several of them that explain ${\cal L}$
@@ -257,7 +259,7 @@ assumption makes sense from a generalization point of view, it also makes
 sense regarding interpretability. A decision tree which is small is easier
 to understand than a large and complex tree.
 
-As shown by \citet{hyafil:1976} however, finding the smallest tree $\varphi^*$
+As shown by \citet{hyafil:1976}, finding the smallest tree $\varphi^*$
 that minimizes its resubstitution estimate is an NP-complete problem. As a
 consequence, under the assumption that $P \neq NP$, there exists no efficient
 algorithm for finding $\varphi^*$, thereby suggesting that finding efficient heuristics
@@ -347,8 +349,8 @@ strategy is lookahead search, which consists in evaluating the
 goodness of a split, but also of those deeper in the tree, assuming this former split was effectively performed. As empirically
 investigated in \citep{murthy:1995}, such an approach is however not only more
 computationally intensive, it is also not significantly better than greedily
-induced decision trees. On average, decision trees grown in this way have
-indeed the same accuracy, while being however usually shorter. For this reason,
+induced decision trees. On average, decision trees grown with lookahead search indeed have
+the same accuracy, while being however usually shorter. For this reason,
 more elaborate variants of Algorithm~\ref{algo:induction} are not considered
 within this work.
 \end{remark}
@@ -590,7 +592,7 @@ known as \texttt{min\_samples\_leaf}.)
 \end{enumerate}
 
 In all of the above, stopping criteria are defined in terms of user-defined
-hyper-parameters ($N_\text{min}$, $d_\text{max}$, $\beta$) that have to be
+hyper-parameters ($N_\text{min}$, $d_\text{max}$, $\beta$ or $N_\text{leaf}$) that have to be
 tuned in order to find the right trade-off. Ideally, they need to
 be such that they are nor too strict nor too loose for the tree to be nor too
 shallow nor too deep. Too large a tree will have a higher generalization error
@@ -670,8 +672,7 @@ take infinitely many values. For instance, if ${\cal X}_t = \mathbb{R}$, then
 there exists infinitely many ways of partitioning ${\cal X}_t$ into two (or
 more) subsets. Among all of them however, only those that yield a partition of
 ${\cal L}_t$ into non-empty subsets are worth considering. For example, in the
-binary case, splits resulting in one of the two children being empty (i.e., such
-that either ${\cal L}_{t_L}$ or ${\cal L}_{t_R}$ is empty) are not considered
+binary case, splits resulting in one of the children being empty are not considered
 because their goodness cannot be evaluated on the learning set. As such, the
 optimization problem of finding the best split $s^*$ of ${\cal X}_t$ can be
 roughly restated as finding the best partition of the node samples ${\cal L}_t$.
@@ -684,10 +685,10 @@ S(N_t, k) = \frac{1}{k!} \sum_{j=0}^k (-1)^{k-j} {k\choose j} j^{N_t},
 \end{equation}
 which reduces to $2^{N_t-1}-1$ for binary partitions. Given the exponential
 growth in the number of partitions, the naive strategy of enumerating all
-possible partitions and picking the best of them is often computationally
+partitions and picking the best of them is often computationally
 intractable. For this reason, simplifying  assumptions must be made on the best
 split $s^*$. More specifically, the induction algorithm usually assumes that
-$s^*$ -- or a least a good enough approximation -- lives in a family ${\cal Q}
+$s^*$ -- or at least a good enough approximation -- lives in a family ${\cal Q}
 \subseteq {\cal S}$ of candidate splits of restricted structure.
 
 The usual family ${\cal Q}$ of
@@ -889,11 +890,24 @@ if $p(c_k|t_L)=p(c_k|t_R)$ for $k=1,\dots,J$.
 
 \begin{figure}
 \centering
-\includegraphics[width=0.9\textwidth]{figures/ch3_toy_x1_gini.pdf}\\
+\includegraphics[width=0.95\textwidth]{figures/ch3_toy_x1_gini.pdf}\\
 \vspace{1cm}
-\includegraphics[width=0.9\textwidth]{figures/ch3_toy_x3_gini.pdf}
+\includegraphics[width=0.95\textwidth]{figures/ch3_toy_x3_gini.pdf}
 \caption{Splitting $t_0$ on $X_1$ (above) versus splitting $t_0$ on $X_3$ (below), as evaluated by a strictly concave impurity function.}
 \label{fig:3:toy:impurity:gini}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{figures/ch3_toy_x1_error.pdf}
+\caption{Splitting $t_0$ on $X_1$ as evaluated by the resubstitution estimate $i_R(t)$.}
+\label{fig:3:toy:impurity:error}
+\end{figure}
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{figures/ch3_impurity_comparison.pdf}
+\caption{Comparison of $i_E(t)$, $i_H(t)$ and $i_G(t)$.}
+\label{fig:3:toy:impurity:comparison}
 \end{figure}
 
 To better understand Theorem~\ref{thm:reduction-impurity}, let us consider a
@@ -917,13 +931,6 @@ slightest changes get captured by $\Delta i(s, t)$ because of strict concavity.
 It is only when they exactly coincide (i.e., when
 $p(c_1|t_L)=p(c_1|t_R)=p(c_1|t)$) that the three red points overlap and that
 $\Delta i(s,t)=0$.
-
-\begin{figure}
-\centering
-\includegraphics[width=0.9\textwidth]{figures/ch3_toy_x1_error.pdf}
-\caption{Splitting $t_0$ on $X_1$ as evaluated by the resubstitution estimate $i_R(t)$.}
-\label{fig:3:toy:impurity:error}
-\end{figure}
 
 Graphically, it also becomes obvious when comparing
 Figure~\ref{fig:3:toy:impurity:gini} with Figure~\ref{fig:3:toy:impurity:error}
@@ -960,14 +967,6 @@ $Y$ by splitting $t$ into $t_L$ and $t_R$. The Gini-based impurity $i_G(t)$
 measures how often a randomly chosen object $\mathbf{x}\in {\cal L}_t$ would be
 incorrectly classified if it were randomly labeled by a class $c\in{\cal Y}$ according
 to the distribution $p(y|t)$.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.9\textwidth]{figures/ch3_impurity_comparison.pdf}
-\caption{Comparison of $i_E(t)$, $i_H(t)$ and $i_G(t)$.}
-\label{fig:3:toy:impurity:comparison}
-\end{figure}
-
 
 While the Shannon entropy~\ref{eqn:impurity:shannon} and the Gini
 index~\ref{eqn:impurity:gini} are robust and reliable impurity functions
@@ -1110,10 +1109,14 @@ heuristic on most problems.
 
 In this framework, the best split $s^*_j$ is the split
 $\smash{s^{v^\prime_k}_j}$ that maximizes impurity decrease. Computationally,
-the exhaustive evaluation of all these splits can be carried out efficiently when
-considering decision thresholds $v^\prime_k$ in sorted order, by remarking that
-$\smash{\Delta i(s^{v^\prime_{k+1}}_j, t)}$ can be computed  from
-$\smash{\Delta i(s^{v^\prime_{k}}_j, t)}$ in a limited number of operations.
+the exhaustive evaluation of all these splits can be carried out efficiently
+when considering decision thresholds $v^\prime_k$ in sorted order, by remarking
+that $\smash{\Delta i(s^{v^\prime_{k+1}}_j, t)}$ can be computed  from
+$\smash{\Delta i(s^{v^\prime_{k}}_j, t)}$ in a number of operations
+linearly proportional the number of samples going from the right child to left
+child. As such, the exhaustive evaluation of all intermediate splits can be
+performed in linear time with respect to $N_t$, hence guaranteeing good
+performance as further shown in Chapter~\ref{ch:complexity}.
 
 \begin{itemize}
 
@@ -1160,16 +1163,6 @@ $\smash{\Delta i(s^{v^\prime_{k}}_j, t)}$ in a limited number of operations.
 
 \end{itemize}
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.9\textwidth]{figures/ch3_split_ordered_invariant.pdf}
-    \caption{Loop invariant of Algorithm~\ref{algo:findsplit:x_j}. At the end of each
-    iteration, $\smash{\Delta i(s^{v^\prime_k}_j, t)}$ has been computed from the
-    statistics of the previous split at $v^\prime_{k-1}$  and compared to the
-    best reduction in impurity $\Delta$ found so far within the splits at $v^\prime_{0}=-\infty$ to $v^\prime_{k-1}$.}
-    \label{fig:3:split:invariant}
-\end{figure}
-
 Starting from the initial partition $v^\prime_0=-\infty$, that is where $t_L$
 is empty and $t_R$ corresponds to $t$, and using the above update equations to
 switch from $\smash{v^\prime_k}$ to $\smash{ v^\prime_{k+1}}$, the search of
@@ -1210,6 +1203,16 @@ Find the best split $s^*_j$ on $X_j$ that partitions ${\cal L}_t$.
 \end{algorithmic}
 }
 \end{algorithm}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/ch3_split_ordered_invariant.pdf}
+    \caption{Loop invariant of Algorithm~\ref{algo:findsplit:x_j}. At the end of each
+    iteration, $\smash{\Delta i(s^{v^\prime_k}_j, t)}$ has been computed from the
+    statistics of the previous split at $v^\prime_{k-1}$  and compared to the
+    best reduction in impurity $\Delta$ found so far within the splits at $v^\prime_{0}=-\infty$ to $v^\prime_{k-1}$.}
+    \label{fig:3:split:invariant}
+\end{figure}
 
 As we will see later in
 Chapter~\ref{ch:complexity}, the algorithm complexity is upper bounded by the
@@ -1267,8 +1270,8 @@ usually be done  within reasonable time. However, as $L$ gets larger, this
 quickly becomes infeasible in practice. As an approximation, the usual
 strategy~\citep{liaw:2002} consists in exhaustively evaluating all splits when
 $L \leq 10$ and then switch to random sampling of the subsets ${\cal B} \subset
-\{ b_1, \dots, b_L \}$ when $L > 10$. In that case, $512$ random subsets ${\cal
-B}$ are typically drawn and evaluated.
+\{ b_1, \dots, b_L \}$ when $L > 10$.
+%In that case, $512$ random subsets ${\cal B}$ are typically drawn and evaluated.
 
 In regression, given the equivalence of $i_R(t)$ with the Gini index, the same
 algorithmic trick can be applied as in binary classification. In this case,
@@ -1308,15 +1311,14 @@ provided the following two changes:
 
 \item The impurity decrease of a split is computed as the average impurity decrease
       over the $q$ output variables. Accordingly, splits are optimized
-      in order to improve node homogeneity with respect to all output variables,
+      with respect to all output variables,
       thereby exploiting correlations between $Y_1, \dots, Y_q$ whenever possible.
 
 \end{itemize}
 
 The main advantage of multi-output decision trees is that dependencies between
 output variables can be taken into account, whereas building $q$ individual
-models cannot exploit correlations between these variables, which may in some
-cases affect the overall accuracy of the model. From a practical point of view,
-a second advantage is that building a single model is often much less
+models cannot exploit such correlations, which may affect the overall accuracy
+of the model. A second advantage is that building a single model is often less
 computationally expensive than building $q$ different models, both from a time
 and space complexity point of view.

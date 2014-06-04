@@ -30,5 +30,7 @@ plt.text(0.65, 0.93, r"$t_4$", fontsize=15)
 plt.text(0.7, -0.07, "$0.7$", fontsize=15, horizontalalignment='center')
 plt.text(-0.07, 0.5, "$0.5$", fontsize=15, verticalalignment='center')
 
+plt.text(1.0, -0.07, "$X_1$", fontsize=15, horizontalalignment='center')
+plt.text(-0.07, 1.0, "$X_2$", fontsize=15, verticalalignment='center')
 plt.show()
 
