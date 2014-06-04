@@ -345,14 +345,14 @@ finding good splits and in knowing when to stop splitting.
 \begin{remark}{Lookahead search}
 Obviously, the greedy assumption on which Algorithm~\ref{algo:induction} relies
 may produce trees that are suboptimal. A natural improvement of the greedy
-strategy is lookahead search, which consists in evaluating the
-goodness of a split, but also of those deeper in the tree, assuming this former split was effectively performed. As empirically
-investigated in \citep{murthy:1995}, such an approach is however not only more
-computationally intensive, it is also not significantly better than greedily
-induced decision trees. On average, decision trees grown with lookahead search indeed have
-the same accuracy, while being however usually shorter. For this reason,
+strategy is lookahead search, which consists in evaluating the goodness of a
+split, but also of those deeper in the tree, assuming this former split was
+effectively performed. As empirically investigated in \citep{murthy:1995}, such
+an approach is however not only more computationally intensive, it is also not
+significantly better than greedily induced decision trees. For this reason,
 more elaborate variants of Algorithm~\ref{algo:induction} are not considered
-within this work.
+within this work. Let us note however that trees grown
+with lookahead search are usually shorter, which may be a strong advantage when interpretability matters.
 \end{remark}
 
 \section{Assignment rules}
