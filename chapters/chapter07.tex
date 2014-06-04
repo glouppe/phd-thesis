@@ -9,7 +9,8 @@ the context of binary decision trees and ordered variables. In this framework, w
 highlight various sources of bias that may concurrently happen when
 importances are computed from actual random forests. Finally, we present in
 Section~\ref{sec:7:applications} some successful applications
-of variable importance measures.
+of variable importance measures. \textit{Caution: work presented in
+this chapter is exploratory.}
 \end{remark}
 
 
@@ -35,8 +36,11 @@ redundant if one can perfectly explains the other and vice-versa. Formally, we
 define redundancy as follows:
 
 \begin{definition}
-Two variables $X_i, X_j$ are totally redundant if the mutual information
-$I(X_i;X_j)$ is maximum.
+Two variables $X_i, X_j$ are \emph{totally redundant} if no additional information
+is required for describing $X_i$ given $X_j$ and vice-versa. I.e., if
+\begin{equation}
+H(X_i|X_j) = H(X_j|X_i) = 0.
+\end{equation}
 \end{definition}
 
 In particular, a variable $X_j$ and its copy $X_j^\prime$ are totally
@@ -82,13 +86,13 @@ $B$,
 \end{lemma}
 
 \begin{proof}
-By definition, if $X_i$ and $X_j$ are totally redundant, then
-\begin{equation}
-I(X_i;X_j) = H(X_i) - H(X_i|X_j)
-\end{equation}
-is maximum, which happens when $H(X_i|X_j) = 0$ since $H$ is non-negative.
-By symmetry of the mutual information, we similarly have $H(X_j|X_i)=0$,
-and therefore $H(X_i)=H(X_j)$. Using the same argument, this directly extends
+By symmetry of the mutual information, it comes
+\begin{align}
+I(X_i;X_j) &= H(X_i) - H(X_i|X_j) \nonumber \\
+           &= H(X_j) - H(X_j|X_i),
+\end{align}
+which implies that $H(X_i) = H(X_j)$ since $H(X_i|X_j) = H(X_j|X_i) = 0$ if  $X_i$ and $X_j$ are totally redundant.
+Using the same argument, this directly extends
 to any conditioning set $B$, giving:
 \begin{align}
 & H(X_i|B,X_j) = 0\\
@@ -169,7 +173,7 @@ Lemma~\ref{lemma:red2}.
 \begin{proposition}\label{prop:red:other}
 Let $X_j\in V$ be a relevant variable with respect to $Y$ and $V$ and let
 $X_j^\prime \notin V$ be a totally redundant variable with respect to $X_j$.
-The infinite sample size importance of $X_l \in V$ as computed with an infinite
+The infinite sample size importance of $X_l \in V^{-j}$ as computed with an infinite
 ensemble of fully developed totally randomized trees built on $V\cup
 \{X_j^\prime\}$ is
 \begin{align}\label{prop:red:other:eqn}
@@ -195,15 +199,16 @@ variable importance of $X_l$ can therefore be rewritten as follows:
 \end{proof}
 
 Proposition~\ref{prop:red:self} shows that the importance of $X_j$ decreases
-when a redundant variable $X_j^\prime$ is added to the set of input variables.
-Intuitively, this result is in fact expected since the same information is then
-conveyed within two variables (i.e., in $X_j$ and its copy $X_j^\prime$). It
-also shows that the terms in the total importance are not all modified in the
-same way. The weight of the terms corresponding to small conditioning sets
-remains nearly unchanged (i.e., for small values of $k$, $\tfrac{p-k}{p+1}$ is
-close to $1$), while the weight of the terms of large conditioning sets is
-greatly impacted (i.e., for large values of $k$, $\tfrac{p-k}{p+1}$ tends to
-$0$).
+when a redundant variable $X_j^\prime$ is added to the set of input variables,
+since all mutual information terms are multiplied by a factor $\tfrac{p-k}{p+1}
+< 1$. Intuitively, this result is in fact expected since the same information
+is then conveyed within two variables (i.e., in $X_j$ and its copy
+$X_j^\prime$). It also shows that the terms in the total importance are not all
+modified in the same way. The weight of the terms corresponding to small
+conditioning sets remains nearly unchanged (i.e., for a large number $p$ of
+variables and small values of $k$, $\tfrac{p-k}{p+1}$ is close to $1$), while
+the weight of the terms of large conditioning sets is greatly impacted (i.e.,
+for large values of $k$, $\tfrac{p-k}{p+1}$ tends to $0$).
 
 As shown by Proposition~\ref{prop:red:other}, the effect of adding a redundant
 variable $X_j^\prime$ on the importance of the other variables $X_l$ (for
@@ -222,7 +227,8 @@ $I(X_l;Y|B,X_j)$ terms is low with respect to the sum of the terms that do not
 include $X_j$ (or its copy), then the decrease effect dominates and the
 importance of $X_l$ should be smaller. By contrast, if the $I(X_l;Y|B,X_j)$
 terms are larger, then the increase effect dominates and the resulting
-importance is larger.
+importance is larger. As shown later in Figure~\ref{fig:7:red:xor}, redundant variables therefore
+increase the importance of all variables that \textit{interact} with the duplicated variable.
 
 Propositions~\ref{prop:red:self} and \ref{prop:red:other} can be extended to
 the case where $N_c$ redundant variables $X_j^c$ (for $c=1,\dots,N_c$) are
@@ -301,7 +307,8 @@ Propositions \ref{prop:red:other} and \ref{prop:red:general}.
 \end{figure}
 
 Overall, results presented in this section call for caution when interpreting
-variable importance scores. Due to redundancy effects, it may happen that the
+variable importance scores. Due to redundancy effects -- either total, as studied
+here, or partial as it would often arise in practice -- it may happen that the
 total importance of a given variable is either misleadingly low or deceptively
 high because the same information is spread within several redundant variables
 and therefore taken into account several times within the total importances. As
@@ -321,7 +328,7 @@ effects, impurity misestimations and the structure of the trees make variable
 importances deviate from the theoretical results found in asymptotic conditions
 for totally randomized trees.
 
-\subsection{Bias due to variable selection}
+\subsection{Bias due to masking effects}
 
 As shown in the previous chapters, the guided selection of the split variable
 (i.e., for $K>1$) is necessary for balancing bias and variance in  randomized
@@ -342,7 +349,8 @@ its importance, thereby making it indistinguishable from irrelevant variables,
 and that the importance of relevant variables becomes dependent on the number
 of irrelevant variables.
 
-\subsection{Bias due to high cardinality}
+
+\subsection{Bias due to misestimations}
 \label{sec:7:bias:high}
 
 To guide our discussion, let us revisit the simulation studies from
