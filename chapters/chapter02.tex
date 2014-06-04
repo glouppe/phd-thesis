@@ -82,7 +82,7 @@ vector $\mathbf{y}=(y_1, ..., y_N)$.
 \begin{remark}{Data representation}
 For optimal implementations of machine learning algorithms, data needs to
 represented using structures which allows for high-performance numerical
-computation. In this work, code snippets are described under  that assumption
+computation. In this work, code snippets are described under  the assumption
 that data is represented using a data structure similar to a NumPy
 array~\citep{vanderwalt:2011}.
 
@@ -163,11 +163,11 @@ Y=y)$ is the probability that random variables $X$ and $Y$ take values
 $\mathbf{x}$ and $y$ from ${\cal X}$ and ${\cal Y}$ when drawing an object
 uniformly at random from the universe $\Omega$.
 
-Accordingly, using an algorithm ${\cal A}$ for learning a model $\varphi_{\cal
-L}$\footnote{Unless it is clear from the context, models are now denoted
-$\varphi_{\cal L}$ to emphasize that they are built from the learning set
-${\cal L}$.} whose predictions are as good as possible can be stated as finding
-a model which minimizes its expected prediction error, defined as follows:
+Accordingly, using an algorithm ${\cal A}$ for learning a model\footnote{Unless
+it is clear from the context, models are now denoted $\varphi_{\cal L}$ to
+emphasize that they are built from the learning set ${\cal L}$.} $\varphi_{\cal
+L}$ whose predictions are as good as possible can be stated as finding a model
+which minimizes its expected prediction error, defined as follows:
 
 \begin{definition}
 The \emph{expected prediction error}, also known as \emph{generalization
@@ -467,11 +467,11 @@ algorithm is run once again on the entire learning set ${\cal L}$, finally
 yielding the approximately optimal model ${\cal A}(\widehat{\theta}^*, {\cal
 L})$.
 
-When optimizing $\theta$, special care must taken so that the resulting model
+When optimizing $\theta$, special care must be taken so that the resulting model
 is neither too simple nor too complex. In the former case, the model is indeed
 said to \textit{underfit} the data, i.e., to be not flexible enough the capture
 the structure between $X$ and $Y$. In the later case, the model is said to
-\textit{overfit} the data, i.e., to be too flexible and to capture illusory
+\textit{overfit} the data, i.e., to be too flexible and to capture isolated
 structures (i.e., noise) that are specific to the learning set.
 
 \begin{figure}
@@ -500,7 +500,7 @@ perfect. At the same time, the test estimates become worse because the
 structure learned from the training set is actually too specific and does not
 generalize. The model is overfitting. The best parameter value $\theta$ is
 therefore the one making the appropriate trade-off and producing a model which
-neither too simple nor to complex.
+neither too simple nor to complex, as shown by the grey line on the figure.
 
 As we will see later in Chapter~\ref{ch:forest},
 overfitting can also be explained by decomposing the generalization error

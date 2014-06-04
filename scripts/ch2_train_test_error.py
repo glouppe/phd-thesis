@@ -52,6 +52,11 @@ for i, test_errors in enumerate(all_test_errors):
 plt.plot(parameter_values[::-1], np.mean(all_test_errors, axis=0),
          color=(1, 0, 0), label="Test error")
 
+m = np.mean(all_test_errors, axis=0)
+i = np.argmin(m)
+plt.vlines((parameter_values[::-1])[i], 0, 30, color=(0.7, 0.7, 0.7))
+plt.ylim([0, 30])
+
 plt.tick_params(axis="x", which="both", bottom="off", top="off", labelbottom="off")
 plt.xlabel("Model complexity")
 plt.ylabel("Mean square error")
