@@ -9,11 +9,12 @@ the context of binary decision trees and ordered variables. In this framework, w
 highlight various sources of bias that may concurrently happen when
 importances are computed from actual random forests. Finally, we present in
 Section~\ref{sec:7:applications} some successful applications
-of variable importance measures. \textit{Caution: The work presented in
-this chapter is exploratory. Conlusions should be considered with care, until
-further experimental verifications.}
+of variable importance measures.
 \end{remark}
 
+\noindent\textbf{Caution.} \textit{The work presented in
+this chapter is exploratory. Conlusions should be considered with care, until
+further experimental verifications.}
 
 \section{Redundant variables}
 \label{sec:7:redundant}
@@ -92,14 +93,11 @@ By symmetry of the mutual information, it comes
 I(X_i;X_j) &= H(X_i) - H(X_i|X_j) \nonumber \\
            &= H(X_j) - H(X_j|X_i),
 \end{align}
-which implies that $H(X_i) = H(X_j)$ since $H(X_i|X_j) = H(X_j|X_i) = 0$ if  $X_i$ and $X_j$ are totally redundant.
-Using the same argument, this directly extends
-to any conditioning set $B$, giving:
-\begin{align}
-& H(X_i|B,X_j) = 0\\
-& H(X_j|B,X_i) = 0\\
-& H(X_i|B) = H(X_j|B)
-\end{align}
+which implies that $H(X_i) = H(X_j)$ since $H(X_i|X_j) = H(X_j|X_i) = 0$ if
+$X_i$ and $X_j$ are totally redundant. Since $0 \leq H(X_i|X_j,B) \leq
+H(X_i|X_j)$ and $H(X_i|X_j)=0$, we also have $H(X_i|X_j,B)=0$ for any conditioning
+set $B$. Likewise, $H(X_j|X_i,B)=0$. By reusing the same argument, equality
+therefore extends to any conditioning set $B$, giving $H(X_i|B) = H(X_j|B)$.
 
 From these, it follows that,
 \begin{align}
