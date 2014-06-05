@@ -9,8 +9,9 @@ the context of binary decision trees and ordered variables. In this framework, w
 highlight various sources of bias that may concurrently happen when
 importances are computed from actual random forests. Finally, we present in
 Section~\ref{sec:7:applications} some successful applications
-of variable importance measures. \textit{Caution: work presented in
-this chapter is exploratory.}
+of variable importance measures. \textit{Caution: The work presented in
+this chapter is exploratory. Conlusions should be considered with care, until
+further experimental verifications.}
 \end{remark}
 
 
@@ -285,6 +286,16 @@ variables, and not necessarily because it has no information.
 \label{fig:7:red:led}
 \end{figure}
 
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{figures/ch7_red_xor.pdf}
+\caption{Adding copies of $X_1$ on a XOR classification task. The more redundant
+         variables are added, the lesser the importance of $X_1$, but the larger
+         the importance of $X_2$.}
+\label{fig:7:red:xor}
+\end{figure}
+
 As a second example, Figure~\ref{fig:7:red:xor} illustrates redundancy effects
 for a XOR classification problem defined on two variables $X_1$ and $X_2$.
 Again, the importance of the duplicated variable $X_1$  decreases as redundant
@@ -296,15 +307,6 @@ $I(X_2;Y|B,X_1^c)$ terms are prevalent with respect to the $I(X_2;Y|B)$ terms
 (which is in fact unique and equal to $0$), thereby artificially increasing the
 overall importance of $X_2$ as redundancy augments, as expected from
 Propositions \ref{prop:red:other} and \ref{prop:red:general}.
-
-\begin{figure}
-\centering
-\includegraphics[width=0.9\textwidth]{figures/ch7_red_xor.pdf}
-\caption{Adding copies of $X_1$ on a XOR classification task. The more redundant
-         variables are added, the lesser the importance of $X_1$, but the larger
-         the importance of $X_2$.}
-\label{fig:7:red:xor}
-\end{figure}
 
 Overall, results presented in this section call for caution when interpreting
 variable importance scores. Due to redundancy effects -- either total, as studied
