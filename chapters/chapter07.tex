@@ -13,8 +13,8 @@ of variable importance measures.
 \end{remark}
 
 \noindent\textbf{Caution.} \textit{The work presented in
-this chapter is exploratory. Conlusions should be considered with care, until
-further experimental verifications.}
+this chapter is exploratory. Conlusions should be considered with a grain of salt, until
+further empirical verifications.}
 
 \section{Redundant variables}
 \label{sec:7:redundant}
@@ -45,7 +45,7 @@ H(X_i|X_j) = H(X_j|X_i) = 0.
 \end{equation}
 \end{definition}
 
-In particular, a variable $X_j$ and its copy $X_j^\prime$ are totally
+In particular, a variable $X_j$ and its copy, denoted $X_j^\prime$, are totally
 redundant. With respect to random forests, adding copies of variables (e.g.,
 duplicating $X_j$, hence resulting in a new set of $p+1$ input variables) has
 no effect when the selection of the split is deterministic (e.g., in RF for $K$
@@ -96,7 +96,7 @@ I(X_i;X_j) &= H(X_i) - H(X_i|X_j) \nonumber \\
 which implies that $H(X_i) = H(X_j)$ since $H(X_i|X_j) = H(X_j|X_i) = 0$ if
 $X_i$ and $X_j$ are totally redundant. Since $0 \leq H(X_i|X_j,B) \leq
 H(X_i|X_j)$ and $H(X_i|X_j)=0$, we also have $H(X_i|X_j,B)=0$ for any conditioning
-set $B$. Likewise, $H(X_j|X_i,B)=0$. By reusing the same argument, equality
+set $B$. Likewise, $H(X_j|X_i,B)=0$. By reusing the same argument for $I(X_i;X_j|B)$, equality
 therefore extends to any conditioning set $B$, giving $H(X_i|B) = H(X_j|B)$.
 
 From these, it follows that,
