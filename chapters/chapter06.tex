@@ -393,7 +393,7 @@ relevant but not strongly relevant.
 \begin{theorem}\label{thm:irrelevant}
   $X_i \in V$ is irrelevant to $Y$ with respect to $V$ if and only if  its
   infinite sample size importance as computed with an infinite ensemble of fully
-  developed totally randomized trees built on $V$ for $Y$ is 0.
+  developed totally randomized trees built on $V$ for $Y$ is $0$.
 \end{theorem}
 
 \begin{proof}
@@ -513,7 +513,7 @@ in a tree, which itself directly depends on $p$ -- that is, not on $r$.
 
 Finally, it is also worth noting that this result is consistent with the work
 of~\citet{biau:2012}, who proved that rate of convergence of forests
-of randomized also only depends on the relevant variables.
+of randomized trees also only depends on the relevant variables.
 
 
 \section{Variable importances in random forest variants}
@@ -800,7 +800,7 @@ variables.
 In conclusion, the importances as computed with totally randomized trees
 exhibit properties that do not possess, by extension, neither Random Forests nor
 Extremely Randomized Trees. With totally randomized trees, the importance of
-$X_j$ only depends on the relevant variables and is 0 if and only if $X_j$ is
+$X_j$ only depends on the relevant variables and is $0$ if and only if $X_j$ is
 irrelevant. As we have shown, it may no longer be the case for $K>1$.
 Asymptotically, the use of totally randomized trees for assessing the importance of
 a variable may therefore be more appropriate. In a finite setting (i.e., a
@@ -949,7 +949,7 @@ is therefore reduced to $0$ in the total importance. For instance, for $k=0$,
 the sub-importances of $X_2$ and $X_5$ are positive, while all others are null,
 which means that only those two variables are ever selected at the root node,
 hence masking the others. As a consequence, this also means that the importances
-of the remaining variables is biased and that it actually only accounts of their
+of the remaining variables are biased and that they actually only account of their
 relevance when conditioned to $X_2$ or $X_5$, but not of their relevance in
 other contexts. At $k=0$, masking effects also amplify the contribution of $I(X_2;Y)$
 (resp. $I(X_5;Y)$) since $X_2$ (resp. $X_5$) appears more frequently at the root
