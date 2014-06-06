@@ -894,14 +894,14 @@ if $p(c_k|t_L)=p(c_k|t_R)$ for $k=1,\dots,J$.
 \vspace{1cm}
 \includegraphics[width=0.95\textwidth]{figures/ch3_toy_x3_gini.pdf}
 \caption{Splitting $t_0$ on $X_1$ (above) versus splitting $t_0$ on $X_3$ (below),
-         as evaluated by a strictly concave impurity function. The figure shows $i(t)$ with respect to $p(c_1|t)$.}
+         as evaluated by a strictly concave impurity function. The figures show $i$ with respect to the local probability $p(c_1)$ of the first class.}
 \label{fig:3:toy:impurity:gini}
 \end{figure}
 
 \begin{figure}
 \centering
 \includegraphics[width=0.9\textwidth]{figures/ch3_toy_x1_error.pdf}
-\caption{Splitting $t_0$ on $X_1$, as evaluated by the resubstitution estimate $i_R(t)$. The figure shows $i_R(t)$ with respect to $p(c_1|t)$.}
+\caption{Splitting $t_0$ on $X_1$, as evaluated by the resubstitution estimate $i_R(t)$. The figure shows $i_R$ with respect to the local probability $p(c_1)$ of the first class.}
 \label{fig:3:toy:impurity:error}
 \end{figure}
 \begin{figure}
@@ -1224,12 +1224,6 @@ will show that approximation techniques based on sub-sampling of the node
 samples or on the discretization of the variable $X_j$ can help reduce the
 computational complexity of procedure without significant impact on accuracy.
 
-% \subsection{Approximately best binary split on an ordered variable}
-% \label{sec:best-split-ordered-approx}
-
-%             + Binning
-%             + Subsampling
-
 
 \subsubsection{On a categorical variable}
 \label{sec:best-split-categorical}
@@ -1272,8 +1266,8 @@ usually be done  within reasonable time. However, as $L$ gets larger, this
 quickly becomes infeasible in practice. As an approximation, the usual
 strategy~\citep{liaw:2002} consists in exhaustively evaluating all splits when
 $L \leq 10$ and then switch to random sampling of the subsets ${\cal B} \subset
-\{ b_1, \dots, b_L \}$ when $L > 10$. In that case, $512$ random subsets ${\cal
-B}$ are typically drawn and evaluated.
+\{ b_1, \dots, b_L \}$ when $L > 10$.
+%In that case, $512$ random subsets ${\cal B}$ are typically drawn and evaluated.
 
 In regression, given the equivalence of $i_R(t)$ with the Gini index, the same
 algorithmic trick can be applied as in binary classification. In this case,
@@ -1282,7 +1276,6 @@ categorical values $b_l$ with the mean output value at $b_l$, i.e.,
 $\tfrac{1}{N_{lt}} \sum_{\mathbf{x}, y \in {\cal L}_t, x_j = b_l} y$, on which
 Algorithm~\ref{algo:findsplit:x_j} is then applied to find the best binary
 split on these ordered values.
-
 
 
 \section{Multi-output decision trees}
@@ -1314,15 +1307,14 @@ provided the following two changes:
 
 \item The impurity decrease of a split is computed as the average impurity decrease
       over the $q$ output variables. Accordingly, splits are optimized
-      in order to improve node homogeneity with respect to all output variables,
+      with respect to all output variables,
       thereby exploiting correlations between $Y_1, \dots, Y_q$ whenever possible.
 
 \end{itemize}
 
 The main advantage of multi-output decision trees is that dependencies between
 output variables can be taken into account, whereas building $q$ individual
-models cannot exploit correlations between these variables, which may in some
-cases affect the overall accuracy of the model. From a practical point of view,
-a second advantage is that building a single model is often much less
+models cannot exploit such correlations, which may affect the overall accuracy
+of the model. A second advantage is that building a single model is often less
 computationally expensive than building $q$ different models, both from a time
 and space complexity point of view.
