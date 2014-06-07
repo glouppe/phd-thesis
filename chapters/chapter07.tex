@@ -350,11 +350,24 @@ and that the importance of relevant variables becomes dependent on the number
 of irrelevant variables.
 
 
-\subsection{Bias due to misestimations}
+\subsection{Bias due to impurity misestimations}
 \label{sec:7:bias:high}
 
+In many applications, input variables are heterogeneous and vary in their scale
+of measurement or in the number of categories they may take. For example, in
+the case of meteorelogical problems, variables often comprise mixed
+environemental measurements of different nature and scale,   like speed of
+wind, temperature, humidity, pressure, rainfall or solar radidation. As we show
+in this section, misestimations of node impurity is in fact directly
+proportional to the cardinality of the split variable and inversely
+proportional to the number $N_t$ of samples used for the evaluation. As a
+result, impurity reductions become overestimated as we go deeper in the tree
+and/or as the number of values of the variable is large. In this context,
+variable importances suffer from bias, making variables of higher cardinality
+wrongly appear as more important.
+
 To guide our discussion, let us revisit the simulation studies from
-\citep{strobl:2007b} which considers a binary output variable $Y$ and five
+\citep{strobl:2007b} which consider a binary output variable $Y$ and five
 input variables $X_1,\dots,X_5$, as defined in Table~\ref{table:simulation}.
 
 \begin{table}
@@ -393,19 +406,29 @@ Let us first analyze the case where $Y$ is independent from $X_1, \dots, X_5$,
 i.e., such that none of the input variables are informative with respect to the
 output. For a randomly sampled dataset ${\cal L}$ of $N=120$ samples,
 Figure~\ref{fig:7:bias:null} plots variable importances for different kinds of
-random forests. TRT corresponds to multiway totally randomized trees, as
-defined in Section~\ref{sec:6:theory}, RF corresponds to Random Forest with
-bootstrap sampling and ETs corresponds to Extremely Randomized Trees. In
-asymptotic conditions, we proved in Theorem~\ref{thm:irrelevant} that the
-importance of irrelevant variables is strictly equal to $0$. For a finite value
-of $N$ however, this result does not hold, as Figure~\ref{fig:7:bias:null}
-indeed confirms. In contrast with what would be expected, we observe that the
-importance of none of the variables is in fact close to $0$. More importantly,
-we also observe that the larger the cardinality of the variable (i.e., the
-larger its number of unique values), the larger its importance. For example,
-the importance of $X_1$ (for which samples all have unique values) or of $X_5$
-(which counts up to $40$ unique values) appears nearly $3$ times larger as the
-importance of $X_2$ (which is binary).
+random forests. TRT corresponds to totally randomized trees, as defined in
+Section~\ref{sec:6:theory}, RF corresponds to standard Random Forest with
+bootstrap sampling and ETs corresponds to Extremely Randomized Trees. Both RF
+and ETs use binary splits while TRT rely on multi-way exhaustive
+splits\footnote{Thereby creating as many branches as the number of values of
+the split variable, even if this variable is continuous and count unique values
+only.}. In asymptotic conditions, we proved in Theorem~\ref{thm:irrelevant}
+that the importance of irrelevant variables is strictly equal to $0$. For a
+finite value of $N$ however, this result does not hold, as
+Figure~\ref{fig:7:bias:null} indeed confirms. In contrast with what would be
+expected, we observe that the importance of none of the variables is in fact
+nowhere close to $0$. In light of Theorem~\ref{thm:sum-of-imp} however, this
+result is not that surprising: as long as decision trees can be fully
+developed, the sum of variable importances is equal to  the (empirically
+estimated) mutual information between $X_1,\dots,X_p$ and the output $Y$, which
+is itself upper bounded by the (empirically estimated) entropy $H(Y)$ of the
+output variable. In this case, $H(Y)=\log_2(2)=1$, which indeed corresponds to
+the sum of variable importances for all methods compared in the figure. More
+importantly, we also observe that the larger the cardinality of the variable
+(i.e., the larger its number of unique values), the larger its importance. For
+example, the importance of $X_1$ (for which samples all have unique values) or
+of $X_5$ (which counts up to $40$ unique values) appears nearly $3$ times
+larger as the importance of $X_2$ (which is binary).
 
 In their study, \citet{strobl:2007b} argue that this bias is due to variable
 selection: \textit{variables with more potential cut-points are more likely to
@@ -427,9 +450,15 @@ misestimations of the mutual information terms
 due to the finite size $N_t$ of the node samples. As shown in
 \citep{goebel:2005}, when $X_j$ and $Y$ are independent random variables (i.e.,
 when $X_j$ is irrelevant), the distribution of finite sample size estimates of
-their mutual information  follows approximately a gamma distribution whose mean
-is linearly proportional to the cardinalities $|{\cal X}_j|$ and $|{\cal Y}|$
-of $X_j$ and $Y$ and inversely proportional to $N_t$.
+their mutual information  follows approximately a gamma distribution
+\begin{equation}
+\widehat{I}(X_j; Y) \sim \Gamma\Big( \frac{1}{2}(|{\cal X}_j|-1)(|{\cal Y}|-1), \frac{1}{N_t \log 2} \Big)
+\end{equation}
+whose mean is linearly proportional to the cardinalities $|{\cal X}_j|$ and
+$|{\cal Y}|$ of $X_j$ and $Y$ and inversely proportional to $N_t$:
+\begin{equation}
+\mathbb{E}\{ \widehat{I}(X_j; Y) \} = \frac{(|{\cal X}_j|-1)(|{\cal Y}|-1)}{2 N_t \log 2}.
+\end{equation}
 As a result, estimates get larger as $X_j$ counts many unique values, and
 become even larger as nodes are deep in the tree (since $N_t$ gets smaller).
 Consequently, the weighted mean of all such estimated impurity terms

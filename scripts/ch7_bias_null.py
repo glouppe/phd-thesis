@@ -42,21 +42,28 @@ def generate_strobl_null(n_samples=120):
     return X, y
 
 # Generate all importances
-models = [("ID3", partial(RandomizedID3Ensemble, base_estimator=RandomizedID3Classifier(k=1))),
+models = [("TRT", partial(RandomizedID3Ensemble, base_estimator=RandomizedID3Classifier(k=1))),
           ("ETs K=1", partial(ExtraTreesClassifier, max_features=1, criterion="entropy")),
           ("ETs K=3", partial(ExtraTreesClassifier, max_features=3, criterion="entropy")),
           ("ETs K=5", partial(ExtraTreesClassifier, max_features=5, criterion="entropy")),
           ("RF K=1", partial(RandomForestClassifier, max_features=1, bootstrap=True, criterion="entropy")),
           ("RF K=3", partial(RandomForestClassifier, max_features=3, bootstrap=True, criterion="entropy")),
-          ("RF K=5", partial(ExtraTreesClassifier, max_features=5, criterion="entropy"))]
+          ("RF K=5", partial(ExtraTreesClassifier, max_features=5, criterion="entropy")),]
+          #("RF K=1 max_depth=3", partial(RandomForestClassifier, max_features=1, max_depth=3, bootstrap=True, criterion="entropy")),
+          #("RF K=3 max_depth=3", partial(RandomForestClassifier, max_features=3, max_depth=3, bootstrap=True, criterion="entropy")),
+          #("RF K=5 max_depth=3", partial(ExtraTreesClassifier, max_features=5,  max_depth=3, criterion="entropy"))]
 
 X, y = generate_strobl_null(n_samples=120)
+print entropy(y)
 r = {}
 
 for name, cls in models:
-    print name
-    f = feature_importances(X, y, cls=cls)
+    if name == "TRT":
+        f = feature_importances(X, y, cls=cls, n_trees=500)
+    else:
+        f = feature_importances(X, y, cls=cls, n_trees=5000)
     r[name] = np.array(f)
+    print name, np.sum(f)
 
 # Convert to pandas and plot
 df = pd.DataFrame(r, index=["X%d" % (i+1) for i in range(X.shape[1])])
