@@ -46,7 +46,8 @@ def generate_strobl_power(n_samples=120, relevance=0.2):
     return X, y
 
 # Generate all importances
-cls = partial(ExtraTreesClassifier, max_features=1, criterion="entropy")
+#cls = partial(ExtraTreesClassifier, max_features=1, criterion="entropy")
+cls = partial(RandomForestClassifier, max_features=5, criterion="entropy")
 
 relevances = [0.0, 0.1, 0.2, 0.3]
 depths = range(1, 10)
@@ -55,7 +56,7 @@ depths = range(1, 10)
 for i, relevance in enumerate(relevances):
     imp_all = []
 
-    for n in range(3):
+    for n in range(10):
         imp = []
         X, y = generate_strobl_power(relevance=relevance)
 
@@ -68,12 +69,15 @@ for i, relevance in enumerate(relevances):
 
     imp = np.mean(imp_all, axis=0)
 
+    for q in range(imp.shape[0]):
+        imp[q] /= np.sum(imp[q, :])
+
     plt.subplot(2, 2, i + 1)
 
     for j in range(X.shape[1]):
         plt.plot(depths, imp[:, j], "o-", label="$X_%d$" % j, color=cmap[j])
 
-    plt.ylim([0., 0.5])
+    plt.ylim([0., 1.0])
     plt.title("Relevance = %.1f" % relevance)
 
     if i == 0:

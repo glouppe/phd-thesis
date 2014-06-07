@@ -48,22 +48,29 @@ models = [("TRT", partial(RandomizedID3Ensemble, base_estimator=RandomizedID3Cla
           ("ETs K=5", partial(ExtraTreesClassifier, max_features=5, criterion="entropy")),
           ("RF K=1", partial(RandomForestClassifier, max_features=1, bootstrap=True, criterion="entropy")),
           ("RF K=3", partial(RandomForestClassifier, max_features=3, bootstrap=True, criterion="entropy")),
-          ("RF K=5", partial(ExtraTreesClassifier, max_features=5, criterion="entropy")),]
-          #("RF K=1 max_depth=3", partial(RandomForestClassifier, max_features=1, max_depth=3, bootstrap=True, criterion="entropy")),
-          #("RF K=3 max_depth=3", partial(RandomForestClassifier, max_features=3, max_depth=3, bootstrap=True, criterion="entropy")),
-          #("RF K=5 max_depth=3", partial(ExtraTreesClassifier, max_features=5,  max_depth=3, criterion="entropy"))]
+          ("RF K=5", partial(RandomForestClassifier, max_features=5, bootstrap=True, criterion="entropy")),]
 
-X, y = generate_strobl_null(n_samples=120)
-print entropy(y)
+n_repeat = 5
 r = {}
 
-for name, cls in models:
-    if name == "TRT":
+for i in range(n_repeat):
+    print "Iteration", i
+
+    X, y = generate_strobl_null(n_samples=120)
+    print entropy(y)
+
+    for name, cls in models:
         f = feature_importances(X, y, cls=cls, n_trees=500)
-    else:
-        f = feature_importances(X, y, cls=cls, n_trees=5000)
-    r[name] = np.array(f)
-    print name, np.sum(f)
+
+        if i == 0:
+            r[name] = np.array(f)
+        else:
+            r[name] += np.array(f)
+
+        print name, np.sum(f)
+
+for name in r:
+    r[name] /= n_repeat
 
 # Convert to pandas and plot
 df = pd.DataFrame(r, index=["X%d" % (i+1) for i in range(X.shape[1])])
