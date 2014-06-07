@@ -603,7 +603,7 @@ splits rather than on multiway splits. In terms of impurity, this results in
 additional and distinct information terms that were not previously accounted
 for, because i) a same variable can be reused several times along the same
 branch and ii) binary splits discretize the information contained in a
-variable, making variable importances dependent on the threshold selection
+variable, making variable importances dependent on the split threshold selection
 strategy. In lack of a rigorous theoretical framework, we give in this section
 preliminary insights on variable importances for binary decision trees,
 hopefully shedding some light on their interpretation.
@@ -626,7 +626,7 @@ hopefully shedding some light on their interpretation.
 
 As a simplistic but illustrative example, let us consider a toy classification
 problem composed of a ternary input variable $X_1$ and of a binary input
-variable $X_2$. Let us further assume that input samples are uniformly drawn
+variable $X_2$, both of them being ordered. Let us further assume that input samples are uniformly drawn
 from Table~\ref{table:simulation:bias:tree}, which defines the output as $Y =
 X_1 < 1$ and $X_2$ as a copy of $Y$. With respect to $Y$, both variables are as
 informative and one should expect their importances to be the same.  With
@@ -636,8 +636,8 @@ them, splitting either on $X_1$ or on $X_2$ at the root node results in child
 nodes that are pure, hence halting the construction process. As expected, the measured
 variable importances are the same:
 \begin{align*}
-\text{Imp}(X_1) &= \frac{1}{2} I(X_1;Y) = \frac{1}{2} H(Y), \\
-\text{Imp}(X_2) &= \frac{1}{2} I(X_2;Y) = \frac{1}{2} H(Y).
+\text{Imp}(X_1) &= \frac{1}{2} I(X_1;Y) = \frac{1}{2} H(Y) = 0.459, \\
+\text{Imp}(X_2) &= \frac{1}{2} I(X_2;Y) = \frac{1}{2} H(Y) = 0.459.
 \end{align*}
 
 \begin{figure}
@@ -662,12 +662,14 @@ hence halting the construction process. In the latter case, the right child
 (corresponding to $X_1 > 1$) is pure, while the left child is not. For this
 node, recursive partitioning proceeds and a second binary split can be made either on
 $X_1$ or on $X_2$.  Overall, the measured variable
-importances in these trees are
+importances in these binary trees, in asymptotic conditions, are
 \begin{align*}
 \text{Imp}(X_1) &= \frac{2}{8} I(X_1 \leq 1;Y) + \frac{1}{8} P(X_1 \leq 1) I(X_1 \leq 0;Y|X_1 \leq 1) + \frac{1}{4} I(X_1 \leq 0;Y)\\
-\text{Imp}(X_2) &= \frac{1}{2} I(X_2;Y) + \frac{1}{8} P(X_1 \leq 1) I(X_2;Y|X_1\leq 1),
+                &= 0.375 \\
+\text{Imp}(X_2) &= \frac{1}{2} I(X_2;Y) + \frac{1}{8} P(X_1 \leq 1) I(X_2;Y|X_1\leq 1)\\
+                &= 0.541,
 \end{align*}
-which makes them strictly different from the importances collected in totally
+which makes them strictly different from the importances collected from multiway totally
 randomized trees. In particular, due to the binarization of the split
 variables, importances now account for conditioning sets that may include
 several values of a same variable. For instance, the importance of $X_2$
@@ -708,17 +710,15 @@ randomly on $X_1$. For RF, only the best thresholds are selected, yielding in
 this case child nodes that are always pure, as for totally randomized trees.
 As such, their importances respectively appear as equal as the figure confirms.
 
-Overall, these additional effects due binary splits make variable importances
-computed from classical random forests more difficult to interpret than
-importances derived from totally randomized trees. While they can still be used
-to identify the most relevant variables, caution should be taken when
+Overall, these additional effects due to binary splits make variable
+importances computed from classical random forests very difficult to interpret
+and understand as soon as data include many variables of different scale
+or number of categories. While they can still be
+used to identify the most relevant variables, caution should be taken when
 interpreting the amplitude of importance measures. As our last example
 illustrates, the importance of a variable may be misleadingly low or
 misleadingly high because of combinatorial effects, solely due to the possible
-ways variables are binarized. With regards to the results of the previous
-section however, evaluating mutual information through binarization reduces
-the effective cardinality of the measured random variable, thereby mitigating
-misestimations effects.
+ways variables are binarized.
 
 \begin{remark}{Encoding $N$-ary variables into binary variables}
 Partitioning node samples with binary splits on $N$-ary input variables is
