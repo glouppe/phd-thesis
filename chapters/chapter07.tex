@@ -777,37 +777,40 @@ several ways:
        is greater than some manually defined threshold $\alpha$.
 
 \item If the goal is to improve accuracy, a good subset
-      of variables can typically be found by tuning the threshold $\alpha$ so as to
-      minimize some user-defined criterion (e.g., the zero-one loss in classification
-      or the squared error loss in regression) for the model built on the
-      subset $\{X_j | \text{Imp}(X_j) > \alpha \}$.
+      of variables can typically be found by tuning the threshold $\alpha$ so
+      as to minimize some user-defined criterion (e.g., the zero-one loss in
+      classification or the squared error loss in regression) for the model
+      built on the subset $\{X_j | \text{Imp}(X_j) > \alpha \}$.
 
-      At the price of more computational efforts, even better performance
-      can usually be reached by embedding variable importances into a
-      dedicated iterative feature selection procedures, such as those
-      described in \citep{guyon:2002,tuv:2009}.
+      At the price of more computational efforts, even better performance can
+      usually be reached by embedding variable importances into a dedicated
+      iterative feature selection procedure, such as those described in
+      \citep{guyon:2002,tuv:2009}.
 
 \item In some other applications, the objective is to identify variables
-      that are relevant, in order to better understand the underlying
-      relations with the output $Y$. In asymptotic conditions, this could
-      be done by discarding all variables whose importances is null, as shown by Theorem~\ref{thm:relevant}.
-      In a finite setting however, bias due to masking effects or impurity misestimations (as previously discussed in Section~\ref{sec:7:bias})
-      makes it more difficult to identify variables that are truly
-      relevant since their importances might appear to be lower than those of irrelevant variables. Yet, several options
-      are available for controlling and limiting false positives,
-      such as stopping the construction process when impurity
-      estimations become statistically unreliable (Section~\ref{sec:7:bias:high}), comparing the importances
-      of the original input variables to artificial contrasts \citep{tuv:2006}
-      or robustly controlling the conditional error rate through permutation
-      tests \citep{saeys:2012}.
+      that are relevant, in order to better understand the underlying relations
+      with the output $Y$. In asymptotic conditions, this could be done by
+      discarding all variables whose importances is null, as shown by
+      Theorem~\ref{thm:relevant}. In a finite setting however, bias due to
+      masking effects or impurity misestimations (as previously discussed in
+      Section~\ref{sec:7:bias}) makes it more difficult to identify variables
+      that are truly relevant since their importances might appear to be lower
+      than those of irrelevant variables. Yet, several options are available
+      for controlling and limiting false positives, such as stopping the
+      construction process when impurity estimations become statistically
+      unreliable (Section~\ref{sec:7:bias:high}), comparing the importances of
+      the original input variables to artificial contrasts \citep{tuv:2006} or
+      robustly controlling the conditional error rate through permutation tests
+      \citep{saeys:2012}.
+
 \end{itemize}
 
 
 \subsection{Biomarker identification}
 
 With the rise of \textit{-omics} data, random forests have become one of the
-most popular tools in life sciences, providing practitioners with both
-high-prediction accuracy and helpful insights about the importances of variables. In
+most popular tools in life sciences, providing practitioners with both high-
+prediction accuracy and helpful insights about the importances of variables. In
 many cases, variable importance measures (either MDI or the permutation
 importance) is exploited to better understand the complex interaction effects
 between the inputs and the output. Examples of successful applications include
