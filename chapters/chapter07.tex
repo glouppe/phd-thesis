@@ -740,12 +740,15 @@ setting, the importance of $X_j$ therefore amounts to the sum of importances $\s
 \section{Applications}
 \label{sec:7:applications}
 
-In spite of various concurrent effects due to masking, redundancy, impurity
-misestimations or binary splits, variable importance measures have been used
-with success in a wide range of scientific applications. As such, examples
-presented in this section all demonstrate that any progress towards a better
-theoretical understanding of variable importances may help to further advance a
-wide range of research domains.
+In spite of the various concurrent effects discussed earlier, variable importance
+measures have been used with success in a wide range of scientific
+applications.  While  they have proven to be a good proxy for assessing the
+relevance of input variables, providing helpful insights, too often variable
+importances are used as a black-box metric, hence under-exploiting the
+information they offer. As such, examples presented in this section all
+demonstrate that any progress towards a better theoretical understanding of
+variable importances may help to further advance a wide range of research
+domains.
 
 \subsection{Feature selection}
 
@@ -809,8 +812,8 @@ several ways:
 \subsection{Biomarker identification}
 
 With the rise of \textit{-omics} data, random forests have become one of the
-most popular tools in life sciences, providing practitioners with both high-
-prediction accuracy and helpful insights about the importances of variables. In
+most popular tools in life sciences, providing practitioners with both
+high-prediction accuracy and helpful insights about the importances of variables. In
 many cases, variable importance measures (either MDI or the permutation
 importance) is exploited to better understand the complex interaction effects
 between the inputs and the output. Examples of successful applications include
@@ -823,12 +826,27 @@ further studies based on random forests could in fact be cited from the fields
 of genomics, metabolomics, proteomics or transcriptomics. Some of them are
 reviewed in \citep{touw:2013,boulesteix:2012}.
 
-In light of our study and discussion of variable importances, our
-recommendations for biomarker identification depend on the exact objective
-of the application. \todo{}
-
-
-
+In light of our study and discussion of variable importances,  recommendations
+for biomarker identification depend on the exact objective of the application.
+If the goal is to identify all relevant variables, then totally randomized
+trees with multiway splits should be prefered. They indeed constitute the only
+method for which variable importances are unbiased, taking into account all
+possible interaction terms in a fair and exhaustive way. The only caveat is
+that a (very) large number of trees may be required before variable importances
+converge, making them computationally intensive to compute, even if the full
+randomization of the induction procedure actually make indidual decision trees
+to be quite fast to generate.  By contrast, if the objective is only to
+identify a subset of good predictors for predicting the output (hence possibly
+omitting relevant but redundant variables), then non-totally randomized trees
+(e.g., standard RF or ETs) with $K$ chosen to maximize accuracy should be
+preferred. Even if some informative variables may be masked because of variable
+selection, a good subset of input variables should still be identifiable from
+importance scores. In all cases, impurity misestimations should be controlled
+by stopping the construction process early or collecting importances only for
+those nodes where impurity reductions can be considered as reliable. Whenever
+practical, variable importances should also be decomposed in order to better
+understand why some variables appear as more important than others. In
+particular, studying the decomposition might help identify redundancy effects.
 
 \subsection{Network inference}
 \todo{}
