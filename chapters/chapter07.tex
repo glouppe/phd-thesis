@@ -13,7 +13,7 @@ of variable importance measures.
 \end{remark}
 
 \noindent\textbf{Caution.} \textit{The work presented in
-this chapter is exploratory. Conlusions should be considered with a grain of salt, until
+this chapter is exploratory. Conclusions should be considered with a grain of salt, until
 further empirical verifications.}
 
 \section{Redundant variables}
@@ -355,9 +355,9 @@ of irrelevant variables.
 
 In many applications, input variables are heterogeneous and vary in their scale
 of measurement or in the number of categories they may take. For example, in
-the case of meteorelogical problems, variables often comprise mixed
-environemental measurements of different nature and scale,   like speed of
-wind, temperature, humidity, pressure, rainfall or solar radidation. As we show
+the case of meteorological problems, variables often comprise mixed
+environmental measurements of different nature and scale,   like speed of
+wind, temperature, humidity, pressure, rainfall or solar radiation. As we show
 in this section, misestimations of node impurity is in fact directly
 proportional to the cardinality of the split variable and inversely
 proportional to the number $N_t$ of samples used for the evaluation. As a
@@ -577,7 +577,7 @@ also clearly visible: variables of larger cardinality appear as significantly
 more important than the other variables. Consequently, this makes the
 detection of  $X_2$ as a relevant variable more difficult when trees are grown
 deeper. When comparing the relative importance of $X_2$ for a given depth and
-relevance, we indeed observe that $X_2$ consistenly appears as less important
+relevance, we indeed observe that $X_2$ consistently appears as less important
 in RF than in ETs. It is only for very shallow trees ($\texttt{max\_depth=1}$
 or $\texttt{2}$) and high relevance that $X_2$ is identified with higher
 confidence than in ETs.
@@ -829,7 +829,7 @@ reviewed in \citep{touw:2013,boulesteix:2012}.
 In light of our study and discussion of variable importances,  recommendations
 for biomarker identification depend on the exact objective of the application.
 If the goal is to identify all relevant variables, then totally randomized
-trees with multiway splits should be prefered. They indeed constitute the only
+trees with multiway splits should be preferred. They indeed constitute the only
 method for which variable importances are unbiased, taking into account all
 possible interaction terms in a fair and exhaustive way. The only caveat is
 that a (very) large number of trees may be required before variable importances
@@ -856,7 +856,7 @@ Given a set of input variables $V = \{X_1,\dots,X_p\}$, the \textit{network
 inference} problem consists in the identification of conditional dependencies
 between variables. In genomics for example, regulatory network inference
 consists in the identification of interactions between genes or transcription
-factors on the basis of their expression level, in order to reconstruct the
+factors on the basis of their expression level, in order to reconstruct a global
 network of interactions (as illustrated in Figure~\ref{fig:7:network} for
 Staphylococcus aureus).
 
@@ -869,21 +869,33 @@ Staphylococcus aureus).
 
 As proposed in the GENIE3 method~\citep{irrthum:2010}, the network inference
 problem can be solved generically by remarking  that it can decomposed into $p$
-independent supervised learning problems.  For each input variable $X_j$ (for
-$j=1,\dots,p$), GENIE3 considers the supervised learning task consisting in
-prediction of the target variable $X_j$ from the remaining $p-1$ variables
-$V^{-j}$. Using random forests for solving each of these $p$ problems,
-variable importances can be derived and used as an indication of the putative
-link with $X_j$. The larger the importance, the more likely the conditional
-dependency with $X_j$. Putative links are then aggregated over all $p$
-variables to provide a ranking of interactions from which the network can
-be reconstructed.
+independent supervised learning problems. Formally, for each input variable
+$X_j$ (for $j=1,\dots,p$), GENIE3 considers the supervised sub-problem
+consisting in the prediction of the target variable $X_j$ from the remaining
+$p-1$ variables $V^{-j}$. Using random forests for solving each of these $p$
+problems, variable importances can be derived and used as an indication of the
+putative link with $X_j$. Intuitively, the larger the importance, the more
+likely the conditional dependency with $X_j$. Once all $p$ problems are solved,
+putative links are aggregated over all $p$ variables to provide a ranking of
+interactions from which the network can finally be reconstructed.
+
+Again, our previous theoretical analysis call for caution when plugging
+variable importances into network inference procedures. Since the goal is to
+retrieve all interactions, variable importances should be as unbiased as
+possible, which is guaranteed using totally randomized trees with multiway
+splits. When input variables are of different scale of measurements or vary in
+the number of categories, care should also be taken when aggregating variable
+importances into a single ranking of interactions. As shown by Theorem~\ref{thm:sum-of-imp},
+variable importances are in this case upper bounded by the entropy $H(X_j)$ of the target variable,
+which may greatly varies from one target to another. As such, variable
+importances are not directly comparable and should preferably be normalized (e.g., by
+$H(X_j)$) before their aggregation. Finally, the use of variable
+importances for network inference might not be as appropriate as desired when looking
+\textit{direct} interactions since they also account for indirect and combined effects.
+In this case, a better strategy might be to look for \textit{strongly} relevant
+variables, that is for variables $X_i$ such that $I(X_i;X_j|B) > 0$ for \textit{all} $B$.
 
 
+% use trt
 % mixed input variables => normalize by H(X_j)
-
-
-
-
-%\citep{irrthum:2010}
-
+% direct verus indirect interations
