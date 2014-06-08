@@ -834,21 +834,56 @@ method for which variable importances are unbiased, taking into account all
 possible interaction terms in a fair and exhaustive way. The only caveat is
 that a (very) large number of trees may be required before variable importances
 converge, making them computationally intensive to compute, even if the full
-randomization of the induction procedure actually make indidual decision trees
-to be quite fast to generate.  By contrast, if the objective is only to
+randomization of the induction procedure actually make individual decision
+trees to be quite fast to generate.  By contrast, if the objective is only to
 identify a subset of good predictors for predicting the output (hence possibly
 omitting relevant but redundant variables), then non-totally randomized trees
 (e.g., standard RF or ETs) with $K$ chosen to maximize accuracy should be
 preferred. Even if some informative variables may be masked because of variable
 selection, a good subset of input variables should still be identifiable from
-importance scores. In all cases, impurity misestimations should be controlled
-by stopping the construction process early or collecting importances only for
-those nodes where impurity reductions can be considered as reliable. Whenever
-practical, variable importances should also be decomposed in order to better
-understand why some variables appear as more important than others. In
-particular, studying the decomposition might help identify redundancy effects.
+importance scores. From a computational point of view, convergence should also
+be faster, making this approach more appealing when resources are limited. In
+all cases, impurity misestimations should be controlled by stopping the
+construction process early or collecting importances only for those nodes where
+impurity reductions can be considered as reliable. Finally, whenever practical,
+variable importances should also be decomposed in order to better understand
+why some variables appear as more important than others. In particular,
+studying the decomposition might help identify redundancy effects.
 
 \subsection{Network inference}
-\todo{}
+
+Given a set of input variables $V = \{X_1,\dots,X_p\}$, the \textit{network
+inference} problem consists in the identification of conditional dependencies
+between variables. In genomics for example, regulatory network inference
+consists in the identification of interactions between genes or transcription
+factors on the basis of their expression level, in order to reconstruct the
+network of interactions (as illustrated in Figure~\ref{fig:7:network} for
+Staphylococcus aureus).
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{figures/ch7_network.png}
+\caption{Gene regulatory network in Staphylococcus aureus. Image from \citep{marbach:2012}.}
+\label{fig:7:network}
+\end{figure}
+
+As proposed in the GENIE3 method~\citep{irrthum:2010}, the network inference
+problem can be solved generically by remarking  that it can decomposed into $p$
+independent supervised learning problems.  For each input variable $X_j$ (for
+$j=1,\dots,p$), GENIE3 considers the supervised learning task consisting in
+prediction of the target variable $X_j$ from the remaining $p-1$ variables
+$V^{-j}$. Using random forests for solving each of these $p$ problems,
+variable importances can be derived and used as an indication of the putative
+link with $X_j$. The larger the importance, the more likely the conditional
+dependency with $X_j$. Putative links are then aggregated over all $p$
+variables to provide a ranking of interactions from which the network can
+be reconstructed.
+
+
+% mixed input variables => normalize by H(X_j)
+
+
+
+
 %\citep{irrthum:2010}
 
