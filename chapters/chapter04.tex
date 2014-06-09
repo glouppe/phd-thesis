@@ -6,11 +6,12 @@ methods. In Section~\ref{sec:4:bias-variance}, we first describe the bias-varian
 decomposition of the prediction error and then present, in
 Section~\ref{sec:4:ensemble}, how aggregating randomized models through
 ensembles reduces the prediction error by decreasing the variance term in this
-decomposition. In Section~\ref{sec:4:random-forests} and \ref{sec:4:illustration}, we revisit random forests
+decomposition. In Section~\ref{sec:4:random-forests}, we revisit random forests
 and its variants and study how randomness introduced into the decision trees
 reduces prediction error by decorrelating the decision
-trees in the ensemble. Finally, the consistency of forests of randomized trees
-is explored in Section~\ref{sec:4:consistency}.
+trees in the ensemble. Properties and features of random forests are then outlined
+in Section~\ref{sec:4:features} while their consistency
+is finally explored in Section~\ref{sec:4:consistency}.
 \end{remark}
 
 
@@ -860,6 +861,90 @@ simultaneously maintaining a low bias in the randomized decision trees.
 
 \end{description}
 
+\subsection{Illustration}
+\label{sec:4:illustration}
+
+As a summary and illustrative example, let us consider a simulated toy
+regression problem such that
+\begin{equation}
+Y = \sum_{j=1}^{5} X_j,
+\end{equation}
+where all input variables $X_1,\dots,X_{5}$ are independent
+random Gaussian variables of zero mean and unit variance. To simulate
+noise in the data, 5 additional random Gaussian input variables $X_{6},\dots,X_{10}$,
+all independent from $Y$, are further appended to the learning set.
+
+Let us compare for this problem the bias-variance decomposition of the expected
+generalization error of a Random Forest~\citep{breiman:2001} (RF) and of
+Extremely Randomized Trees~\citep{geurts:2006} (ETs). For both methods, the
+error is estimated as derived from Theorem~\ref{thm:bias-variance:ensemble},
+using $100$ randomly drawn learning sets ${\cal L}$ of $50$ samples, on which
+ensembles of $10$ trees are built. Their generalization error is estimated on
+an independent test set of $1000$ samples.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/ch4_correlation.pdf}
+    \caption{(Left) Bias-variance decomposition of the generalization error
+            with respect to the hyper-parameter $K$. The total error is shown by the plain
+            lines. Bias and variance terms are respectively shown by the dashed and dotted
+            lines.  (Right) Average correlation
+            coefficient $\rho(\mathbf{x})$ over the predictions of two randomized trees
+            grown from the same learning set but with different random seeds.}
+    \label{fig:correlation}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/ch4_variance.pdf}
+    \caption{Decomposition of the variance term $\text{var}(\mathbf{x})$ with respect to the number $M$ of trees in the ensemble.}
+    \label{fig:variance}
+\end{figure}
+
+As the left plot in Figure~\ref{fig:correlation} shows,  the expected
+generalization error additively decomposes into (squared) bias and variance
+terms.  For small values of $K$, random effects are strong, leading to high
+bias and low variance. By contrast, for larger values of $K$, random effects
+are less important, reducing bias but increasing variance.   For both methods,
+too small a value of $K$ appears however to lead to a too large increase of
+bias, for which averaging is not able to compensate. For RF, the optimal
+trade-off is at $K=8$, which indicates that bagging and random variable selection are
+here complementary with regard to the level of randomness injected into the
+trees. Indeed, using bagging only (at $K=10$) for randomizing the construction
+of the trees yield results that are slighlty worse than when both techniques
+are combined. For ETs, the optimal trade-off is at $K=10$, suggesting that
+random thresholds $v$ provide by themselves enough randomization on this
+problem.
+
+The right plot of Figure~\ref{fig:correlation} illustrates the (averaged)
+correlation coefficient $\rho(\mathbf{x})$ between the predictions of two
+randomized trees grown on the same learning set. As expected, the smaller $K$,
+the stronger the random effects, therefore the less correlated the predictions
+and the more variance can be reduced from averaging. The plot also confirms
+that ETs are inherently less correlated than trees built
+in RF, which is not surprising given the fact that the former
+method randomizes the choice of the discretization threshold while the latter
+does not. In cases where such a randomization does not induce too large an
+increase of bias, as in this problem, ETs are therefore
+expected to yield better results than RF.  (The choice of the
+optimal randomization strategy is however highly dependent on the problem and
+no general conclusion should be drawn from this toy regression problem.)
+
+As confirmed by Figure~\ref{fig:variance} for RF, variance also additively decomposes  into
+\begin{equation}
+\text{var}(\mathbf{x}) = \rho(\mathbf{x}) \sigma^2_{{\cal L},\theta}(\mathbf{x}) + \tfrac{1 - \rho(\mathbf{x})}{M} \sigma^2_{{\cal L},\theta}(\mathbf{x}).
+\end{equation}
+The first term is the variance due to the learning set ${\cal L}$ and remains
+constant as the number $M$ of trees increases. The second term is the variance
+due to random effects and decreases as $M$ increases. Of particular interest is
+variance at $M=1$, which corresponds to the variance of a single decision tree.
+As the figure clearly shows, averaging several decision trees into an ensemble
+allows to significantly reduce this quantity. At the limit, when $M\to \infty$,
+variance tends to $\rho(\mathbf{x}) \sigma^2_{{\cal L},\theta}(\mathbf{x})$, as shown by
+the dotted line and as expected from Theorem~\ref{thm:bias-variance:ensemble}.
+
+\section{Properties and features}
+\label{sec:4:features}
+
 \subsection{Out-of-bag estimates}
 
 An interesting  feature of ensemble methods that construct models
@@ -1014,89 +1099,10 @@ combined with linear methods or support vector machines
 in computer vision for transforming the raw pixel input space into a new
 feature space hopefully capturing structures and patterns in images.
 
-\subsection{Missing data imputation}
+\subsection{Missing data}
+
 \todo{}
 
-\section{Illustration}
-\label{sec:4:illustration}
-
-As a summary and illustrative example, let us consider a simulated toy
-regression problem such that
-\begin{equation}
-Y = \sum_{j=1}^{5} X_j,
-\end{equation}
-where all input variables $X_1,\dots,X_{5}$ are independent
-random Gaussian variables of zero mean and unit variance. To simulate
-noise in the data, 5 additional random Gaussian input variables $X_{6},\dots,X_{10}$,
-all independent from $Y$, are further appended to the learning set.
-
-Let us compare for this problem the bias-variance decomposition of the expected
-generalization error of a Random Forest~\citep{breiman:2001} (RF) and of
-Extremely Randomized Trees~\citep{geurts:2006} (ETs). For both methods, the
-error is estimated as derived from Theorem~\ref{thm:bias-variance:ensemble},
-using $100$ randomly drawn learning sets ${\cal L}$ of $50$ samples, on which
-ensembles of $10$ trees are built. Their generalization error is estimated on
-an independent test set of $1000$ samples.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{figures/ch4_correlation.pdf}
-    \caption{(Left) Bias-variance decomposition of the generalization error
-            with respect to the hyper-parameter $K$. The total error is shown by the plain
-            lines. Bias and variance terms are respectively shown by the dashed and dotted
-            lines.  (Right) Average correlation
-            coefficient $\rho(\mathbf{x})$ over the predictions of two randomized trees
-            grown from the same learning set but with different random seeds.}
-    \label{fig:correlation}
-\end{figure}
-\begin{figure}
-    \centering
-    \includegraphics[width=0.9\textwidth]{figures/ch4_variance.pdf}
-    \caption{Decomposition of the variance term $\text{var}(\mathbf{x})$ with respect to the number $M$ of trees in the ensemble.}
-    \label{fig:variance}
-\end{figure}
-
-As the left plot in Figure~\ref{fig:correlation} shows,  the expected
-generalization error additively decomposes into (squared) bias and variance
-terms.  For small values of $K$, random effects are strong, leading to high
-bias and low variance. By contrast, for larger values of $K$, random effects
-are less important, reducing bias but increasing variance.   For both methods,
-too small a value of $K$ appears however to lead to a too large increase of
-bias, for which averaging is not able to compensate. For RF, the optimal
-trade-off is at $K=8$, which indicates that bagging and random variable selection are
-here complementary with regard to the level of randomness injected into the
-trees. Indeed, using bagging only (at $K=10$) for randomizing the construction
-of the trees yield results that are slighlty worse than when both techniques
-are combined. For ETs, the optimal trade-off is at $K=10$, suggesting that
-random thresholds $v$ provide by themselves enough randomization on this
-problem.
-
-The right plot of Figure~\ref{fig:correlation} illustrates the (averaged)
-correlation coefficient $\rho(\mathbf{x})$ between the predictions of two
-randomized trees grown on the same learning set. As expected, the smaller $K$,
-the stronger the random effects, therefore the less correlated the predictions
-and the more variance can be reduced from averaging. The plot also confirms
-that ETs are inherently less correlated than trees built
-in RF, which is not surprising given the fact that the former
-method randomizes the choice of the discretization threshold while the latter
-does not. In cases where such a randomization does not induce too large an
-increase of bias, as in this problem, ETs are therefore
-expected to yield better results than RF.  (The choice of the
-optimal randomization strategy is however highly dependent on the problem and
-no general conclusion should be drawn from this toy regression problem.)
-
-As confirmed by Figure~\ref{fig:variance} for RF, variance also additively decomposes  into
-\begin{equation}
-\text{var}(\mathbf{x}) = \rho(\mathbf{x}) \sigma^2_{{\cal L},\theta}(\mathbf{x}) + \tfrac{1 - \rho(\mathbf{x})}{M} \sigma^2_{{\cal L},\theta}(\mathbf{x}).
-\end{equation}
-The first term is the variance due to the learning set ${\cal L}$ and remains
-constant as the number $M$ of trees increases. The second term is the variance
-due to random effects and decreases as $M$ increases. Of particular interest is
-variance at $M=1$, which corresponds to the variance of a single decision tree.
-As the figure clearly shows, averaging several decision trees into an ensemble
-allows to significantly reduce this quantity. At the limit, when $M\to \infty$,
-variance tends to $\rho(\mathbf{x}) \sigma^2_{{\cal L},\theta}(\mathbf{x})$, as shown by
-the dotted line and as expected from Theorem~\ref{thm:bias-variance:ensemble}.
 
 
 
