@@ -105,7 +105,7 @@ the average prediction and the prediction of the Bayes model. Finally, the
 third term, $\text{var}(\mathbf{x})$, measures the variability of the
 predictions at $X=\mathbf{x}$ over the models learned from all possible
 learning sets. All three terms are illustrated in Figure~\ref{fig:bias-variance}
-for a toy regression problem. Both $\text{noise}(\mathbf{x})$ and
+for a toy and artificial regression problem. Both $\text{noise}(\mathbf{x})$ and
 $\text{var}(\mathbf{x})$ measures the spread of the two densities while
 $\text{bias}^2(\mathbf{x})$ is the distance between their means.
 
@@ -202,7 +202,7 @@ for the squared error loss. (Note that, to simplify notations, we assume that
 all probabilities based on the random variable $Y$ is with respect to the
 distribution of $Y$ at $X=\mathbf{x}$.)
 \begin{align}
-& \mathbb{E}_{\cal L}\{ \mathbb{E}_{Y|X=\mathbf{x}} \{ 1(\varphi_{\cal L}(x) \neq Y) \} \}  \\
+& \mathbb{E}_{\cal L}\{ \mathbb{E}_{Y|X=\mathbf{x}} \{ 1(\varphi_{\cal L}(\mathbf{x}) \neq Y) \} \}  \\
 &= P_{{\cal L}}(\varphi_{\cal L}(\mathbf{x}) \neq Y) \nonumber \\
 &= \begin{aligned}[t]
     1 &- P_{\cal L}(\varphi_{\cal L}(\mathbf{x}) = \varphi_B(\mathbf{x})) P(\varphi_B(\mathbf{x})=Y) \nonumber \\
