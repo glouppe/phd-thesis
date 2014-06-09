@@ -973,7 +973,12 @@ An alternative formulation of proximity measures is to consider a random forest
 as a mapping $\phi: {\cal X} \mapsto {\cal X}^\prime$ which transforms a sample
 $\mathbf{x}$ into the (one-hot-encoded) indices of the leaves it ends up in.
 That is, $\mathbf{x}^\prime_t$ is $1$ for all leaves $t$ of the forest in which
-$\mathbf{x}$ falls in, and $0$ for all the others. In this formalism, the
+$\mathbf{x}$ falls in, and $0$ for all the others:
+\begin{equation}
+\phi(\mathbf{x}) = \Big( 1(\mathbf{x} \in {\cal X}_{t_1}), \dots, 1(\mathbf{x} \in {\cal X}_{t_L} ) \Big)
+\end{equation}
+where $t_1, \dots, t_L \in \widetilde{\psi}$ denote the leafs of all $M$ trees in the forest $\psi$.
+In this formalism, the
 proximity between $\mathbf{x}_1$ and $\mathbf{x}_2$ corresponds to a
 \textit{kernel}~\citep{scholkopf:2001}, that can be defined as the normalized
 dot product of the samples, as represented in ${\cal X}^\prime$:
@@ -984,11 +989,28 @@ Interestingly, $\phi$ provides a non-linear transformation to a sparse very
 high-dimensional space, taking somehow into account the structure of the
 problem. If two samples are structurally similar, then they will end up in the
 same leafs and their representations in the projected space will be close, even
-if they may in fact appear quite dissimilar in the original space. \todo{Discussion avec \citep{geurts:2006} 5.2.} In practical
-applications (e.g., in computer vision), such forest-based transforms have
-proven to be helpful and efficient embeddings, e.g., when combined with linear
-methods or support vector machines, even when trees in the forest are built
-totally at random~\citep{moosmann:2006,maree:2013}.
+if they may in fact appear quite dissimilar in the original space.
+
+In close connection, \citep{geurts:2006} show that a regression tree
+$\varphi$ can be expressed as a kernel-based model by formulating the
+prediction $\varphi(\mathbf{x})$ as a scalar product over the input space
+defined by the normalized characteristic function $\phi^\prime$ of the leaf nodes. That is,
+\begin{equation}
+\varphi(\mathbf{x}) = \sum_{(\mathbf{x}_i, y_i) \in {\cal L}} y_i K_\varphi(\mathbf{x}_i, \mathbf{x})
+\end{equation}
+where
+\begin{align}
+K_\varphi(\mathbf{x}_i, \mathbf{x}) &= \phi^\prime(\mathbf{x}_i) \cdot \phi^\prime(\mathbf{x}), \\
+\phi^\prime(\mathbf{x}) &= \Big( \frac{1(\mathbf{x} \in {\cal X}_1)}{\sqrt{N_1}}, \dots, \frac{1(\mathbf{x} \in {\cal X}_{t_L})}{\sqrt{N_{t_L}}}  \Big),
+\end{align}
+and where $t_1,\dots,t_L \in \widetilde{\varphi}$ denote the leafs of $\varphi$.
+Likewise, the formulation can be extended to an ensemble $\psi$ of $M$ decision
+trees by defining $K_\psi$ as the average kernel over $K_{\varphi_m}$ (for $m=1,\dots,M$).
+
+In practical applications (e.g., in computer vision), such forest-based
+transforms $\phi$ and $\phi^\prime$ have proven to be helpful and efficient embeddings, e.g., when
+combined with linear methods or support vector machines, even when trees in the
+forest are built totally at random~\citep{moosmann:2006,maree:2013}.
 
 \subsection{Missing data imputation}
 \todo{}
