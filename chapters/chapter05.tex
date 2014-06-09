@@ -228,7 +228,7 @@ T'(N) &= O(N\log N) + O(1) + T'(N-1) \nonumber \\
       &= \sum_{i=1}^N O(1) + O(i\log i) \nonumber \\
       &= O(N) + \sum_{i=1}^N O(i\log i) \nonumber \\
       &\leq O(N) + O(\log N) \sum_{i=1}^N O(i) \nonumber \\
-      &= O(N) + O(\log N) O(\frac{1}{2} N(N+1) \nonumber \\
+      &= O(N) + O(\log N) O(\frac{1}{2} N(N+1)) \nonumber \\
       &= O(N^2 \log N).
 \end{align}
 As a result, $T(N) = O(K N^2 \log N)$ in the worst case.
@@ -356,7 +356,7 @@ As a result, $T(N) = O(KN \log N)$ in the average case.
 From Theorems~\ref{thm:6:best:knlogn}-\ref{thm:6:average:kn}, the total time
 complexity for building an ensemble of $M$ randomized trees can finally be
 derived. As summarized in Table~\ref{table:complexity-fit}, complexity remains
-within polynimial time for all variants studied in this work. In the best
+within polynomial time for all variants studied in this work. In the best
 case, complexity is linear with the number of split variables considered at
 each node (i.e., $O(K)$) and linearithmic or quasilinear with the number of
 (unique) samples effectively used to build each tree (i.e., $O(N\log N)$ or
@@ -464,7 +464,7 @@ D(N) = 1 + \frac{1}{N} D(1) + \frac{N-1}{N} D(N-1).
 Let us now introduce $S(N)=N D(N)$. From the previous equation, it comes
 \begin{align}
 S(N) &= N+1 + S(N-1) \nonumber \\
-     &= 1+ \sum_{i=2}^N i + 1 \nonumber \\
+     &= 1+ \sum_{i=2}^N (i + 1) \nonumber \\
      &= \frac{N^2}{2} + \frac{3N}{2} - 1.
 \end{align}
 Since $D(N) = \tfrac{S(N)}{N}$, we have $D(N) = \frac{1}{2} (N - \frac{2}{N} + 3) = O(N)$.
