@@ -1101,9 +1101,48 @@ feature space hopefully capturing structures and patterns in images.
 
 \subsection{Missing data}
 
-\todo{}
+In typical real-world applications, data are often imperfect and contain
+errors, uncertainties or missing values. In particular, most machine learning
+algorithms are often not applicable on data with missing values because they
+implicitely assume an ideal scenario in which all values are known for all
+input variables. Fortunately, random forests offer several mechanisms for
+dealing with this issue.
 
+\begin{description}
 
+\item \textit{Ternary decision trees.}\hfill\\
+    The simplest strategy is to explicitely model missing values in the
+    structure of decision trees by considering ternary splits instead of binary
+    splits. That is, partition $t$ into $t_L$, $t_R$ and $t_M$, such that $t_L$
+    and $t_R$ are defined from a binary split $X_t \leq v$, for all node
+    samples where the value of $X_t$ is known, and such that $t_M$ contain all node
+    samples for which the value of $X_t$ is missing.
+
+\item \textit{Propagate in both child nodes}\hfill\\
+    An alternative strategy is to  propagate samples
+    for which the value of the split variable is missing into both the left and
+    right child nodes. Accordingly, samples going into both child nodes should be
+    reweighted by half their sample weight (see Chapter~\ref{ch:complexity}), so
+    that they are not unfairly taken into account more than the other samples.
+
+\item \textit{Imputation.}\hfill\\
+
+    Finally, random forests also offer several mechanisms for imputing missing
+    values. The first approach, due to \citep{breiman:2002}, consists first in
+    filling missing values with a rough and inaccurate approximation (e.g., the
+    median). Then build a random forest on the completed data and update the
+    missing values of each sample by the weighted mean value over the samples
+    that are the closest (as defined by the proximity measure). The procedure
+    is then repeated  until convergence, typically after $4$ to $6$ iterations.
+
+    Alternatively, missing data imputation can be considered as a supervised
+    learning problem in itself, where the response variable is the input
+    variable for which values are missing. As such, the MissForest
+    algorithm~\citep{stekhoven:2012} consists in iteratively building a random
+    forest on the observed parts of the data in order to predict the missing
+    values for a given variable.
+
+\end{description}
 
 
 \section{Consistency}
