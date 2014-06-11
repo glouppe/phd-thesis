@@ -269,11 +269,11 @@ less informative. With regards to our previous results in Propositions
 importance due to the $I(X_l;Y|B)$ terms prevails from  the importance due to
 the $I(X_l;Y|B,X_5^c)$ terms. As a matter of fact, this example highlights a
 fundamental property of variable importances as computed in a random forest:
-importance measures are computed not only with respect to the output $Y$, but
-also with respect to all the other input variables that define the problem. In
+\textit{importance measures are computed not only with respect to the output $Y$, but
+also with respect to all the other input variables that define the problem}. In
 particular, a variable which is not important is not necessarily uninformative,
 as the example illustrates. A variable may be considered as less important
-because the  information it conveys is also redundantly conveyed in other
+because the  information it conveys is also redundantly conveyed and dilluted in other
 variables, and not necessarily because it has no information.
 
 \begin{figure}
@@ -474,7 +474,7 @@ values of $Y$, resulting in child nodes that are all pure, therefore maximizing
 the estimated mutual information. As such, this explains why $X_1$, whose
 values are all unique, appears as the most important variable.
 
-For binary splits (i.e., for RF and ETs, but not for TRT) the mutual
+For binary splits (i.e., for RF and ETs) the mutual
 information $I(X_j;Y|t)$ is not directly estimated at each node. Rather, in the
 case of ordered variables, $\Delta i(s, t)$ corresponds to an estimate of the
 mutual information $I(X_j\leq v;Y|t)$ of the binary split $X_j \leq v$. Under
@@ -533,8 +533,8 @@ that impurity reductions are misestimated in the first place.
 \begin{figure}
 \centering
 ETs without variable selection\\[1ex]
-\includegraphics[width=0.9\textwidth]{figures/ch7_bias_depth.pdf}\\[2ex]
-Random Forest with variable selection\\[1ex]
+\includegraphics[width=0.9\textwidth]{figures/ch7_bias_depth.pdf}\\[2.5ex]
+RF with variable selection\\[1ex]
 \includegraphics[width=0.9\textwidth]{figures/ch7_bias_depth_rf.pdf}
 \caption{Variable importances of $X_1, \dots, X_5$ when varying both the
          maximum depth of the trees and the degree of relevance of $X_2$.
@@ -556,7 +556,7 @@ irrelevant variables. The normalized importances, as shown in the figure, are
 also all close to $\tfrac{1}{p}=0.2$, confirming that no variable is detected
 as more relevant than the others. However, when the depth of the decision trees
 increases, importances deviate and bias proportional to the cardinality of the
-variables appear as discussed before. When $X_2$ is a relevant variable (i.e.,
+variables appears as discussed before. When $X_2$ is a relevant variable (i.e.,
 for $\text{relevance}>0$), its importance is expected to be strictly positive
 and at least as large as the importances of the irrelevant variables. For
 $\text{relevance}=0.1$ and $\texttt{max\_depth=1}$, the importance of $X_2$
@@ -587,7 +587,7 @@ the mutual information, resulting in biased variable importances. In
 particular, the higher the cardinality of the variable,  the larger the
 misestimations. To minimize this effect, caution should be taken by only
 considering impurity terms that were computed from a large enough sample. This
-can be guaranteed, e.g., by stopping the construction of the tree early, or
+can be guaranteed, e.g., by stopping the construction of the tree early or
 making leaves grow more slowly than the size $N$ of the learning set.
 Additionally, we have also shown that variable selection may increase the bias
 due to over-estimations. In this case, a simple remedy consists in not using
@@ -631,7 +631,7 @@ problem composed of a ternary input variable $X_1$ and of a binary input
 variable $X_2$, both of them being ordered. Let us further assume that input samples are uniformly drawn
 from Table~\ref{table:simulation:bias:tree}, which defines the output as $Y =
 X_1 < 1$ and $X_2$ as a copy of $Y$. With respect to $Y$, both variables are as
-informative and one should expect their importances to be the same.  With
+informative and one would expect their importances to be the same.  With
 totally randomized trees and exhaustive splits, two equiprobable decision trees
 can be built, as represented in Figure~\ref{fig:7:bias:trees:id3}. In both of
 them, splitting either on $X_1$ or on $X_2$ at the root node results in child
@@ -819,7 +819,7 @@ high-prediction accuracy and helpful insights about the importances of variables
 many cases, variable importance measures (either MDI or the permutation
 importance) is exploited to better understand the complex interaction effects
 between the inputs and the output. Examples of successful applications include
-the identification of risk-associated SNPs in genome-wide association studies
+the identification of disease-associated SNPs in genome-wide association studies
 \citep{lunetta:2004,meng:2009,botta:2014}, the discovery of important genes and
 pathways from micro-array gene-expression data \citep{pang:2006,chang:2008} or
 the identification of factors for predicting protein-protein
