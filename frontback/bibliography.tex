@@ -1,8 +1,17 @@
 % Bibliography ================================================================
 
-\manualmark
-\markboth{\spacedlowsmallcaps{\bibname}}{\spacedlowsmallcaps{\bibname}}
-\addcontentsline{toc}{chapter}{\tocEntry{\bibname}}
-\bibliographystyle{abbrvnat}
-\label{app:bibliography}
-\bibliography{bibliography}
+% \manualmark
+% \markboth{\spacedlowsmallcaps{\bibname}}{\spacedlowsmallcaps{\bibname}}
+% \addcontentsline{toc}{chapter}{\tocEntry{\bibname}}
+
+\chapter{Bibliography}
+
+\begingroup
+    \def\chapter*#1{}
+    \bibliographystyle{abbrvnat}
+    \renewcommand{\bibname}{}
+    \label{app:bibliography}
+    \bibliography{bibliography}
+\endgroup
+
+
