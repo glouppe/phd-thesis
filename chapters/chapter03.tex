@@ -611,7 +611,7 @@ That is, to sequentially remove the nodes that degrade the generalization error
 (estimated on an independent validation set) until the optimal tree is found.
 Since nodes are pruned after the induction of the tree, this framework
 is also known as \textit{post-pruning}. By opposition, early stopping as described
-earlier is also known as \textit{pre-pruning}.
+earlier is also referred to as \textit{pre-pruning}.
 
 In the context of single decision trees, post-pruning usually yields better
 results than pre-pruning. From an interpretability point of view, it is also a
@@ -701,7 +701,7 @@ From a geometrical point of view, splits of this form partition the input space
 ${\cal X}$ with axis-parallel hyperplanes, as previously illustrated on
 Figure~\ref{fig:3:partition}. Accordingly, the decision threshold $v$\label{ntn:v} thus
 corresponds to the distance of the separating hyperplane from the origin.
-\item If $X_j$ is a categorical variable taking values in ${\cal X}_j = \{ b_1, \dots, b_L \}$, then the set of binary splits on
+\item If $X_j$ is a categorical variable taking values in ${\cal X}_j = \{ b_1, \dots, b_L \}$\label{ntn:b_l}\label{ntn:L2}, then the set of binary splits on
 $X_j$ is the set of all binary  non-empty partitions of ${\cal X}_j$:
 \begin{align}\label{eqn:q:categorical-cart}
 {\cal Q}(X_j) = \{ (\{\mathbf{x} | x_j \in {\cal B} \}, \{\mathbf{x} | x_j \in \overline{\cal B}\}) | &{\cal B} \subset \{ b_1, \dots, b_L \} \}
@@ -710,12 +710,12 @@ where $\overline{\cal B} = \{ b_1, \dots, b_L \} \setminus {\cal B}$ is the comp
 \end{itemize}
 
 Given decomposition \ref{eqn:q:single-variables} into subsets ${\cal Q}(X_j)$,
-the split $s^* \in {\cal Q}$ is the best of the best splits defined on each input
+the split $s^* \in {\cal Q}$\label{ntn:s-star2} is the best of the best splits defined on each input
 variable. That is,
 \begin{align}
 s^* &= \argmax_{\substack{s^*_j\\ j=1, \dots, p}} \Delta i(s^*_j, t) \label{eqn:best-best-split}\\
 s^*_j &= \argmax_{\substack{s \in Q(X_j)\\ {\cal L}_{t_L}, {\cal L}_{t_R} \neq \phi}} \Delta i(s, t) \label{eqn:best-split-single}
-\end{align}
+\end{align}\label{ntn:s-star_j}
 In this framework, the crux of the problem therefore
 simply reduces to the implementation of Equation~\ref{eqn:best-split-single}.
 
@@ -723,11 +723,11 @@ While partitions of form~\ref{eqn:q:ordered} and \ref{eqn:q:categorical-cart}
 certainly constitute the most common types of splits, alternatives proposed
 over the years in the literature are worth mentioning. In ID3 and C4.5,
 \citet{quinlan:1986,quinlan:1993} replaces binary splits on categorical variables with
-multiway splits. That is, if ${\cal X}_j$ counts $k$ different values, then
-splitting on $X_j$ divides ${\cal X}_t$ into $k$ child nodes -- one for each
+multiway splits. That is, if ${\cal X}_j$ counts $L$ different values $b_1,\dots,b_L$, then
+splitting on $X_j$ divides ${\cal X}_t$ into $L$ child nodes -- one for each
 value of the variable. In our framework, $Q(X_j)$ therefore reduces to the singleton
 \begin{equation}
-Q(X_j) = \{ (\{\mathbf{x} | x_j = v\} | v \in {\cal X}_j) \}.
+Q(X_j) = \{ (\{\mathbf{x} | x_j = b_l\} | b_l \in {\cal X}_j) \}.
 \end{equation}
 In oblique decision trees, \citet{heath:1993} propose to
 replace axis-parallel cutting hyperplanes with hyperplanes of any orientation,
@@ -747,7 +747,7 @@ threshold $v$ to propagate into both child nodes.
 \subsection{Goodness of split}
 \label{sec:3:criteria}
 
-In this section,  we describe impurity measures $i(t)$ for evaluating the
+In this section,  we describe impurity measures $i(t)$\label{ntn:i_t2} for evaluating the
 goodness of splitting rules. As they are the heart of our contributions
 regarding interpretability of tree-based methods (See
 Chapter~\ref{ch:importances}), the necessary mathematical foundations that have
@@ -802,7 +802,7 @@ evaluates the goodness of node $t$. Since our goal is to build the decision
 tree that minimizes generalization error, it seems natural to take as proxy
 $i(t)$ the local resubstitution estimate at node $t$:
 \begin{definition}
-In classification, the impurity function $i_R(t)$ based on the local resubstitution estimate
+In classification, the impurity function $i_R(t)$\label{ntn:i_t_R} based on the local resubstitution estimate
 defined on the zero-one loss is:
 \begin{equation}\label{eqn:impurity:error}
 i_R(t) = 1 - p(\widehat{y}_t|t) =  1 - \max_{c \in {\cal Y}} p(c|t)
@@ -817,7 +817,7 @@ $i_R(t)$ has two serious defects:
       the same in both child nodes, that is if $\widehat{y}_t = \widehat{y}_{t_L} = \widehat{y}_{t_R}$.
 
       In our toy problem, splitting either on $X_1$, $X_2$ or $X_3$ produces
-      child nodes in which the majority class remains class $2$. As a result,
+      child nodes in which $c_2$ remains the majority class. As a result,
       $\Delta i(s, t_0) = 0$ for all three possible splits, as if they were
       equally bad, or as if no further improvement could be achieved.
 
@@ -1079,7 +1079,7 @@ within the node samples in $t$.  The best split $s^v_j \in {\cal Q}(X_j)$ on $X_
 where $v$ is the decision threshold of the split. As illustrated in
 Figure~\ref{fig:3:split-ordered}, there exist $|{\cal X}_{j|{\cal
 L}_t}|-1$ partitions of ${\cal L}_t$ into two such non-empty subsets, i.e., one
-for each value $v_k \in {\cal X}_{j|{\cal L}_t}$, except for the last one which
+for each value $v_k \in {\cal X}_{j|{\cal L}_t}$\label{ntn:v_k}, except for the last one which
 leads to an invalid partition. In particular, if $X_j$ is locally constant in
 $t$ (i.e., if all dots overlap in Figure~\ref{fig:3:split-ordered}), then
 $|{\cal X}_{j|{\cal L}_t}|=1$ and $X_j$ cannot be used to partition $t$. More
@@ -1091,7 +1091,7 @@ $s^{v_k}_j$ does. In terms of impurity decrease $\Delta i$, all of them are
 thus equivalent when evaluated on ${\cal L}_t$. In generalization however,
 these splits may not be strictly the same since they do not produce the same
 partition of ${\cal X}_t$. As a compromise, the decision thresholds that are
-thus usually chosen are the mid-cut-points $v^\prime_k=\tfrac{v_k+v_{k+1}}{2}$
+thus usually chosen are the mid-cut-points $v^\prime_k=\tfrac{v_k+v_{k+1}}{2}$\label{ntn:v_k_prime}
 between consecutive values of the variable, as shown by the dotted line in
 Figure~\ref{fig:3:split-ordered}. In practice, this is indeed a good-enough
 heuristic on most problems.
@@ -1162,7 +1162,7 @@ performance as further shown in Chapter~\ref{ch:complexity}.
 Starting from the initial partition $v^\prime_0=-\infty$, that is where $t_L$
 is empty and $t_R$ corresponds to $t$, and using the above update equations to
 switch from $\smash{v^\prime_k}$ to $\smash{ v^\prime_{k+1}}$, the search of
-best split $s^*_j$ on $X_j$ can be implemented as described in
+best split $s^*_j$ on $X_j$ can finally be implemented as described in
 Algorithm~\ref{algo:findsplit:x_j} and further illustrated in
 Figure~\ref{fig:3:split:invariant}.
 
