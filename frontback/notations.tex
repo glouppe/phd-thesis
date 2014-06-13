@@ -2,8 +2,9 @@
 
 \chapter{Notations}
 
+{\small
 \begin{tabularx}{\textwidth}{ l X l }
-${\cal A}$ & A learning algorithm. & \pageref{ntn:A} \\
+${\cal A}$ & A supervised learning algorithm. & \pageref{ntn:A} \\
 ${\cal A}(\theta, {\cal L})$ & The model $\varphi_{\cal L}$ produced by algorithm ${\cal A}$ over ${\cal L}$ and hyper-parameters $\theta$. & \pageref{ntn:A-func} \\
 $c_k$ & The $k$-th class. & \pageref{ntn:c_k} \\
 $\overline{E}(\varphi_{\cal L}, {\cal L}^\prime)$ & The average prediction error of $\varphi_{\cal L}$ over ${\cal L}^\prime$. & \pageref{ntn:E_bar} \\
@@ -12,23 +13,43 @@ $\widehat{Err}^\text{train}(\varphi_{\cal L})$ & The resubstitution estimate or 
 $\widehat{Err}^\text{test}(\varphi_{\cal L})$ & The test sample estimate of the generalization error of $\varphi_{\cal L}$. & \pageref{ntn:err-test} \\
 $\widehat{Err}^\text{CV}(\varphi_{\cal L})$ & The cross-validation  estimate of the generalization error of $\varphi_{\cal L}$. & \pageref{ntn:err-cv} \\
 ${\cal H}$ & The space of candidate models. & \pageref{ntn:H} \\
+$i(t)$ & The impurity of node $t$. & \pageref{ntn:i_t} \\
+$\Delta i(s, t)$ & The impurity decrease of the split $s$ at node $t$. & \pageref{ntn:delta-i_t} \\
 $J$ & The number of classes. & \pageref{ntn:J} \\
 $K$ & The number of folds in cross-validation. & \pageref{ntn:K-cv} \\
 $K(\mathbf{x}_i, \mathbf{x}_j)$ & The kernel of $\mathbf{x}_i$ and $\mathbf{x}_j$. & \pageref{ntn:kernel}, \pageref{ntn:kernel2} \\
 $L$ & A loss function. & \pageref{ntn:L} \\
 ${\cal L}$ & A learning set $(\mathbf{X}, \mathbf{y})$. & \pageref{ntn:learning-set} \\
-${\cal L}_k$ & The $k$-th fold in cross-validation. & \pageref{ntn:L_k} \\
+${\cal L}_t$ & The subset of node samples falling into node $t$. & \pageref{ntn:L_t} \\
 $N$ & The number of input samples. & \pageref{ntn:N} \\
+$N_t$ & The number of node samples in node $t$. & \pageref{ntn:N_t} \\
+$N_{ct}$ & The number of node samples of class $c$ in node $t$. & \pageref{ntn:N_ct} \\
 $\Omega$ & The universe, or population, from which cases are sampled. & \pageref{ntn:omega} \\
 $p$ & The number of input variables. & \pageref{ntn:p} \\
+$p_L$ & The proportion of node samples going to $t_L$. & \pageref{ntn:p_L} \\
+$p_R$ & The proportion of node samples going to $t_R$. & \pageref{ntn:p_R} \\
+$p(t)$ & The estimated probability $p(X \in {\cal X}_t)=\tfrac{N_t}{N}$. & \pageref{ntn:p_t} \\
+$p(c|t)$ & The estimated probability $p(Y=c | X \in {\cal X}_t)=\tfrac{N_{ct}}{N_t}$ of class $c$ at node $t$. & \pageref{ntn:p_ct} \\
 $P(X,Y)$ & The joint probability distribution of the input variables $X=(X_1,\dots,X_p)$ and the output variable $Y$. & \pageref{ntn:P_XY} \\
-$\varphi$ & A model or function ${\cal X} \mapsto {\cal Y}$. & \pageref{ntn:varphi} \\
+$\varphi$ & A model or function ${\cal X} \mapsto {\cal Y}$.\newline A single decision tree. & \pageref{ntn:varphi}, \pageref{ntn:tree} \\
+$\widetilde{\varphi}$ & The set of terminal nodes in $\varphi$. & \pageref{ntn:varphi-leafs}\\
 $\varphi(\mathbf{x})$ & The prediction of $\varphi$ for the sample $\mathbf{x}$. & \pageref{ntn:varphi-x} \\
 $\varphi_{\cal L}$ & A model built from ${\cal L}$. & \pageref{ntn:varphi-L} \\
 $\varphi_B$ & A Bayes model. & \pageref{ntn:varphi-B} \\
+${\cal Q}$ & A family ${\cal Q} \subseteq {\cal S}$ of splits $s$ of restricted structure. & \pageref{ntn:Q}, \pageref{ntn:Q2} \\
+${\cal Q}(X_j)$ & The set ${\cal Q}(X_j) \subseteq {\cal Q}$ of univariate binary splits that can be defined on variable $X_j$. & \pageref{ntn:Q_X_j}, \pageref{ntn:Q_X_j2} \\
+$s$ & A split. & \pageref{ntn:s}, \pageref{ntn:s2} \\
+$s^*$ & The optimal split. & \pageref{ntn:s-star} \\
+$s_t$ & The split labeling node $t$. & \pageref{ntn:s_t} \\
+$s_j^v$ & The binary split $(\{\mathbf{x}|x_j \leq v\}, \{\mathbf{x} > v\})$ defined on variable $X_j$ with discretization threshold $v$. & \pageref{ntn:s_jv} \\
+${\cal S}$ & The set of all possible splits $s$. & \pageref{ntn:S-all} \\
+$t$ & A node in a decision tree. & \pageref{ntn:node} \\
+$t_L$ & The left child of node $t$ & \pageref{ntn:t_L}, \pageref{ntn:t_L2} \\
+$t_R$ & The right child of node $t$. & \pageref{ntn:t_R}, \pageref{ntn:t_R2} \\
 $\theta$ & A vector of hyper-parameter values. & \pageref{ntn:theta} \\
 $\theta^*$ & The optimal hyper-parameters. & \pageref{ntn:theta-star} \\
 $\widehat{\theta}^*$ & The approximately optimal hyper-parameters. & \pageref{ntn:theta-star-approx} \\
+$v$ & A discretization threshold in a binary split. & \pageref{ntn:v} \\
 $\textbf{x}$ & A case, sample or input vector $(x_1, \dots, x_p)$. & \pageref{ntn:sample-x} \\
 $\textbf{x}_i$ & The $i$-th input sample in ${\cal L}$. & \pageref{ntn:sample-x_i} \\
 $x_j$ & The value of variable $X_j$ for the sample $\textbf{x}$. & \pageref{ntn:value-x_j} \\
@@ -37,8 +58,12 @@ $X_j$ & The $j$-th input variable or feature. & \pageref{ntn:var-X_j}, \pageref{
 $X$ & The random vector $(X_1,\dots,X_p)$. & \pageref{ntn:vector-X}\\
 ${\cal X}_j$ & The domain or space of variable $X_j$. & \pageref{ntn:space-X_j} \\
 ${\cal X}$ & The input space ${\cal X}_1 \times \dots \times {\cal X}_p$. & \pageref{ntn:space-X} \\
+${\cal X}_t$ & The subspace ${\cal X}_t \subseteq {\cal X}$ represented by node $t$. & \pageref{ntn:node-space} \\
 $y$ & The value of the ouput variable $Y$ for the sample $\textbf{x}$. & \pageref{ntn:value-y} \\
+$\widehat{y}_t$ & The value labelling node $t$. & \pageref{ntn:y_t} \\
+$\widehat{y}_t^*$ & The optimal value labelling node $t$. & \pageref{ntn:y_t-star} \\
 $\mathbf{y}$ & The output values $(y_1,\dots,y_N)$. & \pageref{ntn:vector-y} \\
 $Y$ & The output variable $Y$. & \pageref{ntn:var-Y} \\
 ${\cal Y}$ & The domain or space of variable $Y$. & \pageref{ntn:space-Y} \\
 \end{tabularx}
+}

@@ -52,7 +52,7 @@ by several factors that make them quite attractive in practice:
 \begin{itemize}
 \item Decision trees are non-parametric. They can model arbitrarily complex relations between inputs and outputs, without any a priori assumption;
 \item Decision trees handle heterogeneous data (ordered or categorical variables, or a mix of both);
-\item Decision trees intrinsically implement feature selection, making them robust to irrelevant or noisy variables;
+\item Decision trees intrinsically implement feature selection, making them robust to irrelevant or noisy variables (at least to some extent);
 \item Decision trees are robust to outliers or errors in labels;
 \item Decision trees are easily interpretable, even for non-statistically oriented users.
 \end{itemize}
@@ -147,22 +147,22 @@ have exactly two children.
 \end{definition}
 
 In those terms, a \textit{tree-structured model} (or \textit{decision tree})
-can be defined as a model $\varphi: {\cal X} \mapsto {\cal Y}$ represented by a
-rooted tree (often binary, but not necessarily), where any node $t$ represents
-a subspace ${\cal X}_t \subseteq {\cal X}$ of the input space, with the root
+can be defined as a model $\varphi: {\cal X} \mapsto {\cal Y}$\label{ntn:tree} represented by a
+rooted tree (often binary, but not necessarily), where any node $t$\label{ntn:node} represents
+a subspace ${\cal X}_t \subseteq {\cal X}$\label{ntn:node-space} of the input space, with the root
 node $t_0$ corresponding to ${\cal X}$ itself.
 Internal nodes $t$ are labeled with a
-\textit{split} $s_t$ taken from a set of questions ${\cal Q}$. It divides the
+\textit{split} $s_t$\label{ntn:s_t} taken from a set of questions ${\cal Q}$. It divides the
 space ${\cal X}_t$ that node $t$ represents into disjoint subspaces respectively
 corresponding to each of its children.
 For instance, the set of all binary
-splits is the set ${\cal Q}$ of questions $s$ of the form \textit{``Is
+splits is the set ${\cal Q}$\label{ntn:Q} of questions $s$\label{ntn:s} of the form \textit{``Is
 $\mathbf{x} \in {\cal X}_A?$''}, where ${\cal X}_A \subset {\cal X}$ is some
 subset of the input space. Any split $s$ of this form divides ${\cal X}_t$ into
 two subspaces respectively corresponding to ${\cal X}_t \cap {\cal X}_A$ for
 the left child of $t$ and to ${\cal X}_t \cap ({\cal X}\setminus{\cal X}_A)$
 for the right child of $t$. Terminal nodes are labeled with a best guess value
-$\widehat{y}_t \in {\cal Y}$ of the output variable. If $\varphi$ is a
+$\widehat{y}_t \in {\cal Y}$\label{ntn:y_t} of the output variable. If $\varphi$ is a
 classification tree, then $\widehat{y}_t \in \{ c_1, ..., c_J \}$ while if
 $\varphi$ is a regression tree, then $\widehat{y}_t \in \mathbb{R}$. As such,
 the predicted output value $\varphi(\mathbf{x})$
@@ -252,7 +252,7 @@ learning set ${\cal L}$ as best as possible. Among all decision trees $\varphi
 \in {\cal H}$ however, there may exist several of them that explain ${\cal L}$
 equally best. Following Occam's Razor principles~\citep{blumer:1987} of preferring the explanation
 which makes as few assumptions as possible, that is to favor the simplest
-solution that fits the data, learning a decision tree from ${\cal L}$ is
+solution that fits the data, learning a decision tree from ${\cal L}$ is therefore
 usually restated as finding the smallest tree $\varphi^*$ (in terms of internal nodes) minimizing its
 resubstitution estimate $\overline{E}(\varphi^*, {\cal L})$. While this
 assumption makes sense from a generalization point of view, it also makes
@@ -267,11 +267,11 @@ for constructing near-optimal decision trees is the best solution to keep comput
 requirements within realistic boundaries.
 
 Following the framework of \citet{breiman:1984}, let us broadly define an
-\textit{impurity} measure $i(t)$ as a function that evaluates the goodness of
+\textit{impurity} measure $i(t)$\label{ntn:i_t} as a function that evaluates the goodness of
 any node $t$ (we delay to Section~\ref{sec:3:splitting-rules} for a more
 precise definition). Let assume that the smaller $i(t)$, the \textit{purer} the
 node and the better the predictions $\widehat{y}_t(\mathbf{x})$ for all
-$\mathbf{x} \in {\cal L}_t$, where ${\cal L}_t$ is the subset of learning
+$\mathbf{x} \in {\cal L}_t$, where ${\cal L}_t$\label{ntn:L_t} is the subset of learning
 samples falling into $t$, that is all $(\mathbf{x}, y) \in {\cal L}$ such that
 $\mathbf{x} \in {\cal X}_t$.
 Starting from a single node representing the whole learning set  ${\cal L}$,
@@ -281,17 +281,17 @@ subsets of ${\cal L}$ represented by the nodes, until all terminal nodes cannot
 be made purer, hence guaranteeing near-optimal predictions over ${\cal L}$. The
 greedy assumption to make the resulting tree as small as possible, thereby
 seeking for good generalization, is then to divide each node $t$ using the
-split $s^*$ that locally maximizes the decrease of impurity of the resulting child nodes.
+split $s^*$\label{ntn:s-star} that locally maximizes the decrease of impurity of the resulting child nodes.
 
 Formally, the decrease of impurity of a binary split $s$ is defined as follows:
 \begin{definition}\label{def:impurity-decrease}
 The \emph{impurity decrease} of a binary split $s \in {\cal Q}$ dividing node $t$ into
-a left node $t_L$ and a right node $t_R$ is
-\begin{equation}
+a left node $t_L$\label{ntn:t_L} and a right node $t_R$\label{ntn:t_R} is
+\begin{equation}\label{ntn:delta-i_t}
 \Delta i(s, t) = i(t) - p_L i(t_L) - p_R i(t_R)
 \end{equation}
-where $p_L$ (resp., $p_R$) is the proportion $\tfrac{N_{t_L}}{N_t}$ (resp., $\tfrac{N_{t_R}}{N_t}$)
-of learning samples from ${\cal L}_t$ going to $t_L$ (resp., to $t_R$) and where $N_t$
+where $p_L$\label{ntn:p_L} (resp., $p_R$\label{ntn:p_R}) is the proportion $\tfrac{N_{t_L}}{N_t}$ (resp., $\tfrac{N_{t_R}}{N_t}$)
+of learning samples from ${\cal L}_t$ going to $t_L$ (resp., to $t_R$) and where $N_t$\label{ntn:N_t}
 is the size of the subset ${\cal L}_t$.
 \end{definition}
 
@@ -372,14 +372,14 @@ minimizing the global generalization error is strictly equivalent to minimizing
 the local generalization error of each simplistic model in the terminal nodes.
 Indeed,
 \begin{align}
-Err_{\cal L}(\varphi) &= \mathbb{E}_{X,Y} \{ L(Y, \varphi(X)) | {\cal L} \} \nonumber \\
-                      &= \sum_{t \in \widetilde{\varphi}} P(X \in {\cal X}_t) \mathbb{E}_{X,Y|t} \{ L(Y, \widehat{y}_t) | {\cal L} \} \label{eqn:assignment-generalization}
+Err(\varphi) &= \mathbb{E}_{X,Y} \{ L(Y, \varphi(X)) \} \nonumber \\
+                      &= \sum_{t \in \widetilde{\varphi}} P(X \in {\cal X}_t) \mathbb{E}_{X,Y|t} \{ L(Y, \widehat{y}_t) \} \label{eqn:assignment-generalization}
 \end{align}
-where $\widetilde{\varphi}$ denotes the set of terminal nodes in $\varphi$
+where $\widetilde{\varphi}$\label{ntn:varphi-leafs} denotes the set of terminal nodes in $\varphi$
 and where the inner expectation\footnote{The joint expectation of $X$ and $Y$
 is taken over all objects $i \in \Omega$ such that $\mathbf{x}_i \in {\cal X}_t$.}
 is the local generalization error of the model at node $t$. In this later form,
-a model which minimizes $Err_{\cal L}(\varphi)$ is a model which minimizes the inner
+a model which minimizes $Err(\varphi)$ is a model which minimizes the inner
 expectation leaf-wise. Learning the best possible decision tree (of
 fixed structure) therefore simply amounts to find the best constants
 $\widehat{y}_t$ at each terminal node.
@@ -389,24 +389,24 @@ $\widehat{y}_t$ at each terminal node.
 When $L$ is the zero-one loss, the inner expectation in Equation~\ref{eqn:assignment-generalization}
 is minimized by the plurality rule:
 \begin{align}
-\widehat{y}_t^* &= \argmin_{c \in {\cal Y}} \mathbb{E}_{X, Y|t}\{ 1(Y, c) | {\cal L} \} \nonumber \\
+\widehat{y}_t^* &= \argmin_{c \in {\cal Y}} \mathbb{E}_{X, Y|t}\{ 1(Y, c) \} \nonumber \\
                 &= \argmin_{c \in {\cal Y}} P(Y \neq c | X \in {\cal X}_t) \nonumber \\
                 &= \argmax_{c \in {\cal Y}} P(Y = c | X \in {\cal X}_t)\label{eqn:assignment-classification}
 \end{align}
 Put otherwise, the generalization error of $t$ is minimized by predicting
 the class which is the most likely for the samples in the subspace of $t$.
 Note that if the maximum is achieved by two or more different classes, then
-$\widehat{y}_t^*$ is assigned arbitrarily as any one of the maximizing classes.
+$\widehat{y}_t^*$\label{ntn:y_t-star} is assigned arbitrarily as any one of the maximizing classes.
 
 Equation~\ref{eqn:assignment-classification} cannot be solved without the
 probability distribution $P(X, Y)$. However, its solution can be approximated
 by using estimates of the local generalization error. Let $N_t$ denotes the
-number of objects in ${\cal L}_t$ and let $N_{ct}$ denotes the number of
+number of objects in ${\cal L}_t$ and let $N_{ct}$\label{ntn:N_ct} denotes the number of
 objects of class $c$ in ${\cal L}_t$. Then, the proportion
 $\tfrac{N_{ct}}{N_t}$ can be interpreted as the estimated
 probability\footnote{Lower case $p$ denotes an estimated probability while
 upper case $P$ denotes a theoretical probability.} $p(Y=c|X\in{\cal X}_t)$
-(shortly denoted $p(c|t)$) of class $c$ in $t$ and therefore be used to solve
+(shortly denoted $p(c|t)$\label{ntn:p_ct}) of class $c$ in $t$ and therefore be used to solve
 Equation~\ref{eqn:assignment-classification}:
 \begin{align}\label{eqn:assignement-classification-approx}
 \widehat{y}_t &= \argmin_{c \in {\cal Y}} 1 - p(c | t) \nonumber \\
@@ -414,16 +414,16 @@ Equation~\ref{eqn:assignment-classification}:
 \end{align}
 
 Similarly, let us also define the proportion $\tfrac{N_t}{N}$ as the estimated
-probability $p(X \in {\cal X}_t)$ (shortly denoted $p(t)$). Plugging this
+probability $p(X \in {\cal X}_t)$ (shortly denoted $p(t)$\label{ntn:p_t}). Plugging this
 estimate into Equation~\ref{eqn:assignment-generalization} and approximating
 the local generalization error with $1 - p(\widehat{y}_t | t)$ as done above, it follows:
 \begin{align}
-\widehat{Err}_{\cal L}(\varphi) &= \sum_{t \in \widetilde{\varphi}} p(t) (1 - p(\widehat{y}_t | t)) \nonumber \\
+\widehat{Err}(\varphi) &= \sum_{t \in \widetilde{\varphi}} p(t) (1 - p(\widehat{y}_t | t)) \nonumber \\
     &= \sum_{t \in \widetilde{\varphi}} \frac{N_t}{N} (1 - \frac{N_{{\widehat{y}_t}t}}{N_t}) \nonumber \\
     &= \frac{1}{N} \sum_{t \in \widetilde{\varphi}} N_t - N_{{\widehat{y}_t}t} \nonumber \\
     &= \frac{1}{N} \sum_{t \in \widetilde{\varphi}} \sum_{\mathbf{x}, y \in {\cal L}_t} 1(y \neq \widehat{y}_t) \nonumber \\
-    &= \frac{1}{N} \sum_{\mathbf{x}, y \in {\cal L}} 1(y \neq \varphi(t)) \nonumber \\
-    &= \widehat{Err}_{\cal L}^\text{train}(\varphi) \label{eqn:train-error-tree}
+    &= \frac{1}{N} \sum_{\mathbf{x}, y \in {\cal L}} 1(y \neq \varphi(\mathbf{x})) \nonumber \\
+    &= \widehat{Err}^\text{train}(\varphi) \label{eqn:train-error-tree}
 \end{align}
 Accordingly, approximating Equation~\ref{eqn:assignment-generalization}
 through local probability estimates computed from class proportions in
@@ -435,21 +435,18 @@ generalization error.
 
 An important property of assignment
 rule~\ref{eqn:assignement-classification-approx} is that the more one splits a terminal node \textit{in
-any way}, the smaller the resubstitution estimate $\smash{\widehat{Err}_{\cal
-L}^\text{train}(\varphi)}$ becomes.
+any way}, the smaller the resubstitution estimate $\smash{\widehat{Err}^\text{train}(\varphi)}$ becomes.
 
 \begin{proposition}\label{prop:any-split-reduce-classification}
 For any non-empty split of a terminal node $t \in \widetilde{\varphi}$ into $t_L$ and
 $t_R$, resulting in a new tree $\varphi^\prime$ where $\widehat{y}_{t_L}$ and $\widehat{y}_{t_R}$
-are assigned with rule~\ref{eqn:assignement-classification-approx}, $$\widehat{Err}_{\cal
-L}^\text{train}(\varphi) \geq \widehat{Err}_{\cal
-L}^\text{train}(\varphi^\prime)$$ with equality if $\widehat{y}_t =
+are assigned with rule~\ref{eqn:assignement-classification-approx}, $$\widehat{Err}^\text{train}(\varphi) \geq \widehat{Err}^\text{train}(\varphi^\prime)$$ with equality if $\widehat{y}_t =
 \widehat{y}_{t_L} = \widehat{y}_{t_R}$.
 \end{proposition}
 
 \begin{proof}
 \begin{align*}
-\widehat{Err}_{\cal L}^\text{train}(\varphi) &\geq \widehat{Err}_{\cal L}^\text{train}(\varphi^\prime)  \\
+\widehat{Err}^\text{train}(\varphi) &\geq \widehat{Err}^\text{train}(\varphi^\prime)  \\
 \sum_{t \in \widetilde{\varphi}} p(t) (1 - p(\widehat{y}_t | t)) &\geq \sum_{t \in \widetilde{\varphi^\prime}} p(t) (1 - p(\widehat{y}_t | t)) \\
 p(t) (1 - p(\widehat{y}_t | t)) &\geq p(t_L) (1 - p(\widehat{y}_{t_L} | t_L)) + p(t_R) (1 - p(\widehat{y}_{t_R} | t_R))\\
 \frac{N_t}{N} (1 - \max_{c \in {\cal Y}} \frac{N_{ct}}{N_t}) &\geq \frac{N_{t_L}}{N} (1 - \max_{c \in {\cal Y}} \frac{N_{ct_L}}{N_{t_L}}) + \frac{N_{t_R}}{N} (1 - \max_{c \in {\cal Y}} \frac{N_{ct_R}}{N_{t_R}}) \\
@@ -477,7 +474,7 @@ When $L$ is the squared error loss, the inner expectation in
 Equation~\ref{eqn:assignment-generalization}
 is minimized by the expectation of $Y$ in $t$:
 \begin{align}
-\widehat{y}_t^* &= \argmin_{\widehat{y} \in {\cal Y}} \mathbb{E}_{X, Y|t}\{ (Y - \widehat{y})^2 | {\cal L} \} \nonumber \\
+\widehat{y}_t^* &= \argmin_{\widehat{y} \in {\cal Y}} \mathbb{E}_{X, Y|t}\{ (Y - \widehat{y})^2 \} \nonumber \\
                 &= \mathbb{E}_{X, Y|t} \{ Y \} \label{eqn:assignment-regression}
 \end{align}
 
@@ -498,20 +495,17 @@ also minimizes the training error rather the true generalization error.
 
 Most importantly, one can also show that assignment rule~\ref{eqn:assignement-regression-approx}
 behaves in the same way as \ref{eqn:assignement-classification-approx}. The
-more one splits a terminal node in any way, the smaller the resubstitution estimate $\smash{\widehat{Err}_{\cal
-L}^\text{train}(\varphi)}$ becomes.
+more one splits a terminal node in any way, the smaller the resubstitution estimate $\smash{\widehat{Err}^\text{train}(\varphi)}$ becomes.
 
 \begin{proposition}\label{prop:any-split-reduce-regression}
 For any non-empty split of a terminal node $t \in \widetilde{\varphi}$ into $t_L$ and
 $t_R$, resulting in a new tree $\varphi^\prime$ where $\widehat{y}_{t_L}$ and $\widehat{y}_{t_R}$
-are assigned with rule~\ref{eqn:assignement-regression-approx}, $$\widehat{Err}_{\cal
-L}^\text{train}(\varphi) \geq \widehat{Err}_{\cal
-L}^\text{train}(\varphi^\prime)$$ with equality if $\widehat{y}_{t_L} = \widehat{y}_{t_R} = \widehat{y}_t$.
+are assigned with rule~\ref{eqn:assignement-regression-approx}, $$\widehat{Err}^\text{train}(\varphi) \geq \widehat{Err}^\text{train}(\varphi^\prime)$$ with equality if $\widehat{y}_{t_L} = \widehat{y}_{t_R} = \widehat{y}_t$.
 \end{proposition}
 
 \begin{proof}
 \begin{align*}
-\widehat{Err}_{\cal L}^\text{train}(\varphi) &\geq \widehat{Err}_{\cal L}^\text{train}(\varphi^\prime)  \\
+\widehat{Err}^\text{train}(\varphi) &\geq \widehat{Err}^\text{train}(\varphi^\prime)  \\
 \sum_{t \in \widetilde{\varphi}} p(t) (\frac{1}{N_t} \sum_{\mathbf{x}, y \in {\cal L}_t} (y - \widehat{y}_t)^2) &\geq \sum_{t \in \widetilde{\varphi^\prime}} p(t) (\frac{1}{N_t} \sum_{\mathbf{x}, y \in {\cal L}_t} (y - \widehat{y}_t)^2) \\
 \sum_{\mathbf{x}, y \in {\cal L}_t} (y - \widehat{y}_t)^2 &\geq \sum_{\mathbf{x}, y \in {\cal L}_{t_L}} (y - \widehat{y}_{t_L})^2 + \sum_{\mathbf{x}, y \in {\cal L}_{t_R}} (y - \widehat{y}_{t_R})^2 \\
 N_t \widehat{y}_t^2 &\leq N_{t_L} \widehat{y}_{t_L}^2 + N_{t_R} \widehat{y}_{t_R}^2 \\
@@ -647,15 +641,15 @@ disjoint subspaces respectively  corresponding to each of the children of $t$.
 Formally, a split is defined as a partition:
 
 \begin{definition}
-A \emph{split} $s$ of node $t$ is a partition of ${\cal X}_t$, that is a set of
+A \emph{split} $s$\label{ntn:s2} of node $t$ is a partition of ${\cal X}_t$, that is a set of
 non-empty subsets of ${\cal X}_t$ such that every element $\mathbf{x} \in {\cal X}_t$
 is in exactly one of these subsets (i.e., ${\cal X}_t$ is a disjoint union
 of the subsets).
 \end{definition}
 
 If $s$ divides ${\cal X}_t$ into two subsets, then $s$ is said to be a
-\textit{binary} split and its left and right children are denoted $t_L$ and
-$t_R$. In the general case however, $s$ may divide ${\cal X}_t$ into more than
+\textit{binary} split and its left and right children are denoted $t_L$\label{ntn:t_L2} and
+$t_R$\label{ntn:t_R2}. In the general case however, $s$ may divide ${\cal X}_t$ into more than
 two subsets, resulting in as many child nodes $t_{i_1}$, ..., $t_{i_N}$ as
 subsets (See Figure~\ref{fig:3:splits}).
 
@@ -666,7 +660,7 @@ subsets (See Figure~\ref{fig:3:splits}).
     \label{fig:3:splits}
 \end{figure}
 
-The set ${\cal S}$ of all possible splits $s$ is the set of all partitions of
+The set ${\cal S}$\label{ntn:S-all} of all possible splits $s$ is the set of all partitions of
 ${\cal X}_t$. It is infinitely large as soon as one the input variables can
 take infinitely many values. For instance, if ${\cal X}_t = \mathbb{R}$, then
 there exists infinitely many ways of partitioning ${\cal X}_t$ into two (or
@@ -689,29 +683,29 @@ partitions and picking the best of them is often computationally
 intractable. For this reason, simplifying  assumptions must be made on the best
 split $s^*$. More specifically, the induction algorithm usually assumes that
 $s^*$ -- or at least a good enough approximation -- lives in a family ${\cal Q}
-\subseteq {\cal S}$ of candidate splits of restricted structure.
+\subseteq {\cal S}$\label{ntn:Q2} of candidate splits of restricted structure.
 
 The usual family ${\cal Q}$ of
 splits is the set of binary splits defined on a single variable and resulting
 in non-empty subsets of ${\cal L}_t$:
 \begin{equation}\label{eqn:q:single-variables}
 {\cal Q} = \{s | s \in \bigcup_{j=1}^p {\cal Q}(X_j), {\cal L}_{t_L} \neq \phi, {\cal L}_{t_R} \neq \phi \}
-\end{equation}
+\end{equation}\label{ntn:Q_X_j}
 \begin{itemize}
 \item If $X_j$ is an ordered variable taking values in ${\cal X}_j$, then the set of binary splits on $X_j$ is the set
-of all binary non-crossing partitions $s^v_j$ of ${\cal X}_j$:
+of all binary non-crossing partitions $s^v_j$\label{ntn:s_jv} of ${\cal X}_j$:
 \begin{align}
 {\cal Q}(X_j) = \{ (\{ \mathbf{x} | x_j \leq v \}, \{ \mathbf{x} | x_j > v \}) | v \in {\cal X}_j \} \label{eqn:q:ordered}
 \end{align}
 From a geometrical point of view, splits of this form partition the input space
 ${\cal X}$ with axis-parallel hyperplanes, as previously illustrated on
-Figure~\ref{fig:3:partition}. Accordingly, the decision threshold $v$ thus
+Figure~\ref{fig:3:partition}. Accordingly, the decision threshold $v$\label{ntn:v} thus
 corresponds to the distance of the separating hyperplane from the origin.
 \item If $X_j$ is a categorical variable taking values in ${\cal X}_j = \{ b_1, \dots, b_L \}$, then the set of binary splits on
 $X_j$ is the set of all binary  non-empty partitions of ${\cal X}_j$:
 \begin{align}\label{eqn:q:categorical-cart}
 {\cal Q}(X_j) = \{ (\{\mathbf{x} | x_j \in {\cal B} \}, \{\mathbf{x} | x_j \in \overline{\cal B}\}) | &{\cal B} \subset \{ b_1, \dots, b_L \} \}
-\end{align}
+\end{align}\label{ntn:Q_X_j2}
 where $\overline{\cal B} = \{ b_1, \dots, b_L \} \setminus {\cal B}$ is the complementary set of ${\cal B}$.
 \end{itemize}
 
