@@ -19,8 +19,8 @@ example, practicians know from past experience that elderly heart attack
 patients with low blood pressure are generally high risk. Similarly,
 meteorologists know from elementary climate models that one hot, high pollution
 day is likely to be followed by another. For an increasing number of problems
-however, standard approaches start showing their limits. Identifying the
-genetic risk factors for heart disease for example, where knowledge is still
+however, standard approaches start showing their limits. For example, identifying the
+genetic risk factors for heart disease, where knowledge is still
 very sparse, is nearly impractical for the cognitive abilities of humans given
 the high complexity and intricacy of interactions that exist between genes.
 Likewise, for very fine-grained meteorological forecasts, a large number of
@@ -98,12 +98,17 @@ complexity or learning ability.
 \item Third, interpreting the resulting model remains a difficult task,
 for which even machine learning experts still fail at finely analyzing and
 uncovering the precise predictive structure learned by the procedure.
+In particular, despite their extensive use in a wide range of applications, little
+is still known regarding variable importance measures computed by random forests.
+Empirical evidence suggests that they are appropriate for identifying
+relevant variables, but their statistical mechanisms and properties are
+still far from being understood.
 \end{enumerate}
-All throughout this dissertation, our objective is therefore
-to call into question each and every part of the algorithm,  both from a theoretical and practical point of view.
-Accordingly, this work aims at revisiting decision trees and random forests to
-hopefully shed new light on their learning capabilities, inner workings and
-interpretability.
+All throughout this dissertation, our objective is therefore to call into
+question each and every part of the random forests methodology,  both from a theoretical and
+practical point of view. Accordingly, this work aims at revisiting decision
+trees and random forests to hopefully shed new light on their learning
+capabilities, inner workings and interpretability.
 
 \section{Thesis outline}
 
@@ -118,7 +123,11 @@ Chapter~\ref{ch:forest} includes original contributions on the bias-variance
 analysis of ensemble methods, highlithing how randomization can help improve
 performance. Chapter~\ref{ch:complexity} concludes this first part with an
 original space and time complexity analysis of random forests (and their
-variants), along with a in-depth discussion of implementation details.
+variants), along with a in-depth discussion of implementation details,
+as contributed within the open source Scikit-Learn library.
+Overall, Part~\textsc{\ref{part:1}} therefore presents a comprehensive review
+of previous work on random forests, including some original contributions
+both from a theoretical and practical point of view.
 
 Part~\textsc{\ref{part:2}} analyzes and discusses the interpretability of
 random forests. In Chapter~\ref{ch:importances}, we study variable importances
@@ -126,7 +135,7 @@ as computed with a forest of randomized trees and study how these scores can be
 interpreted in order to reveal the underlying predictive structure learned from
 the data. In particular, we derive a theoretical framework from which we prove
 theoretical and practical properties of variable importances. In
-chapter~\ref{ch:applications}, we then exploit this framework to further study
+Chapter~\ref{ch:applications}, we then exploit this framework to further study
 variable importances as derived from actual random forests and present
 successful applications of variable importance measures.
 Part~\textsc{\ref{part:2}} constitutes the main contributions of this
@@ -144,6 +153,8 @@ This dissertation summarizes several contributions to random forests
 algorithms. Publications that have directly stemmed from this work include:
 
 \begin{itemize}
+\item \citep{geurts:2011} \textit{Learning to rank with extremely randomized trees}, Geurts Pierre and Louppe Gilles, 2011.
+
 \item \citep{louppe:2012} \textit{Ensembles on random patches}, Louppe Gilles and Geurts Pierre, 2012.
 
 \item \citep{louppe:2013} \textit{Understanding variable importances in forests of randomized trees}, Louppe Gilles, Wehenkel Louis, Sutera Antonio and Geurts Pierre, 2013.
@@ -160,10 +171,10 @@ this dissertation.
 
 \item \citep{louppe:2010} \textit{A zealous parallel gradient descent algorithm}, Louppe Gilles and Geurts Pierre, 2010.
 
-\item \citep{geurts:2011} \textit{Learning to rank with extremely randomized trees}, Geurts Pierre and Louppe Gilles, 2011.
-
 \item \citep{maree:2014} \textit{A hybrid human-computer approach for large-scale image-based measurements using web services and machine learning}, Mar{\'e}e Rapha{\"e}l, Rollus Loic, Stevens Benjamin et al., 2014.
 
-\item \citep{amy:2014} \textit{Solar Energy Prediction: An International Contest to Initiate Interdisciplinary Research on Compelling Meteorological Problems}, Amy McGovern, David John Gagne II, Lucas Eustaquio et al., 2014. \textit{Submitted.}
+\item \citep{amy:2014} \textit{Solar Energy Prediction: An International Contest to Initiate Interdisciplinary Research on Compelling Meteorological Problems}, Amy McGovern, David John Gagne II, Lucas Eustaquio et al., 2014.
+
+\item \citep{sutera:2014} \textit{Simple and robust inference of connectomes using partial correlation coefficients}, Antonio Sutera, Arnaud Joly, Vincent Francois et al., 2014.
 
 \end{itemize}
