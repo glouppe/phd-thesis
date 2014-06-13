@@ -30,12 +30,12 @@ pressure or history (i.e., the input values).
 To give a more precise formulation, let us assume as set of \textit{cases} or
 \textit{objects} taken from a universe $\Omega$\label{ntn:omega}. Let us arrange the set of
 measurements on a case in a pre-assigned order, i.e., take the input values to
-be $x_1, x_2, ..., x_p$, where $x_j \in {\cal X}_j$ (for $j = 1, ..., p$)
-corresponds to the value of the input variable $X_j$. Together, the input
-values $(x_1, x_2, ..., x_p)$ form a $p$-dimensional input vector $\mathbf{x}$
-taking its values in ${\cal X}_1 \times ... \times {\cal X}_p = {\cal X}$,
+be $x_1, x_2, ..., x_p$, where $x_j \in {\cal X}_j$\label{ntn:value-x_j}\label{ntn:space-X_j} (for $j = 1, ..., p$\label{ntn:p})
+corresponds to the value of the input variable $X_j$\label{ntn:var-X_j}. Together, the input
+values $(x_1, x_2, ..., x_p)$ form a $p$-dimensional input vector $\mathbf{x}$\label{ntn:sample-x}
+taking its values in ${\cal X}_1 \times ... \times {\cal X}_p = {\cal X}$\label{ntn:space-X},
 where ${\cal X}$ is defined as the input space. Similarly, let us define as $y
-\in {\cal Y}$ the value of the output variable $Y$, where ${\cal Y}$ is defined
+\in {\cal Y}$\label{ntn:value-y} the value of the output variable $Y$\label{ntn:var-Y}, where ${\cal Y}$\label{ntn:space-Y} is defined
 as the output space\footnote{Unless stated otherwise, supervised learning is
 reduced to the prediction of a \textit{single} output variable. More generally
 however, this framework can be defined as the prediction of one or several
@@ -52,7 +52,7 @@ qualitative variables whose values are symbolic, such as gender or condition.
 Formally, we define them as follows:
 
 \begin{definition}
-A variable $X_j$ is \emph{ordered} if ${\cal X}_j$ is a
+A variable $X_j$\label{ntn:var-X_j2} is \emph{ordered} if ${\cal X}_j$ is a
 totally ordered set. In particular, $X_j$ is said to be \emph{numerical} if
 ${\cal X}_j = \mathbb{R}$.
 \end{definition}
@@ -68,16 +68,16 @@ vectors together with their actual output value and formally defined as
 follows:
 
 \begin{definition}
-A \emph{learning set} ${\cal L}$ is a set of $N$
+A \emph{learning set} ${\cal L}$\label{ntn:learning-set} is a set of $N$\label{ntn:N}
 pairs of input vectors and output values $(\mathbf{x}_1, y_1), ...,
 (\mathbf{x}_N, y_N)$, where $\mathbf{x}_i \in {\cal X}$ and $y_i \in {\cal Y}$.
 \end{definition}
 
-Equivalently, a set of $p$-input vectors $\mathbf{x}_i$ (for $i=1, ..., N$) can
-be denoted by a $N\times p$ matrix $\mathbf{X}$, whose rows $i=1, ..., N$
+Equivalently, a set of $p$-input vectors $\mathbf{x}_i$\label{ntn:sample-x_i} (for $i=1, ..., N$) can
+be denoted by a $N\times p$ matrix $\mathbf{X}$\label{ntn:matrix-X}, whose rows $i=1, ..., N$
 correspond to input vectors $\mathbf{x}_i$ and columns $j=1, ..., p$ to input
 variables $X_j$. Similarly, the corresponding output values can be written as a
-vector $\mathbf{y}=(y_1, ..., y_N)$.
+vector $\mathbf{y}=(y_1, ..., y_N)$\label{ntn:vector-y}.
 
 \begin{remark}{Data representation}
 For optimal implementations of machine learning algorithms, data needs to
@@ -99,9 +99,9 @@ are close to their original textbook formulation, thereby making them easier to 
 understand and maintain. \end{remark}
 
 In this framework, the supervised learning task can be stated as learning a
-function $\varphi: {\cal X} \mapsto {\cal Y}$ from a learning set ${\cal
+function $\varphi: {\cal X} \mapsto {\cal Y}$\label{ntn:varphi} from a learning set ${\cal
 L}=(\mathbf{X}, \mathbf{y})$. The objective is
-to find a model such that its predictions $\varphi(\mathbf{x})$, also denoted
+to find a model such that its predictions $\varphi(\mathbf{x})$\label{ntn:varphi-x}, also denoted
 by the variable $\hat{Y}$, are as good as possible. If $Y$ is a categorical
 variable then the learning task is a classification problem. If $Y$ is
 numerical variable, then learning task is a regression problem. Without loss of
@@ -110,7 +110,7 @@ follows:
 
 \begin{definition}
 A \emph{classifier} or \emph{classification rule} is a function $\varphi: {\cal X}
-\mapsto {\cal Y}$, where ${\cal Y}$ is a finite set of classes (or labels) denoted $\{c_1, c_2, ..., c_J\}$.
+\mapsto {\cal Y}$, where ${\cal Y}$ is a finite set of classes (or labels) denoted $\{c_1, c_2, ..., c_J\}$\label{ntn:J}\label{ntn:c_k}.
 \end{definition}
 
 \begin{definition}
@@ -157,14 +157,14 @@ y_pred = clf.predict(X_test)
 
 In the statistical sense, input and output variables $X_1, ..., X_p$ and $Y$
 are \textit{random variables} taking jointly their values from ${\cal X} \times
-{\cal Y}$ with respect to the joint probability distribution $P(X, Y)$, where
-$X$ denotes the random vector $(X_1, ..., X_p)$. That is, $P(X=\mathbf{x},
+{\cal Y}$ with respect to the joint probability distribution $P(X, Y)$\label{ntn:P_XY}, where
+$X$\label{ntn:vector-X} denotes the random vector $(X_1, ..., X_p)$. That is, $P(X=\mathbf{x},
 Y=y)$ is the probability that random variables $X$ and $Y$ take values
 $\mathbf{x}$ and $y$ from ${\cal X}$ and ${\cal Y}$ when drawing an object
 uniformly at random from the universe $\Omega$.
 
-Accordingly, using an algorithm ${\cal A}$ for learning a model\footnote{Unless
-it is clear from the context, models are now denoted $\varphi_{\cal L}$ to
+Accordingly, using an algorithm ${\cal A}$\label{ntn:A} for learning a model\footnote{Unless
+it is clear from the context, models are now denoted $\varphi_{\cal L}$\label{ntn:varphi-L} to
 emphasize that they are built from the learning set ${\cal L}$.} $\varphi_{\cal
 L}$ whose predictions are as good as possible can be stated as finding a model
 which minimizes its expected prediction error, defined as follows:
@@ -177,8 +177,8 @@ random variable $X$. It is defined as $$\mathbb{E}_X \{f(X)\} = \sum_{x \in {\ca
 X}} P(X=x) f(x).$$}
 \begin{equation}\label{eqn:generalization-error}
 Err(\varphi_{\cal L}) = \mathbb{E}_{X, Y}\{ L(Y, \varphi_{\cal L}(X)) \},
-\end{equation}
-where ${\cal L}$ is the learning set used to build $\varphi_{\cal L}$ and $L$ is a loss
+\end{equation}\label{ntn:err}
+where ${\cal L}$ is the learning set used to build $\varphi_{\cal L}$ and $L$\label{ntn:L} is a loss
 function measuring the discrepancy between its two
 arguments~\citep{geurts:2002}.
 \end{definition}
@@ -231,7 +231,7 @@ the generalization error in Equation~\ref{eqn:generalization-error} can however
 be estimated in several ways.
 
 To make notations clearer, let us first define $\overline{E}(\varphi_{\cal L}, {\cal
-L}^\prime)$ as the average prediction error of the model $\varphi_{\cal L}$ over the set
+L}^\prime)$\label{ntn:E_bar} as the average prediction error of the model $\varphi_{\cal L}$ over the set
 ${\cal L}^\prime$ (possibly different from the learning set ${\cal L}$ used to produce
 $\varphi_{\cal L}$), that is:
 \begin{equation}
@@ -245,7 +245,7 @@ consists in empirically estimating $Err(\varphi_{\cal L})$ on the same data as
 the learning set ${\cal L}$ used to build $\varphi_{\cal L}$, that is:
 \begin{equation}\label{eqn:training-error}
 \widehat{Err}^\text{train}(\varphi_{\cal L}) = \overline{E}(\varphi_{\cal L}, {\cal L})
-\end{equation}
+\end{equation}\label{ntn:err-train}
 In general, the resubstitution error is a poor estimate of $Err(\varphi_{\cal L})$.
 In particular, since most machine learning algorithms aim at
 precisely minimizing Equation~\ref{eqn:training-error} (either directly or
@@ -263,7 +263,7 @@ L}$ is then given as the average prediction error over ${\cal L}_\text{test}$
 of the model $\varphi_{{\cal L}_\text{train}}$ built on ${\cal L}_\text{train}$:
 \begin{equation}\label{eqn:test-error}
 \widehat{Err}^\text{test}(\varphi_{\cal L}) = \overline{E}(\varphi_{{\cal L}_\text{train}}, {\cal L}_\text{test})
-\end{equation}
+\end{equation}\label{ntn:err-test}
 As a rule-of-thumb,
 ${\cal L}_\text{train}$ is usually taken as $70\%$ of the samples in
 ${\cal L}$ and ${\cal L}_\text{test}$ as the remaining $30\%$, though
@@ -280,15 +280,15 @@ then this is usually not an issue, but if ${\cal L}$ only contains a few dozens
 of samples, then this strategy might not correctly approximate the true
 generalization error of the model that would have been learned on the entire learning set.
 
-When ${\cal L}$ is small, the \textit{$K$-fold cross-validation estimate} is
+When ${\cal L}$ is small, the \textit{$K$-fold cross-validation estimate}\label{ntn:K-cv} is
 usually preferred over the test sample estimate. It consists in randomly
 dividing the learning set ${\cal L}$ into $K$ disjoint subsets, ${\cal
-L}_1, ..., {\cal L}_K$, and then to estimate the generalization error as the average prediction error over the folds ${\cal
+L}_1, ..., {\cal L}_K$\label{ntn:L_k}, and then to estimate the generalization error as the average prediction error over the folds ${\cal
 L}_k$ of the models $\varphi_{{\cal L}\setminus {\cal L}_k}$  learned on the
 remaining data:
 \begin{equation}\label{eqn:cv-error}
 \widehat{Err}^{CV}(\varphi_{\cal L}) = \frac{1}{K} \sum_{k=1}^K  \overline{E}(\varphi_{{\cal L}\setminus{\cal L}_k}, {\cal L}_k)
-\end{equation}
+\end{equation}\label{ntn:err-cv}
 The assumption behind this approach is that since each model $\varphi_{{\cal L}\setminus{\cal L}_k}$ is
 built using almost all ${\cal L}$, they should all be close to the model
 $\varphi_{\cal L}$ learned on the entire set. As a result the unbiased
@@ -338,7 +338,7 @@ error that any supervised learning algorithm can possibly attain, that is
 the irreducible error purely due to random deviations in the data.
 
 \begin{definition}
-A model $\varphi_B$ is a \emph{Bayes model} if, for any model $\varphi$ built from any
+A model $\varphi_B$\label{ntn:varphi-B} is a \emph{Bayes model} if, for any model $\varphi$ built from any
 learning set ${\cal L}$, $Err(\varphi_B) \leq Err(\varphi_{\cal L})$.
 \end{definition}
 
@@ -380,7 +380,7 @@ Formally, consistency is defined as follows~\citep{devroye:1996}:
 
 \begin{definition}
 A learning algorithm ${\cal A}$ is said to be \emph{consistent} for a certain distribution
-$P(X, Y)$ if $\mathbf{E}_{\cal L} \{ Err(\varphi_{\cal L}) \} \to Err(\varphi_B)$
+$P(X, Y)$ if $\mathbb{E}_{\cal L} \{ Err(\varphi_{\cal L}) \} \to Err(\varphi_B)$
 as the size $N$ of the learning set ${\cal L}$ used to build $\varphi_{\cal L}$ using ${\cal A}$ tends
 to infinity.
 \end{definition}
@@ -417,7 +417,7 @@ To make supervised learning work in high-dimensional input spaces with learning
 sets of moderate sizes, simplifying assumptions must be made on
 the structure of the best model $\varphi_B$. More specifically, a supervised
 learning algorithm assumes that $\varphi_B$ -- or at least a good enough approximation
--- lives in a family ${\cal H}$ of candidate models, also known as
+-- lives in a family ${\cal H}$\label{ntn:H} of candidate models, also known as
 \textit{hypotheses} in statistical learning theory, of restricted structure. In
 this setting, the \textit{model selection} problem is then defined as finding
 the best model among ${\cal H}$ on the basis of the learning set ${\cal L}$.
@@ -433,20 +433,20 @@ Err({\cal H}) = \min_{\varphi \in {\cal H}} \{ Err(\varphi) \} - Err(\varphi_B)
 \end{equation}
 \end{remark}
 
-To be more specific, let $\theta$ be the vector of hyper-parameters values
+To be more specific, let $\theta$\label{ntn:theta} be the vector of hyper-parameters values
 controlling the execution of a learning algorithm ${\cal A}$. The application
 of ${\cal A}$ with parameters $\theta$ on the learning set ${\cal L}$ is a
 deterministic\footnote{If ${\cal A}$ makes use of a pseudo-random generator to
 mimic a stochastic process, then we assume that the corresponding random seed is
 part of $\theta$.} process yielding a model ${\cal A}(\theta, {\cal L}) =
-\varphi_{\cal L} \in {\cal H}$. As such, our goal is to find the vector of hyper-parameters values
+\varphi_{\cal L} \in {\cal H}$\label{ntn:A-func}. As such, our goal is to find the vector of hyper-parameters values
 yielding to the best model possibly learnable in ${\cal H}$ from ${\cal L}$:
 \begin{equation}
 \theta^* = \argmin_{\theta} Err({\cal A}(\theta, {\cal L}))
-\end{equation}
+\end{equation}\label{ntn:theta-star}
 Again, this problem cannot (usually) be solved exactly in practice since
 it requires the true generalization error of a model to be computable. However
-approximations $\widehat{\theta}^*$ can be obtained in several ways.
+approximations $\widehat{\theta}^*$\label{ntn:theta-star-approx} can be obtained in several ways.
 
 When ${\cal L}$ is large, the easiest way to find $\widehat{\theta}^*$ is to
 use test sample estimates (as defined by Equation~\ref{eqn:test-error}) to
@@ -494,7 +494,7 @@ respective training and test estimates of the model with respect to its
 complexity. When the model is too simple, both the training and test estimates
 are large because of underfitting. As complexity increases, the model gets more
 accurate and both the training and test estimates decrease. However, when the
-model becomes too complex, specific trends from the training set get captured,
+model becomes too complex, specific elements from the training set get captured,
 reducing the corresponding training estimates down to $0$, as if the model were
 perfect. At the same time, the test estimates become worse because the
 structure learned from the training set is actually too specific and does not
@@ -683,7 +683,7 @@ original input space into a high-dimensional space (the so-called
 \textit{kernel trick}), where a separating hyperplane can hopefully be found.
 Interestingly, the dual optimization problem is exactly the same, except that the dot product
 $\mathbf{x}_i\cdot\mathbf{x}_j$ is replaced by a \textit{kernel}
-$K(\mathbf{x}_i, \mathbf{x}_j)$, which corresponds the dot product of
+$K(\mathbf{x}_i, \mathbf{x}_j)$\label{ntn:kernel}, which corresponds the dot product of
 $\mathbf{x}_i$ and $\mathbf{x}_j$ in the new space.
 
 
@@ -772,7 +772,7 @@ is computed from the training samples within a radius $r$ of the new sample.
 In cases where data is not uniformly sampled, this latter algorithm can be
 a better choice than the $k$-nearest neighbor method.
 
-Despite their simplicity, nearest neighbor methods usually yield very good
+Despite their simplicity, nearest neighbor methods usually yield decent
 results in practice. They are are often successful in classification situations
 where the decision boundary is very irregular. From a theoretical point of
 view, an important result due to \citet{cover:1967} is the proof of consistency

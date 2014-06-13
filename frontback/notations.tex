@@ -3,5 +3,42 @@
 \chapter{Notations}
 
 \begin{tabularx}{\textwidth}{ l X l }
+${\cal A}$ & A learning algorithm. & \pageref{ntn:A} \\
+${\cal A}(\theta, {\cal L})$ & The model $\varphi_{\cal L}$ produced by algorithm ${\cal A}$ over ${\cal L}$ and hyper-parameters $\theta$. & \pageref{ntn:A-func} \\
+$c_k$ & The $k$-th class. & \pageref{ntn:c_k} \\
+$\overline{E}(\varphi_{\cal L}, {\cal L}^\prime)$ & The average prediction error of $\varphi_{\cal L}$ over ${\cal L}^\prime$. & \pageref{ntn:E_bar} \\
+$Err(\varphi_{\cal L})$ & The generalization error of $\varphi_{\cal L}$. & \pageref{ntn:err} \\
+$\widehat{Err}^\text{train}(\varphi_{\cal L})$ & The resubstitution estimate or training sample estimate of the generalization error of $\varphi_{\cal L}$. & \pageref{ntn:err-train} \\
+$\widehat{Err}^\text{test}(\varphi_{\cal L})$ & The test sample estimate of the generalization error of $\varphi_{\cal L}$. & \pageref{ntn:err-test} \\
+$\widehat{Err}^\text{CV}(\varphi_{\cal L})$ & The cross-validation  estimate of the generalization error of $\varphi_{\cal L}$. & \pageref{ntn:err-cv} \\
+${\cal H}$ & The space of candidate models. & \pageref{ntn:H} \\
+$J$ & The number of classes. & \pageref{ntn:J} \\
+$K$ & The number of folds in cross-validation. & \pageref{ntn:K-cv} \\
+$K(\mathbf{x}_i, \mathbf{x}_j)$ & The kernel of $\mathbf{x}_i$ and $\mathbf{x}_j$. & \pageref{ntn:kernel}, \pageref{ntn:kernel2} \\
+$L$ & A loss function. & \pageref{ntn:L} \\
+${\cal L}$ & A learning set $(\mathbf{X}, \mathbf{y})$. & \pageref{ntn:learning-set} \\
+${\cal L}_k$ & The $k$-th fold in cross-validation. & \pageref{ntn:L_k} \\
+$N$ & The number of input samples. & \pageref{ntn:N} \\
 $\Omega$ & The universe, or population, from which cases are sampled. & \pageref{ntn:omega} \\
+$p$ & The number of input variables. & \pageref{ntn:p} \\
+$P(X,Y)$ & The joint probability distribution of the input variables $X=(X_1,\dots,X_p)$ and the output variable $Y$. & \pageref{ntn:P_XY} \\
+$\varphi$ & A model or function ${\cal X} \mapsto {\cal Y}$. & \pageref{ntn:varphi} \\
+$\varphi(\mathbf{x})$ & The prediction of $\varphi$ for the sample $\mathbf{x}$. & \pageref{ntn:varphi-x} \\
+$\varphi_{\cal L}$ & A model built from ${\cal L}$. & \pageref{ntn:varphi-L} \\
+$\varphi_B$ & A Bayes model. & \pageref{ntn:varphi-B} \\
+$\theta$ & A vector of hyper-parameter values. & \pageref{ntn:theta} \\
+$\theta^*$ & The optimal hyper-parameters. & \pageref{ntn:theta-star} \\
+$\widehat{\theta}^*$ & The approximately optimal hyper-parameters. & \pageref{ntn:theta-star-approx} \\
+$\textbf{x}$ & A case, sample or input vector $(x_1, \dots, x_p)$. & \pageref{ntn:sample-x} \\
+$\textbf{x}_i$ & The $i$-th input sample in ${\cal L}$. & \pageref{ntn:sample-x_i} \\
+$x_j$ & The value of variable $X_j$ for the sample $\textbf{x}$. & \pageref{ntn:value-x_j} \\
+$\textbf{X}$ & The $N\times p$ matrix representing the values of all $N$ samples for all $p$ input variables. & \pageref{ntn:matrix-X} \\
+$X_j$ & The $j$-th input variable or feature. & \pageref{ntn:var-X_j}, \pageref{ntn:var-X_j2} \\
+$X$ & The random vector $(X_1,\dots,X_p)$. & \pageref{ntn:vector-X}\\
+${\cal X}_j$ & The domain or space of variable $X_j$. & \pageref{ntn:space-X_j} \\
+${\cal X}$ & The input space ${\cal X}_1 \times \dots \times {\cal X}_p$. & \pageref{ntn:space-X} \\
+$y$ & The value of the ouput variable $Y$ for the sample $\textbf{x}$. & \pageref{ntn:value-y} \\
+$\mathbf{y}$ & The output values $(y_1,\dots,y_N)$. & \pageref{ntn:vector-y} \\
+$Y$ & The output variable $Y$. & \pageref{ntn:var-Y} \\
+${\cal Y}$ & The domain or space of variable $Y$. & \pageref{ntn:space-Y} \\
 \end{tabularx}
