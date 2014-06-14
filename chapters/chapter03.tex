@@ -287,7 +287,7 @@ Formally, the decrease of impurity of a binary split $s$ is defined as follows:
 \begin{definition}\label{def:impurity-decrease}
 The \emph{impurity decrease} of a binary split $s \in {\cal Q}$ dividing node $t$ into
 a left node $t_L$\label{ntn:t_L} and a right node $t_R$\label{ntn:t_R} is
-\begin{equation}\label{ntn:delta-i_t}
+\begin{equation}
 \Delta i(s, t) = i(t) - p_L i(t_L) - p_R i(t_R)
 \end{equation}
 where $p_L$\label{ntn:p_L} (resp., $p_R$\label{ntn:p_R}) is the proportion $\tfrac{N_{t_L}}{N_t}$ (resp., $\tfrac{N_{t_R}}{N_t}$)
@@ -690,7 +690,7 @@ splits is the set of binary splits defined on a single variable and resulting
 in non-empty subsets of ${\cal L}_t$:
 \begin{equation}\label{eqn:q:single-variables}
 {\cal Q} = \{s | s \in \bigcup_{j=1}^p {\cal Q}(X_j), {\cal L}_{t_L} \neq \phi, {\cal L}_{t_R} \neq \phi \}
-\end{equation}\label{ntn:Q_X_j}
+\end{equation}
 \begin{itemize}
 \item If $X_j$ is an ordered variable taking values in ${\cal X}_j$, then the set of binary splits on $X_j$ is the set
 of all binary non-crossing partitions $s^v_j$\label{ntn:s_jv} of ${\cal X}_j$:
@@ -705,17 +705,17 @@ corresponds to the distance of the separating hyperplane from the origin.
 $X_j$ is the set of all binary  non-empty partitions of ${\cal X}_j$:
 \begin{align}\label{eqn:q:categorical-cart}
 {\cal Q}(X_j) = \{ (\{\mathbf{x} | x_j \in {\cal B} \}, \{\mathbf{x} | x_j \in \overline{\cal B}\}) | &{\cal B} \subset \{ b_1, \dots, b_L \} \}
-\end{align}\label{ntn:Q_X_j2}
+\end{align}
 where $\overline{\cal B} = \{ b_1, \dots, b_L \} \setminus {\cal B}$ is the complementary set of ${\cal B}$.
 \end{itemize}
 
 Given decomposition \ref{eqn:q:single-variables} into subsets ${\cal Q}(X_j)$,
-the split $s^* \in {\cal Q}$\label{ntn:s-star2} is the best of the best splits defined on each input
+the split $s^* \in {\cal Q}$ is the best of the best splits defined on each input
 variable. That is,
 \begin{align}
 s^* &= \argmax_{\substack{s^*_j\\ j=1, \dots, p}} \Delta i(s^*_j, t) \label{eqn:best-best-split}\\
 s^*_j &= \argmax_{\substack{s \in Q(X_j)\\ {\cal L}_{t_L}, {\cal L}_{t_R} \neq \phi}} \Delta i(s, t) \label{eqn:best-split-single}
-\end{align}\label{ntn:s-star_j}
+\end{align}
 In this framework, the crux of the problem therefore
 simply reduces to the implementation of Equation~\ref{eqn:best-split-single}.
 
@@ -802,7 +802,7 @@ evaluates the goodness of node $t$. Since our goal is to build the decision
 tree that minimizes generalization error, it seems natural to take as proxy
 $i(t)$ the local resubstitution estimate at node $t$:
 \begin{definition}
-In classification, the impurity function $i_R(t)$\label{ntn:i_t_R} based on the local resubstitution estimate
+In classification, the impurity function $i_R(t)$ based on the local resubstitution estimate
 defined on the zero-one loss is:
 \begin{equation}\label{eqn:impurity:error}
 i_R(t) = 1 - p(\widehat{y}_t|t) =  1 - \max_{c \in {\cal Y}} p(c|t)

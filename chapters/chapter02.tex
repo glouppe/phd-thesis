@@ -177,7 +177,7 @@ random variable $X$. It is defined as $$\mathbb{E}_X \{f(X)\} = \sum_{x \in {\ca
 X}} P(X=x) f(x).$$}
 \begin{equation}\label{eqn:generalization-error}
 Err(\varphi_{\cal L}) = \mathbb{E}_{X, Y}\{ L(Y, \varphi_{\cal L}(X)) \},
-\end{equation}\label{ntn:err}
+\end{equation}
 where ${\cal L}$ is the learning set used to build $\varphi_{\cal L}$ and $L$\label{ntn:L} is a loss
 function measuring the discrepancy between its two
 arguments~\citep{geurts:2002}.
@@ -245,7 +245,7 @@ consists in empirically estimating $Err(\varphi_{\cal L})$ on the same data as
 the learning set ${\cal L}$ used to build $\varphi_{\cal L}$, that is:
 \begin{equation}\label{eqn:training-error}
 \widehat{Err}^\text{train}(\varphi_{\cal L}) = \overline{E}(\varphi_{\cal L}, {\cal L})
-\end{equation}\label{ntn:err-train}
+\end{equation}
 In general, the resubstitution error is a poor estimate of $Err(\varphi_{\cal L})$.
 In particular, since most machine learning algorithms aim at
 precisely minimizing Equation~\ref{eqn:training-error} (either directly or
@@ -263,7 +263,7 @@ L}$ is then given as the average prediction error over ${\cal L}_\text{test}$
 of the model $\varphi_{{\cal L}_\text{train}}$ built on ${\cal L}_\text{train}$:
 \begin{equation}\label{eqn:test-error}
 \widehat{Err}^\text{test}(\varphi_{\cal L}) = \overline{E}(\varphi_{{\cal L}_\text{train}}, {\cal L}_\text{test})
-\end{equation}\label{ntn:err-test}
+\end{equation}
 As a rule-of-thumb,
 ${\cal L}_\text{train}$ is usually taken as $70\%$ of the samples in
 ${\cal L}$ and ${\cal L}_\text{test}$ as the remaining $30\%$, though
@@ -288,7 +288,7 @@ L}_k$ of the models $\varphi_{{\cal L}\setminus {\cal L}_k}$  learned on the
 remaining data:
 \begin{equation}\label{eqn:cv-error}
 \widehat{Err}^{CV}(\varphi_{\cal L}) = \frac{1}{K} \sum_{k=1}^K  \overline{E}(\varphi_{{\cal L}\setminus{\cal L}_k}, {\cal L}_k)
-\end{equation}\label{ntn:err-cv}
+\end{equation}
 The assumption behind this approach is that since each model $\varphi_{{\cal L}\setminus{\cal L}_k}$ is
 built using almost all ${\cal L}$, they should all be close to the model
 $\varphi_{\cal L}$ learned on the entire set. As a result the unbiased

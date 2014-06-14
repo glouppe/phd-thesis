@@ -8,16 +8,16 @@ ${\cal A}(\theta, {\cal L})$ & The model $\varphi_{\cal L}$ produced by algorith
 $b_l$ & The $l$-th value of a categorical variable \dotfill  \pageref{ntn:b_l}\\
 $c_k$ & The $k$-th class \dotfill  \pageref{ntn:c_k}\\
 $\overline{E}(\varphi_{\cal L}, {\cal L}^\prime)$ & The average prediction error of $\varphi_{\cal L}$ over ${\cal L}^\prime$ \dotfill  \pageref{ntn:E_bar}\\
-$Err(\varphi_{\cal L})$ & The generalization error of $\varphi_{\cal L}$ \dotfill  \pageref{ntn:err}\\
-$\widehat{Err}^\text{train}(\varphi_{\cal L})$ & The resubstitution estimate or training sample estimate of the generalization error of $\varphi_{\cal L}$ \dotfill  \pageref{ntn:err-train}\\
-$\widehat{Err}^\text{test}(\varphi_{\cal L})$ & The test sample estimate of the generalization error of $\varphi_{\cal L}$ \dotfill  \pageref{ntn:err-test}\\
-$\widehat{Err}^\text{CV}(\varphi_{\cal L})$ & The cross-validation  estimate of the generalization error of $\varphi_{\cal L}$ \dotfill  \pageref{ntn:err-cv}\\
+$Err(\varphi_{\cal L})$ & The generalization error of $\varphi_{\cal L}$ \dotfill  \pageref{eqn:generalization-error}\\
+$\widehat{Err}^\text{train}(\varphi_{\cal L})$ & The resubstitution estimate or training sample estimate of the generalization error of $\varphi_{\cal L}$ \dotfill  \pageref{eqn:training-error}\\
+$\widehat{Err}^\text{test}(\varphi_{\cal L})$ & The test sample estimate of the generalization error of $\varphi_{\cal L}$ \dotfill  \pageref{eqn:test-error}\\
+$\widehat{Err}^\text{CV}(\varphi_{\cal L})$ & The cross-validation  estimate of the generalization error of $\varphi_{\cal L}$ \dotfill  \pageref{eqn:cv-error}\\
 ${\cal H}$ & The space of candidate models \dotfill  \pageref{ntn:H}\\
 $i(t)$ & The impurity of node $t$ \dotfill  \pageref{ntn:i_t}, \pageref{ntn:i_t2}\\
-$i_R(t)$ & The impurity of node $t$ based on the local resubstitution estimate \dotfill \pageref{ntn:i_t_R},~\pageref{eqn:impurity:variance}\\
+$i_R(t)$ & The impurity of node $t$ based on the local resubstitution estimate \dotfill \pageref{eqn:impurity:error},~\pageref{eqn:impurity:variance}\\
 $i_H(t)$ & The entropy impurity of node $t$ \dotfill  \pageref{eqn:impurity:shannon}\\
 $i_G(t)$ & The Gini impurity of node $t$ \dotfill  \pageref{eqn:impurity:gini}\\
-$\Delta i(s, t)$ & The impurity decrease of the split $s$ at node $t$ \dotfill  \pageref{ntn:delta-i_t}\\
+$\Delta i(s, t)$ & The impurity decrease of the split $s$ at node $t$ \dotfill  \pageref{def:impurity-decrease}\\
 $J$ & The number of classes \dotfill  \pageref{ntn:J}\\
 $K$ & The number of folds in cross-validation \dotfill  \pageref{ntn:K-cv}\\
 $K(\mathbf{x}_i, \mathbf{x}_j)$ & The kernel of $\mathbf{x}_i$ and $\mathbf{x}_j$ \dotfill \pageref{ntn:kernel}, \pageref{ntn:kernel2}\\
@@ -40,10 +40,10 @@ $\varphi(\mathbf{x})$ & The prediction of $\varphi$ for the sample $\mathbf{x}$ 
 $\varphi_{\cal L}$ & A model built from ${\cal L}$ \dotfill  \pageref{ntn:varphi-L}\\
 $\varphi_B$ & A Bayes model \dotfill  \pageref{ntn:varphi-B}\\
 ${\cal Q}$ & A set ${\cal Q} \subseteq {\cal S}$ of splits of restricted structure \dotfill \pageref{ntn:Q}, \pageref{ntn:Q2}\\
-${\cal Q}(X_j)$ & The set ${\cal Q}(X_j) \subseteq {\cal Q}$ of univariate binary splits that can be defined on variable $X_j$ \dotfill \pageref{ntn:Q_X_j}, \pageref{ntn:Q_X_j2}\\
+${\cal Q}(X_j)$ & The set ${\cal Q}(X_j) \subseteq {\cal Q}$ of univariate binary splits that can be defined on variable $X_j$ \dotfill \pageref{eqn:q:ordered}, \pageref{eqn:q:categorical-cart}\\
 $s$ & A split \dotfill  \pageref{ntn:s}, \pageref{ntn:s2}\\
-$s^*$ & The best split \dotfill  \pageref{ntn:s-star}, \pageref{ntn:s-star2}\\
-$s^*_j$ & The best binary split defined on variable $X_j$\dotfill  \pageref{ntn:s-star}, \pageref{ntn:s-star_j}\\
+$s^*$ & The best split \dotfill  \pageref{ntn:s-star}, \pageref{eqn:best-best-split}\\
+$s^*_j$ & The best binary split defined on variable $X_j$\dotfill  \pageref{ntn:s-star}, \pageref{eqn:best-split-single}\\
 $s_j^v$ & The binary split $(\{\mathbf{x}|x_j \leq v\}, \{\mathbf{x} > v\})$ defined on variable $X_j$ with discretization threshold $v$ \dotfill  \pageref{ntn:s_jv}\\
 $s_t$ & The split labeling node $t$ \dotfill  \pageref{ntn:s_t}\\
 ${\cal S}$ & The set of all possible splits $s$ \dotfill  \pageref{ntn:S-all}\\
