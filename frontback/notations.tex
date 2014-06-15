@@ -7,8 +7,9 @@ ${\cal A}$ & A supervised learning algorithm \dotfill  \pageref{ntn:A}\\
 ${\cal A}(\theta, {\cal L})$ & The model $\varphi_{\cal L}$ produced by algorithm ${\cal A}$ over ${\cal L}$ and hyper-parameters $\theta$ \dotfill  \pageref{ntn:A-func}\\
 $b_l$ & The $l$-th value of a categorical variable \dotfill  \pageref{ntn:b_l}\\
 $c_k$ & The $k$-th class \dotfill  \pageref{ntn:c_k}\\
+$\mathbb{E}$ & Expectation \dotfill \\
 $\overline{E}(\varphi_{\cal L}, {\cal L}^\prime)$ & The average prediction error of $\varphi_{\cal L}$ over ${\cal L}^\prime$ \dotfill  \pageref{ntn:E_bar}\\
-$Err(\varphi_{\cal L})$ & The generalization error of $\varphi_{\cal L}$ \dotfill  \pageref{eqn:generalization-error}\\
+$Err(\varphi_{\cal L})$ & The generalization error of $\varphi_{\cal L}$ \dotfill  \pageref{eqn:generalization-error}, \pageref{eqn:4:generalization-error}\\
 $\widehat{Err}^\text{train}(\varphi_{\cal L})$ & The resubstitution estimate or training sample estimate of the generalization error of $\varphi_{\cal L}$ \dotfill  \pageref{eqn:training-error}\\
 $\widehat{Err}^\text{test}(\varphi_{\cal L})$ & The test sample estimate of the generalization error of $\varphi_{\cal L}$ \dotfill  \pageref{eqn:test-error}\\
 $\widehat{Err}^\text{CV}(\varphi_{\cal L})$ & The cross-validation  estimate of the generalization error of $\varphi_{\cal L}$ \dotfill  \pageref{eqn:cv-error}\\
@@ -24,6 +25,8 @@ $K(\mathbf{x}_i, \mathbf{x}_j)$ & The kernel of $\mathbf{x}_i$ and $\mathbf{x}_j
 $L$ & A loss function \dotfill  \pageref{ntn:L}\newline The number of values of a categorical variable \dotfill \pageref{ntn:L2}\\
 ${\cal L}$ & A learning set $(\mathbf{X}, \mathbf{y})$ \dotfill  \pageref{ntn:learning-set}\\
 ${\cal L}_t$ & The subset of node samples falling into node $t$ \dotfill  \pageref{ntn:L_t}\\
+$M$ & The number of base models in an ensemble \dotfill  \pageref{ntn:M}\\
+$\mu_{{\cal L},\theta_m}(\mathbf{x})$ & The mean prediction at $X = \mathbf{x}$ of $\varphi_{{\cal L},\theta_m}$ \dotfill \pageref{eqn:4:mu} \\
 $N$ & The number of input samples \dotfill  \pageref{ntn:N}\\
 $N_t$ & The number of node samples in node $t$ \dotfill  \pageref{ntn:N_t}\\
 $N_{ct}$ & The number of node samples of class $c$ in node $t$ \dotfill  \pageref{ntn:N_ct}\\
@@ -32,30 +35,37 @@ $p$ & The number of input variables \dotfill  \pageref{ntn:p}\\
 $p_L$ & The proportion of node samples going to $t_L$ \dotfill  \pageref{ntn:p_L}\\
 $p_R$ & The proportion of node samples going to $t_R$ \dotfill  \pageref{ntn:p_R}\\
 $p(t)$ & The estimated probability $p(X \in {\cal X}_t)=\tfrac{N_t}{N}$ \dotfill  \pageref{ntn:p_t}\\
-$p(c|t)$ & The estimated probability $p(Y=c | X \in {\cal X}_t)=\tfrac{N_{ct}}{N_t}$ of class $c$ at node $t$ \dotfill  \pageref{ntn:p_ct}\\
+$p(c|t)$ & The empirical probability estimate $p(Y=c | X \in {\cal X}_t)=\tfrac{N_{ct}}{N_t}$ of class $c$ at node $t$ \dotfill  \pageref{ntn:p_ct}\\
+$\widehat{p}_{\cal L}$ & An empirical probability estimate computed from the learning set ${\cal L}$\dotfill  \pageref{eqn:4:proba-estimates}\\
 $P(X,Y)$ & The joint probability distribution of the input variables $X=(X_1,\dots,X_p)$ and the output variable $Y$ \dotfill  \pageref{ntn:P_XY}\\
 $\varphi$ & A model or function ${\cal X} \mapsto {\cal Y}$ \dotfill  \pageref{ntn:varphi}\newline A single decision tree \dotfill  \pageref{ntn:tree}\\
 $\widetilde{\varphi}$ & The set of terminal nodes in $\varphi$ \dotfill  \pageref{ntn:varphi-leafs}\\
 $\varphi(\mathbf{x})$ & The prediction of $\varphi$ for the sample $\mathbf{x}$ \dotfill  \pageref{ntn:varphi-x}\\
 $\varphi_{\cal L}$ & A model built from ${\cal L}$ \dotfill  \pageref{ntn:varphi-L}\\
+$\varphi_{{\cal L},\theta}$ & A model built from ${\cal L}$ with random seed $\theta$ \dotfill  \pageref{ntn:varphi-Ltheta}\\
 $\varphi_B$ & A Bayes model \dotfill  \pageref{ntn:varphi-B}\\
+$\psi_{{\cal L},\theta_1,\dots,\theta_M}$ & An ensemble of $M$ models built from ${\cal L}$ and random seeds $\theta_1, \dots, \theta_M$ \dotfill \pageref{ntn:psi} \\
 ${\cal Q}$ & A set ${\cal Q} \subseteq {\cal S}$ of splits of restricted structure \dotfill \pageref{ntn:Q}, \pageref{ntn:Q2}\\
 ${\cal Q}(X_j)$ & The set ${\cal Q}(X_j) \subseteq {\cal Q}$ of univariate binary splits that can be defined on variable $X_j$ \dotfill \pageref{eqn:q:ordered}, \pageref{eqn:q:categorical-cart}\\
+$\rho(\mathbf{x})$ & The correlation coefficient between the predictions at $X=\mathbf{x}$ of two randomized models \dotfill \pageref{eqn:4:correlation} \\
 $s$ & A split \dotfill  \pageref{ntn:s}, \pageref{ntn:s2}\\
 $s^*$ & The best split \dotfill  \pageref{ntn:s-star}, \pageref{eqn:best-best-split}\\
 $s^*_j$ & The best binary split defined on variable $X_j$\dotfill  \pageref{ntn:s-star}, \pageref{eqn:best-split-single}\\
 $s_j^v$ & The binary split $(\{\mathbf{x}|x_j \leq v\}, \{\mathbf{x} > v\})$ defined on variable $X_j$ with discretization threshold $v$ \dotfill  \pageref{ntn:s_jv}\\
 $s_t$ & The split labeling node $t$ \dotfill  \pageref{ntn:s_t}\\
 ${\cal S}$ & The set of all possible splits $s$ \dotfill  \pageref{ntn:S-all}\\
+$\sigma^2_{{\cal L},\theta_m}(\mathbf{x})$ & The prediction variance at $X = \mathbf{x}$ of $\varphi_{{\cal L},\theta_m}$ \dotfill \pageref{eqn:4:sigma} \\
 $t$ & A node in a decision tree \dotfill  \pageref{ntn:node}\\
 $t_L$ & The left child of node $t$ \dotfill \pageref{ntn:t_L}, \pageref{ntn:t_L2}\\
 $t_R$ & The right child of node $t$ \dotfill \pageref{ntn:t_R}, \pageref{ntn:t_R2}\\
-$\theta$ & A vector of hyper-parameter values \dotfill  \pageref{ntn:theta}\\
+$\theta$ & A vector of hyper-parameter values \dotfill  \pageref{ntn:theta}\newline A random seed \dotfill \pageref{ntn:theta-seed}\\
 $\theta^*$ & The optimal hyper-parameters \dotfill  \pageref{ntn:theta-star}\\
 $\widehat{\theta}^*$ & The approximately optimal hyper-parameters \dotfill  \pageref{ntn:theta-star-approx}\\
+$\theta_m$ & The seed of the $m$-th model in an ensemble \dotfill  \pageref{ntn:theta-seed-m}\\
 $v$ & A discretization threshold in a binary split \dotfill  \pageref{ntn:v}\\
 $v_k$ & The $k$-th value of an ordered variable, when node samples are in sorted order \dotfill  \pageref{ntn:v_k}\\
 $v_k^\prime$ & The mid-cut point between $v_k$ and $v_{k+1}$ \dotfill  \pageref{ntn:v_k_prime}\\
+$\mathbb{V}$ & Variance \dotfill \\
 $\textbf{x}$ & A case, sample or input vector $(x_1, \dots, x_p)$ \dotfill  \pageref{ntn:sample-x}\\
 $\textbf{x}_i$ & The $i$-th input sample in ${\cal L}$ \dotfill  \pageref{ntn:sample-x_i}\\
 $x_j$ & The value of variable $X_j$ for the sample $\textbf{x}$ \dotfill  \pageref{ntn:value-x_j}\\

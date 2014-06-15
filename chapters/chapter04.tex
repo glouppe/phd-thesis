@@ -8,7 +8,7 @@ Section~\ref{sec:4:ensemble}, how aggregating randomized models through
 ensembles reduces the prediction error by decreasing the variance term in this
 decomposition. In Section~\ref{sec:4:random-forests}, we revisit random forests
 and its variants and study how randomness introduced into the decision trees
-reduces prediction error by decorrelating the decision
+reduces prediction errors by decorrelating the decision
 trees in the ensemble. Properties and features of random forests are then outlined
 in Section~\ref{sec:4:features} while their consistency
 is finally explored in Section~\ref{sec:4:consistency}.
@@ -21,7 +21,7 @@ is finally explored in Section~\ref{sec:4:consistency}.
 In section~\ref{sec:2:performance-evaluation}, we defined the generalization
 error of a model $\varphi_{\cal L}$ as its expected prediction error
 according to some loss function $L$
-\begin{equation}
+\begin{equation}\label{eqn:4:generalization-error}
 Err(\varphi_{\cal L}) = \mathbb{E}_{X,Y} \{ L(Y, \varphi_{\cal L}(X)) \}.
 \end{equation}
 Similarly, the expected prediction error of $\varphi_{\cal L}$ at $X=\mathbf{x}$
@@ -125,8 +125,8 @@ L}(\mathbf{x})$ for polynomials of degree $1$, $5$ and $15$ learned over random
 learning sets ${\cal L}$ sampled from a noisy cosinus function. Predictions
 $\mathbb{E}_{\cal L} \{ \varphi_{\cal L}(\mathbf{x}) \}$ of the average model
 are represented by the thick red lines. Predictions for the model learned over
-the learning set represented by the blue dots are represented in gray.
-Predictions of the Bayes model are shown in blue and coincide with the unnoised
+the learning set, represented by the blue dots, are represented in gray.
+Predictions of the Bayes model are shown by blue lines and coincide with the unnoised
 cosinus function that defines the regression problem. The lower plots in the
 figure illustrate the bias-variance decomposition of the expected
 generalization error of the polynomials.
@@ -181,7 +181,7 @@ satisfactory framework as in regression (for reviews, see
 
 An interesting connection with Theorem~\ref{thm:bias-variance} however is to
 remark that classification algorithms usually work by computing estimates
-\begin{equation}
+\begin{equation}\label{eqn:4:proba-estimates}
 \widehat{p}_{\cal L}(Y=c|X=\mathbf{x})
 \end{equation}
 of the conditional class probability (e.g.,
@@ -205,6 +205,7 @@ distribution of $Y$ at $X=\mathbf{x}$.)
 \begin{align}
 & \mathbb{E}_{\cal L}\{ \mathbb{E}_{Y|X=\mathbf{x}} \{ 1(\varphi_{\cal L}(\mathbf{x}) \neq Y) \} \}  \\
 &= P_{{\cal L}}(\varphi_{\cal L}(\mathbf{x}) \neq Y) \nonumber \\
+&= 1 - P_{{\cal L}}(\varphi_{\cal L}(\mathbf{x}) = Y) \nonumber \\
 &= \begin{aligned}[t]
     1 &- P_{\cal L}(\varphi_{\cal L}(\mathbf{x}) = \varphi_B(\mathbf{x})) P(\varphi_B(\mathbf{x})=Y) \nonumber \\
       &- P_{\cal L}(\varphi_{\cal L}(\mathbf{x}) \neq \varphi_B(\mathbf{x})) P(\varphi_B(\mathbf{x})\neq Y) \nonumber
@@ -233,7 +234,7 @@ of the decision threshold (at 0.5) of the distribution of the estimate.
 \begin{figure}
     \centering
     \includegraphics[width=0.9\textwidth]{figures/ch4_estimate_distribution.pdf}
-    \caption{Probability distribution of $\widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x}))$.}
+    \caption{Probability distribution of the estimate $\widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x}))$.}
     \label{fig:estimate-distribution}
 \end{figure}
 
@@ -246,7 +247,7 @@ that the estimate $\widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x}))$ is normally di
 then probability~\ref{eqn:4:prob-diff-from-bayes} can be computed explicitly
 from its mean and variance:
 \begin{equation}
-P_{\cal L}(\widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x})) < 0.5) = \Phi(\frac{0.5 - \mathbb{E}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x})) \}}{\sqrt{\text{Var}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x})) \}}})
+P_{\cal L}(\widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x})) < 0.5) = \Phi(\frac{0.5 - \mathbb{E}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x})) \}}{\sqrt{\mathbb{V}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x})) \}}})
 \end{equation}
 where $\Phi(x)=\frac{1}{\sqrt{2\pi}} \int_{-\infty}^x \exp(-\frac{t^2}{2}) dt$
 is the cumulative distribution function of the standard normal distribution.
@@ -260,7 +261,7 @@ generalization error $\mathbb{E}_{\cal L} \{ Err(\varphi_{\cal L}(\mathbf{x}))
 
 \begin{align}
 \mathbb{E}_{\cal L} \{ Err(\varphi_{\cal L}(\mathbf{x})) \} &= P(\varphi_B(\mathbf{x})\neq Y) \\
-                                                            &+ \Phi(\frac{0.5 - \mathbb{E}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x})) \}}{\sqrt{\text{Var}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x})) \}}}) (2 P(\varphi_B(\mathbf{x}) = Y) - 1) \nonumber
+                                                            &+ \Phi(\frac{0.5 - \mathbb{E}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x})) \}}{\sqrt{\mathbb{V}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x})) \}}}) (2 P(\varphi_B(\mathbf{x}) = Y) - 1) \nonumber
 \end{align}
 \end{theorem}
 
@@ -272,13 +273,13 @@ has important consequences:
 \item When the expected probability estimate $\mathbb{E}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x}) \}$
       for the true majority class is greater than $0.5$, a reduction of
       variance of the estimate results in a decrease of the total misclassification
-      error. If $\text{Var}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x})) \} \to 0$,
+      error. If $\mathbb{V}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x})) \} \to 0$,
       then $\Phi \to 0$ and the expected generalization error tends to the error of the Bayes model.
       In particular, the generalization error can be driven to its minimum
       value whatever the regression bias of the estimate (at least as long as $\mathbb{E}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x}) \} > 0.5$).
 \item Conversely, when $\mathbb{E}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x}) \} < 0.5$,
       a decrease of variance might actually increase the total misclassification error.
-      If $\text{Var}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x})) \} \to 0$,
+      If $\mathbb{V}_{\cal L}\{ \widehat{p}_{\cal L}(Y=\varphi_B(\mathbf{x})) \} \to 0$,
       then $\Phi \to 1$ and the error is maximal.
 \end{itemize}
 
@@ -305,7 +306,7 @@ next sections.
 
 Given a learning set ${\cal L}$, a learning algorithm ${\cal A}$
 deterministically produces a model ${\cal A}(\theta, {\cal L})$, denoted
-$\varphi_{{\cal L},\theta}$, where $\theta$ are hyper-parameters controlling
+$\varphi_{{\cal L},\theta}$\label{ntn:varphi-Ltheta}, where $\theta$ are hyper-parameters controlling
 the execution of ${\cal A}$. Let us assume that $\theta$ includes a random seed
 parameter for mimicking some stochastic behavior in ${\cal A}$, hence producing
 (pseudo-)randomized models that are more or less different from one random seed
@@ -321,9 +322,9 @@ Accordingly, theorems~\ref{thm:bias-variance} and \ref{thm:bias-variance:classif
 naturally extend to the expected generalization error
 $\mathbb{E}_{{\cal L},\theta} \{ Err(\varphi_{{\cal L},\theta}(\mathbf{x})) \}$
 of the randomized model $\varphi_{{\cal L},\theta}$ by replacing expectations
-$\mathbb{E}_{\cal L} \{ . \}$ and variances $\text{Var}_{\cal L} \{ . \}$ with
+$\mathbb{E}_{\cal L} \{ . \}$ and variances $\mathbb{V}_{\cal L} \{ . \}$ with
 their respective counterparts $\mathbb{E}_{{\cal L},\theta} \{ . \}$ and
-$\text{Var}_{{\cal L},\theta} \{ . \}$ computed over the joint distribution of
+$\mathbb{V}_{{\cal L},\theta} \{ . \}$ computed over the joint distribution of
 ${\cal L}$ and $\theta$. In regression, the bias-variance decomposition
 of the squared error loss thus becomes:
 \begin{equation}
@@ -351,11 +352,11 @@ achieve better performance than a single non-randomized model.
 
 \subsection{Combining randomized models}
 
-Let us assume a set of $M$ randomized models $\{\varphi_{{\cal L}, \theta_m} |
+Let us assume a set of $M$\label{ntn:M} randomized models $\{\varphi_{{\cal L}, \theta_m} |
 m = 1, \dots, M \}$, all learned on the same data ${\cal L}$ but each built
-from an independent random seed $\theta_m$. Ensemble methods work by combining
+from an independent random seed $\theta_m$\label{ntn:theta-seed}\label{ntn:theta-seed-m}. Ensemble methods work by combining
 the predictions of these models into a new \textit{ensemble} model, denoted
-$\psi_{{\cal L},\theta_1,\dots,\theta_M}$, such that the expected
+$\psi_{{\cal L},\theta_1,\dots,\theta_M}$\label{ntn:psi}, such that the expected
 generalization error of the ensemble is (hopefully) smaller than the expected
 generalization error of the individual randomized models.
 
@@ -440,8 +441,8 @@ To simplify notations in the analysis below, let us denote the mean prediction a
 $X=\mathbf{x}$ of a single randomized model $\varphi_{{\cal L},\theta_m}$ and its
 respective prediction variance as:
 \begin{align}
-\mu_{{\cal L},\theta_m}(\mathbf{x}) &= \mathbb{E}_{{\cal L},\theta_m} \{ \varphi_{{\cal L},\theta_m}(\mathbf{x}) \} \\
-\sigma^2_{{\cal L},\theta_m}(\mathbf{x}) &= \text{Var}_{{\cal L},\theta_m} \{ \varphi_{{\cal L},\theta_m}(\mathbf{x}) \}
+\mu_{{\cal L},\theta_m}(\mathbf{x}) &= \mathbb{E}_{{\cal L},\theta_m} \{ \varphi_{{\cal L},\theta_m}(\mathbf{x}) \} \label{eqn:4:mu} \\
+\sigma^2_{{\cal L},\theta_m}(\mathbf{x}) &= \mathbb{V}_{{\cal L},\theta_m} \{ \varphi_{{\cal L},\theta_m}(\mathbf{x}) \label{eqn:4:sigma} \}
 \end{align}
 
 \subsubsection{Regression}
@@ -465,7 +466,7 @@ is in fact the same as the average prediction of the corresponding randomized in
 &= \frac{1}{M} \sum_{m=1}^M \mathbb{E}_{{\cal L},\theta_m} \{ \varphi_{{\cal L},\theta_m}(\mathbf{x}) \} \nonumber \\
 &= \mu_{{\cal L},\theta}(\mathbf{x})
 \end{align}
-since random variables $\theta_m$ are independent but drawn from the
+since random variables $\theta_m$ are independent and all follow the
 same distribution. As a result,
 \begin{equation}
 \text{bias}^2(\mathbf{x}) = (\varphi_B(\mathbf{x}) - \mu_{{\cal L},\theta}(\mathbf{x}))^2,
@@ -487,7 +488,7 @@ coefficient, it comes:
 &= \frac{\mathbb{E}_{{\cal L},\theta^\prime,\theta^{\prime\prime}} \{ \varphi_{{\cal L},\theta^\prime}(\mathbf{x}) \varphi_{{\cal L},\theta^{\prime\prime}}(\mathbf{x}) - \varphi_{{\cal L},\theta^\prime}(\mathbf{x}) \mu_{{\cal L},\theta^{\prime\prime}}(\mathbf{x}) - \varphi_{{\cal L},\theta^{\prime\prime}}(\mathbf{x}) \mu_{{\cal L},\theta^\prime}(\mathbf{x}) + \mu_{{\cal L},\theta^\prime}(\mathbf{x}) \mu_{{\cal L},\theta^{\prime\prime}}(\mathbf{x}) \}}{\sigma^2_{{\cal L},\theta}(\mathbf{x})} \nonumber \\
 &= \frac{\mathbb{E}_{{\cal L},\theta^\prime,\theta^{\prime\prime}} \{ \varphi_{{\cal L},\theta^\prime}(\mathbf{x}) \varphi_{{\cal L},\theta^{\prime\prime}}(\mathbf{x}) \} - \mu^2_{{\cal L},\theta}(\mathbf{x})}{\sigma^2_{{\cal L},\theta}(\mathbf{x})} \label{eqn:4:correlation}
 \end{align}
-since random variables $\theta^\prime$ and $\theta^{\prime\prime}$ are drawn from the same
+since random variables $\theta^\prime$ and $\theta^{\prime\prime}$ follow the same
 distribution. Intuitively, $\rho(\mathbf{x})$ represents the strength of the
 random perturbations introduced in the learning algorithm. When it is close to
 $1$, predictions of two randomized models are highly correlated, suggesting
@@ -501,7 +502,7 @@ perfectly random.
 From Equation~\ref{eqn:4:correlation}, the variance of $\psi_{{\cal
 L},\theta_1,\dots,\theta_M}(\mathbf{x})$ can now be derived as follows:
 \begin{align}
-\text{var}(\mathbf{x}) &= \text{Var}_{{\cal L},\theta_1,\dots,\theta_M} \{ \frac{1}{M} \sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x})  \} \nonumber \\
+\text{var}(\mathbf{x}) &= \mathbb{V}_{{\cal L},\theta_1,\dots,\theta_M} \{ \frac{1}{M} \sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x})  \} \nonumber \\
 &= \frac{1}{M^2} \Bigg[ \mathbb{E}_{{\cal L},\theta_1,\dots,\theta_M} \{ (\sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x}))^2 \} - \mathbb{E}_{{\cal L},\theta_1,\dots,\theta_M} \{ \sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x}) \}^2 \Bigg] \nonumber \\
 &= \frac{1}{M^2} \Bigg[ \mathbb{E}_{{\cal L},\theta_1,\dots,\theta_M} \{ \sum_{i,j} \varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x}) \} - (M \mu_{{\cal L},\theta}(\mathbf{x}))^2 \Bigg] \nonumber \\
 &= \frac{1}{M^2} \Bigg[ \sum_{i,j} \mathbb{E}_{{\cal L},\theta_i,\theta_j} \{  \varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x}) \} - M^2 \mu^2_{{\cal L},\theta}(\mathbf{x}) \Bigg] \nonumber \\
@@ -556,7 +557,7 @@ problem is to find the right trade-off between randomness and bias.
 \begin{remark}{Alternative variance decomposition}
 \citet{geurts:2002} alternatively decomposes the ensemble variance as
 \begin{equation}\label{eqn:4:variance-geurts}
-\text{var}(\mathbf{x}) = \text{Var}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \} + \frac{1}{M} \mathbb{E}_{\cal L} \{ \text{Var}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}.
+\text{var}(\mathbf{x}) = \mathbb{V}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \} + \frac{1}{M} \mathbb{E}_{\cal L} \{ \mathbb{V}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}.
 \end{equation}
 The first term of this decomposition is the variance due to the randomness
 of the learning set ${\cal L}$, averaged over the random perturbations due to $\theta$. It
@@ -572,17 +573,17 @@ to ensembling.
 Decompositions \ref{eqn:4:variance-hastie} and \ref{eqn:4:variance-geurts} are equivalent if Equation~\ref{eqn:4:correlation}
 is equivalent to
 \begin{equation}\label{eqn:4:correlation-bis}
-\rho(\mathbf{x}) = \frac{\text{Var}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}}{\text{Var}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \} + \mathbb{E}_{\cal L} \{ \text{Var}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}}.
+\rho(\mathbf{x}) = \frac{\mathbb{V}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}}{\mathbb{V}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \} + \mathbb{E}_{\cal L} \{ \mathbb{V}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}}.
 \end{equation}
 From the law of total variance, the denominator of Equation~\ref{eqn:4:correlation} expands
 to the denominator of Equation~\ref{eqn:4:correlation-bis}:
 \begin{equation}
-\sigma^2_{{\cal L},\theta}(\mathbf{x}) = \text{Var}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \} + \mathbb{E}_{\cal L} \{ \text{Var}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}
+\sigma^2_{{\cal L},\theta}(\mathbf{x}) = \mathbb{V}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \} + \mathbb{E}_{\cal L} \{ \mathbb{V}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}
 \end{equation}
 Similarly, the numerator of Equation~\ref{eqn:4:correlation-bis} can be reexpressed
 as the numerator of Equation~\ref{eqn:4:correlation}, thereby proving the equivalence:
 \begin{align}
-& \text{Var}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \} \nonumber \\
+& \mathbb{V}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \} \nonumber \\
 &= \mathbb{E}_{\cal L} \{ (\mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} - \mathbb{E}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x})\} \})^2 \} \nonumber \\
 &= \mathbb{E}_{\cal L} \{ (\mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} - \mu_{{\cal L},\theta}(\mathbf{x}))^2 \} \nonumber \\
 &= \mathbb{E}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \}^2 \} - \mu^2_{{\cal L},\theta}(\mathbf{x}) \nonumber \\
@@ -613,7 +614,7 @@ randomized model.
 \section{Random Forests}
 \label{sec:4:random-forests}
 
-Random forests~\footnote{The term
+Random forests\footnote{The term
 \textit{random forests}, without capitals, is used to denote any ensemble of decision
 trees. Specific variants are referred to using their original designation,
 denoted with capitals. In particular, the ensemble method due to
