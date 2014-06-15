@@ -73,11 +73,12 @@ pairs of input vectors and output values $(\mathbf{x}_1, y_1), ...,
 (\mathbf{x}_N, y_N)$, where $\mathbf{x}_i \in {\cal X}$ and $y_i \in {\cal Y}$.
 \end{definition}
 
-Equivalently, a set of $p$-input vectors $\mathbf{x}_i$\label{ntn:sample-x_i} (for $i=1, ..., N$) can
-be denoted by a $N\times p$ matrix $\mathbf{X}$\label{ntn:matrix-X}, whose rows $i=1, ..., N$
-correspond to input vectors $\mathbf{x}_i$ and columns $j=1, ..., p$ to input
-variables $X_j$. Similarly, the corresponding output values can be written as a
-vector $\mathbf{y}=(y_1, ..., y_N)$\label{ntn:vector-y}.
+Equivalently, a set of $p$-input vectors $\mathbf{x}_i$\label{ntn:sample-x_i}
+(for $i=1, ..., N$) can be denoted by a $N\times p$ matrix
+$\mathbf{X}$\label{ntn:matrix-X}, whose rows $i=1, ..., N$ correspond to input
+vectors $\mathbf{x}_i$ and columns $j=1, ..., p$ to input variables $X_j$.
+Similarly, the corresponding output values can be written as a vector
+$\mathbf{y}=(y_1, ..., y_N)$\label{ntn:vector-y}.
 
 \begin{remark}{Data representation}
 For optimal implementations of machine learning algorithms, data needs to
@@ -99,14 +100,13 @@ are close to their original textbook formulation, thereby making them easier to 
 understand and maintain. \end{remark}
 
 In this framework, the supervised learning task can be stated as learning a
-function $\varphi: {\cal X} \mapsto {\cal Y}$\label{ntn:varphi} from a learning set ${\cal
-L}=(\mathbf{X}, \mathbf{y})$. The objective is
-to find a model such that its predictions $\varphi(\mathbf{x})$\label{ntn:varphi-x}, also denoted
-by the variable $\hat{Y}$, are as good as possible. If $Y$ is a categorical
+function $\varphi: {\cal X} \mapsto {\cal Y}$\label{ntn:varphi} from a learning
+set ${\cal L}=(\mathbf{X}, \mathbf{y})$. The objective is to find a model such
+that its predictions $\varphi(\mathbf{x})$\label{ntn:varphi-x}, also denoted by
+the variable $\hat{Y}$, are as good as possible. If $Y$ is a categorical
 variable then the learning task is a classification problem. If $Y$ is
 numerical variable, then learning task is a regression problem. Without loss of
-generality, the resulting models can be defined as
-follows:
+generality, the resulting models can be defined as follows:
 
 \begin{definition}
 A \emph{classifier} or \emph{classification rule} is a function $\varphi: {\cal X}
@@ -591,11 +591,11 @@ Nested $K$-fold cross-validation protocol for both model selection and evaluatio
 \section{Classes of learning algorithms}
 \label{sec:2:classes-of-algorithms}
 
-Before proceeding in the next chapters, and for the rest of
-this work, to an in-depth analysis of the class of tree-based methods,  we
-briefly review in this section some of the other learning algorithms that have
-matured in the field, including linear methods, support vector machines, neural networks and nearest
-neighbor methods.
+Before proceeding in the next chapters, and for the rest of this work, to an
+in-depth analysis of the class of tree-based methods,  we briefly review in
+this section some of the other learning algorithms that have matured in the
+field, including linear methods, support vector machines, neural networks and
+nearest neighbor methods.
 
 \subsection{Linear methods}
 
@@ -618,11 +618,12 @@ c_2 & \text{otherwise}
 \end{equation}
 
 Linear methods come in many flavors but mostly differ from each other in the
-way they estimate the coefficients $b$ and $w_j$ (for $j=1,\dots,p$), usually using some specific
-optimization procedure to minimize a specific criterion. Among all of them, the
-most famous is the method of \textit{least squares}. It consists in finding the
-$b$ and $w_j$ coefficients that minimize the resubstitution estimate
-(Equation~\ref{eqn:training-error}) using the squared error loss.
+way they estimate the coefficients $b$ and $w_j$ (for $j=1,\dots,p$), usually
+using some specific optimization procedure to minimize a specific criterion.
+Among all of them, the most famous is the method of \textit{least squares}. It
+consists in finding the $b$ and $w_j$ coefficients that minimize the
+resubstitution estimate (Equation~\ref{eqn:training-error}) using the squared
+error loss.
 
 Despite an apparent simplicity, linear methods often provide reliable
 predictions and an interpretable description of how the input variables affect
@@ -636,12 +637,13 @@ on (non-linear) transformations of the input variables. For more details on
 \subsection{Support vector machines}
 
 When data points from the learning set are linearly separable, there exist
-several hyperplanes (i.e., several linear models) that are in fact equally as good when evaluated in resubstitution. In
-generalization however, these hyperplanes are usually not equivalent. As illustrated in
+several hyperplanes (i.e., several linear models) that are in fact equally as
+good when evaluated in resubstitution. In generalization however, these
+hyperplanes are usually not equivalent. As illustrated in
 Figure~\ref{fig:hyperplane}, a good separation is intuitively achieved when the
 distance (also known as the \textit{margin}) to the nearest training data
-points is as large as possible, since in general the larger the margin the lower the
-generalization error of the model.
+points is as large as possible, since in general the larger the margin the
+lower the generalization error of the model.
 
 \begin{figure}
     \centering
@@ -681,10 +683,11 @@ from which the final linear model can finally be expressed.
 Support vector machines extend to non-linear classification by projecting the
 original input space into a high-dimensional space (the so-called
 \textit{kernel trick}), where a separating hyperplane can hopefully be found.
-Interestingly, the dual optimization problem is exactly the same, except that the dot product
-$\mathbf{x}_i\cdot\mathbf{x}_j$ is replaced by a \textit{kernel}
-$K(\mathbf{x}_i, \mathbf{x}_j)$\label{ntn:kernel}, which corresponds the dot product of
-$\mathbf{x}_i$ and $\mathbf{x}_j$ in the new space.
+Interestingly, the dual optimization problem is exactly the same, except that
+the dot product $\mathbf{x}_i\cdot\mathbf{x}_j$ is replaced by a
+\textit{kernel} $K(\mathbf{x}_i, \mathbf{x}_j)$\label{ntn:kernel}, which
+corresponds the dot product of $\mathbf{x}_i$ and $\mathbf{x}_j$ in the new
+space.
 
 
 \subsection{Neural networks}

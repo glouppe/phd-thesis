@@ -306,12 +306,13 @@ next sections.
 
 Given a learning set ${\cal L}$, a learning algorithm ${\cal A}$
 deterministically produces a model ${\cal A}(\theta, {\cal L})$, denoted
-$\varphi_{{\cal L},\theta}$\label{ntn:varphi-Ltheta}, where $\theta$ are hyper-parameters controlling
-the execution of ${\cal A}$. Let us assume that $\theta$ includes a random seed
-parameter for mimicking some stochastic behavior in ${\cal A}$, hence producing
-(pseudo-)randomized models that are more or less different from one random seed
-to another. (We defer the discussion on specific random perturbations in the
-case of decision trees to Section~\ref{sec:4:random-forests}.)
+$\varphi_{{\cal L},\theta}$\label{ntn:varphi-Ltheta}, where $\theta$ are
+hyper-parameters controlling the execution of ${\cal A}$. Let us assume that $\theta$
+includes a random seed parameter for mimicking some stochastic behavior in
+${\cal A}$, hence producing (pseudo-)randomized models that are more or less
+different from one random seed to another. (We defer the discussion on specific
+random perturbations in the case of decision trees to Section~\ref{sec:4
+:random-forests}.)
 
 In this context, the bias-variance decomposition can be extended to account for
 everything that is random, hence considering both ${\cal L}$ and $\theta$ as
