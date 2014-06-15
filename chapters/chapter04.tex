@@ -653,12 +653,12 @@ simultaneously maintaining a low bias in the randomized decision trees.
     $\varphi_{\cal L}$. As such, \textit{Bagging}  consists in
     approximating $\mathbb{E}_{\cal L}\{ \varphi_{\cal L} \}$  by combining
     models built from \textit{bootstrap samples}~\citep{efron:1979} ${\cal
-    L}^m$ (for $m=1,\dots,M$) of the learning set ${\cal L}$. The $\{ {\cal
+    L}^m$\label{ntn:L_m} (for $m=1,\dots,M$) of the learning set ${\cal L}$. The $\{ {\cal
     L}^m \}$ form replicates of ${\cal L}$, each consisting of $N$ cases $(\mathbf{x},y)$, drawn
     at random but \textit{with replacement} from ${\cal L}$.
 
     Note that even
-    though $|{\cal L}|=|{\cal L}^m|=N$, $37\%$ of the couples from ${\cal L}$
+    though $|{\cal L}|=|{\cal L}^m|=N$, $37\%$ of the couples $(\mathbf{x},y)$ from ${\cal L}$
     are on average missing in the bootstrap replicates. Indeed, after $N$ draws
     with replacement, the probability of never have been selected is
     \begin{equation}
@@ -693,7 +693,7 @@ simultaneously maintaining a low bias in the randomized decision trees.
     searching for the best split at each node over a random subsample of the
     variables.
 
-    Denoting $K \leq p$ (also known as \texttt{mtry} or
+    Denoting $K \leq p$\label{ntn:K-split} (also known as \texttt{mtry} or
     \texttt{max\_features}) the number of variables effectively considered at
     each node, this variant replaces Algorithm~\ref{algo:findsplit}
     with the following randomized alternative:
@@ -776,7 +776,7 @@ simultaneously maintaining a low bias in the randomized decision trees.
         \State Draw $(\mathbf{x}_1,y_1), (\mathbf{x}_2,y_2) \in {\cal L}_t$ such that $y_1 \neq y_2$
         \State Draw $\alpha$ uniformly at random from $[0,1]$
         \State $v = \alpha x_{1,j} + (1 -\alpha) x_{2, j}$
-        \State \Return $s^v$
+        \State \Return $s^v_j$
     \EndFunction
     \end{algorithmic}
     }
@@ -816,7 +816,7 @@ simultaneously maintaining a low bias in the randomized decision trees.
         \State $\min_j = \min(\{ x_{i,j} | (\mathbf{x}_i,y_i) \in {\cal L}_t \})$
         \State $\max_j = \max(\{ x_{i,j} | (\mathbf{x}_i,y_i) \in {\cal L}_t \})$
         \State Draw $v$ uniformly at random from $[\min_j, \max_j[$
-        \State \Return $s^v$
+        \State \Return $s^v_j$
     \EndFunction
     \end{algorithmic}
     }
@@ -959,7 +959,7 @@ $(\mathbf{x}_i,y_i)$. That is, in regression,
 \begin{align}\label{eqn:oob-error}
 \widehat{Err}^\text{OOB}(\psi_{\cal L}) &= \frac{1}{N} \sum_{(\mathbf{x}_i,y_i) \in {\cal L}} L(\frac{1}{M^{-i}} \sum_{l=1}^{M^{-i}} \varphi_{{\cal L}^{m_{k_l}}}(\mathbf{x}_i), y_i),
 \end{align}
-where $m_{k_1}, \dots, m_{k_{M^{-i}}}$ denote the indices of the trees that
+where $m_{k_1}, \dots, m_{k_{M^{-i}}}$ denote the indices of $M^{-i}$ the trees that
 have been built from bootstrap replicates that do not include $(\mathbf{x}_i,
 y_i)$. For classification, the out-of-bag estimate of the generalization error is similar to
 Equation~\ref{eqn:oob-error}, except that the out-of-bag average prediction is
@@ -1115,9 +1115,9 @@ several mechanisms for dealing with this issue.
     The simplest strategy is to explicitely model missing values in the
     structure of decision trees by considering ternary splits instead of binary
     splits. That is, partition $t$ into $t_L$, $t_R$ and $t_M$, such that $t_L$
-    and $t_R$ are defined from a binary split $X_t \leq v$, for all node
-    samples where the value of $X_t$ is known, and such that $t_M$ contain all node
-    samples for which the value of $X_t$ is missing.
+    and $t_R$ are defined from a binary split $s_j^v : X_j \leq v$, for all node
+    samples where the value of $X_j$ is known, and such that $t_M$ contain all node
+    samples for which the value of $X_j$ is missing.
 
 \item \textit{Propagate in both child nodes}\hfill\\
     An alternative strategy is to  propagate samples
@@ -1128,7 +1128,7 @@ several mechanisms for dealing with this issue.
 
 \item \textit{Imputation.}\hfill\\
     Finally, random forests also offer several mechanisms for imputing missing
-    values. The first approach, due to \citep{breiman:2002}, consists first in
+    values. A simple approach, due to \citep{breiman:2002}, consists first in
     filling missing values with a rough and inaccurate approximation (e.g., the
     median). Then build a random forest on the completed data and update the
     missing values of each sample by the weighted mean value over the samples

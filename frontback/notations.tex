@@ -13,6 +13,7 @@ $Err(\varphi_{\cal L})$ & The generalization error of $\varphi_{\cal L}$ \dotfil
 $\widehat{Err}^\text{train}(\varphi_{\cal L})$ & The resubstitution estimate or training sample estimate of the generalization error of $\varphi_{\cal L}$ \dotfill  \pageref{eqn:training-error}\\
 $\widehat{Err}^\text{test}(\varphi_{\cal L})$ & The test sample estimate of the generalization error of $\varphi_{\cal L}$ \dotfill  \pageref{eqn:test-error}\\
 $\widehat{Err}^\text{CV}(\varphi_{\cal L})$ & The cross-validation  estimate of the generalization error of $\varphi_{\cal L}$ \dotfill  \pageref{eqn:cv-error}\\
+$\widehat{Err}^\text{OOB}(\psi_{\cal L})$ & The out-of-bag estimate of the generalization error of $\psi_{\cal L}$ \dotfill  \pageref{eqn:oob-error}\\
 ${\cal H}$ & The space of candidate models \dotfill  \pageref{ntn:H}\\
 $i(t)$ & The impurity of node $t$ \dotfill  \pageref{ntn:i_t}, \pageref{ntn:i_t2}\\
 $i_R(t)$ & The impurity of node $t$ based on the local resubstitution estimate \dotfill \pageref{eqn:impurity:error},~\pageref{eqn:impurity:variance}\\
@@ -20,10 +21,11 @@ $i_H(t)$ & The entropy impurity of node $t$ \dotfill  \pageref{eqn:impurity:shan
 $i_G(t)$ & The Gini impurity of node $t$ \dotfill  \pageref{eqn:impurity:gini}\\
 $\Delta i(s, t)$ & The impurity decrease of the split $s$ at node $t$ \dotfill  \pageref{def:impurity-decrease}\\
 $J$ & The number of classes \dotfill  \pageref{ntn:J}\\
-$K$ & The number of folds in cross-validation \dotfill  \pageref{ntn:K-cv}\\
+$K$ & The number of folds in cross-validation \dotfill  \pageref{ntn:K-cv} \newline The number of input variables drawn at each node for finding a split \dotfill \pageref{ntn:K-split} \\
 $K(\mathbf{x}_i, \mathbf{x}_j)$ & The kernel of $\mathbf{x}_i$ and $\mathbf{x}_j$ \dotfill \pageref{ntn:kernel}, \pageref{ntn:kernel2}\\
 $L$ & A loss function \dotfill  \pageref{ntn:L}\newline The number of values of a categorical variable \dotfill \pageref{ntn:L2}\\
 ${\cal L}$ & A learning set $(\mathbf{X}, \mathbf{y})$ \dotfill  \pageref{ntn:learning-set}\\
+${\cal L}^m$ & The $m$-th bootstrap replicate of ${\cal L}$ \dotfill  \pageref{ntn:L_m}\\
 ${\cal L}_t$ & The subset of node samples falling into node $t$ \dotfill  \pageref{ntn:L_t}\\
 $M$ & The number of base models in an ensemble \dotfill  \pageref{ntn:M}\\
 $\mu_{{\cal L},\theta_m}(\mathbf{x})$ & The mean prediction at $X = \mathbf{x}$ of $\varphi_{{\cal L},\theta_m}$ \dotfill \pageref{eqn:4:mu} \\
