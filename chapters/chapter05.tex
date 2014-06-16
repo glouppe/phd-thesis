@@ -794,7 +794,7 @@ defined below:
 \item \texttt{threshold} (array of $T$ reals):\hfill\\
     Store the cut-off value $\texttt{threshold[t]} \in \mathbb{R}$ used for splitting  node \texttt{t}.
 \item \texttt{impurity} (array of $T$ reals):\hfill\\
-    Store the impurity $\Delta i(s,t)$ at node \texttt{t}, as computed on the learning set ${\cal L}$.
+    Store the impurity $i(t)$ at node \texttt{t}, as computed on the learning set ${\cal L}$.
 \item \texttt{n\_samples} (array of $T$ integers or reals):\hfill\\
     Store the (weighted) number \texttt{n\_samples[t]} of learning samples reaching node \texttt{t}.
 \item \texttt{value} (array of $T\times J$ reals or $T$ reals):\hfill\\
@@ -1011,7 +1011,7 @@ algorithm should be considered with care to obtain an efficient implementation:
     to reduce running times from $O(N \log N)$ to $O(N H)$, where $H$ is the
     Shannon entropy defined on the frequencies of the values to be sorted. As a
     consequence, in the case of many duplicates (i.e., when $H=O(1)$),
-    $c(N)=O(N)$ and using 3-way Quicksort for sorting the sample indices in
+    $C(N)=O(N)$ and using 3-way Quicksort for sorting the sample indices in
     fact reduces the overall complexity of Random Forests to the asymptotic
     complexity of Extremely Randomized Trees (see Section~\ref{sec:5:complexity-fit}).
 
@@ -1040,7 +1040,7 @@ algorithm should be considered with care to obtain an efficient implementation:
     between  exact best splits (as in Algorithm~\ref{algo:findsplit:x_j}) and
     random splits (as in Algorithm~\ref{algo:findsplit:et}), an intermediate
     and pragmatic solution is therefore to consider approximations of the best splits.
-    The two most strategies are based on \textit{subsampling} and \textit{binning}:
+    The two most common strategies are based on \textit{subsampling} and \textit{binning}:
 
     \begin{itemize}
     \item Let $N_0$ denote an upper limit on the node sample size. If $N_t > N_0$,
@@ -1090,7 +1090,7 @@ algorithm should be considered with care to obtain an efficient implementation:
     $\smash{\sigma^j_1,\dots,\sigma^j_{\widetilde{N}_{t_R}}}$, which can be done in
     $O(p\widetilde{N})$. In total, the within-node complexity is
     \begin{equation}
-    c(\widetilde{N}) = O(K\widetilde{N} + p\widetilde{N}) = O(p\widetilde{N}).
+    C(\widetilde{N}) = O(K\widetilde{N} + p\widetilde{N}) = O(p\widetilde{N}).
     \end{equation} Using this
     alternative strategy, the time complexity of RF for the best, the worst and the
     average cases is respectively $O(Mp\widetilde{N}\log \widetilde{N})$,
