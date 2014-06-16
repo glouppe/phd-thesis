@@ -1172,15 +1172,13 @@ Y = 10 \sin(\pi X_1 X_2) + 20(X_3 - 0.48)^2 + 10 X_4 + 5 X_5 + \epsilon
 where $\epsilon$ is ${\cal N}(0, 1)$. We study the effects of the number $M$ of
 trees in the forest, the number $N$ of input samples, the number $p$ of input
 variables (by adding new irrelevant variables), the number $K$ of variables drawn at each node and the effects of
-using bootstrap replicates ${\cal L}^m$ instead of ${\cal L}$, each with respect to
-the time required for building the forest, the average depth of the leaves and
-the mean squared error of the forest. Hyper-parameters are studied independently
+using bootstrap replicates ${\cal L}^m$ instead of ${\cal L}$. Hyper-parameters are studied independently
 for both (fully developed) Random Forests (RF) and Extremely Randomized Trees (ETs) built
 on $N=1000$ learning samples of $p=10$ input variables, with $M=250$ trees and $K=\sqrt{p}$ set by
 default. Statistics reported below are averages over 10 runs. Figures~\ref{fig:5:artificial:M}-\ref{fig:5:artificial:bootstrap}
 all illustrate the effect of one the hyper-parameters with respect to the time required for building
 a forest (on the left plots), the average depth of the trees (in the middle plots)
-and the error of the ensemble (on the right plots).
+and the mean squared error of the ensemble (on the right plots).
 
 Figure~\ref{fig:5:artificial:M} first demonstrates the effect of the number $M$
 of trees. As expected, the time complexity of the induction procedure is
@@ -1195,7 +1193,7 @@ variance reduction from Chapter~\ref{ch:forest}.
 Figure~\ref{fig:5:artificial:N} considers the effect of the number $N$ of
 training samples. As shown on the left plot, building times grow slightly
 faster than linearly, which appears to confirm the respective $O(N\log^2 N)$
-and $O(N\log N)$ dependencies of RF and ETs with size of the learning set (as
+and $O(N\log N)$ dependencies of RF and ETs with the size of the learning set (as
 derived in Section~\ref{sec:5:complexity-fit}). Similarly,  the middle plot
 confirms that the average depth of the leaves grows in $O(\log N)$ with $N$ (as
 shown in Section~\ref{sec:5:complexity-predict}). As expected, the right plot
