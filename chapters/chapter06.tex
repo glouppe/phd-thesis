@@ -51,7 +51,7 @@ the measure of importance of a variable $X_j$ as
 \begin{equation}
 \text{Imp}(X_j) = \sum_{t\in \varphi} \Delta I(\tilde{s}^j_t, t),
 \end{equation}
-where $\tilde{s}^j_t$ is the best \textit{surrogate split}
+where $\tilde{s}^j_t$\label{ntn:s-surrogate} is the best \textit{surrogate split}
 for $s_t$, that is the closest split defined on variable $X_j$ that can mimic the actual
 split $s_t$ defined at node $t$. The use of surrogate splits was proposed to
 account for masking effects: it may indeed happen that some variable $X_{j_2}$
@@ -162,19 +162,19 @@ positive, without fundamental limitation.}
 
 With these notations, the joint (Shannon) entropy of a set of random variables
 $X =\{X_{1}, \ldots , X_{p}\}$ is thus defined by
-\begin{equation}
+\begin{equation}\label{eqn:6:entropy}
 H(X)  = - \sum_{\mathbf{x} \in {\cal X}}P_{X} (\mathbf{x})\log_{2}P_{X}(\mathbf{x}),
 \end{equation}
 while the mean conditional entropy of a set of random variables $X = \{X_{1},
 \ldots , X_{p}\}$, given the values of another set of random variables
 $Y=\{Y_{1}, \ldots , Y_{q}\}$ is defined by
-\begin{equation}
+\begin{equation}\label{eqn:6:entropy-cond}
 H(X\mid Y) = - \sum_{\mathbf{x} \in {\cal X}} \sum_{\mathbf{y} \in {\cal Y}} P_{X, Y} (\mathbf{x}, \mathbf{y}) \log_{2} P_{X \mid Y} (\mathbf{x} \mid \mathbf{y}).
  \end{equation}
 The mutual information among the set of random variables $X =\{X_{1}, \ldots ,
 X_{p}\}$ and the set of random variables $Y=\{Y_{1}, \ldots , Y_{q}\}$ is
 defined by
- \begin{align}
+ \begin{align}\label{eqn:6:mi}
  I(X; Y) &= - \sum_{\mathbf{x} \in {\cal X}} \sum_{\mathbf{y} \in {\cal Y}} P_{X, Y} (\mathbf{x}, \mathbf{y}) \log_{2} \frac{P_{X}(\mathbf{x}) P_{Y}(\mathbf{y})}{P_{X,Y}(\mathbf{x},\mathbf{y})} \\
  &= H(X) - H(X \mid Y) \nonumber \\
  &=  H(Y) - H(Y \mid X) \nonumber
@@ -205,7 +205,7 @@ I(X ; Y \mid Z) = I(Y ;  X  \mid Z).
 %\todo{Add figures}
 
 Let us now consider the MDI  importance as defined by Equation~\ref{eq:mdi},
-and let us assume a set $V= \{X_1, ..., X_p\}$  of {\em categorical} input
+and let us assume a set $V= \{X_1, ..., X_p\}$\label{ntn:V}  of {\em categorical} input
 variables and a {\em categorical} output $Y$. For the sake of simplicity we
 will  use the Shannon entropy as impurity measure, and focus on totally
 randomized trees; later on we will discuss other impurity measures and tree
@@ -241,10 +241,10 @@ infinitely large training sample is:
   \text{Imp}(X_j)=\sum_{k=0}^{p-1} \frac{1}{C_p^k} \frac{1}{p-k} \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B),
   \end{equation}
 \end{theorem}
-\noindent where $V^{-j}$ denotes the subset $V \setminus \{X_j\}$, ${\cal
-P}_k(V^{-j})$ is the set of subsets of  $V^{-j}$ of cardinality $k$, and
+\noindent where $V^{-j}$\label{ntn:V-j} denotes the subset $V \setminus \{X_j\}$, ${\cal
+P}_k(V^{-j})$\label{ntn:P_k} is the set of subsets of  $V^{-j}$ of cardinality $k$, and
 $I(X_j;Y|B)$ is the conditional mutual information of $X_{j}$ and $Y$ given the
-variables in $B$.
+variables in $B$\label{ntn:B}.
 
 \begin{proof}
 By expanding $\Delta i(s, t) = i(t) - p_L i(t_L) - p_R i(t_R)$ into
@@ -292,7 +292,7 @@ since a tree may at most contain a single such branch, whatever the order of the
 tests, the probabilities may be added up and it comes:
 \begin{equation}
 \alpha(B,b,X_j,p)=k! \frac{(p-k)!}{p!} \frac{1}{p-k} = \frac{1}{C_p^k} \frac{1}{p-k}
-\end{equation}
+\end{equation}\label{ntn:C_k_p}
 
 From the above expression, it appears that $\alpha(B,b,X_j,p)$ depends only on
 the size $k$ of $B$ and on the number $p$ of variables. As such, by grouping in
