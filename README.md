@@ -5,7 +5,7 @@ PhD dissertation, Gilles Louppe, June 2014.
 
 Data analysis and machine learning have become an integrative part of the
 modern scientific methodology, offering automated procedures for the prediction
-of a phenomenon based on past obversations, unravelling underlying patterns in
+of a phenomenon based on past observations, unraveling underlying patterns in
 data and providing insights about the problem. Yet, caution should
 avoid using machine learning as a black-box tool, but rather consider it as a
 methodology, with a rational thought process that is entirely dependent on the
@@ -18,7 +18,7 @@ The goal of this dissertation is to provide an in-depth
 analysis of random forests, consistently calling into
 question each and every part of the algorithm, in order to shed new light on
 its learning capabilities, inner workings and interpretability. The first
-part of this work studiess the induction of decision trees and the construction of
+part of this work studies the induction of decision trees and the construction of
 ensemble of randomized trees, motivating their design and purpose whenever
 possible. Our contributions follow with an original complexity
 analysis of random forests, hence showing their good computational performance
