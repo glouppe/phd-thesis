@@ -188,7 +188,7 @@ T'(1) = c_1^\prime \\
 T'(N) = c_2 N \log N + 2 T'(\frac{N}{2})
 \end{cases}
 \end{equation}
-and $c_1^\prime = \tfrac{c_1}{K}$. In this form, the second case of the Master Theorem applies for
+with $c_1^\prime = \tfrac{c_1}{K}$. In this form, the second case of the Master Theorem applies for
 $a=2$, $b=2$ and $k=1$. Accordingly, $T'(N)=O(N\log^{k+1} N)=O(N\log^2 N)$ and $T(N) = O(K N\log^2 N)$.
 \end{proof}
 
@@ -198,12 +198,11 @@ tree in the best case is $O(K N \log N)$.
 \end{theorem}
 
 \begin{proof}
-For $T(N) \leq K T'(N)$, Equation~\ref{eqn:complexity:rec}
-can be rewritten in the best case as
+In the best case, $T(N) \leq K T'(N)$, where
 \begin{equation}
 \begin{cases}
 T'(1) = c_1^\prime \\
-T'(N) = c_2 N + 2 T'(\frac{N}{2})
+T'(N) = c_2 N + 2 T'(\frac{N}{2}).
 \end{cases}
 \end{equation}
 Again, the second case of the Master Theorem applies, this time for $a=2$, $b=2$ and $k=0$.
@@ -216,8 +215,7 @@ tree in the worst case is $O(K N^2 \log N)$.
 \end{theorem}
 
 \begin{proof}
-For $T(N) \leq K T'(N)$, Equation~\ref{eqn:complexity:rec}
-can be rewritten in the worst case as
+In the worse case, $T(N) \leq K T'(N)$, where
 \begin{equation}
 \begin{cases}
 T'(1) = c_1^\prime \\
@@ -237,63 +235,61 @@ As a result, $T(N) = O(K N^2 \log N)$ in the worst case.
 \end{proof}
 
 \begin{theorem}\label{thm:6:worst:kn}
-For $c(N)=O(K N)$, the time complexity for building a decision
+For $C(N)\leq c_2 K N$, the time complexity for building a decision
 tree in the worst case is $O(K N^2)$.
 \end{theorem}
 
 \begin{proof}
-For $T(N) = O(K)T'(N)$, Equation~\ref{eqn:complexity:rec}
-can be rewritten in the worst case as
+In the worst case, $T(N) \leq  K T'(N)$, where
 \begin{equation}
 \begin{cases}
-T'(1) = O(1) \\
-T'(N) = O(N) +  T'(1) + T'(N-1)
+T'(1) = c_1^\prime \\
+T'(N) = c_2 N +  T'(1) + T'(N-1).
 \end{cases}
 \end{equation}
 By expanding the recurrence, we have
 \begin{align}
-T'(N) &= O(N) + O(1) + T'(N-1) \nonumber \\
-      &= O(1) + \sum_{i=2}^N O(1+i) \nonumber \\
-      &= O(1) + O(\frac{1}{2} (N^2 + 3N - 4)) \nonumber \\
+T'(N) &= c_2 N + c_1^\prime + T'(N-1) \nonumber \\
+      &= c_1^\prime + \sum_{i=2}^N (c_1^\prime + c_2 i) \nonumber \\
+      &= c_1^\prime N + \frac{c_2}{2} (N^2 + 3N - 4) \nonumber \\
       &= O(N^2).
 \end{align}
 As a result, $T(N) = O(K N^2)$ in the worst case.
 \end{proof}
 
 \begin{theorem}\label{thm:6:average:knlogn}
-For $c(N)=O(K N\log N)$, the time complexity for building a decision
+For $C(N)\leq c_2 K N\log N$, the time complexity for building a decision
 tree in the average case is $O(K N \log^2 N)$.
 \end{theorem}
 
 \begin{proof}
-For $T(N) = O(K)T'(N)$, Equation~\ref{eqn:complexity:rec}
-can be rewritten in the average case as
+In the average case, $T(N) \leq K T'(N)$, where
 \begin{equation}
 \begin{cases}
-T'(1) = O(1) \\
-T'(N) = O(N\log N) +  \frac{1}{N-1} \sum_{i=1}^{N-1} T'(i) + T'(N-i).
+T'(1) = c_1^\prime \\
+T'(N) = c_2 N\log N +  \frac{1}{N-1} \sum_{i=1}^{N-1} ( T'(i) + T'(N-i) ).
 \end{cases}
 \end{equation}
 By symmetry and by multiplying both sides of the last equation by $(N-1)$, it comes
 \begin{equation}\label{eqn:6:average:knlogn:1}
-(N-1) T'(N) = O(N\log N)(N-1) +  2 \sum_{i=1}^{N-1} T'(i).
+(N-1) T'(N) = (N-1)(c_2 N\log N) +  2 \sum_{i=1}^{N-1} T'(i).
 \end{equation}
 For $N \geq 3$, substituting $N$ with $N-1$ similarly yields
 \begin{equation}\label{eqn:6:average:knlogn:2}
-(N-2) T'(N-1) = O((N-1) \log(N-1))(N-2) +  2 \sum_{i=1}^{N-2} T'(i).
+(N-2) T'(N-1) = (N-2)(c_2 (N-1) \log(N-1)) +  2 \sum_{i=1}^{N-2} T'(i).
 \end{equation}
 Subtracting Equation~\ref{eqn:6:average:knlogn:2} from \ref{eqn:6:average:knlogn:1},
 it comes after simplifications and division of both sides by $N(N-1)$:
 \begin{equation}
-\frac{T'(N)}{N} = \frac{T'(N-1)}{N-1} + O(\frac{2}{N} \log(N-1) + \log \frac{N}{N-1} ).
+\frac{T'(N)}{N} = \frac{T'(N-1)}{N-1} + c_2 \frac{2}{N} \log(N-1) + c_2 \log \frac{N}{N-1}.
 \end{equation}
 Let us now introduce $S(N) = \frac{T'(N)}{N}$. From the last equation, it comes
 \begin{align}
-S(N) &= S(N-1) + O(\frac{2}{N} \log(N-1) + \log \frac{N}{N-1} ) \nonumber \\
-     &= O(1) + O(\sum_{i=2}^N \frac{2}{i} \log(i-1) + \log \frac{i}{i-1} ) \nonumber \\
-     &= O(1) + O(\log N) + O(2 \sum_{i=2}^N \frac{1}{i} \log(i-1) ) \nonumber \\
-     &\leq O(1) + O(\log N) + O(2 \log N) O(\sum_{i=2}^N \frac{1}{i} ) \nonumber \\
-     &= O(1) + O(\log N) + O(2 \log N) O(H_N - 1) \nonumber \\
+S(N) &= S(N-1) + c_2 \frac{2}{N} \log(N-1) + c_2 \log \frac{N}{N-1} \nonumber \\
+     &= \frac{c_1^\prime}{N} + c_2 \sum_{i=2}^N \frac{2}{i} \log(i-1) + \log \frac{i}{i-1}  \nonumber \\
+     &= \frac{c_2^\prime}{N} + c_2 \log N + 2 c_2 \sum_{i=2}^N \frac{1}{i} \log(i-1)  \nonumber \\
+     &\leq \frac{c_2^\prime}{N} + c_2 \log N + 2 c_2 \log N \sum_{i=2}^N \frac{1}{i}  \nonumber \\
+     &= \frac{c_2^\prime}{N} + c_2 \log N + 2 c_2 \log N (H_N - 1)  \nonumber \\
      &= O(H_N \log N)
 \end{align}
 where $H_N$ is the $N$-th harmonic number. Using
@@ -310,26 +306,25 @@ As a result, $T(N) = O(KN \log^2 N)$ in the average case.
 \end{proof}
 
 \begin{theorem}\label{thm:6:average:kn}
-For $c(N)=O(K N)$, the time complexity for building a decision
+For $C(N) \leq c_2 K N$, the time complexity for building a decision
 tree in the average case is $O(K N \log N)$.
 \end{theorem}
 
 \begin{proof}
-For $T(N) = O(K)T'(N)$, Equation~\ref{eqn:complexity:rec}
-can be rewritten in the average case as
+In the average case, $T(N) \leq K T'(N)$, where
 \begin{equation}
 \begin{cases}
-T'(1) = O(1) \\
-T'(N) = O(N) +  \frac{1}{N-1} \sum_{i=1}^{N-1} T'(i) + T'(N-i).
+T'(1) = c_1^\prime \\
+T'(N) = c_2 N +  \frac{1}{N-1} \sum_{i=1}^{N-1} T'(i) + T'(N-i).
 \end{cases}
 \end{equation}
 By symmetry and by multiplying both sides of the last equation by $(N-1)$, it comes
 \begin{equation}\label{eqn:6:average:kn:1}
-(N-1) T'(N) = O(N)(N-1) +  2 \sum_{i=1}^{N-1} T'(i).
+(N-1) T'(N) = c_2 N (N-1) +  2 \sum_{i=1}^{N-1} T'(i).
 \end{equation}
 For $N \geq 3$, substituting $N$ with $N-1$ similarly yields
 \begin{equation}\label{eqn:6:average:kn:2}
-(N-2) T'(N-1) = O(N-1)(N-2) +  2 \sum_{i=1}^{N-2} T'(i).
+(N-2) T'(N-1) = c_2 (N-1) (N-2) +  2 \sum_{i=1}^{N-2} T'(i).
 \end{equation}
 Subtracting Equation~\ref{eqn:6:average:kn:2} from \ref{eqn:6:average:kn:1},
 it comes after simplifications and division of both sides by $N(N-1)$:
@@ -338,8 +333,8 @@ it comes after simplifications and division of both sides by $N(N-1)$:
 \end{equation}
 Let us now introduce $S(N) = \frac{T'(N)}{N}$. From the last equation, it comes
 \begin{align}
-S(N) &= S(N-1) + O(\frac{2}{N}) \nonumber \\
-     &= O(2 \sum_{i=1}^N \frac{1}{i} ) \nonumber \\
+S(N) &= S(N-1) + \frac{2 c_2}{N} \nonumber \\
+     &= 2 c_2 \sum_{i=1}^N \frac{1}{i}  \nonumber \\
      &= O(2 H_N)
 \end{align}
 where $H_N$ is the $N$-th harmonic number. Using
@@ -481,7 +476,7 @@ In the average case, the recurrence equation of the average depth of the leaves 
 \begin{equation}
 \begin{cases}
 D(1) = 1 \\
-D(N) = 1 + \frac{1}{N-1} \sum_{i=1}^{N-1} \frac{i}{N} D(i) + \frac{N-i}{N} D(N-i).
+D(N) = 1 + \frac{1}{N-1} \sum_{i=1}^{N-1} (\frac{i}{N} D(i) + \frac{N-i}{N} D(N-i)).
 \end{cases}
 \end{equation}
 By symmetry and by multiplying both sides by $N(N-1)$, it comes
