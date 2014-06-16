@@ -41,7 +41,7 @@ T(1) = c_1 \\
 T(N) = C(N) + T(N_{t_L}) + T(N_{t_R}),
 \end{cases}
 \end{equation}
-where $c_1$ is the constant cost for making a leaf node out of a single sample and $C(N)$ is the runtime complexity for finding a split $s$ and then partitioning the $N$ node samples
+where $c_1$ is the constant cost for making a leaf node out of a single sample and $C(N)$\label{ntn:cN} is the runtime complexity for finding a split $s$ and then partitioning the $N$ node samples
 into  ${t_L}$ and ${t_R}$. In particular, this later operation
 requires at least to iterate over all $N$ samples, which sets a linear lower
 bound on the time complexity within a node, i.e., $C(N)=\Omega(N)$. As for finding
