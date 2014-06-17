@@ -26,7 +26,7 @@ and scalability, along with an in-depth discussion of their
 implementation details, as contributed within Scikit-Learn.
 
 In the second part of this work, we analyze and discuss the interpretability of
-random forests in the eyes of variable importances measures. The core of our
+random forests in the eyes of variable importance measures. The core of our
 contributions rests in the theoretical characterization of the Mean Decrease of
 Impurity variable importance measure, from which we prove and derive some of
 its properties in the case of multiway totally randomized trees and in
@@ -36,14 +36,15 @@ standard Random Forest) suffer from a combination of defects, due to masking
 effects, misestimations of node impurity or due to the binary structure of
 decision trees.
 
-Finally, the last part of this dissertation addresses limitations of random forests
-in the context of large datasets. Through extensive experiments, we show
-that subsampling both samples and features simultaneously provides on
-par performance while lowering at the same time the memory requirements.
-Overall this paradigm highlights an intriguing practical fact: there is often
-no need to build single models over immensely large datasets. Good performance
-can often be achieved by building models on (very) small random parts of the
-data and then combining them all in an ensemble, thereby avoiding all practical burdens of making large data fit into memory.
+Finally, the last part of this dissertation addresses limitations of random
+forests in the context of large datasets. Through extensive experiments, we
+show that subsampling both samples and features simultaneously provides on par
+performance while lowering at the same time the memory requirements. Overall
+this paradigm highlights an intriguing practical fact: there is often no need
+to build single models over immensely large datasets. Good performance can
+often be achieved by building models on (very) small random parts of the data
+and then combining them all in an ensemble, thereby avoiding all practical
+burdens of making large data fit into memory.
 
 
 ---
