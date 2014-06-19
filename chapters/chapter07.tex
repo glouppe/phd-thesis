@@ -61,7 +61,7 @@ adding copies of $X_j$ increases the probability of $X_j$, or of one of its
 copies, to be in the random subset of $K$ input variables on which to look for
 splits. As a corollary, it therefore also simultaneously decreases the
 probability of any of the others to be selected, hence biasing
-the structure of resulting decision trees. Note that the resulting net effect
+the structure of the generated decision trees. Note that the resulting net effect
 on accuracy depends on the nature of duplicated variable. If $X_j$ is very
 informative with respect to the input, then favoring splits on $X_j$ by
 adding copies may result in an increase of accuracy. By contrast, if $X_j$
@@ -75,7 +75,7 @@ importances. Adding copies of a relevant variable however, has an effect on
 both the importance of the duplicated variable and on the importance of the
 remaining variables. As in the previous chapter, let us assume a set $V= \{X_1,
 ..., X_p\}$  of categorical input variables and a categorical output $Y$, for
-which we derive the MDI importance, as computed from totally randomized and
+which we derive MDI importances, as computed from totally randomized and
 fully developed trees built on an infinitely large dataset.
 
 \begin{lemma}\label{lemma:red1}
@@ -96,9 +96,8 @@ I(X_i;X_j) &= H(X_i) - H(X_i|X_j) \nonumber \\
 which implies that $H(X_i) = H(X_j)$ since $H(X_i|X_j) = H(X_j|X_i) = 0$ if
 $X_i$ and $X_j$ are totally redundant. Since $0 \leq H(X_i|X_j,B) \leq
 H(X_i|X_j)$ and $H(X_i|X_j)=0$, we also have $H(X_i|X_j,B)=0$ for any conditioning
-set $B$. Likewise, $H(X_j|X_i,B)=0$. By reusing the same argument for $I(X_i;X_j|B)$, equality
+set $B$. Likewise, $H(X_j|X_i,B)=0$. By reusing the same argument for $I(X_i;X_j|B)$ (instead of $I(X_i;X_j)$), equality
 therefore extends to any conditioning set $B$, giving $H(X_i|B) = H(X_j|B)$.
-
 From these, it follows that,
 \begin{align}
 & I(X_i;Y|B,X_j) = H(X_i|B, X_j) - H(X_i|B,X_j,Y) = 0 - 0, \\
@@ -199,8 +198,8 @@ variable importance of $X_l$ can therefore be rewritten as follows:
 
 Proposition~\ref{prop:red:self} shows that the importance of $X_j$ decreases
 when a redundant variable $X_j^\prime$ is added to the set of input variables,
-since all mutual information terms are multiplied by a factor $\tfrac{p-k}{p+1}
-< 1$. Intuitively, this result is in fact expected since the same information
+since all mutual information terms are multiplied by a factor $\smash{\tfrac{p-k}{p+1}
+< 1}$. Intuitively, this result is in fact expected since the same information
 is then conveyed within two variables (i.e., in $X_j$ and its copy
 $X_j^\prime$). It also shows that the terms in the total importance are not all
 modified in the same way. The weight of the terms corresponding to small
@@ -222,7 +221,7 @@ Proposition~\ref{prop:red:self}, impurity terms are not all modified in the
 same way and changes depend on the size $k$ of the conditioning set $B$.
 Overall, the net effect on the total importance of $X_l$ is therefore a
 compromise between these opposing changes. If the weighted sum of the
-$I(X_l;Y|B,X_j)$ terms is low with respect to the sum of the terms that do not
+$I(X_l;Y|B,X_j)$ terms is small with respect to the sum of the terms that do not
 include $X_j$ (or its copy), then the decrease effect dominates and the
 importance of $X_l$ should be smaller. By contrast, if the $I(X_l;Y|B,X_j)$
 terms are larger, then the increase effect dominates and the resulting
@@ -256,7 +255,7 @@ and \ref{prop:red:other}.
 \end{proof}
 
 As an illustrative example, let us reconsider the LED classification problem
-from Section~\ref{sec:6:illustration}, and for which $X_5$ was found to be the
+from Section~\ref{sec:6:illustration}, for which $X_5$ was found to be the
 most important variable. As shown in Figure~\ref{fig:7:red:led}, adding
 variables that are redundant with $X_5$ makes its importance decrease, as
 predicted by our theoretical result from Propositions~\ref{prop:red:self} and
@@ -274,7 +273,7 @@ also with respect to all the other input variables that define the problem}. In
 particular, a variable which is not important is not necessarily uninformative,
 as the example illustrates. A variable may be considered as less important
 because the  information it conveys is also redundantly conveyed and dilluted in other
-variables, and not necessarily because it has no information.
+variables, and not necessarily because it has no information about the output.
 
 \begin{figure}
 \centering
@@ -334,16 +333,16 @@ As shown in the previous chapters, the guided selection of the split variable
 (i.e., for $K>1$) is necessary for balancing bias and variance in  randomized
 decision trees and to produce accurate ensembles. In particular, we studied
 that decision trees built with too much randomization usually lead to an
-increase of bias which cannot be compensated by a reciprocal decrease of
-variance, making it necessary to adjust the value of $K$ to find the
-appropriate trade-off. By contrast, we also showed in Section~\ref{sec:ntrt}
-that when variable selection is not totally random (i.e., as soon as $K>1$),
-masking effects induce a bias with respect to variable importances, since it
-forces some of the branches to never be built, and therefore some of the
-conditioning sets $B \in {\cal P}(V)$ to never be taken into account. As a
-consequence, random forests whose parameter $K$ has been tuned to maximize
-accuracy may yield variable importances that are biased (either
-over- or underestimated). More specifically, it can be shown (see
+increase of bias (with respect to the generalization error) which cannot be
+compensated by a reciprocal decrease of variance, making it necessary to adjust
+the value of $K$ to find the appropriate trade-off. By contrast, we also showed
+in Section~\ref{sec:ntrt} that when variable selection is not totally random
+(i.e., as soon as $K>1$), masking effects induce a bias with respect to
+variable importances, since it forces some of the branches to never be built,
+and therefore some of the conditioning sets $B \in {\cal P}(V)$ to never be
+taken into account. As a consequence, random forests whose parameter $K$ has
+been tuned to maximize accuracy may yield variable importances that are biased
+(either over- or underestimated). More specifically, it can be shown (see
 Section~\ref{sec:ntrt}) that a relevant variable may be null with regards to
 its importance, thereby making it indistinguishable from irrelevant variables,
 and that the importance of relevant variables becomes dependent on the number
@@ -455,7 +454,7 @@ their mutual information  follows approximately a gamma distribution
 \widehat{I}(X_j; Y) \sim \Gamma\Big( \frac{1}{2}(|{\cal X}_j|-1)(|{\cal Y}|-1), \frac{1}{N_t \log 2} \Big)
 \end{equation}
 whose mean is linearly proportional to the cardinalities $|{\cal X}_j|$ and
-$|{\cal Y}|$ of $X_j$ and $Y$ and inversely proportional to $N_t$:
+$|{\cal Y}|$ of $X_j$ and $Y$ and inversely proportional to $N_t$, that is
 \begin{equation}
 \mathbb{E}\{ \widehat{I}(X_j; Y) \} = \frac{(|{\cal X}_j|-1)(|{\cal Y}|-1)}{2 N_t \log 2}.
 \end{equation}
@@ -474,25 +473,24 @@ values of $Y$, resulting in child nodes that are all pure, therefore maximizing
 the estimated mutual information. As such, this explains why $X_1$, whose
 values are all unique, appears as the most important variable.
 
-For binary splits (i.e., for RF and ETs) the mutual
-information $I(X_j;Y|t)$ is not directly estimated at each node. Rather, in the
-case of ordered variables, $\Delta i(s, t)$ corresponds to an estimate of the
-mutual information $I(X_j\leq v;Y|t)$ of the binary split $X_j \leq v$. Under
-the simplifying assumption that binary splits on the same variable are all
-directly consecutive in the decision tree,  it is easy to see that recursive
-binary partitioning eventually ends up emulating direct multiway exhaustive
-splits, as illustrated in Figure~\ref{fig:7:splits}. Using an argument similar
-to the proof of Theorem~\ref{thm:sum-of-imp}, intermediate impurity terms
-between the first split and the last of those splits cancel each other when
-summing up the importances, which finally amounts to collect an actual estimate
-of $I(X_j;Y|t)$ from the sequence of binary splits. For the same reasons as before,
-variables of high cardinality are therefore biased in the same way. (As we will
-study in Section~\ref{sec:bias:tree}, this assumption does not hold in
-practice, making the importances from binary decision trees strictly different
-from those of multiway decision trees. Yet, the qualitative conclusions are
-still valid since variables of high cardinality can be reused far more many
-times than variables of low cardinality, before all possible splits are
-exhausted.)
+For binary splits (i.e., for RF and ETs) the mutual information $I(X_j;Y|t)$ is
+not directly estimated at each node. Rather, in the case of ordered variables,
+$\Delta i(s, t)$ corresponds to an estimate of the mutual information
+$I(X_j\leq v;Y|t)$ of the binary split $X_j \leq v$. Under the simplifying
+assumption that binary splits on the same variable are all directly consecutive
+in the decision tree,  it is easy to see that binary trees are equivalent to
+multiway trees~\citep{knuth:1968}, as illustrated in Figure~\ref{fig:7:splits}.
+Using an argument similar to the proof of Theorem~\ref{thm:sum-of-imp},
+intermediate impurity terms between the first split and the last of those
+splits cancel each other when summing up the importances, which finally amounts
+to collect an actual estimate of $I(X_j;Y|t)$ from the sequence of binary
+splits. For the same reasons as before, variables of high cardinality are
+therefore biased in the same way. (As we will study in
+Section~\ref{sec:bias:tree}, this assumption does not hold in practice, making
+the importances from binary decision trees strictly different from those of
+multiway decision trees. Yet, the qualitative conclusions are still valid since
+variables of high cardinality can be reused far more many times than variables
+of low cardinality, before all possible splits are exhausted.)
 
 \begin{figure}
     \centering
@@ -687,25 +685,25 @@ not evaluated in totally randomized trees because of the multiway splits.
 Accordingly, threshold selection in binary splits has a dominant effect on
 variable importances since it controls how the original variables are
 binarized. In ETs, all intermediate thresholds $v$ are possible, resulting in a
-combinatorial number of additional impurity terms $I(X_j \leq v_j;Y|\cdot)$ and
-$I(\cdot;Y|X_j \leq v_j, \cdot)$. In RF, only the best threshold is selected
+combinatorial number of additional impurity terms $I(X_j \leq v;Y|\cdot)$ and
+$I(\cdot;Y|X_j \leq v, \cdot)$. In RF, only the best threshold is selected
 locally at each node, resulting in fewer additional impurity terms $I(X_j <
-v_j^*;Y|\cdot)$ and $I(\cdot;Y|X_j < v_j^*,\cdot)$ (and masking all others).
+v^*;Y|\cdot)$ and $I(\cdot;Y|X_j < v^*,\cdot)$ (and masking all others).
 
 \begin{figure}
 \centering
 \includegraphics[width=0.9\textwidth]{figures/ch7_bias_trees.pdf}
-\caption{Variable importances of $X_1$ and $X_2$ when increasing the cardinality of $X_1$. High cardinality does not necessarily mean high importance. }
+\caption{Variable importances of $X_1$ and $X_2$ when increasing the cardinality of $X_1$. Note that, in this example, high cardinality does not necessarily mean high importance. }
 \label{fig:7:bias:trees}
 \end{figure}
 
 As a last example, Figure~\ref{fig:7:bias:trees} illustrates variable
-importances for $X_1$ and $X_2$ when increasing the cardinality of $X_1$ on the
+importances for $X_1$ and $X_2$ when increasing the cardinality $L=|{\cal X}_1|$ of $X_1$ on the
 previous toy problem. That is, let us redefine the output as $Y = X_1 <
-\tfrac{|{\cal X}_1|}{2}$ while keeping $X_2$ as a binary variable defined as a
+\tfrac{L}{2}$, for ${\cal X}_1 = \{0, \dots, L-1\}$, while keeping $X_2$ as a binary variable defined as a
 copy of $Y$. Assuming that all input samples are equiprobable, the importances
 yielded by totally randomized trees with multiway splits remain the same as
-before. For ETs however, increasing $|{\cal X}_1|$ induces even more new impurity terms
+before. For ETs however, increasing $L$ induces even more new impurity terms
 that are now accounted for in the importances. As the figure shows, increasing
 the cardinality of $X_1$ makes its importance decrease, but also simultaneously
 makes the importance of $X_2$ increase. Indeed, splitting on $X_2$ always yield
@@ -716,29 +714,29 @@ As such, their importances respectively appear as equal as the figure confirms.
 
 Overall, these additional effects due to binary splits make variable
 importances computed from classical random forests very difficult to interpret
-and understand, as soon as data include many variables of different scale
-or number of categories. While they can still be
-used to identify the most relevant variables, caution should be taken when
-interpreting the amplitude of importance measures. As our last example
-illustrates, the importance of a variable may be misleadingly low or
-misleadingly high because of combinatorial effects, solely due to the possible
-ways variables are binarized.
+and understand, as soon as data include many variables of different scale or
+number of categories. While they can still be used to identify the most
+relevant variables, caution should be taken when interpreting the amplitude of
+importance measures. As our last example illustrates, the importance of a
+variable may be misleadingly low or misleadingly high because of combinatorial
+effects, solely due to the possible ways variables are binarized through the
+implemented threshold selection mechanisms.
 
-\begin{remark}{Encoding $N$-ary variables into binary variables}
-Partitioning node samples with binary splits on $N$-ary input variables is
+\begin{remark}{Encoding $L$-ary variables into binary variables}
+Partitioning node samples with binary splits on $L$-ary input variables is
 equivalent to individually transforming each input variable $X_j$ into a set of
-$b_j$ binary input variables $\{X_j^{m} | m=1,\dots,b_j\}$, each encoding for
+$L_j-1$ binary input variables $\{X_j^{l} | l=1,\dots,L_j - 1\}$, each encoding for
 one the possible splits, and then partitioning node samples using of one these new
 variables. If we consider the binarized learning set ${\cal L}^\prime$, for
-which all $p$ the input variables have been transformed into $\sum b_j$ binary
+which all $p$ the input variables have been transformed into $\sum_j (L_j - 1)$ binary
 variables, then our theoretical framework for totally randomized trees and
 exhaustive splits can be applied and Theorem~\ref{thm:imp} could possibly be
 adapted. The only difference lies in the way binary variables are drawn at
-random:  instead of splitting randomly on one of the $\sum b_j$ variables,
+random:  instead of splitting randomly on one of the $\sum_j (L_j - 1)$ variables,
 first, one of the $p$ original variables is drawn uniformly at random; second, one of
-its $b_j$ binary variables is selected for splitting the current node. In this
-setting, the importance of $X_j$ therefore amounts to the sum of importances $\sum
-\text{Imp}(X_j^m)$ of its binary variables. \end{remark}
+its $L_j - 1$ binary variables is selected for splitting the current node. In this
+setting, the importance of $X_j$ therefore amounts to the sum of importances $\sum_l
+\text{Imp}(X_j^l)$ of its binary variables. \end{remark}
 
 
 \section{Applications}
@@ -819,7 +817,7 @@ With the rise of \textit{-omics} data, random forests have become one of the
 most popular tools in life sciences, providing practitioners with both
 high-prediction accuracy and helpful insights about the importances of variables. In
 many cases, variable importance measures (either MDI or the permutation
-importance) is exploited to better understand the complex interaction effects
+importance) is exploited to better understand complex interaction effects
 between the inputs and the output. Examples of successful applications include
 the identification of disease-associated SNPs in genome-wide association studies
 \citep{lunetta:2004,meng:2009,botta:2014}, the discovery of important genes and
@@ -878,26 +876,29 @@ $X_j$ (for $j=1,\dots,p$), GENIE3 considers the supervised sub-problem
 consisting in the prediction of the target variable $X_j$ from the remaining
 $p-1$ variables $V^{-j}$. Using random forests for solving each of these $p$
 problems, variable importances can be derived and used as an indication of the
-putative link with $X_j$. Intuitively, the larger the importance, the more
-likely the conditional dependency with $X_j$. Once all $p$ problems are solved,
-putative links are aggregated over all $p$ variables to provide a ranking of
+(directed) putative link between the predictor variables $X_i$ (for $i\neq j$) and the
+target $X_j$. Intuitively, the larger the importance, the more likely the
+conditional dependency with $X_j$. Once all $p$ problems are solved, putative
+links are aggregated over all $p$ variables to provide a ranking of
 interactions from which the network can finally be reconstructed.
 
 Again, our previous theoretical analysis call for caution when plugging
 variable importances into network inference procedures. Since the goal is to
 retrieve all interactions, variable importances should be as unbiased as
 possible, which is guaranteed using totally randomized trees with multiway
-splits. When input variables are of different scale of measurements or vary in
-the number of categories, care should also be taken when aggregating variable
-importances into a single ranking of interactions. As shown by Theorem~\ref{thm:sum-of-imp},
-variable importances are in this case upper bounded by the entropy $H(X_j)$ of the target variable,
-which may greatly varies from one target to another. As such, variable
-importances are not directly comparable and should preferably be normalized (e.g., by
-$H(X_j)$) before their aggregation. Finally, the use of variable
-importances for network inference might not be as appropriate as desired when looking
-\textit{direct} interactions since they also account for indirect and combined effects.
-In this case, a better strategy might be to look for \textit{strongly} relevant
-variables, that is for variables $X_i$ such that $I(X_i;X_j|B) > 0$ for \textit{all} $B$.
+splits and limited depth to mitigate impurity misestimations effects. When
+input variables are of different scale of measurements or vary in the number of
+categories, care should also be taken when aggregating variable importances
+into a single ranking of interactions. As shown by
+Theorem~\ref{thm:sum-of-imp}, variable importances are in this case upper bounded by the entropy
+$H(X_j)$ of the target variable, which may greatly varies from one target to
+another. As such, variable importances are not directly comparable and should
+preferably be normalized (e.g., by $H(X_j)$) before their aggregation. Finally,
+the use of variable importances for network inference might not be as
+appropriate as desired when looking \textit{direct} interactions since they
+also account for indirect and combined effects. In this case, a better strategy
+might be to look for \textit{strongly} relevant variables, that is for
+variables $X_i$ such that $I(X_i;X_j|B) > 0$ for \textit{all} $B$.
 
 
 % use trt
