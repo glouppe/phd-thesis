@@ -3,6 +3,12 @@ Understanding Random Forests
 
 PhD dissertation, Gilles Louppe, June 2014.
 
+_License:_ BSD 3 clause
+
+_Contact:_ Gilles Louppe (@glouppe, <g.louppe@gmail.com>)
+
+---
+
 Data analysis and machine learning have become an integrative part of the
 modern scientific methodology, offering automated procedures for the prediction
 of a phenomenon based on past observations, unraveling underlying patterns in
@@ -45,10 +51,3 @@ to build single models over immensely large datasets. Good performance can
 often be achieved by building models on (very) small random parts of the data
 and then combining them all in an ensemble, thereby avoiding all practical
 burdens of making large data fit into memory.
-
-
----
-
-_License:_ BSD 3 clause
-
-_Contact:_ Gilles Louppe (@glouppe, <g.louppe@gmail.com>)
