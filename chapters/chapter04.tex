@@ -311,8 +311,7 @@ hyper-parameters controlling the execution of ${\cal A}$. Let us assume that $\t
 includes a random seed parameter for mimicking some stochastic behavior in
 ${\cal A}$, hence producing (pseudo-)randomized models that are more or less
 different from one random seed to another. (We defer the discussion on specific
-random perturbations in the case of decision trees to Section~\ref{sec:4
-:random-forests}.)
+random perturbations in the case of decision trees to Section~\ref{sec:4:random-forests}.)
 
 In this context, the bias-variance decomposition can be extended to account for
 everything that is random, hence considering both ${\cal L}$ and $\theta$ as
@@ -610,6 +609,28 @@ $\mathbb{E}_{{\cal L},\theta}\{ \widehat{p}_{{\cal
 L},\theta}(Y=\varphi_B(\mathbf{x}) \}$ (as shown in Equation~\ref{eqn:4:variance-hastie}), which results in a decrease of the misclassification error
 if the expected estimate remains strictly greater than $0.5$ in a
 randomized model.
+
+\begin{remark}{Shortcomings addressed by ensembles}
+In complement with the formal bias-variance analysis carried out in the previous
+section, \citet{dietterich:2000b} identifies three fundamental reasons
+intuitively explaining why ensembles often work better than single models.
+
+The first reason is statistical. When the learning set is too small, a learning
+algorithm can typically find several models in the hypothesis space ${\cal H}$
+that all the give the same performance on the training data. Provided their predictions
+are uncorrelated, averaging several models reduces the risk of choosing the wrong hypothesis.
+
+The second reason is computational. Many learning algorithms rely on some
+greedy assumption or local search that may get stuck in local optima. As such, an ensemble
+made of individual models built from many different starting points may provide
+a better approximation of the true unknown function that any of the single
+models.
+
+Finally, the third reason is representational. In most cases, for a learning set of finite size, the true
+function cannot be represented by any of the candidate models in ${\cal H}$.
+By combining several models in an ensemble, it may be possible to expand the space
+of representable functions and to better model the true function.
+\end{remark}
 
 
 \section{Random Forests}
@@ -1150,6 +1171,11 @@ several mechanisms for dealing with this issue.
 \label{sec:4:consistency}
 
 \todo{}
+
+% Zhao
+% Biau 2008, 1 feature, split au hasard dans un gap aléatoire, open node tirée au hasard. Stop after M_L leafs
+% Biau 2012, K features, threshold = mid-point dans le range du noeud, bread-first jusqu'à M_L leafs. Dataset != for splitting than for assigning
+% Scornet 2014 http://arxiv.org/abs/1405.2881
 
 % Issues tackled by ensemble
 %   Ensemble methods in ML, Dietterich
