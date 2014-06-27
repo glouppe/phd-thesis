@@ -405,7 +405,7 @@ and then predict the class which is the most likely:
 \psi_{{\cal L},\theta_1,\dots,\theta_M}(\mathbf{x}) = \argmax_{c \in {\cal Y}} \frac{1}{M} \sum_{m=1}^M \widehat{p}_{{\cal L},\theta m}(Y=c|X=\mathbf{x})
 \end{equation}
 As empirically investigated by \citet{breiman:1996b}, both approaches yield
-results that are nearly identical. From a practical point of view however,
+results that are nearly identical\footnote{In the case of ensembles of fully developed decision trees that perfectly classify all samples from ${\cal L}$, majority voting and soft voting are exactly equivalent.}. From a practical point of view however,
 Equation~\ref{eqn:4:avg-estimate} has the advantage of providing accurate class
 probability estimates for the ensemble, which may prove to be useful in
 critical applications, e.g., when (estimates of) the certainty about
@@ -1177,8 +1177,8 @@ question of the consistency of random forests, i.e., whether convergence
 towards an optimal model is guaranteed provided an infinitely large learning
 set, remains an open and difficult problem. In this section, we review
 theoretical works that have investigated simplified versions of the algorithm,
-for which the theoretical analysis is typically more tractable. With the hope
-that results obtained for simplified models will provide insights on the
+for which the theoretical analysis is typically more tractable. With the
+hope that results obtained for simplified models will provide insights on the
 mathematical properties of actual random forests, the long-term objective of
 this line of research is usually to prove the consistency of the particular and
 well-established Random Forest algorithm~\citep{breiman:2001}.
@@ -1186,6 +1186,8 @@ well-established Random Forest algorithm~\citep{breiman:2001}.
 \begin{description}
 
 \item \citet{zhao:2000}:\hfill\\
+
+\item \citet{breiman:2004}:\hfill\\
 
 \item \citet{lin:2006}:\hfill\\
 
