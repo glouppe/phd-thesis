@@ -1170,12 +1170,48 @@ several mechanisms for dealing with this issue.
 \section{Consistency}
 \label{sec:4:consistency}
 
-\todo{}
+Despite their extensive use in practice, excellent performance and relative
+algorithmic simplicity, the mathematical mechanisms that drive random forests
+are still not well understood. In particular, the fundamental theoretical
+question of the consistency of random forests, i.e., whether convergence
+towards an optimal model is guaranteed provided an infinitely large learning
+set, remains an open and difficult problem. In this section, we review
+theoretical works that have investigated simplified versions of the algorithm,
+for which the theoretical analysis is typically more tractable. With the hope
+that results obtained for simplified models will provide insights on the
+mathematical properties of actual random forests, the long-term objective of
+this line of research is usually to prove the consistency of the particular and
+well-established Random Forest algorithm~\citep{breiman:2001}.
+
+\begin{description}
+
+\item \citet{zhao:2000}:\hfill\\
+
+\item \citet{lin:2006}:\hfill\\
+
+\item \citet{biau:2008}:\hfill\\
+
+\item \citet{biau:2012}:\hfill \\
+
+\item \citet{denil:2013}:\hfill \\
+
+\item \citet{scornet:2014}:\hfill \\
+
+\end{description}
+
 
 % Zhao
 % Biau 2008, 1 feature, split au hasard dans un gap aléatoire, open node tirée au hasard. Stop after M_L leafs
+% Genuer 2010 Risk bounds for purely uniformly random forests.
+% Genuer 2012 Variance reduction in purely random forests.
 % Biau 2012, K features, threshold = mid-point dans le range du noeud, bread-first jusqu'à M_L leafs. Dataset != for splitting than for assigning
+% Denil 2012 Narrowing the gap: Random forests in theory and in practice.
 % Scornet 2014 http://arxiv.org/abs/1405.2881
+
+% Conclusion: extend to a larger class of  tree algorithms
+% strong?
+% universal?
+
 
     % > Mise au point
     % > Preuve de consistence des extra-trees?
