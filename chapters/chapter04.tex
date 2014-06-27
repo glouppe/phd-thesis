@@ -1172,20 +1172,34 @@ several mechanisms for dealing with this issue.
 
 Despite their extensive use in practice, excellent performance and relative
 algorithmic simplicity, the mathematical mechanisms that drive random forests
-are still not well understood. In particular, the fundamental theoretical
-question of the consistency of random forests, i.e., whether convergence
-towards an optimal model is guaranteed provided an infinitely large learning
-set, remains an open and difficult problem. In this section, we review
-theoretical works that have investigated simplified versions of the algorithm,
-for which the theoretical analysis is typically more tractable. With the
-hope that results obtained for simplified models will provide insights on the
-mathematical properties of actual random forests, the long-term objective of
-this line of research is usually to prove the consistency of the particular and
-well-established Random Forest algorithm~\citep{breiman:2001}.
+are still not well understood. More specifically, the fundamental theoretical
+question of the consistency (see definitions~\ref{def:consistency} and
+\ref{def:consistency-strong}) of random forests, i.e., whether convergence towards an
+optimal model is guaranteed provided an infinitely large learning set, remains
+an open and difficult problem. In this section, we review theoretical works
+that have investigated simplified versions of the algorithm, for which the
+theoretical analysis is typically more tractable. With the hope that results
+obtained for these simplified models will provide insights on the mathematical
+properties of the actual algorithm, the long-term objective of this line of
+research is usually to prove the consistency of the original Random Forest
+algorithm \citep{breiman:2001}, hence bridging the gap between theory and
+practice.
 
 \begin{description}
 
 \item \citet{zhao:2000}:\hfill\\
+
+    One of the earliest works studying the consistency of ensembles of
+    randomized trees is due to \citet{zhao:2000}. In classification, this work
+    conjectures that PERT is (weakly) consistent and establishes the strong
+    consistency of the method provided the construction of the trees stops
+    early. More specifically, strong consistency is guaranteed as soon as trees
+    are grown infinitely deeply while making leaves count infinitely many node
+    samples (e.g., by setting $N_\text{min}$ such that $N_\text{min} \to 0$ and
+    $N\times N_\text{min} \to \infty$ as $N \to \infty$), hence making empirical
+    class proportions in terminal nodes converge towards their theoretical
+    counterparts.
+
 
 \item \citet{breiman:2004}:\hfill\\
 

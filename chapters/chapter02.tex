@@ -378,14 +378,14 @@ know whether it is possible to produce a model $\varphi_{\cal L}$ which is
 arbitrarily close to the lowest possible generalization error $Err(\varphi_B)$.
 Formally, consistency is defined as follows~\citep{devroye:1996}:
 
-\begin{definition}
+\begin{definition}\label{def:consistency}
 A learning algorithm ${\cal A}$ is said to be \emph{consistent} for a certain distribution
 $P(X, Y)$ if $\mathbb{E}_{\cal L} \{ Err(\varphi_{\cal L}) \} \to Err(\varphi_B)$
 as the size $N$ of the learning set ${\cal L}$ used to build $\varphi_{\cal L}$ using ${\cal A}$ tends
 to infinity.
 \end{definition}
 
-\begin{definition}
+\begin{definition}\label{def:consistency-strong}
 A learning algorithm ${\cal A}$ is said to be \emph{strongly consistent} for a certain distribution
 $P(X, Y)$ if $Err(\varphi_{\cal L}) \to Err(\varphi_B)$ almost surely
 as the size $N$ of the learning set ${\cal L}$ used to build $\varphi_{\cal L}$ using ${\cal A}$ tends
