@@ -1188,18 +1188,18 @@ practice.
 \begin{description}
 
 \item \citet{zhao:2000}:\hfill\\
-
     One of the earliest works studying the consistency of ensembles of
-    randomized trees is due to \citet{zhao:2000}. In classification, this work
-    conjectures that PERT is (weakly) consistent and establishes the strong
-    consistency of the method provided the construction of the trees stops
-    early. More specifically, strong consistency is guaranteed as soon as trees
-    are grown infinitely deeply while making leaves count infinitely many node
-    samples (e.g., by setting $N_\text{min}$ such that $N_\text{min} \to 0$ and
-    $N\times N_\text{min} \to \infty$ as $N \to \infty$), hence making empirical
-    class proportions in terminal nodes converge towards their theoretical
-    counterparts.
+    randomized trees is due to \citet{zhao:2000}. In classification, the author
+    conjectures that PERT is (weakly) consistent, but establishes its strong
+    consistency  provided the construction of the trees stops early. More
+    specifically, strong consistency is guaranteed as soon as trees are grown
+    infinitely deeply while making leaves count infinitely many node samples
+    (e.g., by stopping the construction when $N_t < N_\text{min}$, such that
+    $N_\text{min} \to 0$ and  $N\times N_\text{min} \to \infty$ as $N \to
+    \infty$), hence making empirical class proportions in terminal nodes
+    converge towards their theoretical counterparts.
 
+    \todo{Close connection with ETs?}
 
 \item \citet{breiman:2004}:\hfill\\
 
