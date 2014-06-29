@@ -933,7 +933,7 @@ bias, for which averaging is not able to compensate. For RF, the optimal
 trade-off is at $K=8$, which indicates that bagging and random variable selection are
 here complementary with regard to the level of randomness injected into the
 trees. Indeed, using bagging only (at $K=10$) for randomizing the construction
-of the trees yield results that are slighlty worse than when both techniques
+of the trees yield results that are slightly worse than when both techniques
 are combined. For ETs, the optimal trade-off is at $K=10$, suggesting that
 random thresholds $v$ provide by themselves enough randomization on this
 problem.
@@ -1127,14 +1127,14 @@ feature space hopefully capturing structures and patterns in images.
 Because of practical limitations, physical constraints or for privacy reasons,
 real-world data are often imperfect, erroneous or incomplete. In particular,
 most machine learning algorithms are often not applicable on data containing
-missing values because they implicitely assume an ideal scenario in which all
+missing values because they implicitly assume an ideal scenario in which all
 values are known for all input variables. Fortunately, random forests offer
 several mechanisms for dealing with this issue.
 
 \begin{description}
 
 \item \textit{Ternary decision trees.}\hfill\\
-    The simplest strategy is to explicitely model missing values in the
+    The simplest strategy is to explicitly model missing values in the
     structure of decision trees by considering ternary splits instead of binary
     splits. That is, partition $t$ into $t_L$, $t_R$ and $t_M$, such that $t_L$
     and $t_R$ are defined from a binary split $s_j^v : X_j \leq v$, for all node
@@ -1145,7 +1145,7 @@ several mechanisms for dealing with this issue.
     An alternative strategy is to  propagate samples
     for which the value of the split variable is missing into both the left and
     right child nodes. Accordingly, samples going into both child nodes should be
-    reweighted by half their sample weight (see Chapter~\ref{ch:complexity}), so
+    re-weighted by half their sample weight (see Chapter~\ref{ch:complexity}), so
     that they are not unfairly taken into account more than the other samples.
 
 \item \textit{Imputation.}\hfill\\
@@ -1239,15 +1239,15 @@ practice.
     variable, (iv) that splits on irrelevant variables are set at random points
     along the values of the selected variable and (v) that trees are balanced.
     Under these assumptions,  it can be shown that this variant reduces
-    to an (adaptative) nearest neighbor algorithm~\citep{lin:2006}, for which consistency
+    to an (adaptive) nearest neighbor algorithm~\citep{lin:2006}, for which (weak) consistency
     conditions are met (both in regression and classification).
 
 \item \citet{biau:2008}:\hfill\\
     In binary classification, \citet{biau:2008} proves that if the randomized base
     models in an ensemble are consistent, then the corresponding majority
-    or soft voting ensembles are also consistent. Note that this result
+    or soft voting ensembles are also consistent. (Note that this result
     was later expanded both for multi-class classification~\citep{denil:2013b} and
-    regression~\citep{denil:2013}.
+    regression~\citep{denil:2013}.)
 
     From this proposition, the consistency of Purely Random Forests
     \citep{breiman2000some} is established.  Let us assume that the input space
@@ -1258,17 +1258,18 @@ practice.
     selected node $t$ is then split along the chosen variable at a random
     location, along the length of the chosen side in $t$. This
     procedure is repeated $k \geq 1$ times, which amounts to developing  trees
-    in random order.  In this setting, and similarly to PERT, consistency of
-    Purely Random Forests is guaranteed whenever $k^{(N)} \to \infty$ and
-    $\tfrac{k^{(N)}}{N} \to 0$ as $N \to \infty$ (where $k^{(N)}$  is the value
-    of $k$ for a forest grown on learning set of size $N$).
+    in random order.  In this setting, and similarly to PERT, (strong) consistency of
+    Purely Random Forests is guaranteed whenever $\smash{k^{(N)} \to \infty}$ and
+    $\smash{\tfrac{k^{(N)}}{N} \to 0}$ as $N \to \infty$ (where $\smash{k^{(N)}}$  is the value
+    of $k$ for a forest grown on learning set of size $N$) -- which is equivalent
+    to letting the number of points in terminal nodes grow to infinity.
 
     In Purely Random Forests, let us remark that trees are built in a
     data-independent manner, without even looking at the samples in ${\cal L}$. In
-    this same work, and assuming no bootstrap sampling, the authors proceed and show that consistency is however
+    this same work, and assuming no bootstrap sampling, the authors show that consistency is however
     also guaranteed when the position of the cut is chosen in a data-dependent
     manner, by selecting a random gap between consecutive node samples (ordered
-    along the chosen variabe) and then sampling uniformly within the gap.
+    along the chosen variable) and then sampling uniformly within the gap.
 
 \item \citet{biau:2012}:\hfill \\
     In this work, the authors more closely approaches the consistency of the
@@ -1282,9 +1283,9 @@ practice.
     $X_j$, drawn with probability $p_{j}^{(N)}$, and using as threshold the
     mid-point of the chosen side in $t$. This procedure is repeated $\lceil
     \log_2 k \rceil$ times, which amounts to developing trees in breadth-first
-    order until depth $\lceil \log_2 k \rceil$. Consistency is then guaranteed
-    whenever  $p_j^{(N)} k^{(N)} \to \infty$ (for $j=1,\dots,p$) and
-    $\tfrac{k^{(N)}}{N} \to 0$ as $N \to \infty$.
+    order until depth $\lceil \log_2 k \rceil$. (Strong) Consistency is then guaranteed
+    whenever  $\smash{p_j^{(N)} k^{(N)} \to \infty}$ (for $j=1,\dots,p$) and
+    $\smash{\tfrac{k^{(N)}}{N} \to 0}$ as $N \to \infty$.
 
     In particular, this result can be shown to include the situation where, at
     each node, randomness is introduced by selecting at random a subset of $K$
@@ -1292,18 +1293,18 @@ practice.
     criterion, like in Random Forest. (Note however that best cut-points
     coincide with the mid-points only for some probability distributions.)
     Assuming no bootstrap sampling and provided that two independent datasets
-    are used for evuating the goodness of the splits and fitting the prediction
+    are used for evaluating the goodness of the splits and fitting the prediction
     values at leafs, consistency of the method is then also established.
 
-    Interestingly, this work also derives the result that performance
-    of random forests only depend on the number $r$ of relevant variables,
-    and not on $p$, making the method robust to overfitting.
+    Interestingly, this work also highlights the fact that performance of
+    random forests only depend on the number $r$ of relevant variables, and not
+    on $p$, making the method robust to overfitting.
 
 \item \citet{denil:2013}:\hfill \\
     Building upon \citep{biau:2012}, \citet{denil:2013} narrowed the gap
     between theory and practice by proving the consistency of the following variant.
 
-    For each tree in the forest, the learning set is partioned randomly into
+    For each tree in the forest, the learning set is partitioned randomly into
     structure points (used for determining splits) and estimation points (used
     for fitting values at leafs).  Again, let us assume that the input space
     ${\cal X}$ is supported on $[0,1]^p$ and that terminal nodes represent
@@ -1314,23 +1315,25 @@ practice.
     randomly drawn structure points. The construction halts when no split
     leading to child nodes with less than $k$ node samples can be found.
 
-    In regression, assuming not bootstrap sampling, consistency of this variant
+    In regression, assuming not bootstrap sampling, (strong)  consistency of this variant
     is guaranteed whenever $k^{(N)} \to \infty$ and $\tfrac{k^{(N)}}{N} \to 0$
     as $N \to \infty$ (where $k^{(N)}$  is the value of $k$ for a forest grown
     on learning set of size $N$).
 
 \item \citet{scornet:2014}:\hfill \\
     This work establishes the first consistency result for the original Random
-    Forest algorithm. In particular, consistency is obtained in the context of
+    Forest algorithm. In particular, (strong)  consistency is obtained in the context of
     regression additive models, assuming subsampling without replacement
     (instead of bootstrap sampling).
 
 \end{description}
 
-Together, these theoretical works provide converging arguments all indicating
-why random forest methods work so well in practice.
+In conclusions, despite the difficulty of the mathematical analysis of the
+method, these theoretical works provide together converging arguments all
+confirming why random forest methods -- like Random Forest but also Extremely
+Randomized Trees -- appear to work so well in practice.
 
-In addition, let us finally complete this review by mentioning consistency
-results in the case of domain-specific adaptations of random forests, including
-quantile regression~\citep{meinshausen:2006}, survival
-analysis~\citep{ishwaran:2010} and online forest construction~\citep{denil:2013b}.
+Finally, let us complete this review by mentioning consistency results in the
+case of domain-specific adaptations of random forests, including quantile
+regression~\citep{meinshausen:2006}, survival analysis~\citep{ishwaran:2010}
+and online forest construction~\citep{denil:2013b}.
