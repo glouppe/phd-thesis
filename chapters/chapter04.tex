@@ -1185,25 +1185,61 @@ research is usually to prove the consistency of the original Random Forest
 algorithm \citep{breiman:2001}, hence bridging the gap between theory and
 practice.
 
+
 \begin{description}
+
+\item \citet{breiman:1984}:\hfill \\
+    Single decision trees are proved to be consistent, both in regression and
+    classification.
+
+    Note that these results do not extend to the Random Forest algorithm for the following reasons:
+    \begin{itemize}
+    \item In single decision trees, the number of samples in terminal nodes
+          is let to become large, while trees in random forests are usually fully developed;
+    \item Single decision trees do not make use of bootstrap sampling;
+    \item The splitting strategy in single decision trees consists in selecting
+          the split that maximizes the Gini criterion. By contrast, in random forests,
+          the splitting strategy is randomized.
+    \end{itemize}
 
 \item \citet{zhao:2000}:\hfill\\
     One of the earliest works studying the consistency of ensembles of
     randomized trees is due to \citet{zhao:2000}. In classification, the author
     conjectures that PERT is (weakly) consistent, but establishes its strong
-    consistency  provided the construction of the trees stops early. More
-    specifically, strong consistency is guaranteed as soon as trees are grown
-    infinitely deeply while making leaves count infinitely many node samples
-    (e.g., by stopping the construction when $N_t < N_\text{min}$, such that
-    $N_\text{min} \to 0$ and  $N\times N_\text{min} \to \infty$ as $N \to
-    \infty$), hence making empirical class proportions in terminal nodes
-    converge towards their theoretical counterparts.
+    consistency (Theorem 4.4.2) provided the construction of the trees stops early. More
+    specifically, strong consistency is guaranteed provided:
 
-    \todo{Close connection with ETs?}
+    \begin{enumerate}
+        \item Trees are grown
+            infinitely deeply while forming leaves with infinitely many node samples,
+            hence making empirical class proportions in terminal nodes
+            converge towards their theoretical counterparts. This is guaranteed,
+            e.g.,  by stopping the construction
+            when $N_t < N_\text{min}$, such that
+            $N_\text{min} \to 0$ and  $N\times N_\text{min} \to \infty$ as $N \to
+            \infty$;
+
+        \item The posterior class probabilities induced by the ensemble are all
+              continuous in the input space ${\cal X}$.
+    \end{enumerate}
+
+    Given the close formulations of the methods, results from \citep{zhao:2000}
+    regarding PERT extend to Extremely Randomized Trees provided the posterior
+    class probabilities are continuous. In Appendix F of \citep{geurts:2006},
+    Extremely Randomizes Trees (for $K=1$ and $M \to \infty$) are shown
+    to be a continuous piecewise multilinear function of its arguments,
+    which suffices to establish the strong consistency of the method when
+    trees are built totally at random.
 
 \item \citet{breiman:2004}:\hfill\\
-
-\item \citet{lin:2006}:\hfill\\
+    In this work, consistency is studied for a simplified variant of the Random
+    Forest algorithm, assuming (i) no bootstrap sampling, (ii) that splits on
+    relevant variables are set at the midpoint of the values of the selected
+    variable, (iii) that splits on irrelevant variables are set at random points
+    along the values of the selected variable and (iv) that trees are balanced.
+    Under these assumptions,  it can be shown that this variant reduces
+    to a nearest neighbor algorithm~\citep{lin:2006}, for which consistency
+    conditions are met.
 
 \item \citet{biau:2008}:\hfill\\
 
