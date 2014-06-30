@@ -32,7 +32,7 @@
 % ********************************************************************
 \usepackage{ifthen}
 \newboolean{enable-backrefs} % enable backrefs in the bibliography
-\setboolean{enable-backrefs}{false} % true false
+\setboolean{enable-backrefs}{true} % true false
 % ****************************************************************************************************
 
 
@@ -45,13 +45,13 @@
 \newcommand{\myName}{Gilles Louppe\xspace}
 \newcommand{\myProf}{Put name here\xspace}
 \newcommand{\myOtherProf}{Put name here\xspace}
-\newcommand{\mySupervisor}{Put name here\xspace}
-\newcommand{\myFaculty}{Put data here\xspace}
-\newcommand{\myDepartment}{Put data here\xspace}
-\newcommand{\myUni}{Put data here\xspace}
-\newcommand{\myLocation}{Darmstadt\xspace}
+\newcommand{\mySupervisor}{Pierre Geurts\xspace}
+\newcommand{\myFaculty}{Faculty of Applied Sciences\xspace}
+\newcommand{\myDepartment}{Department of EE and CS\xspace}
+\newcommand{\myUni}{University of Liege\xspace}
+\newcommand{\myLocation}{Liege, Belgium\xspace}
 \newcommand{\myTime}{June 2014\xspace}
-\newcommand{\myVersion}{version 0.1\xspace}
+\newcommand{\myVersion}{version 1.0\xspace}
 
 % ********************************************************************
 % Setup, finetuning, and useful commands
@@ -148,7 +148,7 @@
 % ********************************************************************
 % Using PDFLaTeX
 % ********************************************************************
-\PassOptionsToPackage{pdftex,hyperfootnotes=false,pdfpagelabels}{hyperref}
+\PassOptionsToPackage{pdftex,hyperfootnotes=true,pdfpagelabels}{hyperref}
 	\usepackage{hyperref}  % backref linktocpage pagebackref
 \pdfcompresslevel=9
 \pdfadjustspacing=1
