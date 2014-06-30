@@ -1242,6 +1242,10 @@ practice.
     Under these assumptions,  it can be shown that this variant reduces
     to an (adaptive) nearest neighbor algorithm~\citep{lin:2006}, for which (weak) consistency
     conditions are met (both in regression and classification).
+    Additionally, this works studies the bias-variance decomposition of this simplified
+    method and shows that the rate of convergence towards the Bayes error
+    only depends on the number $r$ of relevant variables, hence explaining
+    why random forests work well even with many noise variables.
 
 \item \citet{biau:2008}:\hfill\\
     In binary classification, \citet{biau:2008} proves that if the randomized base
@@ -1298,9 +1302,10 @@ practice.
     goodness of the splits and fitting the prediction values at leafs,
     consistency of the method is then also established.
 
-    Interestingly, this work also highlights the fact that performance of
-    random forests only depend on the number $r$ of relevant variables, and not
-    on $p$, making the method robust to overfitting.
+    Interestingly, and corroborating results of \citep{breiman:2004}, this work
+    also highlights the fact that performance of random forests only depend on
+    the number $r$ of relevant variables, and not on $p$, making the method
+    robust to overfitting.
 
 \item \citet{denil:2013}:\hfill \\
     Building upon \citep{biau:2012}, \citet{denil:2013} narrowed the gap
