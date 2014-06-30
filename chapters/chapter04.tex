@@ -1173,12 +1173,13 @@ several mechanisms for dealing with this issue.
 Despite their extensive use in practice, excellent performance and relative
 algorithmic simplicity, the mathematical mechanisms that drive random forests
 are still not well understood. More specifically, the fundamental theoretical
-question of the consistency (see definitions~\ref{def:consistency} and
+question of the consistency (see definitions \ref{def:consistency} and
 \ref{def:consistency-strong}) of random forests, i.e., whether convergence towards an
 optimal model is guaranteed provided an infinitely large learning set, remains
 an open and difficult problem. In this section, we review theoretical works
-that have investigated simplified versions of the algorithm, for which the
-theoretical analysis is typically more tractable. With the hope that results
+that have investigated simplified versions of the algorithm, for which the construction
+procedure is often made data-independent, hence making the
+theoretical analysis typically more tractable. With the hope that results
 obtained for these simplified models will provide insights on the mathematical
 properties of the actual algorithm, the long-term objective of this line of
 research is usually to prove the consistency of the original Random Forest
@@ -1245,7 +1246,7 @@ practice.
 \item \citet{biau:2008}:\hfill\\
     In binary classification, \citet{biau:2008} proves that if the randomized base
     models in an ensemble are consistent, then the corresponding majority
-    or soft voting ensembles are also consistent. (Note that this result
+    or soft voting ensembles are also consistent. (This result
     was later expanded both for multi-class classification~\citep{denil:2013b} and
     regression~\citep{denil:2013}.)
 
@@ -1287,14 +1288,15 @@ practice.
     whenever  $\smash{p_j^{(N)} k^{(N)} \to \infty}$ (for $j=1,\dots,p$) and
     $\smash{\tfrac{k^{(N)}}{N} \to 0}$ as $N \to \infty$.
 
-    In particular, this result can be shown to include the situation where, at
-    each node, randomness is introduced by selecting at random a subset of $K$
-    variables and splitting along the one that maximizes some impurity
-    criterion, like in Random Forest. (Note however that best cut-points
-    coincide with the mid-points only for some probability distributions.)
-    Assuming no bootstrap sampling and provided that two independent datasets
-    are used for evaluating the goodness of the splits and fitting the prediction
-    values at leafs, consistency of the method is then also established.
+    In particular, by properly defining the probabilities  $p_j$, this result
+    can be shown to include the situation where, at each node, randomness is
+    introduced by selecting at random a subset of $K$ variables and splitting
+    along the one that maximizes some impurity criterion, like in Random
+    Forest. (Note however that best cut-points coincide with the mid-points
+    only for some probability distributions.) Assuming no bootstrap sampling
+    and provided that two independent datasets are used for evaluating the
+    goodness of the splits and fitting the prediction values at leafs,
+    consistency of the method is then also established.
 
     Interestingly, this work also highlights the fact that performance of
     random forests only depend on the number $r$ of relevant variables, and not
@@ -1324,7 +1326,9 @@ practice.
     This work establishes the first consistency result for the original Random
     Forest algorithm. In particular, (strong)  consistency is obtained in the context of
     regression additive models, assuming subsampling without replacement
-    (instead of bootstrap sampling).
+    (instead of bootstrap sampling). This work is the first result
+    establishing consistency when (i) splits are chosen in a data-dependent
+    manner and (ii) leafs are not let to grow to an infinite number of node samples.
 
 \end{description}
 
