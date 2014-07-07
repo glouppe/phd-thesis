@@ -82,7 +82,7 @@ the values $x_{i,j}$ of all $N$ node samples (for $i=1,\dots,N$) and then to
 iterate over these in order to find the best threshold $v$. Assuming that the
 value of the impurity criterion can be computed iteratively for consecutive
 thresholds, the most costly operation
-is sorting, whose time complexity is at worst $O(N \log N)$. As a result, the
+is sorting, whose time complexity is at worst $O(N \log N)$ using an optimal algorithm. As a result, the
 overall within-node complexity is $C(N) = O(p N \log N)$. In a randomized tree
 as built with the Random Forest algorithm~\citep{breiman:2001} (RF,
 Algorithm~\ref{algo:findsplit:random}), the search of the best split $s$ is
@@ -104,13 +104,13 @@ Since both CART and PERT can respectively be considered as special cases of RF
 and ETs with regards to time complexity (i.e., for $K=p$ in CART, for $K=1$ in
 PERT), let us consider the overall complexity $T(N)$ when either $C(N)=O(KN\log
 N)$ or $C(N)=O(KN)$ (for $K=1,\dots,p$). To make our analysis easier, let us
-further assume that it exists $c_2 > 0$ such that $C(N) \leq c_2 KN \log N$ for
-all $N \geq 1$ (resp. $C(N) \leq c_2 KN$ for all $N \geq 1$). Time complexity
+further assume that it exists $c_2, c_3 > 0$ such that $c_2 KN \log N \leq C(N) \leq c_3 KN \log N$ for
+all $N \geq 1$ (resp. $c_2 KN \leq C(N) \leq c_3 KN$ for all $N \geq 1$). Time complexity
 is studied in three cases:
 
 \begin{description}
 \item \textit{Best case.}\hfill\\
-      The induction procedure is the most effective
+      The induction procedure is the most effecient
       when node samples can always be partitioned into two balanced subsets of $\tfrac{N}{2}$
       samples.
 
@@ -133,22 +133,28 @@ is studied in three cases:
 \end{description}
 
 Since the induction algorithm looks for splits that most decrease impurity (in
-particular, as $K\to p$), we argue that balanced partitions of the nodes
+particular, as $K\to p$), we assume that balanced partitions of the nodes
 samples should  be more likely than partitions that are unbalanced (such a
-claim is however highly data dependent). Under this assumption, random forests should
-therefore approach the best case rather than the average case (for which
+claim is however highly data dependent). Under this assumption, random forests
+should therefore approach the best case rather than the average case (for which
 partitions are equally likely). However as randomization increases (e.g., as $K
 \to 1$), splits yield partitions that tend to be more equiprobable, hence
 approaching the average case. As such, we believe the complexity for the true
 average case should lie in-between the complexity of the best case and the
 complexity of the average case as defined above. As for the worst case, it
-should only arise in exceptional circumstances, when the output is nearly
-independent from the inputs. In particular, due to the end-cut preference of
-classicial impurity criteria, such worst splits are in fact more likely to be
-selected (see \citep{breiman:1984}, Theorem 11.1) if none of the $K$ selected
-variables are informative with respect to the output. Note that this effect is
+should only arise in exceptional circumstances.
+
+Let us  note that due to the end-cut preference of classical impurity
+criteria, worst splits are in fact likely to be selected (see
+\citep{breiman:1984}, Theorem 11.1) if none of the $K$ selected variables are
+informative with respect to the output. (Note that this effect is
 less pronounced in ETs because thresholds are drawn at random rather than being
-optimized locally (as in RF).
+optimized locally, as in RF.) In the analysis carried below,
+intermingling effects  due to good splits at the top of trees and such degenerated
+splits due to end-cut preference when input variables become independent of the
+output are not explicitly taken into account. Yet, the simplifying assumptions
+defining our average case appear to constitute a good-enough approximation,
+as further confirmed in empirical benchmarks in Section~\ref{sec:5:benchmarks}.
 
 \begin{remark}{Master Theorem}
 Some of the results outlined in the remaining of this section make use of the
@@ -167,15 +173,17 @@ $f(n)$ is a function that is positive for $n \geq d$.
 
 \begin{enumerate}
 \item If there is a small constant $\epsilon > 0$, such that $f(n)$ is $O(n^{\log_b a - \epsilon})$, then $T(n)$ is $\Theta(n^{\log_b a})$.
-\item If there is a constant $k \geq 0$, such that $f(n)$ is $O(n^{\log_b a} \log^k n)$, then $T(n)$ is $\Theta(n^{\log_b a} \log^{k+1} n)$.
+\item If there is a constant $k \geq 0$, such that $f(n)$ is $\Theta(n^{\log_b a} \log^k n)$, then $T(n)$ is $\Theta(n^{\log_b a} \log^{k+1} n)$.
 \item If there are small constants $\epsilon > 0$ and $\delta < 1$, such that $f(n)$ is $\Omega(n^{\log_b a + \epsilon})$ and $af(\tfrac{n}{b}) \leq \delta f(n)$, for $n \geq d$, then $T(n)$ is $\Theta(f(n))$.
 \end{enumerate}
 \end{theorem}
 \end{remark}
 
+\pagebreak
+
 \begin{theorem}\label{thm:6:best:knlogn}
-For $C(N) \leq c_2 KN\log N$, the time complexity for building a decision
-tree in the best case is $O(K N \log^2 N)$.
+For $c_2 KN\log N \leq C(N) \leq c_3 KN\log N$, the time complexity for building a decision
+tree in the best case is $\Theta(K N \log^2 N)$.
 \end{theorem}
 
 \begin{proof}
@@ -185,16 +193,16 @@ $T(N)$ by $K T'(N)$ where, in the best case, $T'(N)$ is
 \begin{equation}
 \begin{cases}
 T'(1) = c_1^\prime \\
-T'(N) = c_2 N \log N + 2 T'(\frac{N}{2})
+T'(N) = C^\prime(N) + 2 T'(\frac{N}{2})
 \end{cases}
 \end{equation}
-with $c_1^\prime = \tfrac{c_1}{K}$. In this form, the second case of the Master Theorem applies for
-$a=2$, $b=2$ and $k=1$. Accordingly, $T'(N)=O(N\log^{k+1} N)=O(N\log^2 N)$ and $T(N) = O(K N\log^2 N)$.
+with $c_1^\prime = \tfrac{c_1}{K}$ and $C^\prime(N)=\tfrac{C(N)}{K}$. In this form, the second case of the Master Theorem applies for
+$f(n) = C^\prime(N)$, $a=2$, $b=2$ and $k=1$. Accordingly, $T'(N)=\Theta(N\log^{k+1} N)=\Theta(N\log^2 N)$ and $T(N) = \Theta(K N\log^2 N)$.
 \end{proof}
 
 \begin{theorem}\label{thm:6:best:kn}
-For $C(N) \leq c_2 K N$, the time complexity for building a decision
-tree in the best case is $O(K N \log N)$.
+For $c_2 K N \leq C(N) \leq c_3 K N$, the time complexity for building a decision
+tree in the best case is $\Theta(K N \log N)$.
 \end{theorem}
 
 \begin{proof}
@@ -202,11 +210,11 @@ In the best case, $T(N) \leq K T'(N)$, where
 \begin{equation}
 \begin{cases}
 T'(1) = c_1^\prime \\
-T'(N) = c_2 N + 2 T'(\frac{N}{2}).
+T'(N) = C^\prime(N) + 2 T'(\frac{N}{2}).
 \end{cases}
 \end{equation}
-Again, the second case of the Master Theorem applies, this time for $a=2$, $b=2$ and $k=0$.
-Accordingly, $T'(N)=O(N\log^{k+1} N)=O(N\log N)$ and $T(N) = O(K N\log N)$.
+Again, the second case of the Master Theorem applies, this time for $f(n)=C^\prime(N)$, $a=2$, $b=2$ and $k=0$.
+Accordingly, $T'(N)=\Theta(N\log^{k+1} N)=\Theta(N\log N)$ and $T(N) = \Theta(K N\log N)$.
 \end{proof}
 
 \begin{theorem}\label{thm:6:worst:knlogn}
@@ -363,7 +371,7 @@ the context of large datasets. Reassuringly, the analysis of the average case
 shows that pathological cases are not dominant and that, on average, complexity
 behaves as in the best case.
 
-\begin{table}[b]
+\begin{table}
     \centering
     \begin{tabular}{| c | c c c |}
     \hline
