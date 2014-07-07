@@ -457,7 +457,7 @@ N_t - \max_{c \in {\cal Y}} N_{ct} &\geq N_{t_L} - \max_{c \in {\cal Y}} N_{ct_L
 \max_{c \in {\cal Y}} N_{ct} &\leq \max_{c \in {\cal Y}} N_{ct_L} + \max_{c \in {\cal Y}} N_{ct_R} \\
 \max_{c \in {\cal Y}} (N_{ct_L} + N_{ct_R}) &\leq \max_{c \in {\cal Y}} N_{ct_L} + \max_{c \in {\cal Y}} N_{ct_R}
 \end{align*}
-Which is true since $\max_{c \in {\cal Y}} N_{ct_L}$ (resp., $t_R$) is
+which is true since $\max_{c \in {\cal Y}} N_{ct_L}$ (resp., $t_R$) is
 necessarily greater or equal to the left term $N_{ct_L}$ (resp., to right term
 $N_{ct_R}$) in the left-hand side of the equation. Equality holds if the
 majority classes are the same in $t$, $t_L$ and $t_R$.
@@ -799,6 +799,13 @@ into two subsets
     \label{table:toy-problem}
 \end{table}
 
+\begin{figure}
+    \centering
+    \includegraphics[scale=1.0]{figures/ch3_goodness.pdf}
+    \caption{Splitting on $X_1$ versus splitting on either $X_2$ or $X_3$.}
+    \label{fig:3:goodness}
+\end{figure}
+
 As introduced in Section~\ref{sec:3:induction}, our objective is to partition
 $t_0$ using the split $s^*$ that maximizes the impurity decrease $$\Delta i(s,
 t) = i(t) - p_L i(t_L) - p_R i(t_R),$$ where the impurity function $i(t)$
@@ -828,22 +835,20 @@ $i_R(t)$ has two serious defects:
 \item It does not sensitively account for changes in the a posteriori class
       distributions $p(y|t_L)$ and $p(y|t_R)$.
 
-      In our example, none of the three splits improves training error. However,
-      splitting on $X_1$ is likely to yield a tree which is simpler than if the
-      root node had been split on $X_3$.  As shown in
-      Figure~\ref{fig:3:goodness}, splitting on $X_1$ indeed produces a child
-      node that is already terminal and for which no further work is required.
-      By contrast, splitting on $X_3$ results in child nodes that still have to be
-      divided further.  Splitting on $X_1$ should therefore be preferred, even
-      if it does not reduce immediately the training error.
+      In our example, none of the three splits improves training error.
+      However, splitting on $X_1$ is likely to yield a tree which is simpler
+      than if the root node had been split on either $X_2$ or $X_3$.  As shown in
+      Figure~\ref{fig:3:goodness}, splitting on $X_1$ indeed produces a right
+      child node that is already terminal and for which no further work is
+      required. Splitting on $X_2$ also results in the right child node to be
+      pure. However, the left child node is in this case larger, suggesting
+      that more work is further required. Finally, splitting on $X_3$ results
+      in child nodes that have to be both divided further.  Splitting on $X_1$
+      should therefore be preferred, even if it does not reduce immediately the
+      training error.
 \end{enumerate}
 
-\begin{figure}
-    \centering
-    \includegraphics[scale=1.0]{figures/ch3_goodness.pdf}
-    \caption{Splitting on $X_1$ versus splitting on $X_3$.}
-    \label{fig:3:goodness}
-\end{figure}
+
 
 In fact, these issues are largely due to the fact that the tree growing
 algorithm~\ref{algo:induction} is based on a one-step optimization procedure. A
@@ -1000,7 +1005,7 @@ squared error loss on the training set. In particular, the reduction is positive
 the values assigned to the child nodes are different from the value at $t$.
 Contrary to classification, this only happens in rare circumstances (i.e., when
 the mean output values at the child nodes coincide with the mean output value
-in $t$), hence making the regression resubstitution estimate sensitive to changes in the a
+in $t$), hence making the regression resubstitution estimate sensitive to changes in (the means of) the a
 posteriori distributions, even if these are only slight.  As a result, the
 local resubstitution estimate does not exhibit the undesirable properties that
 we had in classification and in fact constitutes a good criterion for
@@ -1268,10 +1273,11 @@ quickly becomes infeasible in practice. As an approximation, the usual
 strategy~\citep{liaw:2002} consists in exhaustively evaluating all splits when
 $L \leq 10$ and then switch to random sampling of the subsets ${\cal B} \subset
 \{ b_1, \dots, b_L \}$ when $L > 10$.
-%In that case, $512$ random subsets ${\cal B}$ are typically drawn and evaluated.
+In that case, $2^8$ random subsets ${\cal B}$ are typically drawn and evaluated.
 
-In regression, given the equivalence of $i_R(t)$ with the Gini index, the same
-algorithmic trick can be applied as in binary classification. In this case,
+In regression, given the equivalence of $i_R(t)$ with the Gini index, conditions of
+Theorem~\ref{thm:categorical-simplification} are met and the same
+algorithmic trick can be applied as in binary classification to compute the optimal split. In this case,
 $X_j$ is transformed into an ordered variable by virtually replacing
 categorical values $b_l$ with the mean output value at $b_l$, i.e.,
 $\tfrac{1}{N_{lt}} \sum_{\mathbf{x}, y \in {\cal L}_t, x_j = b_l} y$, on which
@@ -1294,11 +1300,13 @@ image  in order to identify regions or objects (see \citep{zhang:2012}).
 The most straightforward strategy to solve a multi-objective task is to build
 an independent and separate model for each of the $q$ output variables $Y_k$.
 Distinctively, decision trees offer an alternative strategy which consists in
-learning a single \textit{multi-output} (or \textit{multi-objective}) model,
+learning a single \textit{multi-output} model,
 capable of predicting all output variables at once. Algorithmically,  \textit
-{multi-output decision trees}~\citep{dumont:2007,kocev:2007} can easily be
-implemented on the basis of the induction procedure developed in this chapter,
-provided the following two changes:
+{multi-output decision trees} closely relate to predictive clustering trees
+\citep{blockeel:2000}, output kernel trees \citep{geurts:2006b} or
+multi-objective decision trees \citep{kocev:2007}, and can easily be implemented on
+the basis of the induction procedure developed in this chapter, provided the
+following two changes:
 \begin{itemize}
 \item Leaves are labeled with output vectors $\mathbf{y}_t = (y_{t,1}, \dots, y_{t,q})$,
       where each $y_{t,k}$ (for $k=1,\dots,q$) is computed using assignment rule

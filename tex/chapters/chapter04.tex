@@ -177,7 +177,7 @@ concepts of bias and variance in the case of classification. While these
 efforts have all provided useful insight into the nature of classification
 error, none of them really have provided a seductively as simple and
 satisfactory framework as in regression (for reviews, see
-\citep{friedman:1997,geurts:2002,james:2003}).
+\citep{friedman:1997,james:2003,geurts:2005}).
 
 An interesting connection with Theorem~\ref{thm:bias-variance} however is to
 remark that classification algorithms usually work by computing estimates
@@ -406,7 +406,7 @@ and then predict the class which is the most likely:
 \end{equation}
 As empirically investigated by \citet{breiman:1996b}, both approaches yield
 results that are nearly identical\footnote{In the case of ensembles of fully developed decision trees that perfectly classify all samples from ${\cal L}$, majority voting and soft voting are exactly equivalent.}. From a practical point of view however,
-Equation~\ref{eqn:4:avg-estimate} has the advantage of providing accurate class
+Equation~\ref{eqn:4:avg-estimate} has the advantage of providing smoother class
 probability estimates for the ensemble, which may prove to be useful in
 critical applications, e.g., when (estimates of) the certainty about
 predictions is as important as the predictions themselves. Additionally,
@@ -1229,7 +1229,7 @@ practice.
     class probabilities are continuous. In Appendix F of \citep{geurts:2006},
     Extremely Randomizes Trees (for $K=1$ and $M \to \infty$) are shown
     to be a continuous piecewise multilinear function of its arguments,
-    which therefore suffices to establish the strong consistency of the method when
+    which should therefore suffice to establish the strong consistency of the method when
     trees are built totally at random.
 
 \item \citet{breiman:2004}:\hfill\\

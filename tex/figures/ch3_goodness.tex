@@ -27,15 +27,31 @@
     % Nodes
     \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](5,9){0.4}
     \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](3,8){0.4}
-    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](7,8){0.4}
+    \psframe[fillstyle=solid,linewidth=1pt,linecolor=black](6.7,7.7)(7.3,8.3)
     % Text
     \rput(5,9){$t_0$}
     \rput(3,8){$t_1$}
     \rput(7,8){$t_2$}
-    \rput(5,8.3){{\small $X_3$}}
-    \rput(3,7.25){$p(y=c_1|t_1)=\frac{1}{6}$}
-    \rput(3,6.75){$p(y=c_2|t_1)=\frac{5}{6}$}
-    \rput(7,7.25){$p(y=c_1|t_2)=\frac{1}{4}$}
-    \rput(7,6.75){$p(y=c_2|t_2)=\frac{3}{4}$}
+    \rput(5,8.3){{\small $X_2$}}
+    \rput(3,7.25){$p(y=c_1|t_1)=\frac{2}{6}$}
+    \rput(3,6.75){$p(y=c_2|t_1)=\frac{4}{6}$}
+    \rput(7,7.25){$p(y=c_1|t_2)=\frac{0}{4}$}
+    \rput(7,6.75){$p(y=c_2|t_2)=\frac{4}{4}$}
+    % Arrows
+    \psline[linewidth=0.5pt]{->}(5,6)(3.3,5.3)
+    \psline[linewidth=0.5pt]{->}(5,6)(6.7,5.3)
+    % Nodes
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](5,6){0.4}
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](3,5){0.4}
+    \pscircle[fillstyle=solid,linewidth=1pt,linecolor=black](7,5){0.4}
+    % Text
+    \rput(5,6){$t_0$}
+    \rput(3,5){$t_1$}
+    \rput(7,5){$t_2$}
+    \rput(5,5.3){{\small $X_3$}}
+    \rput(3,4.25){$p(y=c_1|t_1)=\frac{1}{6}$}
+    \rput(3,3.75){$p(y=c_2|t_1)=\frac{5}{6}$}
+    \rput(7,4.25){$p(y=c_1|t_2)=\frac{1}{4}$}
+    \rput(7,3.75){$p(y=c_2|t_2)=\frac{3}{4}$}
     \end{pspicture}
 \end{document}
