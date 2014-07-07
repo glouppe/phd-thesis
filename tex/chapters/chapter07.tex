@@ -254,6 +254,13 @@ by generalizing for $N_c$ the proofs of Propositions~\ref{prop:red:self}
 and \ref{prop:red:other}.
 \end{proof}
 
+Finally, let us note that Propositions~\ref{prop:red:self},
+\ref{prop:red:other} and \ref{prop:red:general} are in fact valid as soon as
+variables $X_i$ and $X_j$ satisfy conditions of Lemma~\ref{lemma:red1},  even
+if they are not totally redundant. Accordingly, we call two variables
+satisfying these conditions \textit{totally redundant with respect to the
+output $Y$}.
+
 As an illustrative example, let us reconsider the LED classification problem
 from Section~\ref{sec:6:illustration}, for which $X_5$ was found to be the
 most important variable. As shown in Figure~\ref{fig:7:red:led}, adding
@@ -262,7 +269,7 @@ predicted by our theoretical result from Propositions~\ref{prop:red:self} and
 \ref{prop:red:general}. When 5 or more copies of $X_5$ are added, the
 importance of $X_5$ is the smallest of all, as if $X_5$ had become less
 informative. Similarly, we observe that the importance of the other variables
-remain about the same or slightly decrease, as if they all had become a bit
+remains about the same or slightly decreases, as if they all had become a bit
 less informative. With regards to our previous results in Propositions
 \ref{prop:red:other} and \ref{prop:red:general}, this indicates that the
 importance due to the $I(X_l;Y|B)$ terms prevails from  the importance due to
@@ -349,21 +356,24 @@ and that the importance of relevant variables becomes dependent on the number
 of irrelevant variables.
 
 
-\subsection{Bias due to impurity misestimations}
+\subsection{Bias due to empirical impurity estimations}
 \label{sec:7:bias:high}
 
-In many applications, input variables are heterogeneous and vary in their scale
-of measurement or in the number of categories they may take. For example, in
+The analysis of variable importances carried out so far has considered
+asymptotic conditions for which the true node impurity $i(t)$ is assumed to be
+known. In practice however, due to the finite size of the learning set,
+impurity measurements suffer from an empiricial misestimation bias. In this
+section, we study this effect in the context of heterogenous variables\footnote{As an example, in
 the case of meteorological problems, variables often comprise mixed
 environmental measurements of different nature and scale,   like speed of
-wind, temperature, humidity, pressure, rainfall or solar radiation. As we show
-in this section, misestimations of node impurity is in fact directly
-proportional to the cardinality of the split variable and inversely
-proportional to the number $N_t$ of samples used for the evaluation. As a
-result, impurity reductions become overestimated as we go deeper in the tree
-and/or as the number of values of the variable is large. In this context,
-variable importances suffer from bias, making variables of higher cardinality
-wrongly appear as more important.
+wind, temperature, humidity, pressure, rainfall or solar radiation.}, with
+respect to their scale or their number of categories, and show that the
+misestimation of node impurity is directly proportional to the cardinality of
+the split variable and inversely proportional to the number $N_t$ of samples
+used for the evaluation. As a result, impurity reductions become overestimated
+as we go deeper in the tree and/or as the number of values of the variable is
+large. In consequence, variable importances also suffer from bias, making
+variables of higher cardinality wrongly appear as more important.
 
 To guide our discussion, let us revisit the simulation studies from
 \citep{strobl:2007b} which consider a binary output variable $Y$ and five
@@ -435,7 +445,7 @@ produce a good criterion value by chance, as in a multiple testing situation}.
 As a result, variables of higher cardinality are more likely to be chosen for
 splitting than those of lower cardinality. While this bias has been known for
 long in decision trees~\citep{kononenko:1995,kim:2001,hothorn:2006}, we argue
-that it is not the actual cause for the bias observed here. Indeed, this
+that it is not the primary cause for the bias observed here. Indeed, this
 argument does not directly explain why similar trends are also observed when no
 variable selection is performed (e.g., for TRT or for $K=1$) nor why it
 similarly happens when cut-points are chosen at random, independently of the
@@ -486,10 +496,10 @@ splits cancel each other when summing up the importances, which finally amounts
 to collect an actual estimate of $I(X_j;Y|t)$ from the sequence of binary
 splits. For the same reasons as before, variables of high cardinality are
 therefore biased in the same way. (As we will study in
-Section~\ref{sec:bias:tree}, this assumption does not hold in practice, making
+Section~\ref{sec:bias:tree}, this consecutiveness assumption does not hold in practice, making
 the importances from binary decision trees strictly different from those of
 multiway decision trees. Yet, the qualitative conclusions are still valid since
-variables of high cardinality can be reused far more many times than variables
+variables of high cardinality can be reused far more often than variables
 of low cardinality, before all possible splits are exhausted.)
 
 \begin{figure}
@@ -549,7 +559,7 @@ $X_2$ with respect to $Y$.  Let us first consider ETs  built with no variable
 selection ($K=1$), as shown in four top plots of the figure. For the null case,
 when $\text{relevance}=0$, limiting the depth of the trees correctly fixes the
 bias that was observed before. For shallow trees, the importances before
-normalization of all five input variables are close to 0, as expected from
+normalization of all five input variables are close to $0$, as expected from
 irrelevant variables. The normalized importances, as shown in the figure, are
 also all close to $\tfrac{1}{p}=0.2$, confirming that no variable is detected
 as more relevant than the others. However, when the depth of the decision trees
@@ -569,8 +579,8 @@ irrelevant variables.
 
 By comparison, the four bottom plots of Figure~\ref{fig:7:bias:depth}
 illustrate variable importances for RF built with variable selection ($K=5$).
-Again, we observe that limiting the depth of the trees help reduce the
-misestimation bias. However, the aggravating effect of variable selection is
+Again, we observe that limiting the depth of the trees helps reduce the
+misestimation bias. However, the supplementary effect due variable selection is
 also clearly visible: variables of larger cardinality appear as significantly
 more important than the other variables. Consequently, this makes the
 detection of  $X_2$ as a relevant variable more difficult when trees are grown
@@ -610,22 +620,6 @@ strategy. In lack of a rigorous theoretical framework, we give in this section
 preliminary insights on variable importances for binary decision trees,
 hopefully shedding some light on their interpretation.
 
-\begin{table}
-    \centering
-    \begin{tabular}{| c | c c |}
-    \hline
-    $y$ & $x_1$ & $x_2$ \\
-    \hline
-    \hline
-    0 & 0 & 0 \\
-    1 & 1 & 1 \\
-    1 & 2 & 1 \\
-    \hline
-    \end{tabular}
-    \caption{Toy problem. All $3$ possible samples are equiprobable.}
-    \label{table:simulation:bias:tree}
-\end{table}
-
 As a simplistic but illustrative example, let us consider a toy classification
 problem composed of a ternary input variable $X_1$ and of a binary input
 variable $X_2$, both of them being ordered. Let us further assume that input samples are uniformly drawn
@@ -642,6 +636,22 @@ variable importances are the same:
 \text{Imp}(X_2) &= \frac{1}{2} I(X_2;Y) = \frac{1}{2} H(Y) = 0.459.
 \end{align*}
 
+\begin{table}
+    \centering
+    \begin{tabular}{| c | c c |}
+    \hline
+    $y$ & $x_1$ & $x_2$ \\
+    \hline
+    \hline
+    0 & 0 & 0 \\
+    1 & 1 & 1 \\
+    1 & 2 & 1 \\
+    \hline
+    \end{tabular}
+    \caption{Toy problem. All $3$ possible samples are equiprobable.}
+    \label{table:simulation:bias:tree}
+\end{table}
+
 \begin{figure}
     \centering
     \includegraphics[scale=1.0]{figures/ch7_trees_id3.pdf}
@@ -656,7 +666,7 @@ variable importances are the same:
     \label{fig:7:bias:trees:ets}
 \end{figure}
 
-By contrast, using binary splits and Extremely Randomized Trees (for $K=1$) results in $4$ different decision trees, as
+By contrast, using binary splits and ETs (for $K=1$) results in $4$ different decision trees, as
 represented in Figure~\ref{fig:7:bias:trees:ets}. When splitting on $X_1$ at
 the root node, two binary splits are now possible with equal probability: $t_L = X_1 \leq 0, t_R = X_1 > 0$ or
 $t_L = X_1 \leq 1, t_R = X_1 > 1$. In the former case, the resulting child nodes are pure,
@@ -693,7 +703,7 @@ v^*;Y|\cdot)$ and $I(\cdot;Y|X_j < v^*,\cdot)$ (and masking all others).
 \begin{figure}
 \centering
 \includegraphics[width=0.9\textwidth]{figures/ch7_bias_trees.pdf}
-\caption{Variable importances of $X_1$ and $X_2$ when increasing the cardinality of $X_1$. Note that, in this example, high cardinality does not necessarily mean high importance. }
+\caption{Variable importances of $X_1$ and $X_2$ when increasing the cardinality of $X_1$.}% Note that, in this example, high cardinality does not necessarily mean high importance. }
 \label{fig:7:bias:trees}
 \end{figure}
 
@@ -714,11 +724,11 @@ As such, their importances respectively appear as equal as the figure confirms.
 
 Overall, these additional effects due to binary splits make variable
 importances computed from classical random forests very difficult to interpret
-and understand, as soon as data include many variables of different scale or
+and understand, as soon as data include many variables of different
 number of categories. While they can still be used to identify the most
 relevant variables, caution should be taken when interpreting the amplitude of
-importance measures. As our last example illustrates, the importance of a
-variable may be misleadingly low or misleadingly high because of combinatorial
+importances. As our last example illustrates, they
+ may be misleadingly low or high because of combinatorial
 effects, solely due to the possible ways variables are binarized through the
 implemented threshold selection mechanisms.
 
@@ -826,7 +836,7 @@ the identification of factors for predicting protein-protein
 interactions~\citep{qi:2006}. These examples are not isolated and tens of
 further studies based on random forests could in fact be cited from the fields
 of genomics, metabolomics, proteomics or transcriptomics. Some of them are
-reviewed in \citep{touw:2013,boulesteix:2012}.
+reviewed in \citep{geurts:2009,touw:2013,boulesteix:2012}.
 
 In light of our study and discussion of variable importances,  recommendations
 for biomarker identification depend on the exact objective of the application.
@@ -882,25 +892,22 @@ conditional dependency with $X_j$. Once all $p$ problems are solved, putative
 links are aggregated over all $p$ variables to provide a ranking of
 interactions from which the network can finally be reconstructed.
 
-Again, our previous theoretical analysis call for caution when plugging
+Again, our previous theoretical analysis calls for caution when plugging
 variable importances into network inference procedures. Since the goal is to
-retrieve all interactions, variable importances should be as unbiased as
-possible, which is guaranteed using totally randomized trees with multiway
-splits and limited depth to mitigate impurity misestimations effects. When
-input variables are of different scale of measurements or vary in the number of
+retrieve all \textit{direct} interactions, variable importances might in fact
+not be as appropriate as desired  since they also account for indirect or
+combined effects. In this case, a good heuristic is to intentionally induce
+masking effects (i.e., by setting $K>1$) in order to recover only the strongest
+(and assumingly direct) interactions.
+Alternatively, a promising strategy might also be directly look for \textit{strongly}
+relevant variables, that is for variables $X_i$ such that $I(X_i;X_j|B) > 0$
+for \textit{all} $B$.
+In all cases, impurity misestimations effects
+should also be mitigated by using an adequate stopping criterion. When input
+variables are of different scale of measurements or vary in the number of
 categories, care should also be taken when aggregating variable importances
 into a single ranking of interactions. As shown by
 Theorem~\ref{thm:sum-of-imp}, variable importances are in this case upper bounded by the entropy
 $H(X_j)$ of the target variable, which may greatly varies from one target to
 another. As such, variable importances are not directly comparable and should
-preferably be normalized (e.g., by $H(X_j)$) before their aggregation. Finally,
-the use of variable importances for network inference might not be as
-appropriate as desired when looking \textit{direct} interactions since they
-also account for indirect and combined effects. In this case, a better strategy
-might be to look for \textit{strongly} relevant variables, that is for
-variables $X_i$ such that $I(X_i;X_j|B) > 0$ for \textit{all} $B$.
-
-
-% use trt
-% mixed input variables => normalize by H(X_j)
-% direct verus indirect interations
+preferably be normalized (e.g., by $H(X_j)$) before their aggregation.
