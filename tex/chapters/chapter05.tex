@@ -187,13 +187,11 @@ tree in the best case is $\Theta(K N \log^2 N)$.
 \end{theorem}
 
 \begin{proof}
-The dependency to $K$ in
-Equation~\ref{eqn:complexity:rec} can be factored out, thereby upper bounding
-$T(N)$ by $K T'(N)$ where, in the best case, $T'(N)$ is
+Let us rewrite $T(N)$ as $K T'(N)$ where, in the best case,
 \begin{equation}
 \begin{cases}
 T'(1) = c_1^\prime \\
-T'(N) = C^\prime(N) + 2 T'(\frac{N}{2})
+T'(N) = C^\prime(N) + 2 T'(\frac{N}{2}),
 \end{cases}
 \end{equation}
 with $c_1^\prime = \tfrac{c_1}{K}$ and $C^\prime(N)=\tfrac{C(N)}{K}$. In this form, the second case of the Master Theorem applies for
@@ -206,7 +204,7 @@ tree in the best case is $\Theta(K N \log N)$.
 \end{theorem}
 
 \begin{proof}
-In the best case, $T(N) \leq K T'(N)$, where
+In the best case, $T(N) = K T'(N)$, where
 \begin{equation}
 \begin{cases}
 T'(1) = c_1^\prime \\
