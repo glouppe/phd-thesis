@@ -81,8 +81,8 @@ Similarly, the corresponding output values can be written as a vector
 $\mathbf{y}=(y_1, ..., y_N)$\label{ntn:vector-y}.
 
 \begin{remark}{Data representation}
-For optimal implementations of machine learning algorithms, data needs to
-represented using structures which allows for high-performance numerical
+For optimal implementations of machine learning algorithms, data needs to be
+represented using structures which allow for high-performance numerical
 computation. In this work, code snippets are described under  the assumption
 that data is represented using a data structure similar to a NumPy
 array~\citep{vanderwalt:2011}.
@@ -499,7 +499,7 @@ reducing the corresponding training estimates down to $0$, as if the model were
 perfect. At the same time, the test estimates become worse because the
 structure learned from the training set is actually too specific and does not
 generalize. The model is overfitting. The best parameter value $\theta$ is
-therefore the one making the appropriate trade-off and producing a model which
+therefore the one making the appropriate trade-off and producing a model which is
 neither too simple nor to complex, as shown by the grey line on the figure.
 
 As we will see later in Chapter~\ref{ch:forest},
@@ -524,7 +524,7 @@ learned model is not independent from ${\cal L}_\text{test}$ since its repeated
 construction was precisely guided by the minimization of the prediction error
 over ${\cal L}_\text{test}$. As a result, the minimized test sample error is in
 fact a biased, optimistic, estimate of the true generalization error, sometimes
-leading substantial underestimations. For the same reasons, using the $K$-fold
+leading to substantial underestimations. For the same reasons, using the $K$-fold
 cross-validation estimate does not provide a better estimate since model
 selection was similarly guided by the minimization of this quantity.
 
