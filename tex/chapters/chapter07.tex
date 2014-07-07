@@ -893,21 +893,21 @@ links are aggregated over all $p$ variables to provide a ranking of
 interactions from which the network can finally be reconstructed.
 
 Again, our previous theoretical analysis calls for caution when plugging
-variable importances into network inference procedures. Since the goal is to
-retrieve all \textit{direct} interactions, variable importances might in fact
+variable importances into network inference procedures. Indeed, since the goal is to
+retrieve all \textit{direct} interactions, importances might in fact
 not be as appropriate as desired  since they also account for indirect or
 combined effects. In this case, a good heuristic is to intentionally induce
 masking effects (i.e., by setting $K>1$) in order to recover only the strongest
-(and assumingly direct) interactions.
-Alternatively, a promising strategy might also be directly look for \textit{strongly}
-relevant variables, that is for variables $X_i$ such that $I(X_i;X_j|B) > 0$
-for \textit{all} $B$.
-In all cases, impurity misestimations effects
-should also be mitigated by using an adequate stopping criterion. When input
-variables are of different scale of measurements or vary in the number of
-categories, care should also be taken when aggregating variable importances
-into a single ranking of interactions. As shown by
-Theorem~\ref{thm:sum-of-imp}, variable importances are in this case upper bounded by the entropy
-$H(X_j)$ of the target variable, which may greatly varies from one target to
-another. As such, variable importances are not directly comparable and should
-preferably be normalized (e.g., by $H(X_j)$) before their aggregation.
+(and assumingly direct) interactions. Alternatively, a promising strategy might
+be to directly look for \textit{strongly} relevant variables, that is for
+variables $X_i$ such that $I(X_i;X_j|B) > 0$ for \textit{all} $B$.
+In both cases, impurity misestimations effects should be mitigated by using an
+adequate stopping criterion.
+When input variables are of different scale of
+measurements or vary in the number of categories, care should finally be taken
+when aggregating variable importances into a single ranking of interactions. As
+shown by Theorem~\ref{thm:sum-of-imp}, variable importances are in this case
+upper bounded by the entropy $H(X_j)$ of the target variable, which may greatly
+varies from one target to another. As such, variable importances are not
+directly comparable and should preferably be normalized (e.g., by $H(X_j)$)
+before their aggregation.
