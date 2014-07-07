@@ -60,7 +60,7 @@ machine learning, interpretability is indeed often as important as prediction
 accuracy. It allows for a better understanding of the phenomenon under study, a
 finer exploration of the data and an easier self-appropriation of the results.
 By contrast, when an algorithm is used as a black box, yielding results
-seemingly out of nowhere, it may indeed be difficult to thrust or accept if it
+seemingly out of nowhere, it may indeed be difficult to trust or accept if it
 cannot be understood how and why the procedure came to them. Unfortunately, the
 current state-of-the-art in machine learning often makes it difficult for
 non-experts to understand and interpret the results of an algorithm. While
@@ -75,7 +75,7 @@ trees~\citep{breiman:1984} and random forests~\citep{breiman:2001}. While these
 methods have proven to be a robust, accurate and successful tool for solving
 countless of machine learning tasks, including classification, regression,
 density estimation, manifold learning or semi-supervised
-learning~\citep{criminisi:2013}, there remains many gray areas in their
+learning~\citep{criminisi:2013}, there remain many gray areas in their
 understanding:
 \begin{enumerate}
 \item First, the theoretical properties and statistical mechanisms that drive
@@ -120,10 +120,10 @@ comprehensive review of the algorithms at the core of decision trees and random
 forests. We discuss the learning capabilities of these models and carefully
 study all parts of the algorithm and their complementary effects. In particular,
 Chapter~\ref{ch:forest} includes original contributions on the bias-variance
-analysis of ensemble methods, highlithing how randomization can help improve
+analysis of ensemble methods, highligthing how randomization can help improve
 performance. Chapter~\ref{ch:complexity} concludes this first part with an
 original space and time complexity analysis of random forests (and their
-variants), along with a in-depth discussion of implementation details,
+variants), along with an in-depth discussion of implementation details,
 as contributed within the open source Scikit-Learn library.
 Overall, Part~\textsc{\ref{part:1}} therefore presents a comprehensive review
 of previous work on random forests, including some original contributions
@@ -153,14 +153,26 @@ This dissertation summarizes several contributions to random forests
 algorithms. Publications that have directly stemmed from this work include:
 
 \begin{itemize}
-\item \citep{geurts:2011} \textit{Learning to rank with extremely randomized trees}, Geurts Pierre and Louppe Gilles, 2011.
+\item \citep{geurts:2011} \textit{Learning to rank with extremely randomized trees},
+Geurts Pierre and Louppe Gilles.
+In JMLR: Workshop and Conference Proceedings, volume 14, 2011.
 
-\item \citep{louppe:2012} \textit{Ensembles on random patches}, Louppe Gilles and Geurts Pierre, 2012.
+\item \citep{louppe:2012} \textit{Ensembles on random patches},
+Louppe Gilles and Geurts Pierre.
+In Machine Learning and Knowledge Discovery in Databases, pages 346--361. Springer, 2012.
 
-\item \citep{louppe:2013} \textit{Understanding variable importances in forests of randomized trees}, Louppe Gilles, Wehenkel Louis, Sutera Antonio and Geurts Pierre, 2013.
+\item \citep{louppe:2013} \textit{Understanding variable importances in forests of randomized trees},
+Louppe Gilles, Wehenkel Louis, Sutera Antonio and Geurts Pierre.
+In Advances in Neural Information Processing Systems, pages 431--439, 2013.
 
-\item \citep{buitinck:2013} \textit{API design for machine learning software: experiences from the scikit-learn project}, Buitinck Lars, Louppe Gilles, Blondel Mathieu et al., 2013.
-\item \citep{botta:2014} \textit{Exploiting SNP Correlations within Random Forest for Genome-Wide Association Studies}, Botta Vincent, Louppe Gilles, Geurts Pierre and Wehenkel Louis, 2014.
+\item \citep{buitinck:2013} \textit{API design for machine learning software: experiences from the scikit-learn project},
+Buitinck Lars, Louppe Gilles, Blondel Mathieu et al..
+In ECML-PKDD 2013 Workshop: Languages for Data Mining and Machine Learning, 2013.
+
+\item \citep{botta:2014} \textit{Exploiting SNP Correlations within Random Forest for Genome-Wide Association Studies},
+Botta Vincent, Louppe Gilles, Geurts Pierre and Wehenkel Louis.
+PloS one, 9(4):e93379, 2014.
+
 \end{itemize}
 
 During the course of this thesis, several fruitful collaborations have also
@@ -169,12 +181,18 @@ this dissertation.
 
 \begin{itemize}
 
-\item \citep{louppe:2010} \textit{A zealous parallel gradient descent algorithm}, Louppe Gilles and Geurts Pierre, 2010.
+\item \citep{louppe:2010} \textit{A zealous parallel gradient descent algorithm},
+Louppe Gilles and Geurts Pierre.
+In Learning on Cores, Clusters and Clouds workshop, NIPS, 2010
 
-\item \citep{maree:2014} \textit{A hybrid human-computer approach for large-scale image-based measurements using web services and machine learning}, Mar{\'e}e Rapha{\"e}l, Rollus Loic, Stevens Benjamin et al., 2014.
+\item \citep{maree:2014} \textit{A hybrid human-computer approach for large-scale image-based measurements using web services and machine learning},
+Mar{\'e}e Rapha{\"e}l, Rollus Loic, Stevens Benjamin et al.
+Proceedings IEEE International Symposium on Biomedical Imaging, 2014.
 
-\item \citep{amy:2014} \textit{Solar Energy Prediction: An International Contest to Initiate Interdisciplinary Research on Compelling Meteorological Problems}, Amy McGovern, David John Gagne II, Lucas Eustaquio et al., 2014.
+\item \citep{amy:2014} \textit{Solar Energy Prediction: An International Contest to Initiate Interdisciplinary Research on Compelling Meteorological Problems},
+Amy McGovern, David John Gagne II, Lucas Eustaquio et al., 2014. \textit{Submitted.}
 
-\item \citep{sutera:2014} \textit{Simple connectome inference from partial correlation statistics in calcium imaging}, Antonio Sutera, Arnaud Joly, Vincent Francois-Lavet et al., 2014.
+\item \citep{sutera:2014} \textit{Simple connectome inference from partial correlation statistics in calcium imaging},
+Antonio Sutera, Arnaud Joly, Vincent Francois-Lavet et al., 2014. \textit{Submitted.}
 
 \end{itemize}
