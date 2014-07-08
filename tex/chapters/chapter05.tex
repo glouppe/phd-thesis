@@ -284,7 +284,7 @@ and shown to be $\Omega(N^2)$. As a result, $T(N) = \Theta(K N^2)$ in the worst 
 
 \begin{theorem}\label{thm:6:average:knlogn}
 For $c_2 K N \log N \leq C(N)\leq c_3 K N\log N$ (for all $N \geq 1$), the time complexity for building a decision
-tree in the average case is $\Omega(K N \log N)$ and $O(K N \log^2 N)$.
+tree in the average case is  $\Theta(K N \log^2 N)$.
 \end{theorem}
 
 \begin{proof}
@@ -329,11 +329,11 @@ T'(N) &= O(N H_N \log N) \nonumber \\
       &= O(N \log^2 N).
 \end{align*}
 
-In the same way, a lower bound on $T'(N)$ can be derived by assuming that $C'(N) = c_2 N \log N$
-in the equations above and approximating $\sum_{i=2}^N \frac{1}{i} \log(i-1)$
-by $\sum_{i=3}^N \frac{1}{i}$ when developping $S(N)$. In that case, we have
-$T'(N) = \Omega(N \log N)$.
-As a result, $T(N) = \Omega(KN\log N)$ and $O(KN \log^2 N)$ in the average case.
+Given Theorem~\ref{thm:6:best:knlogn}, we also know that $T'(N)$ cannot be
+faster than $\Omega(N \log^2 N)$, thereby setting a lower bound on the complexity
+of the average case.
+
+As a result, $T(N) = \Theta(KN\log N)$ in the average case.
 \end{proof}
 
 \begin{theorem}\label{thm:6:average:kn}
@@ -393,7 +393,7 @@ each node (i.e., $O(K)$) and linearithmic or quasilinear with the number of
 $O(N\log^2 N)$). In the very worst case however, this later dependency becomes quadratic
 (i.e., $O(N^2)$ or $O(N^2 \log N)$), which might greatly affect performance in
 the context of large datasets. Reassuringly, the analysis of the average case
-shows that pathological cases are not dominant and that, on average, complexity
+shows that pathological cases are not dominant and that, on average, for all methods, complexity
 behaves as in the best case.
 
 As expected, the complexity of Bagging~\citep{breiman:1996b} is about $M$ times
@@ -418,7 +418,7 @@ it also significantly decreases the time required for building trees in a
 forest. In ETs, due to the fact that
 samples are no longer required to be sorted at each node, the dependency to $N$
 becomes linearithmic instead of quasilinear. With respect to RF,
-speedup is about $O(\log N)$, though the proofs of the theorems reveal that this bound is not tight and that the actual speedup is sub-logarithmic.
+speedup is asymptotically $O(\log N)$.
 Finally, PERT shows to be the fastest
 method of all, which is due to the fact that only a single split variable
 is considered at each split. For $K=1$ however, ETs and PERT have identical
@@ -434,9 +434,9 @@ algorithms are all implemented from a common codebase.
          & \textit{Best case} & \textit{Worst case} & \textit{Average case}  \\
     \hline
     \hline
-    CART & $\Theta(pN\log^2 N)$ & $O(pN^2\log N)$ & $O(pN\log^2 N)$ \\
-    Bagging & $\Theta(Mp\widetilde{N}\log^2 \widetilde{N})$ & $O(Mp\widetilde{N}^2\log \widetilde{N})$ & $O(Mp\widetilde{N}\log^2 \widetilde{N})$  \\
-    RF & $\Theta(MK\widetilde{N}\log^2 \widetilde{N})$ & $O(MK\widetilde{N}^2\log \widetilde{N})$ & $O(MK\widetilde{N}\log^2 \widetilde{N})$  \\
+    CART & $\Theta(pN\log^2 N)$ & $O(pN^2\log N)$ & $\Theta(pN\log^2 N)$ \\
+    Bagging & $\Theta(Mp\widetilde{N}\log^2 \widetilde{N})$ & $O(Mp\widetilde{N}^2\log \widetilde{N})$ & $\Theta(Mp\widetilde{N}\log^2 \widetilde{N})$  \\
+    RF & $\Theta(MK\widetilde{N}\log^2 \widetilde{N})$ & $O(MK\widetilde{N}^2\log \widetilde{N})$ & $\Theta(MK\widetilde{N}\log^2 \widetilde{N})$  \\
     ETs & $\Theta(MKN\log N)$ & $\Theta(MKN^2)$ & $\Theta(MKN\log N)$  \\
     PERT & $\Theta(MN\log N)$ & $\Theta(MN^2)$ & $\Theta(MN\log N)$  \\
     \hline
@@ -458,7 +458,7 @@ analysis of the prediction procedure therefore reduces to the analysis of the
 average depth of the leaves induced by a learning set ${\cal L}$.
 
 As in Section~\ref{sec:5:complexity-fit}, let us assume a fully developed
-decision tree, where each leaf contains one sample from ${\cal L}$, and
+decision tree, where each leaf contains exactly one sample from ${\cal L}$. Likewise
 let us derive the average depth $D(N)$ of the leaves in the best,
 worst and average cases.
 
