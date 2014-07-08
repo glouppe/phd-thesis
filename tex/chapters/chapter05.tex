@@ -59,7 +59,7 @@ we write that
 \begin{equation}
 f(N) =  O(g(N)) \ \text{if}\ \exists c > 0, N_0 > 0, \forall N > N_0, f(N) \leq c g(N)
 \end{equation}
-to express that  $f(N)$ is asymptotically upper bounded by $g(N)$, up to some neglectable constant factor $c$.
+to express that  $f(N)$ is asymptotically upper bounded by $g(N)$, up to some negligible constant factor $c$.
 Similarly, big $\Omega$ notations are used to express an asymptotic lower
 bound on the growth rate of the number of steps in the algorithm. Formally,
 we write that
@@ -255,7 +255,7 @@ tight. Nevertheless, given the fact that
 \sum_{i=1}^N i \log i = \log(H(N)),
 \end{equation}
 where $H(N)$ is the hyperfactorial function, complexity
-could be reexpressed tightly as $T(N) = \Theta(K \log(H(N)))$.
+could be re-expressed tightly as $T(N) = \Theta(K \log(H(N)))$.
 \end{proof}
 
 \begin{theorem}\label{thm:6:worst:kn}
@@ -423,9 +423,9 @@ Finally, PERT shows to be the fastest
 method of all, which is due to the fact that only a single split variable
 is considered at each split. For $K=1$ however, ETs and PERT have identical
 time complexity. Note that the analysis presented here is only valid
-asymptotically. In pratice, constant factors might lead to different
+asymptotically. In practice, constant factors might lead to different
 observed results, though they should not significantly deviate  from our conclusions if
-algorithms are all implemented from a common codebase.
+algorithms are all implemented from a common code-base.
 
 \begin{table}
     \centering
@@ -614,11 +614,11 @@ repositories and mailing list.  At the time of writing\footnote{July 2014.}, the
 by 3,445 people and forked 1,867 times on GitHub; the mailing list receives more
 than 300 mails per month; version control logs
 % ddaa494c116e3c16bf032003c5cccbed851733d2
-show more than 200 unique contributors to the codebase and the online documentation
+show more than 200 unique contributors to the code-base and the online documentation
 receives 37,000 unique visitors and 295,000 pageviews per month.
 
 Our implementation guidelines emphasize writing efficient but readable code. In
-particular, we focus on making the codebase maintainable and understandable in
+particular, we focus on making the code-base maintainable and understandable in
 order to favor external contributions. Whenever practical, algorithms
 implemented in Scikit-Learn are written in Python, using NumPy vector
 operations for numerical work. This allows the code to remain concise, readable
