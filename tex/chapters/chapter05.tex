@@ -333,7 +333,7 @@ Given Theorem~\ref{thm:6:best:knlogn}, we also know that $T'(N)$ cannot be
 faster than $\Omega(N \log^2 N)$, thereby setting a lower bound on the complexity
 of the average case.
 
-As a result, $T(N) = \Theta(KN\log N)$ in the average case.
+As a result, $T(N) = \Theta(KN\log^2 N)$ in the average case.
 \end{proof}
 
 \begin{theorem}\label{thm:6:average:kn}
@@ -607,6 +607,15 @@ developers, emphasis is put on keeping the project maintainable. In particular,
 code must follow specific quality guidelines, such as style consistency and
 unit-test coverage. Documentation and examples are required for all features,
 and major changes must pass code review by at least two other developers.
+The popularity of the project can be gauged from various indicators such as the hundreds
+of citations in scientific publications, successes in various machine learning
+challenges (e.g., Kaggle), and statistics derived from our
+repositories and mailing list.  At the time of writing\footnote{July 2014.}, the project is watched
+by 3,445 people and forked 1,867 times on GitHub; the mailing list receives more
+than 300 mails per month; version control logs
+% ddaa494c116e3c16bf032003c5cccbed851733d2
+show more than 200 unique contributors to the codebase and the online documentation
+receives 37,000 unique visitors and 295,000 pageviews per month.
 
 Our implementation guidelines emphasize writing efficient but readable code. In
 particular, we focus on making the codebase maintainable and understandable in
