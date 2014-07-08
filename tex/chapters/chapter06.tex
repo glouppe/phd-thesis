@@ -66,6 +66,8 @@ $s_t$, but not quite as good, then $\Delta I(\tilde{s}^{j_2}_t, t)$ will be
 nearly as large as $\Delta I(s_t, t)$ and therefore the proposed measure will
 indeed account for the importance of $X_{j_2}$.
 
+\subsection{Importances in forests}
+
 Thanks to randomization, masking effects are dampened within forests of
 randomized trees. Even if $X_{j_2}$ is being masked by $X_{j_1}$ there is indeed
 still a chance for $X_{j_2}$ to be chosen as a split if $X_{j_1}$ is not
@@ -74,10 +76,7 @@ masking effects do not disappear entirely though. The use of bootstrap samples
 also helps reduce masking effects, making $X_{j_1}$ or $X_{j_2}$ just slightly
 better than the other due to the variations in the bootstrap samples.
 
-\subsection{Importances in forests}
-
-In the context of ensembles of randomized trees,
-\cite{breiman:2001,breiman:2002} proposed to evaluate the importance of
+For this reason, \cite{breiman:2001,breiman:2002} proposed to evaluate the importance of
 a variable $X_j$  for predicting  $Y$ by adding up the weighted impurity decreases $p(t) \Delta
 i(s_t, t)$ for all nodes $t$ where $X_j$ is used, averaged over all trees $\varphi_m$ (for $m=1,\dots,M$)
 in the forest:
@@ -127,7 +126,7 @@ their inner workings. \cite{strobl:2007b} compare both MDI and MDA and show
 experimentally that the former is biased towards some predictor variables. As
 explained by~\cite{white:1994} in case of single decision trees, this
 bias stems from an unfair advantage given by the usual impurity functions $i(t)$
-towards predictors with a large number of values. \cite{strobl:2008}
+towards predictors with a large number of values (see Section~\ref{sec:7:bias:high}). \cite{strobl:2008}
 later showed  that MDA is biased as well, and that it overestimates the
 importance of correlated variables -- although this effect was not confirmed in
 a later experimental study by~\cite{genuer:2010}.  From a theoretical

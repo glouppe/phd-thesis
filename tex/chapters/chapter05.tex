@@ -104,9 +104,11 @@ Since both CART and PERT can respectively be considered as special cases of RF
 and ETs with regards to time complexity (i.e., for $K=p$ in CART, for $K=1$ in
 PERT), let us consider the overall complexity $T(N)$ when either $C(N)=O(KN\log
 N)$ or $C(N)=O(KN)$ (for $K=1,\dots,p$). To make our analysis easier, let us
-further assume that it exists $c_2, c_3 > 0$ such that $c_2 KN \log N \leq C(N) \leq c_3 KN \log N$ for
-all $N \geq 1$ (resp. $c_2 KN \leq C(N) \leq c_3 KN$ for all $N \geq 1$). Time complexity
-is studied in three cases:
+further assume that it exists $c_2, c_3 > 0$ such that $c_2 KN \log N \leq C(N)
+\leq c_3 KN \log N$ for all $N \geq 1$ (resp. $c_2 KN \leq C(N) \leq c_3 KN$
+for all $N \geq 1$). Results presented below extend however to the case where
+$C(N) = \Theta(KN)$ (resp. $\Theta(KN\log N)$), at the price of a more
+complicated mathematical analysis. Time complexity is studied in three cases:
 
 \begin{description}
 \item \textit{Best case.}\hfill\\
@@ -247,16 +249,16 @@ T'(N) &\geq c_2 N \log N + c_1^\prime + T'(N-1) \nonumber \\
       &= c_1^\prime N + c_2 \frac{N(N+1)}{2} - c_2 \nonumber \\
       &= \Omega(N^2).
 \end{align}
-In consequence, $T(N) = \Omega(K N^2)$ and $O(K N^2 \log N)$ in the worst case.
+As such, $T(N) = \Omega(K N^2)$ and $O(K N^2 \log N)$ in the worst case.
+\end{proof}
 
-Let us finally remark that the lower and upper bounds derived on $T(N)$ are not
+Let us  remark that the lower and upper bounds derived for $T(N)$ in Theorem~\ref{thm:6:worst:knlogn} are not
 tight. Nevertheless, given the fact that
 \begin{equation}
 \sum_{i=1}^N i \log i = \log(H(N)),
 \end{equation}
 where $H(N)$ is the hyperfactorial function, complexity
 could be re-expressed tightly as $T(N) = \Theta(K \log(H(N)))$.
-\end{proof}
 
 \begin{theorem}\label{thm:6:worst:kn}
 For $c_2 K N \leq C(N)\leq c_3 K N$ (for all $N \geq 1$), the time complexity for building a decision
