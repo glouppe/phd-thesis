@@ -182,7 +182,7 @@ $f(n)$ is a function that is positive for $n \geq d$.
 \pagebreak
 
 \begin{theorem}\label{thm:6:best:knlogn}
-For $c_2 KN\log N \leq C(N) \leq c_3 KN\log N$, the time complexity for building a decision
+For $c_2 KN\log N \leq C(N) \leq c_3 KN\log N$ (for all $N \geq 1$), the time complexity for building a decision
 tree in the best case is $\Theta(K N \log^2 N)$.
 \end{theorem}
 
@@ -199,7 +199,7 @@ $f(n) = C^\prime(N)$, $a=2$, $b=2$ and $k=1$. Accordingly, $T'(N)=\Theta(N\log^{
 \end{proof}
 
 \begin{theorem}\label{thm:6:best:kn}
-For $c_2 K N \leq C(N) \leq c_3 K N$, the time complexity for building a decision
+For $c_2 K N \leq C(N) \leq c_3 K N$ (for all $N \geq 1$), the time complexity for building a decision
 tree in the best case is $\Theta(K N \log N)$.
 \end{theorem}
 
@@ -216,86 +216,106 @@ Accordingly, $T'(N)=\Theta(N\log^{k+1} N)=\Theta(N\log N)$ and $T(N) = \Theta(K 
 \end{proof}
 
 \begin{theorem}\label{thm:6:worst:knlogn}
-For $C(N)\leq c_2 K N\log N$, the time complexity for building a decision
-tree in the worst case is $O(K N^2 \log N)$.
+For $c_2 K N \log N \leq C(N)\leq c_3 K N\log N$ (for all $N \geq 1$), the time complexity for building a decision
+tree in the worst case is $\Omega(K N^2)$ and $O(K N^2 \log N)$.
 \end{theorem}
 
 \begin{proof}
-In the worse case, $T(N) \leq K T'(N)$, where
+In the worst case, $T(N) = K T'(N)$, where
 \begin{equation}
 \begin{cases}
 T'(1) = c_1^\prime \\
-T'(N) = c_2 N \log N +  T'(1) + T'(N-1).
+T'(N) = C^\prime(N) +  T'(1) + T'(N-1).
 \end{cases}
 \end{equation}
-By expanding the recurrence, we have
+Let us first consider an upper bound on $T'(N)$. By expanding the recurrence, we have
 \begin{align}
-T'(N) &= c_2 N \log N + c_1^\prime + T'(N-1) \nonumber \\
-      &= \sum_{i=1}^N c_1^\prime + c_2 i\log i \nonumber \\
-      &= c_1^\prime N + \sum_{i=1}^N c_2 i\log i \nonumber \\
-      &\leq c_1^\prime N + c_2 \log N \sum_{i=1}^N i \nonumber \\
-      &= c_1^\prime N + c_2 \log N \frac{N(N+1)}{2} \nonumber \\
+T'(N) &\leq c_3 N \log N + c_1^\prime + T'(N-1) \nonumber \\
+      &= \sum_{i=1}^N c_1^\prime + c_3 i\log i \nonumber \\
+      &= c_1^\prime N + \sum_{i=1}^N c_3 i\log i \nonumber \\
+      &\leq c_1^\prime N + c_3 \log N \sum_{i=1}^N i \nonumber \\
+      &= c_1^\prime N + c_3 \log N \frac{N(N+1)}{2} \nonumber \\
       &= O(N^2 \log N).
 \end{align}
-As a result, $T(N) = O(K N^2 \log N)$ in the worst case.
+Similarly, a lower
+bound on $T'(N)$ can be derived in the following way:
+\begin{align}
+T'(N) &\geq c_2 N \log N + c_1^\prime + T'(N-1) \nonumber \\
+      &= \sum_{i=1}^N c_1^\prime + c_2 i\log i \nonumber \\
+      &= c_1^\prime N + \sum_{i=1}^N c_2 i\log i \nonumber \\
+      &\geq c_1^\prime N + c_2 \sum_{i=1}^N i \nonumber \\
+      &= c_1^\prime N + c_2 \frac{N(N+1)}{2} \nonumber \\
+      &= \Omega(N^2).
+\end{align}
+In consequence, $T(N) = \Omega(K N^2)$ and $O(K N^2 \log N)$ in the worst case.
+
+Let us finally remark that the lower and upper bounds derived on $T(N)$ are not
+tight. More specifically, given the fact that
+\begin{equation}
+\sum_{i=1}^N i \log i = \log(H(N)),
+\end{equation}
+where $H(N)$ is the hyperfactorial function, complexity
+can be expressed tightly as $T(N) = \Theta(K \log(H(N)))$.
 \end{proof}
 
 \begin{theorem}\label{thm:6:worst:kn}
-For $C(N)\leq c_2 K N$, the time complexity for building a decision
-tree in the worst case is $O(K N^2)$.
+For $c_2 K N \leq C(N)\leq c_3 K N$ (for all $N \geq 1$), the time complexity for building a decision
+tree in the worst case is $\Theta(K N^2)$.
 \end{theorem}
 
 \begin{proof}
-In the worst case, $T(N) \leq  K T'(N)$, where
+In the worst case, $T(N) = K T'(N)$, where
 \begin{equation}
 \begin{cases}
 T'(1) = c_1^\prime \\
-T'(N) = c_2 N +  T'(1) + T'(N-1).
+T'(N) = C^\prime(N) +  T'(1) + T'(N-1).
 \end{cases}
 \end{equation}
 By expanding the recurrence, we have
 \begin{align}
-T'(N) &= c_2 N + c_1^\prime + T'(N-1) \nonumber \\
-      &= c_1^\prime + \sum_{i=2}^N (c_1^\prime + c_2 i) \nonumber \\
-      &= c_1^\prime N + \frac{c_2}{2} (N^2 + 3N - 4) \nonumber \\
+T'(N) &\leq c_3 N + c_1^\prime + T'(N-1) \nonumber \\
+      &= c_1^\prime + \sum_{i=2}^N (c_1^\prime + c_3 i) \nonumber \\
+      &= c_1^\prime N + \frac{c_3}{2} (N^2 + 3N - 4) \nonumber \\
       &= O(N^2).
 \end{align}
-As a result, $T(N) = O(K N^2)$ in the worst case.
+In the exact same way, $T'(N)$ can be lower bounded by $c_2 N + c_1^\prime + T'(N-1)$
+and shown to be $\Omega(N^2)$. As a result, $T(N) = \Theta(K N^2)$ in the worst case.
 \end{proof}
 
 \begin{theorem}\label{thm:6:average:knlogn}
-For $C(N)\leq c_2 K N\log N$, the time complexity for building a decision
-tree in the average case is $O(K N \log^2 N)$.
+For $c_2 K N \log N \leq C(N)\leq c_3 K N\log N$ (for all $N \geq 1$), the time complexity for building a decision
+tree in the average case is $\Omega(K N \log N)$ and $O(K N \log^2 N)$.
 \end{theorem}
 
 \begin{proof}
-In the average case, $T(N) \leq K T'(N)$, where
+In the average case, $T(N) = K T'(N)$, where
 \begin{equation}
 \begin{cases}
 T'(1) = c_1^\prime \\
-T'(N) = c_2 N\log N +  \frac{1}{N-1} \sum_{i=1}^{N-1} ( T'(i) + T'(N-i) ).
+T'(N) = C^\prime(N) +  \frac{1}{N-1} \sum_{i=1}^{N-1} ( T'(i) + T'(N-i) ).
 \end{cases}
 \end{equation}
+Let us first consider an upper bound on $T'(N)$ by assuming that $C'(N) = c_3 N\log N$.
 By symmetry and by multiplying both sides of the last equation by $(N-1)$, it comes
 \begin{equation}\label{eqn:6:average:knlogn:1}
-(N-1) T'(N) = (N-1)(c_2 N\log N) +  2 \sum_{i=1}^{N-1} T'(i).
+(N-1) T'(N) = (N-1)(c_3 N\log N) +  2 \sum_{i=1}^{N-1} T'(i).
 \end{equation}
 For $N \geq 3$, substituting $N$ with $N-1$ similarly yields
 \begin{equation}\label{eqn:6:average:knlogn:2}
-(N-2) T'(N-1) = (N-2)(c_2 (N-1) \log(N-1)) +  2 \sum_{i=1}^{N-2} T'(i).
+(N-2) T'(N-1) = (N-2)(c_3 (N-1) \log(N-1)) +  2 \sum_{i=1}^{N-2} T'(i).
 \end{equation}
 Subtracting Equation~\ref{eqn:6:average:knlogn:2} from \ref{eqn:6:average:knlogn:1},
 it comes after simplifications and division of both sides by $N(N-1)$:
 \begin{equation}
-\frac{T'(N)}{N} = \frac{T'(N-1)}{N-1} + c_2 \frac{2}{N} \log(N-1) + c_2 \log \frac{N}{N-1}.
+\frac{T'(N)}{N} = \frac{T'(N-1)}{N-1} + c_3 \frac{2}{N} \log(N-1) + c_3 \log \frac{N}{N-1}.
 \end{equation}
 Let us now introduce $S(N) = \frac{T'(N)}{N}$. From the last equation, it comes
 \begin{align}
-S(N) &= S(N-1) + c_2 \frac{2}{N} \log(N-1) + c_2 \log \frac{N}{N-1} \nonumber \\
-     &= \frac{c_1^\prime}{N} + c_2 \sum_{i=2}^N \frac{2}{i} \log(i-1) + \log \frac{i}{i-1}  \nonumber \\
-     &= \frac{c_2^\prime}{N} + c_2 \log N + 2 c_2 \sum_{i=2}^N \frac{1}{i} \log(i-1)  \nonumber \\
-     &\leq \frac{c_2^\prime}{N} + c_2 \log N + 2 c_2 \log N \sum_{i=2}^N \frac{1}{i}  \nonumber \\
-     &= \frac{c_2^\prime}{N} + c_2 \log N + 2 c_2 \log N (H_N - 1)  \nonumber \\
+S(N) &= S(N-1) + c_3 \frac{2}{N} \log(N-1) + c_3 \log \frac{N}{N-1} \nonumber \\
+     &= \frac{c_1^\prime}{N} + c_3 \sum_{i=2}^N \frac{2}{i} \log(i-1) + \log \frac{i}{i-1}  \nonumber \\
+     &= \frac{c_3^\prime}{N} + c_3 \log N + 2 c_3 \sum_{i=2}^N \frac{1}{i} \log(i-1)  \nonumber \\
+     &\leq \frac{c_3^\prime}{N} + c_3 \log N + 2 c_3 \log N \sum_{i=2}^N \frac{1}{i}  \nonumber \\
+     &= \frac{c_3^\prime}{N} + c_3 \log N + 2 c_3 \log N (H_N - 1)  \nonumber \\
      &= O(H_N \log N)
 \end{align}
 where $H_N$ is the $N$-th harmonic number. Using
@@ -306,41 +326,48 @@ as approximation (where $\gamma$ is the Euler-Mascheroni constant), we have
 \begin{align*}
 T'(N) &= O(N H_N \log N) \nonumber \\
       &= O(N (\log N + \gamma + \frac{1}{2N} + \frac{1}{N^2}) \log N  ) \nonumber \\
-    &= O(N \log^2 N).
+      &= O(N \log^2 N).
 \end{align*}
-As a result, $T(N) = O(KN \log^2 N)$ in the average case.
+
+In the same way, a lower bound on $T'(N)$ can be derived by assuming that $C'(N) = c_2 N \log N$
+in the equations above and approximating $\sum_{i=2}^N \frac{1}{i} \log(i-1)$
+by $\sum_{i=2}^N \frac{1}{i}$ when developping $S(N)$. In that case, we have
+$T'(N) = \Omega(N \log N)$.
+
+As a result, $T(N) = \Omega(KN\log N)$ and $O(KN \log^2 N)$ in the average case.
 \end{proof}
 
 \begin{theorem}\label{thm:6:average:kn}
-For $C(N) \leq c_2 K N$, the time complexity for building a decision
-tree in the average case is $O(K N \log N)$.
+For $c_2 K N \leq C(N) \leq c_3 K N$ (for all $N \geq 1$), the time complexity for building a decision
+tree in the average case is $\Theta(K N \log N)$.
 \end{theorem}
 
 \begin{proof}
-In the average case, $T(N) \leq K T'(N)$, where
+In the average case, $T(N) = K T'(N)$, where
 \begin{equation}
 \begin{cases}
 T'(1) = c_1^\prime \\
-T'(N) = c_2 N +  \frac{1}{N-1} \sum_{i=1}^{N-1} T'(i) + T'(N-i).
+T'(N) = C^\prime(N) +  \frac{1}{N-1} \sum_{i=1}^{N-1} T'(i) + T'(N-i).
 \end{cases}
 \end{equation}
+Let us first consider an upper bound on $T'(N)$ by assuming that $C'(N) = c_3 N$.
 By symmetry and by multiplying both sides of the last equation by $(N-1)$, it comes
 \begin{equation}\label{eqn:6:average:kn:1}
-(N-1) T'(N) = c_2 N (N-1) +  2 \sum_{i=1}^{N-1} T'(i).
+(N-1) T'(N) = c_3 N (N-1) +  2 \sum_{i=1}^{N-1} T'(i).
 \end{equation}
 For $N \geq 3$, substituting $N$ with $N-1$ similarly yields
 \begin{equation}\label{eqn:6:average:kn:2}
-(N-2) T'(N-1) = c_2 (N-1) (N-2) +  2 \sum_{i=1}^{N-2} T'(i).
+(N-2) T'(N-1) = c_3 (N-1) (N-2) +  2 \sum_{i=1}^{N-2} T'(i).
 \end{equation}
 Subtracting Equation~\ref{eqn:6:average:kn:2} from \ref{eqn:6:average:kn:1},
 it comes after simplifications and division of both sides by $N(N-1)$:
 \begin{equation}
-\frac{T'(N)}{N} = \frac{T'(N-1)}{N-1} + O(\frac{2}{N}).
+\frac{T'(N)}{N} = \frac{T'(N-1)}{N-1} + \frac{2 c_3}{N}.
 \end{equation}
 Let us now introduce $S(N) = \frac{T'(N)}{N}$. From the last equation, it comes
 \begin{align}
-S(N) &= S(N-1) + \frac{2 c_2}{N} \nonumber \\
-     &= 2 c_2 \sum_{i=1}^N \frac{1}{i}  \nonumber \\
+S(N) &= S(N-1) + \frac{2 c_3}{N} \nonumber \\
+     &= 2 c_3 \sum_{i=1}^N \frac{1}{i}  \nonumber \\
      &= O(2 H_N)
 \end{align}
 where $H_N$ is the $N$-th harmonic number. Using
@@ -353,7 +380,8 @@ T'(N) &= O(2 H_N N) \nonumber \\
 &= O(2 N \log N + 2 N\gamma + 1 + \frac{2}{N}) \nonumber \\
 &= O(N \log N).
 \end{align}
-As a result, $T(N) = O(KN \log N)$ in the average case.
+In the exact same way, when assuming that $C'(N) = c_2 N$, $T'(N)$ can be shown
+to be lower bounded by $\Omega(N \log N)$. As a result, $T(N) = \Theta(KN \log N)$ in the average case.
 \end{proof}
 
 From Theorems~\ref{thm:6:best:knlogn}-\ref{thm:6:average:kn}, the total time
@@ -364,28 +392,10 @@ case, complexity is linear with the number of split variables considered at
 each node (i.e., $O(K)$) and linearithmic or quasilinear with the number of
 (unique) samples effectively used to build each tree (i.e., $O(N\log N)$ or
 $O(N\log^2 N)$). In the very worst case however, this later dependency becomes quadratic
-(i.e., $O(N^2)$ or $O(N^2 \log N)$, which might greatly affect performance in
+(i.e., $O(N^2)$ or $O(N^2 \log N)$), which might greatly affect performance in
 the context of large datasets. Reassuringly, the analysis of the average case
 shows that pathological cases are not dominant and that, on average, complexity
 behaves as in the best case.
-
-\begin{table}
-    \centering
-    \begin{tabular}{| c | c c c |}
-    \hline
-         & \textit{Best case} & \textit{Worst case} & \textit{Average case}  \\
-    \hline
-    \hline
-    CART & $O(pN\log^2 N)$ & $O(pN^2\log N)$ & $O(pN\log^2 N)$ \\
-    Bagging & $O(Mp\widetilde{N}\log^2 \widetilde{N})$ & $O(Mp\widetilde{N}^2\log \widetilde{N})$ & $O(Mp\widetilde{N}\log^2 \widetilde{N})$  \\
-    RF & $O(MK\widetilde{N}\log^2 \widetilde{N})$ & $O(MK\widetilde{N}^2\log \widetilde{N})$ & $O(MK\widetilde{N}\log^2 \widetilde{N})$  \\
-    ETs & $O(MKN\log N)$ & $O(MKN^2)$ & $O(MKN\log N)$  \\
-    PERT & $O(MN\log N)$ & $O(MN^2)$ & $O(MN\log N)$  \\
-    \hline
-    \end{tabular}
-    \caption{Time complexity for building forests of $M$ randomized trees. $N$ denotes the number of samples in ${\cal L}$, $p$ the number of input variables and $K$ the number of variables randomly drawn at each node. $\widetilde{N} = 0.632 N$, due to the fact that bootstrap samples draw, on average, $63.2\%$ of unique samples.}
-    \label{table:complexity-fit}
-\end{table}
 
 As expected, the complexity of Bagging~\citep{breiman:1996b} is about $M$ times
 as large as the complexity of building a single decision tree. Yet, by taking
@@ -409,13 +419,32 @@ it also significantly decreases the time required for building trees in a
 forest. In ETs, due to the fact that
 samples are no longer required to be sorted at each node, the dependency to $N$
 becomes linearithmic instead of quasilinear. With respect to RF,
-speedup is asymptotically $O(\log N)$. Finally, PERT shows to be the fastest
+speedup is about $O(\log N)$, though the proofs of the theorems reveal that this bound is not tight.
+Finally, PERT shows to be the fastest
 method of all, which is due to the fact that only a single split variable
 is considered at each split. For $K=1$ however, ETs and PERT have identical
 time complexity. Note that the analysis presented here is only valid
 asymptotically. In pratice, constant factors might lead to different
 observed results, though they should not significantly deviate  from our conclusions if
 algorithms are all implemented from a common codebase.
+
+\begin{table}
+    \centering
+    \begin{tabular}{| c | c c c |}
+    \hline
+         & \textit{Best case} & \textit{Worst case} & \textit{Average case}  \\
+    \hline
+    \hline
+    CART & $\Theta(pN\log^2 N)$ & $O(pN^2\log N)$ & $O(pN\log^2 N)$ \\
+    Bagging & $\Theta(Mp\widetilde{N}\log^2 \widetilde{N})$ & $O(Mp\widetilde{N}^2\log \widetilde{N})$ & $O(Mp\widetilde{N}\log^2 \widetilde{N})$  \\
+    RF & $\Theta(MK\widetilde{N}\log^2 \widetilde{N})$ & $O(MK\widetilde{N}^2\log \widetilde{N})$ & $O(MK\widetilde{N}\log^2 \widetilde{N})$  \\
+    ETs & $\Theta(MKN\log N)$ & $\Theta(MKN^2)$ & $\Theta(MKN\log N)$  \\
+    PERT & $\Theta(MN\log N)$ & $\Theta(MN^2)$ & $\Theta(MN\log N)$  \\
+    \hline
+    \end{tabular}
+    \caption{Time complexity for building forests of $M$ randomized trees. $N$ denotes the number of samples in ${\cal L}$, $p$ the number of input variables and $K$ the number of variables randomly drawn at each node. $\widetilde{N} = 0.632 N$, due to the fact that bootstrap samples draw, on average, $63.2\%$ of unique samples.}
+    \label{table:complexity-fit}
+\end{table}
 
 \section{Complexity of the prediction procedure}
 \label{sec:5:complexity-predict}
@@ -435,7 +464,7 @@ Likewise, let us derive the average depth $D(N)$ of the leaves in the best,
 worst and average cases.
 
 \begin{theorem}\label{thm:6:best:depth}
-In the best case, the average depth of the leaves is $O(\log N)$.
+In the best case, the average depth of the leaves is $\Theta(\log N)$.
 \end{theorem}
 
 \begin{proof}
@@ -449,11 +478,11 @@ D(N) = 1 + \frac{1}{2} D(\frac{N}{2}) + \frac{1}{2} D(\frac{N}{2}) = 1+D(\frac{N
 \end{cases}
 \end{equation}
 With this equation, the second case of the Master Theorem applies for $a=1$, $b=2$ and $k=0$.
-Accordingly, $D(N)=O(\log^{k+1} N) = O(\log N)$.
+Accordingly, $D(N)=\Theta(\log^{k+1} N) = \Theta(\log N)$.
 \end{proof}
 
 \begin{theorem}\label{thm:6:worst:depth}
-In the worst case, the average depth of the leaves is $O(N)$.
+In the worst case, the average depth of the leaves is $\Theta(N)$.
 \end{theorem}
 
 \begin{proof}
@@ -470,11 +499,11 @@ S(N) &= N+1 + S(N-1) \nonumber \\
      &= 1+ \sum_{i=2}^N (i + 1) \nonumber \\
      &= \frac{N^2}{2} + \frac{3N}{2} - 1.
 \end{align}
-Since $D(N) = \tfrac{S(N)}{N}$, we have $D(N) = \frac{1}{2} (N - \frac{2}{N} + 3) = O(N)$.
+Since $D(N) = \tfrac{S(N)}{N}$, we have $D(N) = \frac{1}{2} (N - \frac{2}{N} + 3) = \Theta(N)$.
 \end{proof}
 
 \begin{theorem}\label{thm:6:average:depth}
-In the average case, the average depth of the leaves is $O(\log N)$.
+In the average case, the average depth of the leaves is $\Theta(\log N)$.
 \end{theorem}
 
 \begin{proof}
@@ -504,12 +533,12 @@ where $H_N$ is the $N$-th harmonic number. Using
 \begin{equation}
 H_N \approx \log N + \gamma + \frac{1}{2N} + O(\frac{1}{N^2})
 \end{equation}
-as approximation (where $\gamma$ is the Euler-Mascheroni constant), we have $D(N) = O(\log N)$.
+as approximation (where $\gamma$ is the Euler-Mascheroni constant), we have $D(N) = \Theta(\log N)$.
 \end{proof}
 
 From Theorems~\ref{thm:6:best:depth}-\ref{thm:6:average:depth}, the total time
 complexity for computing predictions out of a forest of $M$ trees is therefore
-$O(M\log N)$ in the best case and $O(MN)$ is the very worst case. In accordance
+$\Theta(M\log N)$ in the best case and $\Theta(MN)$ is the very worst case. In accordance
 with previous results, the analysis of the average case shows however that
 pathological cases are not dominant and that, on average, complexity behaves
 once again as in the best case.
@@ -1210,7 +1239,7 @@ confirms once again that finding the very best splits is not strictly necessary
 to achieve good results.
 
 \begin{figure}
-\hspace{-4cm}
+\hspace{-1.75cm}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_estimators_time_fit.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_estimators_average_depth.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_estimators_mse.pdf}}
@@ -1219,7 +1248,7 @@ to achieve good results.
 \end{figure}
 
 \begin{figure}
-\hspace{-4cm}
+\hspace{-1.75cm}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_train_time_fit.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_train_average_depth.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_train_mse.pdf}}
@@ -1228,7 +1257,7 @@ to achieve good results.
 \end{figure}
 
 \begin{figure}
-\hspace{-4cm}
+\hspace{-1.75cm}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_features_time_fit.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_features_average_depth.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/n_features_mse.pdf}}
@@ -1250,7 +1279,7 @@ larger than the depth of ETs -- which suffers less from end-cut preference since
 thresholds are not optimized locally.
 
 \begin{figure}
-\hspace{-1.75cm}
+\hspace{-4cm}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/max_features_time_fit.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/max_features_average_depth.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/max_features_mse.pdf}}
@@ -1259,7 +1288,7 @@ thresholds are not optimized locally.
 \end{figure}
 
 \begin{figure}
-\hspace{-1.75cm}
+\hspace{-4cm}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/bootstrap_time_fit.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/bootstrap_average_depth.pdf}}
 \subfloat{\includegraphics[width=0.48\textwidth]{figures/make_friedman1/bootstrap_mse.pdf}}
@@ -1427,7 +1456,7 @@ shows to be highly rewarding in terms of computational performance.
 
 \begin{table}
     \footnotesize
-    \hspace{-3.5cm}
+    \hspace{-1.25cm}
     \rotatebox{90}{
 \begin{tabular}{|c| >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering\arraybackslash}p{1.75cm} |}
 \hline
@@ -1476,7 +1505,7 @@ shows to be highly rewarding in terms of computational performance.
 
 \begin{table}
     \footnotesize
-    \hspace{-1.25cm}
+    \hspace{-3.5cm}
     \rotatebox{90}{
 \begin{tabular}{|c| >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering}p{1.75cm} >{\centering\arraybackslash}p{1.75cm} |}
 \hline
