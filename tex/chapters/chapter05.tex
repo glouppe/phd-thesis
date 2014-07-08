@@ -312,10 +312,10 @@ it comes after simplifications and division of both sides by $N(N-1)$:
 Let us now introduce $S(N) = \frac{T'(N)}{N}$. From the last equation, it comes
 \begin{align}
 S(N) &= S(N-1) + c_3 \frac{2}{N} \log(N-1) + c_3 \log \frac{N}{N-1} \nonumber \\
-     &= \frac{c_1^\prime}{N} + c_3 \sum_{i=2}^N \frac{2}{i} \log(i-1) + \log \frac{i}{i-1}  \nonumber \\
-     &= \frac{c_3^\prime}{N} + c_3 \log N + 2 c_3 \sum_{i=2}^N \frac{1}{i} \log(i-1)  \nonumber \\
-     &\leq \frac{c_3^\prime}{N} + c_3 \log N + 2 c_3 \log N \sum_{i=2}^N \frac{1}{i}  \nonumber \\
-     &= \frac{c_3^\prime}{N} + c_3 \log N + 2 c_3 \log N (H_N - 1)  \nonumber \\
+     &= c_1^\prime + c_3 \sum_{i=2}^N \frac{2}{i} \log(i-1) + \log \frac{i}{i-1}  \nonumber \\
+     &= c_1^\prime + c_3 \log N + 2 c_3 \sum_{i=2}^N \frac{1}{i} \log(i-1)  \nonumber \\
+     &\leq c_1^\prime + c_3 \log N + 2 c_3 \log N \sum_{i=2}^N \frac{1}{i}  \nonumber \\
+     &= c_1^\prime + c_3 \log N + 2 c_3 \log N (H_N - 1)  \nonumber \\
      &= O(H_N \log N)
 \end{align}
 where $H_N$ is the $N$-th harmonic number. Using
@@ -366,7 +366,7 @@ it comes after simplifications and division of both sides by $N(N-1)$:
 Let us now introduce $S(N) = \frac{T'(N)}{N}$. From the last equation, it comes
 \begin{align}
 S(N) &= S(N-1) + \frac{2 c_3}{N} \nonumber \\
-     &= 2 c_3 \sum_{i=1}^N \frac{1}{i}  \nonumber \\
+     &= c_1^\prime +  2 c_3 \sum_{i=2}^N \frac{1}{i}  \nonumber \\
      &= O(2 H_N)
 \end{align}
 where $H_N$ is the $N$-th harmonic number. Using
