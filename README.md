@@ -1,7 +1,7 @@
 Understanding Random Forests
 ============================
 
-PhD dissertation, Gilles Louppe, June 2014.
+PhD dissertation, Gilles Louppe, July 2014.
 
 _License:_ BSD 3 clause
 
