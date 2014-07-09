@@ -7,6 +7,11 @@ _License:_ BSD 3 clause
 
 _Contact:_ Gilles Louppe (@glouppe, <g.louppe@gmail.com>)
 
+_Disclaimer:_ This dissertation has been submitted in partial fulfillment of
+the requirements for the Degree of Doctor of Philosophy (Ph.D.) in 
+Computer Science. This version of the manuscript is pending the approval
+of the jury.
+
 ---
 
 Data analysis and machine learning have become an integrative part of the
