@@ -32,6 +32,7 @@
 *.toc
 *.vrb
 *.xdy
+Thumbs.db
 *.tdo
 thesis.pdf
 classicthesis/*
@@ -40,3 +41,4 @@ benchmarks/ok3/*
 benchmarks/figs/*
 benchmarks/resources/*
 scripts/.ipynb_checkpoints/*
+tex/arxiv/*
