@@ -1,0 +1,154 @@
+\documentclass{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[frenchb]{babel}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{verbatim}
+\usepackage{url}
+\usepackage{auto-pst-pdf}
+\usepackage{pst-plot}
+\usepackage{moreverb}
+\usepackage{fancyvrb}
+\usepackage{minted}
+\usepackage{algpseudocode}
+\usepackage{natbib}
+
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=blue}
+\usetheme{boxes}
+\beamertemplatenavigationsymbolsempty
+\setbeamertemplate{sections/subsections in toc}[circle]
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{itemize subitem}[square]
+
+\title{{\bf Understanding Random Forests}\\
+From Theory to Practice}
+\author{Gilles Louppe}
+\institute{Université de Liège, Belgium}
+\date{October 9, 2014}
+
+\newcommand{\todo}[1]{\textcolor{red}{[TODO] #1}}
+
+\definecolor{lightgreen}{rgb}{0.0,0.8,0.0}
+\definecolor{lightblue}{rgb}{0.3,0.8,1.0}
+\definecolor{lightred}{rgb}{0.874,0.180,0.105}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{lightgray}{rgb}{0.8,0.8,0.8}
+\definecolor{shadecolor}{rgb}{0.9,0.9,0.9}
+\newrgbcolor{mygreen}{.00 .5 .00}
+\newrgbcolor{myyellow}{.6 .6 .00}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\AtBeginSection[]
+{
+\begin{frame}
+  \frametitle{Outline}
+  \tableofcontents[currentsection]
+  % Die Option [pausesections]
+\end{frame}
+}
+
+\begin{document}
+
+% Title page ==================================================================
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+% Motivation ==================================================================
+
+\section{Motivation}
+% Mention what is not included in this talk
+
+\begin{frame}{Motivation}
+% concrete example => predict output from a set of measurements
+% use a continuous example all throughout the slides
+\end{frame}
+
+
+% Supervised learning =========================================================
+
+\section{Growing decision trees}
+
+\begin{frame}{Supervised learning}
+% cast the problem in the ML framework
+\end{frame}
+
+\begin{frame}{Performance evaluation}
+\end{frame}
+
+
+
+% Decision trees ==============================================================
+
+\begin{frame}{Decision trees}
+\end{frame}
+
+
+% Forests =====================================================================
+
+\begin{frame}{Random forests}
+\end{frame}
+
+
+% Bias-variance ===============================================================
+
+\begin{frame}{Bias-variance trade-off}
+% Condorcet Jurys theorem
+% Answer why making several trees help reduce the error
+% even if they are built at random!
+\end{frame}
+
+
+% Bias-variance ===============================================================
+
+\section{Interpreting random forests}
+
+\begin{frame}{Interpreting single decision trees}
+% Show a tree
+% Show a forest! <= limitation + there may be several ways to explain the ouput
+\end{frame}
+
+\begin{frame}{Variable importances}
+% Show them => How to interpret them?
+% MDA + MDI
+\end{frame}
+
+\begin{frame}{Mean decrease of impurity}
+% Motivation
+\end{frame}
+
+\begin{frame}{Working assumptions}
+\end{frame}
+
+\begin{frame}{Result 1: Three-level decomposition}
+\end{frame}
+
+\begin{frame}{Result 2: Irrelevant variables}
+\end{frame}
+
+\begin{frame}{Non-totally randomized trees}
+\end{frame}
+
+\begin{frame}{Further insights}
+% Source of bias
+\end{frame}
+
+\begin{frame}{Applications}
+\end{frame}
+
+
+% Conclusions =================================================================
+
+\section{Conclusions}
+
+\begin{frame}{Conclusions}
+\end{frame}
+
+\end{document}
