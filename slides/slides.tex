@@ -15,6 +15,7 @@
 \usepackage{minted}
 \usepackage{algpseudocode}
 \usepackage{natbib}
+\usepackage{eulervm}
 
 \hypersetup{colorlinks=true, linkcolor=black, urlcolor=blue}
 \usetheme{boxes}
@@ -43,14 +44,12 @@ From Theory to Practice}
 
 \DeclareMathOperator*{\argmax}{arg\,max}
 
-\AtBeginSection[]
-{
-\begin{frame}
-  \frametitle{Outline}
-  \tableofcontents[currentsection]
-  % Die Option [pausesections]
-\end{frame}
-}
+
+\newrgbcolor{mygreen}{.00 .5 .00}
+\newcommand{\X}[1]{\textcolor{blue}{#1}}
+\newcommand{\y}[1]{\textcolor{red}{#1}}
+\newcommand{\model}[1]{\textcolor{mygreen}{#1}}
+\newcommand{\loss}[1]{\textcolor{lightblue}{#1}}
 
 \begin{document}
 
@@ -63,31 +62,138 @@ From Theory to Practice}
 
 % Motivation ==================================================================
 
+\begin{frame}
+  \frametitle{Outline}
+  \tableofcontents
+\end{frame}
+
 \section{Motivation}
 % Mention what is not included in this talk
 
 \begin{frame}{Motivation}
+
+\begin{figure}
+\vspace{-0.5cm}
+\includegraphics[scale=0.4]{./figures/motivation.png}
+\end{figure}
+
 % concrete example => predict output from a set of measurements
 % use a continuous example all throughout the slides
+% quality of wine from physicochemical properties
+\end{frame}
+
+\begin{frame}{Objective}
+
+\begin{center}
+From a set of {\bf \X{measurements}},
+
+\vspace{1cm}
+
+learn a {\bf \model{model}}
+
+\vspace{1cm}
+
+to predict and understand {\bf \y{a phenomenon}}.
+
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Running example}
+
+\begin{columns}
+\begin{column}{0.5\textwidth}
+
+\begin{center}
+From {\bf \X{physicochemical properties}} (alcohol, acidity, sulphates, ...),
+
+\vspace{1cm}
+
+learn a {\bf \model{model}}
+
+\vspace{1cm}
+
+to predict {\bf \y{wine taste preferences}} (from 0 to 10).
+
+\end{center}
+
+\end{column}
+\begin{column}{0.5\textwidth}
+  \begin{figure}
+  \vspace{-0.5cm}
+  \includegraphics[scale=0.6]{./figures/wine.jpg}
+  \end{figure}
+\end{column}
+\end{columns}
+
+\vspace{1cm}
+
+{\footnotesize
+P. Cortez, A. Cerdeira, F. Almeida, T. Matos and J. Reis,
+{\it Modeling wine preferences by data mining from physicochemical properties},
+2009.}
+
+
 \end{frame}
 
 
 % Supervised learning =========================================================
 
+\AtBeginSection[]
+{
+\begin{frame}
+  \frametitle{Outline}
+  \tableofcontents[currentsection]
+  % Die Option [pausesections]
+\end{frame}
+}
+
 \section{Growing decision trees}
 
 \begin{frame}{Supervised learning}
-% cast the problem in the ML framework
+
+\begin{itemize}
+\item The inputs are random variables \X{$X = X_1$, ..., $X_p$};
+\item The output is a random variable \y{$Y$}.
+\end{itemize}
+
+\begin{itemize}
+\item Data comes as a finite learning set $${\cal L} = \{(\X{\mathbf{x}_i}, \y{y_i}) | i = 0, \dots, N-1 \},$$
+where \X{$\mathbf{x}_i \in {\cal X} = {\cal X}_1 \times ... \times {\cal X}_p$} and \y{$y_i \in {\cal Y}$}
+are randomly drawn from $P_{\X{X},\y{Y}}$.
+\end{itemize}
+
+\begin{itemize}
+\item The goal is to find a model $\model{\varphi_{\cal L}}: \X{{\cal X}} \mapsto \y{{\cal Y}}$ minimizing
+$$
+Err(\model{\varphi_{\cal L}}) = \mathbb{E}_{\X{X}, \y{Y}}\{ L(\y{Y}, \model{\varphi_{\cal L}}(\X{X})) \}.
+$$
+\end{itemize}
+
 \end{frame}
 
 \begin{frame}{Performance evaluation}
-\end{frame}
+Depending on the problem, errors are not measured in the same way.
 
+\begin{itemize}
+
+\item {\it Classification} (e.g. ${\cal Y} = \{ \text{yes}, \text{no} \}$):
+  $$L(Y, \varphi_{\cal L}(X)) = 1(Y \neq \varphi_{\cal L}(X))$$
+  {\it \footnotesize (Number of times the predictions are wrong.)}
+
+\item {\it Regression} (e.g. ${\cal Y} = \mathbb{R}$):
+  $$L(Y, \varphi_{\cal L}(X)) = (Y - \varphi_{\cal L}(X))^2$$
+  {\it \footnotesize (Large errors are more penalized.)}
+
+\end{itemize}
+
+\end{frame}
 
 
 % Decision trees ==============================================================
 
 \begin{frame}{Decision trees}
+% relate criterion to performance
 \end{frame}
 
 
@@ -100,7 +206,7 @@ From Theory to Practice}
 % Bias-variance ===============================================================
 
 \begin{frame}{Bias-variance trade-off}
-% Condorcet Jurys theorem
+% Condorcet Jurys theorem => make people vote on wine quality
 % Answer why making several trees help reduce the error
 % even if they are built at random!
 \end{frame}
@@ -110,7 +216,7 @@ From Theory to Practice}
 
 \section{Interpreting random forests}
 
-\begin{frame}{Interpreting single decision trees}
+\begin{frame}{Reading decision trees}
 % Show a tree
 % Show a forest! <= limitation + there may be several ways to explain the ouput
 \end{frame}
@@ -140,7 +246,18 @@ From Theory to Practice}
 % Source of bias
 \end{frame}
 
-\begin{frame}{Applications}
+
+% Computational performance ===================================================
+
+\section{Computational performance}
+
+\begin{frame}{Complexity}
+\end{frame}
+
+\begin{frame}{Implementation}
+\end{frame}
+
+\begin{frame}{Random patches}
 \end{frame}
 
 
