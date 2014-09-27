@@ -8,14 +8,15 @@
 \usepackage{hyperref}
 \usepackage{verbatim}
 \usepackage{url}
-\usepackage{auto-pst-pdf}
-\usepackage{pst-plot}
 \usepackage{moreverb}
 \usepackage{fancyvrb}
 \usepackage{minted}
 \usepackage{algpseudocode}
 \usepackage{natbib}
 \usepackage{eulervm}
+\usepackage{auto-pst-pdf}
+\usepackage{pst-plot}
+
 
 \hypersetup{colorlinks=true, linkcolor=black, urlcolor=blue}
 \usetheme{boxes}
@@ -383,8 +384,25 @@ of the problem is to {\color{red} find the right trade-off}.
 \vspace{0.5cm}
 
 \begin{center}
-Combining several randomized trees works better!
+Combining several randomized trees indeed works better!
 \end{center}
+
+\end{frame}
+
+\begin{frame}{Strengths and weaknesses of random forests}
+
+\begin{itemize}
+\item Very good accuracy
+\item Universal approximation
+\item Robustness to outliers
+\item Robustness to irrelevant attributes (to some extent)
+\item Invariance to scaling of inputs
+\item Good computational efficiency and scalability
+
+\bigskip
+
+\item<2> \alert{Loss of interpretability with respect to single decision trees}
+\end{itemize}
 
 \end{frame}
 
@@ -395,21 +413,217 @@ Combining several randomized trees works better!
 
 
 \begin{frame}{Variable importances}
-% Show them => How to interpret them?
-% MDA + MDI
+
+\begin{itemize}
+\item Interpretability can be recovered through {\color{blue}variable importances}
+
+\bigskip
+
+\item<2-> Two main importance measures:
+    \begin{itemize}
+    \item {\bf The mean decrease of impurity (MDI)}: summing total impurity reductions
+      at all tree nodes where the variable appears {\scriptsize (Breiman et al., 1984)};
+    \item {\bf The mean decrease of accuracy (MDA)}: measuring
+      accuracy reduction on out-of-bag samples when the values of the
+      variable are randomly permuted {\scriptsize (Breiman, 2001)}.
+    \end{itemize}
+
+\bigskip
+
+\item<3-> We focus here on MDI because:
+\begin{itemize}
+\item It is faster to compute;
+\item It does not require to use bootstrap sampling;
+\item In practice, it correlates well with the MDA
+  measure (except in specific conditions).
+\end{itemize}
+
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Mean decrease of impurity}
-% Motivation
+
+\begin{figure}
+    \includegraphics[scale=0.4]{./figures/mdi.pdf}
+\end{figure}
+
+Importance of variable $X_j$ for an ensemble of $M$ trees $\varphi_{m}$ is:
+\begin{equation*}
+\text{Imp}(X_j) = \frac{1}{M} \sum_{m=1}^M \sum_{t \in \varphi_{m}} 1(j_t = j) \Big[ p(t) \Delta i(t) \Big],
+\end{equation*}
+where $j_t$ denotes the variable used at node $t$, $p(t)=N_t/N$ and $\Delta i(t)$ is the impurity reduction at node $t$:
+\begin{equation*}
+\Delta i(t) = i(t) - \frac{N_{t_L}}{N_t} i(t_L) - \frac{N_{t_r}}{N_t} i(t_R)
+\end{equation*}
+
 \end{frame}
 
-\begin{frame}{Working assumptions}
+\begin{frame}{Back to our example}
+
+MDI scores as computed from a forest of 100 trees on the Wine dataset.
+
+\begin{figure}
+    \includegraphics[scale=0.7]{./figures/imp-wine.pdf}
+\end{figure}
+
 \end{frame}
+
+\begin{frame}{What does it mean?}
+\begin{itemize}
+\item MDI works well, but it is not well understood theoretically;
+\item We would like to better characterize it and derive its main
+  properties from this characterization.
+
+\bigskip
+
+\item Working assumptions:
+\begin{itemize}
+\item All variables are discrete;
+\item Multi-way splits \`a la C4.5 (i.e., one branch per value);
+\item Shannon entropy as impurity measure:
+$$i(t) = - \sum_{c} \frac{N_{t,c}}{N_t} \log \frac{N_{t,c}}{N_t}$$
+\item {\color{red} Totally randomized trees (RF with $K=1$);}
+\item {\color{red} Asymptotic conditions: $N\to \infty$, $M\to \infty$.}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
 
 \begin{frame}{Result 1: Three-level decomposition}
+
+\hspace*{0.5cm}
+
+{\bf Theorem.} Variable importances provide a three-level decomposition of the
+information jointly provided by all the input variables about the output,
+accounting for all interaction terms in a fair and exhaustive way.
+
+\vspace{-0.5cm}
+\uncover<2->{
+\begin{flalign*}
+\underbrace{I(X_{1}, \ldots, X_{p} ; Y)}_{\substack{\text{Information jointly provided}\\
+                                                                   \text{by all input variables}\\
+                                                                   \text{about the output}}} =
+\underbrace{\sum_{j=1}^{p}\text{Imp}(X_j)}_{\color{mygreen}\substack{\text{i) Decomposition in terms of}\\
+                                                    \text{the MDI importance of}\\
+                                                    \text{each input variable}}}\\
+\end{flalign*}
+}
+\vspace{-1.5cm}
+\uncover<3->{
+\begin{flalign*}
+\text{Imp}(X_j) = \underbrace{\sum_{k=0}^{p-1} \frac{1}{C_p^k} \frac{1}{p-k}}_{{\color{blue} \substack{\text{ii) Decomposition along}\\
+                                                                                                 \text{the degrees $k$ of interaction}\\
+                                                                                                 \text{with the other variables}}}}
+       \underbrace{\sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B)}_{{\color{red} \substack{\text{iii) Decomposition along all}\\
+                                                                                            \text{interaction terms $B$}\\
+                                                                                            \text{of a given degree $k$}}}}\\
+\end{flalign*}
+}
+
+\vspace{-1cm}
+\uncover<4->{
+{\scriptsize E.g.:~$p=3, \text{Imp}(X_1) = \frac{1}{3} I(X_1;Y)+\frac{1}{6}(I(X_1;Y|X_2)+I(X_1;Y|X_3))+ \frac{1}{3} I(X_1;Y|X_2,X_3)$}
+}
+
+\end{frame}
+
+\begin{frame}{Illustration: 7-segment display {\scriptsize (Breiman et al., 1984)}}
+
+\only<1>{
+\begin{columns}
+\begin{column}{0.3\textwidth}
+\begin{figure}
+    \includegraphics[scale=1.0]{./figures/led-fig.pdf}
+\end{figure}
+\end{column}
+\begin{column}{0.7\textwidth}
+\begin{center}
+    \begin{tabular}{| c | c c c c c c c |}
+    \hline
+    $y$ & $x_1$ & $x_2$ & $x_3$ & $x_4$ & $x_5$ & $x_6$ & $x_7$ \\
+    \hline
+    \hline
+    0 & 1 & 1 & 1 & 0 & 1 & 1 & 1 \\
+    1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 \\
+    2 & 1 & 0 & 1 & 1 & 1 & 0 & 1 \\
+    3 & 1 & 0 & 1 & 1 & 0 & 1 & 1 \\
+    4 & 0 & 1 & 1 & 1 & 0 & 1 & 0 \\
+    5 & 1 & 1 & 0 & 1 & 0 & 1 & 1 \\
+    6 & 1 & 1 & 0 & 1 & 1 & 1 & 1 \\
+    7 & 1 & 0 & 1 & 0 & 0 & 1 & 0 \\
+    8 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+    9 & 1 & 1 & 1 & 1 & 0 & 1 & 1 \\
+    \hline
+    \end{tabular}
+\end{center}
+\end{column}
+\end{columns}
+\textcolor{red}{todo: Add pictures of digits}
+}
+
+\only<2>{
+\begin{equation*}
+\text{Imp}(X_j)=\sum_{k=0}^{p-1} \frac{1}{C_p^k} \frac{1}{p-k} \sum_{B \in {\cal P}_k(V^{-j})} I(X_j;Y|B)
+\end{equation*}
+  \begin{columns}[t]
+\begin{column}{0.3\textwidth}
+\begin{center}
+    \begin{tabular}{| c | c |}
+    \hline
+        Var & Imp \\
+    \hline
+    \hline
+    $X_1$ & 0.412 \\
+    $X_2$ & 0.581 \\
+    $X_3$ & 0.531 \\
+    $X_4$ & 0.542 \\
+    $X_5$ & 0.656 \\
+    $X_6$ & 0.225 \\
+    $X_7$ & 0.372 \\
+    \hline
+    \hline
+    $\sum$& 3.321 \\
+    \hline
+    \end{tabular}
+\end{center}
+\end{column}
+\begin{column}{0.7\textwidth}
+\begin{center}
+\includegraphics[width=0.7\textwidth]{figures/led-imp.pdf}\\
+\hspace{0.5cm}$k$
+\end{center}
+\end{column}
+\end{columns}
+}
+
 \end{frame}
 
 \begin{frame}{Result 2: Irrelevant variables}
+
+{\bf Theorem.} Variable importances depend only on the relevant variables.
+
+\vspace{1cm}
+
+\uncover<2->{
+\only<2>{\color{blue}}
+\textbf{Definition} {\scriptsize (Kohavi \& John, 1997)}: A variable $X$ is
+{\it irrelevant} (to $Y$ with respect to $V$) if, for all $B\subseteq V$,
+$I(X;Y|B)=0$. A variable is {\it relevant} if it is not irrelevant.
+}
+\vspace{1cm}
+
+\uncover<3->{
+\only<3>{\color{blue}}
+A variable $X_j$ is irrelevant if and only if $\text{Imp}(X_j)= 0$.
+}
+
+\vspace{1cm}
+
+\uncover<4->{
+\only<4>{\color{blue}}
+The importance of a relevant variable is insensitive to the addition or
+the removal of irrelevant variables.
+}
 \end{frame}
 
 \begin{frame}{Non-totally randomized trees}
