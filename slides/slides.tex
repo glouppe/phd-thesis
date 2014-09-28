@@ -69,7 +69,6 @@ From Theory to Practice}
 \end{frame}
 
 \section{Motivation}
-% Mention what is not included in this talk
 
 \begin{frame}{Motivation}
 
@@ -78,9 +77,6 @@ From Theory to Practice}
 \includegraphics[scale=0.4]{./figures/motivation.png}
 \end{figure}
 
-% concrete example => predict output from a set of measurements
-% use a continuous example all throughout the slides
-% quality of wine from physicochemical properties
 \end{frame}
 
 \begin{frame}{Objective}
@@ -246,9 +242,6 @@ where
 \end{column}
 \end{columns}
 
-% Condorcet Jurys theorem => make people vote on wine quality
-% Answer why making several trees help reduce the error
-% even if they are built at random!
 \end{frame}
 
 \begin{frame}{Diagnosing the generalization error of a decision tree}
@@ -322,7 +315,8 @@ where
 \text{var}(\mathbf{x}) &= \rho(\mathbf{x}) \sigma^2_{{\cal L},\theta}(\mathbf{x}) + \frac{1 - \rho(\mathbf{x})}{M} \sigma^2_{{\cal L},\theta}(\mathbf{x}).
 \end{align*}
 
-and where $\rho(\mathbf{x})$ is the Pearson correlation coefficient between the predictions of two randomized trees built on the same learning set.
+and where $\rho(\mathbf{x})$ is the Pearson correlation coefficient between
+the predictions of two randomized trees built on the same learning set.
 
 \end{frame}
 
@@ -335,7 +329,8 @@ and where $\rho(\mathbf{x})$ is the Pearson correlation coefficient between the 
 In other words, it is the ratio between
 \begin{itemize}
 \item the variance due to the learning set and
-\item the total variance, accounting for random effects due to both the learning set and the random perburbations.
+\item the total variance, accounting for random effects due to both the
+  learning set and the random perburbations.
 \end{itemize}
 
 \begin{itemize}
@@ -419,7 +414,7 @@ Combining several randomized trees indeed works better!
 
 \bigskip
 
-\item<2-> Two main importance measures:
+\item Two main importance measures:
     \begin{itemize}
     \item {\bf The mean decrease of impurity (MDI)}: summing total impurity reductions
       at all tree nodes where the variable appears {\scriptsize (Breiman et al., 1984)};
@@ -430,7 +425,7 @@ Combining several randomized trees indeed works better!
 
 \bigskip
 
-\item<3-> We focus here on MDI because:
+\item We focus here on MDI because:
 \begin{itemize}
 \item It is faster to compute;
 \item It does not require to use bootstrap sampling;
@@ -460,7 +455,8 @@ where $j_t$ denotes the variable used at node $t$, $p(t)=N_t/N$ and $\Delta i(t)
 
 \begin{frame}{Back to our example}
 
-MDI scores as computed from a forest of 100 trees on the Wine dataset.
+MDI scores as computed from a forest of 1000 fully developed trees on the  Wine
+dataset (Random Forest, default parameters).
 
 \begin{figure}
     \includegraphics[scale=0.7]{./figures/imp-wine.pdf}
@@ -498,7 +494,7 @@ information jointly provided by all the input variables about the output,
 accounting for all interaction terms in a fair and exhaustive way.
 
 \vspace{-0.5cm}
-\uncover<2->{
+
 \begin{flalign*}
 \underbrace{I(X_{1}, \ldots, X_{p} ; Y)}_{\substack{\text{Information jointly provided}\\
                                                                    \text{by all input variables}\\
@@ -507,9 +503,9 @@ accounting for all interaction terms in a fair and exhaustive way.
                                                     \text{the MDI importance of}\\
                                                     \text{each input variable}}}\\
 \end{flalign*}
-}
+
 \vspace{-1.5cm}
-\uncover<3->{
+
 \begin{flalign*}
 \text{Imp}(X_j) = \underbrace{\sum_{k=0}^{p-1} \frac{1}{C_p^k} \frac{1}{p-k}}_{{\color{blue} \substack{\text{ii) Decomposition along}\\
                                                                                                  \text{the degrees $k$ of interaction}\\
@@ -518,12 +514,10 @@ accounting for all interaction terms in a fair and exhaustive way.
                                                                                             \text{interaction terms $B$}\\
                                                                                             \text{of a given degree $k$}}}}\\
 \end{flalign*}
-}
 
 \vspace{-1cm}
-\uncover<4->{
+
 {\scriptsize E.g.:~$p=3, \text{Imp}(X_1) = \frac{1}{3} I(X_1;Y)+\frac{1}{6}(I(X_1;Y|X_2)+I(X_1;Y|X_3))+ \frac{1}{3} I(X_1;Y|X_2,X_3)$}
-}
 
 \end{frame}
 
@@ -533,7 +527,8 @@ accounting for all interaction terms in a fair and exhaustive way.
 \begin{columns}
 \begin{column}{0.3\textwidth}
 \begin{figure}
-    \includegraphics[scale=1.0]{./figures/led-fig.pdf}
+    \vspace{-0.5cm}
+    \includegraphics[scale=0.35]{./figures/led-fig.png}
 \end{figure}
 \end{column}
 \begin{column}{0.7\textwidth}
@@ -558,7 +553,6 @@ accounting for all interaction terms in a fair and exhaustive way.
 \end{center}
 \end{column}
 \end{columns}
-\textcolor{red}{todo: Add pictures of digits}
 }
 
 \only<2>{
@@ -604,33 +598,109 @@ accounting for all interaction terms in a fair and exhaustive way.
 
 \vspace{1cm}
 
-\uncover<2->{
-\only<2>{\color{blue}}
-\textbf{Definition} {\scriptsize (Kohavi \& John, 1997)}: A variable $X$ is
+\textbf{Definition} {\scriptsize (Kohavi \& John, 1997)}. A variable $X$ is
 {\it irrelevant} (to $Y$ with respect to $V$) if, for all $B\subseteq V$,
 $I(X;Y|B)=0$. A variable is {\it relevant} if it is not irrelevant.
-}
-\vspace{1cm}
-
-\uncover<3->{
-\only<3>{\color{blue}}
-A variable $X_j$ is irrelevant if and only if $\text{Imp}(X_j)= 0$.
-}
 
 \vspace{1cm}
 
-\uncover<4->{
-\only<4>{\color{blue}}
-The importance of a relevant variable is insensitive to the addition or
-the removal of irrelevant variables.
-}
+{\bf Theorem.} A variable $X_j$ is irrelevant if and only if $\text{Imp}(X_j)= 0$.
+
+\vspace{1cm}
+
+{\color{blue} $\Rightarrow$ The importance of a relevant variable is
+insensitive  to the addition or the removal of irrelevant variables.}
+
 \end{frame}
 
-\begin{frame}{Non-totally randomized trees}
+\begin{frame}{Bias due to masking effects}
+
+Most properties are lost as soon as $K>1$.
+
+\bigskip
+
+{\color{blue}$\Rightarrow$ There can be relevant variables with zero
+importances (due to masking effects).}
+
+\medskip
+
+{\footnotesize
+Example:\\
+$I(X_1;Y)=H(Y)$, $I(X_1;Y) \approx I(X_2;Y)$, $I(X_1;Y|X_2)=\epsilon$ and $I(X_2;Y|X_1)=0$
+\begin{itemize}
+\item $K=1 \rightarrow \text{Imp}_{K=1}(X_1) \approx \frac{1}{2} I(X_1;Y)+\epsilon$ and $\text{Imp}_{K=1}(X_1)\approx \frac{1}{2} I(X_2;Y)$
+\item $K=2 \rightarrow \text{Imp}_{K=2}(X_1)=I(X_1;Y)$ and $\text{Imp}_{K=2}(X_2)=0$
+\end{itemize}}
+
+\bigskip
+
+{\color{blue}$\Rightarrow$ The importance of relevant variables can be
+influenced by the number of irrelevant variables.}
+
+\medskip
+
+{\footnotesize
+\begin{itemize}
+\item $K=2$ and we add a new irrelevant variable $X_3$ $\rightarrow$ $\text{Imp}_{K=2}(X_2)>0$
+\end{itemize}}
+
 \end{frame}
 
-\begin{frame}{Further insights}
-% Source of bias
+\begin{frame}{Bias due to empirical impurity misestimations}
+
+For a finite learning set ${\cal L}$ of size $N$, node impurity terms $i(t)$
+suffer from an empirical misestimation bias.
+
+\bigskip
+
+If $X_j$ and $Y$ are independent random variables, then the expected value of
+the finite sample size estimates   is:
+
+\begin{equation*}
+\mathbb{E}\{ \widehat{I}(X_j; Y) \} = \frac{(|{\cal X}_j|-1)(|{\cal Y}|-1)}{2 N_t \log 2}.
+\end{equation*}
+
+{\color{blue}$\Rightarrow$ Importances are biased towards variables of  high
+cardinality.}
+
+\medskip
+
+{\color{blue}$\Rightarrow$ This effect can be minimized by collecting impurity
+terms measured from large enough sample only (e.g., by stopping the
+construction of the tree early).}
+
+\end{frame}
+
+\begin{frame}{Bias due to binary trees and threshold selection}
+
+Random forests usually make use of binary splits instead of multiway exhaustive
+splits.
+
+\bigskip
+
+{\color{blue}$\Rightarrow$ $i(t)$ does not actually measure the mutual
+information.}
+
+\bigskip
+
+{\color{blue}$\Rightarrow$ Caution should be taken when interpreting the
+numerical  value of importance scores.}
+
+\end{frame}
+
+\begin{frame}{Back to our example}
+
+MDI scores as computed from a forest of 1000 fixed-depth trees on the  Wine
+dataset (Extra-Trees, $K=1$, $\texttt{max\_depth}=5$).
+
+\begin{figure}
+    \includegraphics[scale=0.7]{./figures/imp-wine2.pdf}
+\end{figure}
+
+\begin{center}
+Taking into account (some of) the biases results in a different story!
+\end{center}
+
 \end{frame}
 
 
