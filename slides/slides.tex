@@ -205,6 +205,25 @@ $v_t \in \mathbb{R}$: split threshold at $t$\\
 $\varphi(\mathbf{x}) = \argmax_{c \in {\cal Y}} p(Y = c | X = \mathbf{x})$
 \end{frame}
 
+\begin{frame}[fragile]{Learning from data {\scriptsize (CART)}}
+
+\begin{algorithmic}
+\Function{BuildDecisionTree}{${\cal L}$}
+    \State Create node $t$
+    \If{the stopping criterion is met for $t$}
+        \State $\widehat{y}_{t} =$ some constant value
+    \Else
+        \State Find the split on ${\cal L}_t$ that maximizes impurity decrease $$s^* = \argmax_{s \in {\cal Q}} \Delta i(s, t)$$
+        \State Partition ${\cal L}_t$ into ${\cal L}_{t_L} \cup {\cal L}_{t_R}$ according to $s^*$
+        \State $t_L = \Call{BuildDecisionTree}{{\cal L}_{L}}$
+        \State $t_R = \Call{BuildDecisionTree}{{\cal L}_{R}}$
+    \EndIf
+    \State \Return $t$
+\EndFunction
+\end{algorithmic}
+
+\end{frame}
+
 \begin{frame}{Back to our example}
 \begin{figure}
 \includegraphics[scale=0.4]{./figures/tree-wine.pdf}
@@ -708,13 +727,183 @@ Taking into account (some of) the biases results in a different story!
 
 \section{Computational performance}
 
-\begin{frame}{Complexity}
+\begin{frame}{Computational complexity}
+
+\begin{table}
+    \centering
+    \begin{tabular}{| c | c c c |}
+    \hline
+         & \textit{Best case} & \textit{Worst case} & \textit{Average case}  \\
+    \hline
+    \hline
+    CART & $\Theta(pN\log^2 N)$ & $O(pN^2\log N)$ & $\Theta(pN\log^2 N)$ \\
+    Bagging & $\Theta(Mp\widetilde{N}\log^2 \widetilde{N})$ & $O(Mp\widetilde{N}^2\log \widetilde{N})$ & $\Theta(Mp\widetilde{N}\log^2 \widetilde{N})$  \\
+    RF & $\Theta(MK\widetilde{N}\log^2 \widetilde{N})$ & $O(MK\widetilde{N}^2\log \widetilde{N})$ & $\Theta(MK\widetilde{N}\log^2 \widetilde{N})$  \\
+    ETs & $\Theta(MKN\log N)$ & $\Theta(MKN^2)$ & $\Theta(MKN\log N)$  \\
+    PERT & $\Theta(MN\log N)$ & $\Theta(MN^2)$ & $\Theta(MN\log N)$  \\
+    \hline
+    \end{tabular}
+    \caption{Time complexity for building forests of $M$ randomized trees. $N$ denotes the number of samples in ${\cal L}$, $p$ the number of input variables and $K$ the number of variables randomly drawn at each node. $\widetilde{N} = 0.632 N$.}
+    \label{table:complexity-fit}
+\end{table}
+
 \end{frame}
 
 \begin{frame}{Implementation}
+
+\begin{columns}
+\begin{column}[t]{0.7\textwidth}
+\begin{block}{Scikit-Learn}
+\begin{itemize}
+    \item Open source {\bf machine learning} library for Python
+    \item Classical and {\bf well-established algorithms}
+    \item Emphasis on {\bf code quality} and {\bf usability}
+\end{itemize}
+\end{block}
+\end{column}
+\begin{column}[t]{0.20\textwidth}
+    \begin{figure}
+    \includegraphics[scale=0.35]{./figures/scikit-learn-logo.pdf}
+    \end{figure}
+\end{column}
+\end{columns}
+
+\begin{block}{A long team effort}
+\begin{figure}
+\vspace{-0.25cm}
+{\small \it Time for building a Random Forest (relative to version \texttt{0.10})}\\[1ex]
+  \includegraphics[scale=0.5]{./figures/fit-time.pdf}
+\end{figure}
+\end{block}
+
 \end{frame}
 
-\begin{frame}{Random patches}
+\begin{frame}[fragile]{Implementation overview}
+
+\begin{itemize}
+\item Modular implementation, designed with a strict {\bf separation of concerns}
+  \begin{itemize}
+    \item Builders: for building and connecting nodes into a tree
+    \item Splitters: for finding a split
+    \item Criteria: for evaluating the goodness of a split
+    \item Tree: dedicated data structure
+  \end{itemize}
+\item Efficient {\bf algorithmic formulation} [See \href{http://arxiv.org/abs/1407.7502}{Louppe, 2014}]\\
+  \begin{itemize}
+    \item Dedicated sorting procedure
+    \item Efficient evaluation of consecutive splits
+  \end{itemize}
+\item {\bf Close to the metal}, carefully coded, implementation\\
+  {\small 2300+ lines of Python, 3000+ lines of Cython, 1700+ lines of tests}
+
+\end{itemize}
+
+\vspace{0.1cm}
+
+\begin{minted}[fontsize=\footnotesize]{python}
+# But we kept it stupid simple for users!
+clf = RandomForestClassifier()
+clf.fit(X_train, y_train)
+y_pred = clf.predict(X_test)
+\end{minted}
+
+\end{frame}
+
+\begin{frame}{A winning strategy}
+Scikit-Learn implementation proves to be {\bf one of the fastest} among all libraries and programming languages.
+  \begin{figure}
+  \includegraphics[scale=0.5]{./figures/bench.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Improving scalability through randomization}
+
+\begin{block}{Motivation}
+\begin{itemize}
+\item Randomization and averaging allow to improve accuracy by reducing variance.
+\item As a nice side-effect, the resulting algorithms are fast and
+  embarrassingly parallel.
+\item Why not purposely exploit randomization to make the algorithm
+  even more scalable (and at least as accurate)?
+\end{itemize}
+\end{block}
+
+\begin{block}{Problem}
+\begin{itemize}
+\item Let assume a supervised learning problem of $N_s$ samples defined over $N_f$ features.
+Let also assume $T$ computing each with a
+  memory capacity limited to $M_{max}$, with $M_{max}\ll N_s \times N_f$.
+\item How to best exploit the memory constraint to obtain the most accurate model, as quickly as possible?
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+
+
+\begin{frame}{A very straightforward solution: Random Patches}
+
+\begin{columns}[t]
+\begin{column}[t]{0.4\textwidth}
+
+\begin{figure}
+\vspace{-1cm}
+\includegraphics[scale=0.35]{figures/rp-1.pdf}
+\end{figure}
+
+\end{column}
+
+\begin{column}{0.6\textwidth}
+
+\begin{enumerate}
+\item Draw a subsample $r$ of $p_s N_s$ random examples, with $p_f N_f$ random features.
+\item Build a {\it base estimator} on $r$.
+\item Repeat 1-2 for a number $T$ of estimators.
+\item Aggregate the predictions by voting.
+\end{enumerate}
+
+\bigskip
+
+{\small
+$p_s$ and $p_f$ are two meta-parameters that should be selected
+\begin{itemize}
+\item such that $p_sN_s\times p_fN_f\leq M_{max}$
+\item to optimize accuracy
+\end{itemize}
+}
+
+\end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}{Impact of memory constraint}
+
+\begin{center}
+\includegraphics[width=10cm]{figures/rp-memory.pdf}
+\end{center}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Lessons learned from subsampling}
+
+\begin{itemize}
+
+\item \textcolor{red}{Training each estimator on the whole data is (often)
+useless}. The size of the random patches can be reduced without (significant)
+loss in accuracy.
+
+\item As a result, \textcolor{red}{both memory consumption and training time
+can be reduced}, at low cost.
+
+\item With strong memory constraints, RP can exploit data better than the
+other methods.
+
+\item \textcolor{red}{Sampling features is critical to improve accuracy.}
+Sampling the examples only is often ineffective.
+\end{itemize}
+
 \end{frame}
 
 
