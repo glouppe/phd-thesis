@@ -139,7 +139,7 @@ P. Cortez, A. Cerdeira, F. Almeida, T. Matos and J. Reis,
 \end{frame}
 }
 
-\section{Growing decision trees}
+\section{Growing decision trees and random forests}
 
 \begin{frame}{Supervised learning}
 
@@ -209,7 +209,7 @@ $\varphi(\mathbf{x}) = \argmax_{c \in {\cal Y}} p(Y = c | X = \mathbf{x})$
 
 \begin{algorithmic}
 \Function{BuildDecisionTree}{${\cal L}$}
-    \State Create node $t$
+    \State Create node $t$ from the learning sample ${\cal L}_t = {\cal L}$
     \If{the stopping criterion is met for $t$}
         \State $\widehat{y}_{t} =$ some constant value
     \Else
@@ -266,7 +266,7 @@ where
 \begin{frame}{Diagnosing the generalization error of a decision tree}
 
 \begin{itemize}
-\item Residual error: Lowest achievable error, independent of $\varphi_{\cal L}$.
+\item (Residual error: Lowest achievable error, independent of $\varphi_{\cal L}$.)
 \item Bias: Decision trees usually have {\color{blue} low bias}.
 \item Variance: They often suffer from {\color{red} high variance}.
 \end{itemize}
@@ -352,19 +352,20 @@ In other words, it is the ratio between
   learning set and the random perburbations.
 \end{itemize}
 
-\begin{itemize}
-\item $\rho(\mathbf{x}) \to 1$ when variance is mostly due to the learning set;
-\item $\rho(\mathbf{x}) \to 0$ when variance is mostly due to the random perturbations.
-\end{itemize}
+\bigskip
+
+$\rho(\mathbf{x}) \to 1$ when variance is mostly due to the learning set; \\
+$\rho(\mathbf{x}) \to 0$ when variance is mostly due to the random perturbations.
+
 
 \end{frame}
 
 \begin{frame}{Diagnosing the generalization error of random forests}
 
 \begin{itemize}
-\item Residual error: Lowest achievable error, independent of $\psi_{\cal L}$.
 \item Bias: {\color{blue} Identical} to the bias of a single randomized tree.
-\item Variance: As $M \to \infty$, {\color{red} $\text{var}(\mathbf{x}) \to \rho(\mathbf{x}) \sigma^2_{{\cal L},\theta}(\mathbf{x})$}
+\item Variance: $\text{var}(\mathbf{x}) = \rho(\mathbf{x}) \sigma^2_{{\cal L},\theta}(\mathbf{x}) + \frac{1 - \rho(\mathbf{x})}{M} \sigma^2_{{\cal L},\theta}(\mathbf{x})$\\
+As $M \to \infty$, {\color{red} $\text{var}(\mathbf{x}) \to \rho(\mathbf{x}) \sigma^2_{{\cal L},\theta}(\mathbf{x})$}
   \begin{itemize}
     \item The stronger the randomization, $\rho(\mathbf{x}) \to 0$, $\text{var}(\mathbf{x}) \to 0$.
     \item The weaker the randomization, $\rho(\mathbf{x}) \to 1$, $\text{var}(\mathbf{x}) \to \sigma^2_{{\cal L},\theta}(\mathbf{x})$
@@ -638,7 +639,7 @@ Most properties are lost as soon as $K>1$.
 
 \bigskip
 
-{\color{blue}$\Rightarrow$ There can be relevant variables with zero
+{\color{red}$\Rightarrow$ There can be relevant variables with zero
 importances (due to masking effects).}
 
 \medskip
@@ -653,7 +654,7 @@ $I(X_1;Y)=H(Y)$, $I(X_1;Y) \approx I(X_2;Y)$, $I(X_1;Y|X_2)=\epsilon$ and $I(X_2
 
 \bigskip
 
-{\color{blue}$\Rightarrow$ The importance of relevant variables can be
+{\color{red}$\Rightarrow$ The importance of relevant variables can be
 influenced by the number of irrelevant variables.}
 
 \medskip
@@ -667,7 +668,7 @@ influenced by the number of irrelevant variables.}
 
 \begin{frame}{Bias due to empirical impurity misestimations}
 
-For a finite learning set ${\cal L}$ of size $N$, node impurity terms $i(t)$
+For a finite learning set ${\cal L}_t$ of size $N_t$, node impurity terms $i(t)$
 suffer from an empirical misestimation bias.
 
 \bigskip
@@ -679,31 +680,27 @@ the finite sample size estimates   is:
 \mathbb{E}\{ \widehat{I}(X_j; Y) \} = \frac{(|{\cal X}_j|-1)(|{\cal Y}|-1)}{2 N_t \log 2}.
 \end{equation*}
 
-{\color{blue}$\Rightarrow$ Importances are biased towards variables of  high
+{\color{red}$\Rightarrow$ Importances are biased towards variables of  high
 cardinality.}
 
 \medskip
 
 {\color{blue}$\Rightarrow$ This effect can be minimized by collecting impurity
-terms measured from large enough sample only (e.g., by stopping the
-construction of the tree early).}
+terms measured from large enough sample only} (e.g., by stopping the
+construction of the tree early).
 
 \end{frame}
 
-\begin{frame}{Bias due to binary trees and threshold selection}
+\begin{frame}{Bias due to binary trees}
 
 Random forests usually make use of binary splits instead of multiway exhaustive
 splits.
 
 \bigskip
 
-{\color{blue}$\Rightarrow$ $i(t)$ does not actually measure the mutual
+{\color{red}$\Rightarrow$ $i(t)$ does not actually measure the mutual
 information.}
 
-\bigskip
-
-{\color{blue}$\Rightarrow$ Caution should be taken when interpreting the
-numerical  value of importance scores.}
 
 \end{frame}
 
@@ -717,7 +714,8 @@ dataset (Extra-Trees, $K=1$, $\texttt{max\_depth}=5$).
 \end{figure}
 
 \begin{center}
-Taking into account (some of) the biases results in a different story!
+Taking into account (some of) the biases\\
+results in {\color{red} quite a different story}!
 \end{center}
 
 \end{frame}
@@ -725,7 +723,7 @@ Taking into account (some of) the biases results in a different story!
 
 % Computational performance ===================================================
 
-\section{Computational performance}
+\section{Accelerating random forests}
 
 \begin{frame}{Computational complexity}
 
@@ -831,7 +829,7 @@ Scikit-Learn implementation proves to be {\bf one of the fastest} among all libr
 \begin{block}{Problem}
 \begin{itemize}
 \item Let assume a supervised learning problem of $N_s$ samples defined over $N_f$ features.
-Let also assume $T$ computing each with a
+Let also assume $T$ computing nodes, each with a
   memory capacity limited to $M_{max}$, with $M_{max}\ll N_s \times N_f$.
 \item How to best exploit the memory constraint to obtain the most accurate model, as quickly as possible?
 \end{itemize}
@@ -894,13 +892,13 @@ $p_s$ and $p_f$ are two meta-parameters that should be selected
 useless}. The size of the random patches can be reduced without (significant)
 loss in accuracy.
 
-\item As a result, \textcolor{red}{both memory consumption and training time
+\item As a result, \textcolor{blue}{both memory consumption and training time
 can be reduced}, at low cost.
 
 \item With strong memory constraints, RP can exploit data better than the
 other methods.
 
-\item \textcolor{red}{Sampling features is critical to improve accuracy.}
+\item \textcolor{blue}{Sampling features is critical to improve accuracy.}
 Sampling the examples only is often ineffective.
 \end{itemize}
 
@@ -912,6 +910,35 @@ Sampling the examples only is often ineffective.
 \section{Conclusions}
 
 \begin{frame}{Conclusions}
+\begin{itemize}
+
+\item Random forests constitute one of the most {\color{blue} robust and
+effective} machine learning algorithms for many problems.
+
+\item While simple in design and easy to use, random forests remain however
+  \begin{itemize}
+    \item hard to analyze statistically,
+    \item non-trivial to interpret,
+    \item difficult to implement properly.
+  \end{itemize}
+
+\item Through an in-depth re-assessment of the method, this dissertation has
+proposed {\color{blue} original contributions} on these issues.
+
+\end{itemize}
 \end{frame}
+
+\begin{frame}{Future works}
+\begin{itemize}
+\item Theoretical characterization of variable importances in a finite setting.
+
+\item Re-analysis of empirical studies based on variable importances, in light
+of the results and conclusions of the thesis.
+
+\item Finer study of subsampling statistical mechanisms.
+
+\end{itemize}
+\end{frame}
+
 
 \end{document}
