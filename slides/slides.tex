@@ -167,19 +167,22 @@ $$
 
 \begin{frame}{Performance evaluation}
 
-\begin{itemize}
+\begin{block}{Classification}
+  \begin{itemize}
+  \item Symbolic output (e.g., ${\cal Y} = \{ \text{yes}, \text{no} \}$)
+  \item Zero-one loss
+    $$L(Y, \varphi_{\cal L}(X)) = 1(Y \neq \varphi_{\cal L}(X))$$
+  \end{itemize}
+\end{block}
 
-\item {\it Classification} (e.g. ${\cal Y} = \{ \text{yes}, \text{no} \}$):
-  $$L(Y, \varphi_{\cal L}(X)) = 1(Y \neq \varphi_{\cal L}(X))$$
-  {\it \footnotesize (Number of times the predictions are wrong.)}
+\begin{block}{Regression}
+  \begin{itemize}
+  \item Numerical output (e.g., ${\cal Y} = \mathbb{R}$)
+  \item Squared error loss
+    $$L(Y, \varphi_{\cal L}(X)) = (Y - \varphi_{\cal L}(X))^2$$
+  \end{itemize}
 
-\vspace{1cm}
-
-\item {\it Regression} (e.g. ${\cal Y} = \mathbb{R}$):
-  $$L(Y, \varphi_{\cal L}(X)) = (Y - \varphi_{\cal L}(X))^2$$
-  {\it \footnotesize (Large errors are more penalized.)}
-
-\end{itemize}
+\end{block}
 
 \end{frame}
 
@@ -339,7 +342,7 @@ the predictions of two randomized trees built on the same learning set.
 
 \end{frame}
 
-\begin{frame}{Interpretation of $\rho(\mathbf{x})$}
+\begin{frame}{Interpretation of $\rho(\mathbf{x})$ {\scriptsize (Louppe, 2014)}}
 
 {\bf Theorem.} $\rho(\mathbf{x}) = \frac{\mathbb{V}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}}{\mathbb{V}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \} + \mathbb{E}_{\cal L} \{ \mathbb{V}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}}$
 
@@ -389,9 +392,9 @@ of the problem is to {\color{red} find the right trade-off}.
         \textit{Method} & \textit{Trees} & \textit{MSE}  \\
     \hline
     \hline
-    CART & 1 & 1.055 \\
-    Random Forest & 50 & 0.517 \\
-    Extra-Trees & 50 & 0.507 \\
+    CART & 1 & {\color{red}1.055} \\
+    Random Forest & 50 & {\color{blue}0.517} \\
+    Extra-Trees & 50 & {\color{blue}0.507} \\
     \hline
     \end{tabular}
 \end{table}
@@ -505,7 +508,7 @@ $$i(t) = - \sum_{c} \frac{N_{t,c}}{N_t} \log \frac{N_{t,c}}{N_t}$$
 \end{frame}
 
 
-\begin{frame}{Result 1: Three-level decomposition}
+\begin{frame}{Result 1: Three-level decomposition {\scriptsize (Louppe et al., 2013)}}
 
 \hspace*{0.5cm}
 
@@ -612,7 +615,7 @@ accounting for all interaction terms in a fair and exhaustive way.
 
 \end{frame}
 
-\begin{frame}{Result 2: Irrelevant variables}
+\begin{frame}{Result 2: Irrelevant variables {\scriptsize (Louppe et al., 2013)}}
 
 {\bf Theorem.} Variable importances depend only on the relevant variables.
 
@@ -723,9 +726,9 @@ results in {\color{red} quite a different story}!
 
 % Computational performance ===================================================
 
-\section{Accelerating random forests}
+\section{Inplementing and accelerating random forests}
 
-\begin{frame}{Computational complexity}
+\begin{frame}{Computational complexity {\scriptsize (Louppe, 2014)}}
 
 \begin{table}
     \centering
@@ -747,7 +750,7 @@ results in {\color{red} quite a different story}!
 
 \end{frame}
 
-\begin{frame}{Implementation}
+\begin{frame}{Implementation {\scriptsize (Buitinck et al., 2013)}}
 
 \begin{columns}
 \begin{column}[t]{0.7\textwidth}
@@ -839,7 +842,7 @@ Let also assume $T$ computing nodes, each with a
 
 
 
-\begin{frame}{A very straightforward solution: Random Patches}
+\begin{frame}{A straightforward solution: Random Patches {\scriptsize (Louppe et al., 2012)}}
 
 \begin{columns}[t]
 \begin{column}[t]{0.4\textwidth}
@@ -932,7 +935,7 @@ proposed {\color{blue} original contributions} on these issues.
 \begin{itemize}
 \item Theoretical characterization of variable importances in a finite setting.
 
-\item Re-analysis of empirical studies based on variable importances, in light
+\item (Re-analysis of) empirical studies based on variable importances, in light
 of the results and conclusions of the thesis.
 
 \item Finer study of subsampling statistical mechanisms.
