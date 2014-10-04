@@ -15,10 +15,11 @@ within this work and compare our solution with alternative implementations.
 
 The dominant objective of most machine learning methods is to find models that
 maximize accuracy. For models of equivalent performance, a secondary objective
-is usually to minimize complexity. Complexity, however, has many facets. A
-first and immediate notion of complexity in decision trees and random forests is
-the \textit{time complexity} for learning models, that is the number of
-operations required for building models from data.
+is usually to minimize complexity, both functional, as studied in the previous
+chapters, and computational. With regards to the later, a first and immediate
+aspect of computational complexity in decision trees and random forests is the
+\textit{time complexity} for learning models, that is the number of operations
+required for building models from data.
 
 Given the exponential growth in the number of possible partitions of $N$
 samples, we chose in Section~\ref{sec:3:splitting-rules} to restrict splitting
@@ -450,14 +451,15 @@ algorithms are all implemented from a common code-base.
 \section{Complexity of the prediction procedure}
 \label{sec:5:complexity-predict}
 
-A second facet of the notion of complexity in random forests is the time
+A second facet of computational complexity in random forests is the time
 required for making predictions. For a single test point, this represents the
 number of operations for traversing each of the $M$ trees, from the root to one
-of the leaves. As such, complexity is directly related to the average depth of
-the leaves reached by the test samples. Assuming that both the learning set and
-the test set are drawn from the same probability distribution, the complexity
-analysis of the prediction procedure therefore reduces to the analysis of the
-average depth of the leaves induced by a learning set ${\cal L}$.
+of the leaves. As such, computational complexity is directly related to the
+average depth of the leaves reached by the test samples. Assuming that both the
+learning set and the test set are drawn from the same probability distribution,
+the complexity analysis of the prediction procedure therefore reduces to the
+analysis of the average depth of the leaves induced by a learning set ${\cal
+L}$.
 
 As in Section~\ref{sec:5:complexity-fit}, let us assume a fully developed
 decision tree, where each leaf contains exactly one sample from ${\cal L}$. Likewise

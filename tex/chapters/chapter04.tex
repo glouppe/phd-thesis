@@ -171,7 +171,7 @@ expected generalization error based on the zero-one loss, i.e., for
 $\mathbb{E}_{\cal L}\{ \mathbb{E}_{Y|X=\mathbf{x}} \{ 1(\varphi_{\cal L}(x)
 \neq Y) \} \} = P_{{\cal L},Y|X=\mathbf{x}}(\varphi_{\cal L}(\mathbf{x}) \neq
 Y)$. Most notably, \citet{dietterich:1995}, \citet{breiman:1996},
-\citet{kohavi:1996} and \citet{tibshirani:1996} have all developed additive
+\citet{kohavi:1996}, \citet{tibshirani:1996} and \citet{domingos:2000} have all developed additive
 decompositions similar to Theorem~\ref{thm:bias-variance} by redefining the
 concepts of bias and variance in the case of classification. While these
 efforts have all provided useful insight into the nature of classification
@@ -488,22 +488,31 @@ coefficient, it comes:
 &= \frac{\mathbb{E}_{{\cal L},\theta^\prime,\theta^{\prime\prime}} \{ \varphi_{{\cal L},\theta^\prime}(\mathbf{x}) \varphi_{{\cal L},\theta^{\prime\prime}}(\mathbf{x}) - \varphi_{{\cal L},\theta^\prime}(\mathbf{x}) \mu_{{\cal L},\theta^{\prime\prime}}(\mathbf{x}) - \varphi_{{\cal L},\theta^{\prime\prime}}(\mathbf{x}) \mu_{{\cal L},\theta^\prime}(\mathbf{x}) + \mu_{{\cal L},\theta^\prime}(\mathbf{x}) \mu_{{\cal L},\theta^{\prime\prime}}(\mathbf{x}) \}}{\sigma^2_{{\cal L},\theta}(\mathbf{x})} \nonumber \\
 &= \frac{\mathbb{E}_{{\cal L},\theta^\prime,\theta^{\prime\prime}} \{ \varphi_{{\cal L},\theta^\prime}(\mathbf{x}) \varphi_{{\cal L},\theta^{\prime\prime}}(\mathbf{x}) \} - \mu^2_{{\cal L},\theta}(\mathbf{x})}{\sigma^2_{{\cal L},\theta}(\mathbf{x})} \label{eqn:4:correlation}
 \end{align}
-since random variables $\theta^\prime$ and $\theta^{\prime\prime}$ follow the same
-distribution. Intuitively, $\rho(\mathbf{x})$ represents the strength of the
-random perturbations introduced in the learning algorithm. When it is close to
-$1$, predictions of two randomized models are highly correlated, suggesting
-that randomization has no sensible effect on the predictions. By contrast, when
-it is close to $0$, predictions of the randomized models are decorrelated,
-hence indicating that randomization has a strong effect on the predictions. At
-the limit, when $\rho(\mathbf{x})=0$, predictions of two models built on the
-same learning set ${\cal L}$ are independent, which happens when they are
-perfectly random.
+by linearity of the expectation and exploiting the fact that random variables
+$\theta^\prime$ and $\theta^{\prime\prime}$ follow the same distribution.
+Intuitively, $\rho(\mathbf{x})$ represents the strength of the random
+perturbations introduced in the learning algorithm. When it is close to $1$,
+predictions of two randomized models are highly correlated, suggesting that
+randomization has no sensible effect on the predictions. By contrast, when it
+is close to $0$, predictions of the randomized models are decorrelated, hence
+indicating that randomization has a strong effect on the predictions. At the
+limit, when $\rho(\mathbf{x})=0$, predictions of two models built on the same
+learning set ${\cal L}$ are independent, which happens when they are perfectly
+random. As proved later with Equation~\ref{eqn:4:correlation-bis}, let us
+finally also remark that the correlation term $\rho(\mathbf{x})$
+is non-negative, which confirms that randomization has a decorrelation effect
+only.
 
 From Equation~\ref{eqn:4:correlation}, the variance of $\psi_{{\cal
 L},\theta_1,\dots,\theta_M}(\mathbf{x})$ can now be derived as follows:
 \begin{align}
 \text{var}(\mathbf{x}) &= \mathbb{V}_{{\cal L},\theta_1,\dots,\theta_M} \{ \frac{1}{M} \sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x})  \} \nonumber \\
-&= \frac{1}{M^2} \Bigg[ \mathbb{E}_{{\cal L},\theta_1,\dots,\theta_M} \{ (\sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x}))^2 \} - \mathbb{E}_{{\cal L},\theta_1,\dots,\theta_M} \{ \sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x}) \}^2 \Bigg] \nonumber \\
+&= \frac{1}{M^2} \Bigg[ \mathbb{E}_{{\cal L},\theta_1,\dots,\theta_M} \{ (\sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x}))^2 \} - \mathbb{E}_{{\cal L},\theta_1,\dots,\theta_M} \{ \sum_{m=1}^M \varphi_{{\cal L},\theta_m}(\mathbf{x}) \}^2 \Bigg] \nonumber
+\end{align}
+by exploiting the facts that $\mathbb{V}\{a X\} = a^2 \mathbb{V}\{ X \}$,
+$\mathbb{V}\{ X \} = \mathbb{E}\{X^2\} - \mathbb{E}\{ X \}^2$ and the linearity
+of expectation. By rewriting the square of the sum of the $\varphi_{{\cal L},\theta_m}(\mathbf{x})$ terms as a sum over all pairwise products $\varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x})$, the variance can further be rewritten as:
+\begin{align}
 &= \frac{1}{M^2} \Bigg[ \mathbb{E}_{{\cal L},\theta_1,\dots,\theta_M} \{ \sum_{i,j} \varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x}) \} - (M \mu_{{\cal L},\theta}(\mathbf{x}))^2 \Bigg] \nonumber \\
 &= \frac{1}{M^2} \Bigg[ \sum_{i,j} \mathbb{E}_{{\cal L},\theta_i,\theta_j} \{  \varphi_{{\cal L},\theta_i}(\mathbf{x}) \varphi_{{\cal L},\theta_j}(\mathbf{x}) \} - M^2 \mu^2_{{\cal L},\theta}(\mathbf{x}) \Bigg] \nonumber \\
 &= \frac{1}{M^2} \Bigg[ M \mathbb{E}_{{\cal L},\theta} \{ \varphi_{{\cal L},\theta}(\mathbf{x})^2 \} \nonumber \\
@@ -555,7 +564,7 @@ carefully chosen so as to increase bias as little as possible.  The crux of the
 problem is to find the right trade-off between randomness and bias.
 
 \begin{remark}{Alternative variance decomposition}
-\citet{geurts:2002} alternatively decomposes the ensemble variance as
+\citet{geurts:2002} (Chapter 4, Equation~4.31) alternatively decomposes the ensemble variance as
 \begin{equation}\label{eqn:4:variance-geurts}
 \text{var}(\mathbf{x}) = \mathbb{V}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \} + \frac{1}{M} \mathbb{E}_{\cal L} \{ \mathbb{V}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}.
 \end{equation}
@@ -570,7 +579,11 @@ conclusions.  The stronger the random effects, the larger the variance with
 respect to $\theta$, and hence the larger of reduction of variance due
 to ensembling.
 
-Decompositions \ref{eqn:4:variance-hastie} and \ref{eqn:4:variance-geurts} are equivalent if Equation~\ref{eqn:4:correlation}
+\begin{proposition}Decompositions \ref{eqn:4:variance-hastie} and \ref{eqn:4:variance-geurts} of the prediction variance for an ensemble are equivalent.
+\end{proposition}
+
+\begin{proof}
+From Equations~\ref{eqn:4:variance-hastie} and \ref{eqn:4:variance-geurts}, equivalence holds if Equation~\ref{eqn:4:correlation}
 is equivalent to
 \begin{equation}\label{eqn:4:correlation-bis}
 \rho(\mathbf{x}) = \frac{\mathbb{V}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}}{\mathbb{V}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \} + \mathbb{E}_{\cal L} \{ \mathbb{V}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}}.
@@ -590,6 +603,8 @@ as the numerator of Equation~\ref{eqn:4:correlation}, thereby proving the equiva
 &= \mathbb{E}_{\cal L} \{ \mathbb{E}_{\theta^\prime|{\cal L}} \{ \varphi_{{\cal L},\theta^\prime}(\mathbf{x}) \} \mathbb{E}_{\theta^{\prime\prime}|{\cal L}} \{ \varphi_{{\cal L},\theta^{\prime\prime}}(\mathbf{x}) \} \} - \mu^2_{{\cal L},\theta}(\mathbf{x}) \nonumber \\
 &= \mathbb{E}_{{\cal L},\theta^\prime,\theta^{\prime\prime}} \{ \varphi_{{\cal L},\theta^\prime}(\mathbf{x}) \varphi_{{\cal L},\theta^{\prime\prime}}(\mathbf{x}) \} - \mu^2_{{\cal L},\theta}(\mathbf{x}).
 \end{align}
+\end{proof}
+
 In this form, $\rho(\mathbf{x})$ is interpreted as the ratio between the variance
 due to the learning set  and the total variance, accounting for
 random effects due to both the learning set and the random perturbations.
@@ -691,7 +706,8 @@ simultaneously maintaining a low bias in the randomized decision trees.
     generates individual models that are  different from one bootstrap sample
     to another, hence making them likely to benefit from the averaging process.
     In some cases however, when the learning set ${\cal L}$ is small,
-    subsampling $67\%$ of the objects might lead to an increase of bias which
+    subsampling $67\%$ of the objects might lead to an increase of bias
+    (e.g., because of a decrease in model complexity) which
     is too large to be compensated by a decrease of variance, hence resulting
     in overall poorer performance. Despite this defect, Bagging has proven to
     be an effective method in numerous applications, one of its strengths being

@@ -435,7 +435,7 @@ Err({\cal H}) = \min_{\varphi \in {\cal H}} \{ Err(\varphi) \} - Err(\varphi_B)
 
 To be more specific, let $\theta$\label{ntn:theta} be the vector of hyper-parameters values
 controlling the execution of a learning algorithm ${\cal A}$. The application
-of ${\cal A}$ with parameters $\theta$ on the learning set ${\cal L}$ is a
+of ${\cal A}$ with hyper-parameters $\theta$ on the learning set ${\cal L}$ is a
 deterministic\footnote{If ${\cal A}$ makes use of a pseudo-random generator to
 mimic a stochastic process, then we assume that the corresponding random seed is
 part of $\theta$.} process yielding a model ${\cal A}(\theta, {\cal L}) =
@@ -488,19 +488,22 @@ structures (i.e., noise) that are specific to the learning set.
     \label{fig:train-test-error}
 \end{figure}
 
-As Figure~\ref{fig:train-test-error}
-illustrates, this phenomenon can be observed by examining the
-respective training and test estimates of the model with respect to its
-complexity. When the model is too simple, both the training and test estimates
-are large because of underfitting. As complexity increases, the model gets more
+As Figure~\ref{fig:train-test-error} illustrates, this phenomenon can be
+observed by examining the respective training and test estimates of the model
+with respect to its complexity\footnote{Unless mentioned otherwise, {\it
+complexity} here refers to the complexity of the model in function space. {\it
+Computational complexity} is studied later in
+Section~\ref{sec:5:complexity-fit}}. When the model is too simple, both the training and test estimates are
+large because of underfitting. As complexity increases, the model gets more
 accurate and both the training and test estimates decrease. However, when the
-model becomes too complex, specific elements from the training set get captured,
-reducing the corresponding training estimates down to $0$, as if the model were
-perfect. At the same time, the test estimates become worse because the
-structure learned from the training set is actually too specific and does not
-generalize. The model is overfitting. The best parameter value $\theta$ is
-therefore the one making the appropriate trade-off and producing a model which is
-neither too simple nor to complex, as shown by the gray line on the figure.
+model becomes too complex, specific elements from the training set get
+captured, reducing the corresponding training estimates down to $0$, as if the
+model were perfect. At the same time, the test estimates become worse because
+the structure learned from the training set is actually too specific and does
+not generalize. The model is overfitting. The best hyper-parameter value
+$\theta$ is therefore the one making the appropriate trade-off and producing a
+model which is neither too simple nor to complex, as shown by the gray line on
+the figure.
 
 As we will see later in Chapter~\ref{ch:forest},
 overfitting can also be explained by decomposing the generalization error

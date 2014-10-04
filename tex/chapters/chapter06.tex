@@ -328,7 +328,10 @@ H(Y|b(t))$ is obviously equal to the mean conditional entropy $H(Y | X_{1},
 \ldots, X_{p})$ of $Y$ given all input variables, this implies that for any
 fully developed tree we have that the sum of variable importances is equal to
 $I(X_{1}, \ldots, X_{p} ; Y)$, and so this relation also holds when averaging
-over an infinite ensemble of totally randomized trees.
+over an infinite ensemble of totally randomized trees. Note that, for the
+same reasons as in the proof of Theorem~\ref{thm:imp}, this result
+holds  in asymptotic conditions only, i.e., when $p(t)$ becomes the exact probability
+$P(B(t)=b(t))$.
 \end{proof}
 
 Together, theorems \ref{thm:imp} and \ref{thm:sum-of-imp} show that  variable
