@@ -736,16 +736,14 @@ results in {\color{red} quite a different story}!
 
 \begin{table}
     \centering
-    \begin{tabular}{| c | c c c |}
+    \begin{tabular}{| c | c |}
     \hline
-         & \textit{Best case} & \textit{Worst case} & \textit{Average case}  \\
+         & \textit{Average case}  \\
     \hline
     \hline
-    CART & $\Theta(pN\log^2 N)$ & $O(pN^2\log N)$ & $\Theta(pN\log^2 N)$ \\
-    Bagging & $\Theta(Mp\widetilde{N}\log^2 \widetilde{N})$ & $O(Mp\widetilde{N}^2\log \widetilde{N})$ & $\Theta(Mp\widetilde{N}\log^2 \widetilde{N})$  \\
-    RF & $\Theta(MK\widetilde{N}\log^2 \widetilde{N})$ & $O(MK\widetilde{N}^2\log \widetilde{N})$ & $\Theta(MK\widetilde{N}\log^2 \widetilde{N})$  \\
-    ETs & $\Theta(MKN\log N)$ & $\Theta(MKN^2)$ & $\Theta(MKN\log N)$  \\
-    PERT & $\Theta(MN\log N)$ & $\Theta(MN^2)$ & $\Theta(MN\log N)$  \\
+    CART & $\Theta(pN\log^2 N)$ \\
+    Random Forest & $\Theta(MK\widetilde{N}\log^2 \widetilde{N})$  \\
+    Extra-Trees & $\Theta(MKN\log N)$  \\
     \hline
     \end{tabular}
     \caption{Time complexity for building forests of $M$ randomized trees. $N$ denotes the number of samples in ${\cal L}$, $p$ the number of input variables and $K$ the number of variables randomly drawn at each node. $\widetilde{N} = 0.632 N$.}
@@ -916,23 +914,33 @@ Sampling the examples only is often ineffective.
 
 \section{Conclusions}
 
-\begin{frame}{Conclusions}
+\begin{frame}{Opening the black box}
 \begin{itemize}
 
 \item Random forests constitute one of the most {\color{blue} robust and
 effective} machine learning algorithms for many problems.
 
+\medskip
+
 \item While simple in design and easy to use, random forests remain however
   \begin{itemize}
+    {\color{red}
     \item hard to analyze statistically,
     \item non-trivial to interpret,
-    \item difficult to implement properly.
+    \item difficult to implement properly.}
   \end{itemize}
+
+\medskip
 
 \item Through an in-depth re-assessment of the method, this dissertation has
 proposed {\color{blue} original contributions} on these issues.
 
 \end{itemize}
+
+\begin{center}
+\includegraphics[scale=0.5]{figures/blackbox-open.jpg}
+\end{center}
+
 \end{frame}
 
 \begin{frame}{Future works}
