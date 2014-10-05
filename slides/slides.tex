@@ -285,8 +285,12 @@ where
     \includegraphics[scale=0.5]{./figures/forest.pdf}
 \end{figure}
 
-Ensemble of $M$ randomized decision trees $\varphi_m$\\
-$\psi(\mathbf{x}) = \argmax_{c \in {\cal Y}} \frac{1}{M} \sum_{m=1}^M p_{\varphi_m}(Y = c | X = \mathbf{x})$
+$\psi(\mathbf{x}) = \argmax_{c \in {\cal Y}} \frac{1}{M} \sum_{m=1}^M p_{\varphi_m}(Y = c | X = \mathbf{x})$ \\
+Randomization:
+\begin{itemize}
+\item Bagging
+\item Random selection of $K \leq p$ candidate split variables
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Condorcet's jury theorem}
@@ -655,7 +659,7 @@ importances (due to masking effects).}
 Example:\\
 $I(X_1;Y)=H(Y)$, $I(X_1;Y) \approx I(X_2;Y)$, $I(X_1;Y|X_2)=\epsilon$ and $I(X_2;Y|X_1)=0$
 \begin{itemize}
-\item $K=1 \rightarrow \text{Imp}_{K=1}(X_1) \approx \frac{1}{2} I(X_1;Y)+\epsilon$ and $\text{Imp}_{K=1}(X_1)\approx \frac{1}{2} I(X_2;Y)$
+\item $K=1 \rightarrow \text{Imp}_{K=1}(X_1) \approx \frac{1}{2} I(X_1;Y)+\epsilon$ and $\text{Imp}_{K=1}(X_2)\approx \frac{1}{2} I(X_1;Y)$
 \item $K=2 \rightarrow \text{Imp}_{K=2}(X_1)=I(X_1;Y)$ and $\text{Imp}_{K=2}(X_2)=0$
 \end{itemize}}
 
