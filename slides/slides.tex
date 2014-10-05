@@ -63,10 +63,7 @@ From Theory to Practice}
 
 % Motivation ==================================================================
 
-\begin{frame}
-  \frametitle{Outline}
-  \tableofcontents
-\end{frame}
+
 
 \section{Motivation}
 
@@ -358,7 +355,8 @@ In other words, it is the ratio between
 \bigskip
 
 $\rho(\mathbf{x}) \to 1$ when variance is mostly due to the learning set; \\
-$\rho(\mathbf{x}) \to 0$ when variance is mostly due to the random perturbations.
+$\rho(\mathbf{x}) \to 0$ when variance is mostly due to the random perturbations;\\
+$\rho(\mathbf{x}) \geq 0$.
 
 
 \end{frame}
@@ -421,6 +419,12 @@ Combining several randomized trees indeed works better!
 
 \item<2> \alert{Loss of interpretability with respect to single decision trees}
 \end{itemize}
+
+\uncover<2>{
+\begin{figure}
+    \includegraphics[scale=0.5]{./figures/blackbox.jpg}
+\end{figure}
+}
 
 \end{frame}
 
@@ -932,15 +936,23 @@ proposed {\color{blue} original contributions} on these issues.
 \end{frame}
 
 \begin{frame}{Future works}
+
+\begin{block}{Variable importances}
 \begin{itemize}
 \item Theoretical characterization of variable importances in a finite setting.
-
 \item (Re-analysis of) empirical studies based on variable importances, in light
 of the results and conclusions of the thesis.
-
-\item Finer study of subsampling statistical mechanisms.
-
+\item Study of variable importances in boosting.
 \end{itemize}
+\end{block}
+
+\begin{block}{Subsampling}
+\begin{itemize}
+\item Finer study of subsampling statistical mechanisms.
+\item Smart sampling.
+\end{itemize}
+\end{block}
+
 \end{frame}
 
 
