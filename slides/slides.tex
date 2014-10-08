@@ -16,6 +16,7 @@
 \usepackage{eulervm}
 \usepackage{auto-pst-pdf}
 \usepackage{pst-plot}
+\usepackage{multirow}
 
 
 \hypersetup{colorlinks=true, linkcolor=black, urlcolor=blue}
@@ -53,6 +54,8 @@ From Theory to Practice}
 \newcommand{\loss}[1]{\textcolor{lightblue}{#1}}
 
 \begin{document}
+
+\renewcommand{\inserttotalframenumber}{39}
 
 % Title page ==================================================================
 
@@ -127,6 +130,14 @@ P. Cortez, A. Cerdeira, F. Almeida, T. Matos and J. Reis,
 
 % Supervised learning =========================================================
 
+\begin{frame}
+  \frametitle{Outline}
+  \tableofcontents
+\end{frame}
+
+
+\section{Growing decision trees and random forests}
+
 \AtBeginSection[]
 {
 \begin{frame}
@@ -135,8 +146,6 @@ P. Cortez, A. Cerdeira, F. Almeida, T. Matos and J. Reis,
   % Die Option [pausesections]
 \end{frame}
 }
-
-\section{Growing decision trees and random forests}
 
 \begin{frame}{Supervised learning}
 
@@ -195,9 +204,20 @@ $$
 \end{frame}
 
 \begin{frame}{Decision trees}
+\begin{columns}
+\begin{column}{0.3\textwidth}
 \begin{figure}
-\includegraphics[scale=0.5]{./figures/tree-simple.pdf}
+\includegraphics[width=\textwidth]{./figures/tree-partition-d.pdf}
 \end{figure}
+\end{column}
+\begin{column}{0.7\textwidth}
+\begin{figure}
+\includegraphics[width=\textwidth]{./figures/tree-simple.pdf}
+\end{figure}
+\end{column}
+\end{columns}
+
+\vspace{1cm}
 
 $t \in \varphi$: nodes of the tree $\varphi$\\
 $X_t$: split variable at $t$ \\
@@ -285,41 +305,26 @@ where
     \includegraphics[scale=0.5]{./figures/forest.pdf}
 \end{figure}
 
-$\psi(\mathbf{x}) = \argmax_{c \in {\cal Y}} \frac{1}{M} \sum_{m=1}^M p_{\varphi_m}(Y = c | X = \mathbf{x})$ \\
-Randomization:
-\begin{itemize}
-\item Bagging
-\item Random selection of $K \leq p$ candidate split variables
-\end{itemize}
+Randomization
+
+\vspace{0.1cm}
+
+{\scriptsize
+\begin{tabular}{lll}
+
+\textbullet\hspace*{0.1cm} Bootstrap samples & \multirow{2}{*}{{\LARGE \}} {\color{blue} Random Forests}} & \\
+\textbullet\hspace*{0.1cm}  Random selection of $K \leq p$ split variables              &&  \multirow{2}{*}{{\LARGE \}} {\color{blue} Extra-Trees}}                                    \\
+\textbullet\hspace*{0.1cm}  Random selection of the threshold           &                                          \\
+\end{tabular}}
+
+% {\scriptsize
+% \begin{itemize}
+% \item Bootstrap samples
+% \item Random selection of $K \leq p$ candidate split variables
+% \item Random selection of the threshold
+% \end{itemize}}
 \end{frame}
 
-\begin{frame}{Condorcet's jury theorem}
-
-\begin{columns}
-\begin{column}{0.65\textwidth}
-Let consider a group of $M$ voters.
-
-\vspace{1cm}
-
-If each voter has an independent  probability $p > \tfrac{1}{2}$ of voting for
-the correct decision, then adding more voters increases the probability of the
-majority decision to be correct.
-
-\vspace{1cm}
-
-When $M \to \infty$, the probability that the
-decision taken by the group is correct approaches $1$.
-
-\end{column}
-
-\begin{column}{0.35\textwidth}
-\begin{figure}
-    \includegraphics[scale=1.0]{./figures/condorcet.png}
-\end{figure}
-\end{column}
-\end{columns}
-
-\end{frame}
 
 
 \begin{frame}{Bias-variance decomposition (cont.)}
@@ -343,27 +348,6 @@ the predictions of two randomized trees built on the same learning set.
 
 \end{frame}
 
-\begin{frame}{Interpretation of $\rho(\mathbf{x})$ {\scriptsize (Louppe, 2014)}}
-
-{\bf Theorem.} $\rho(\mathbf{x}) = \frac{\mathbb{V}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}}{\mathbb{V}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \} + \mathbb{E}_{\cal L} \{ \mathbb{V}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}}$
-
-\vspace{1cm}
-
-In other words, it is the ratio between
-\begin{itemize}
-\item the variance due to the learning set and
-\item the total variance, accounting for random effects due to both the
-  learning set and the random perburbations.
-\end{itemize}
-
-\bigskip
-
-$\rho(\mathbf{x}) \to 1$ when variance is mostly due to the learning set; \\
-$\rho(\mathbf{x}) \to 0$ when variance is mostly due to the random perturbations;\\
-$\rho(\mathbf{x}) \geq 0$.
-
-
-\end{frame}
 
 \begin{frame}{Diagnosing the generalization error of random forests}
 
@@ -409,28 +393,6 @@ Combining several randomized trees indeed works better!
 
 \end{frame}
 
-\begin{frame}{Strengths and weaknesses of random forests}
-
-\begin{itemize}
-\item Very good accuracy
-\item Universal approximation
-\item Robustness to outliers
-\item Robustness to irrelevant attributes (to some extent)
-\item Invariance to scaling of inputs
-\item Good computational efficiency and scalability
-
-\bigskip
-
-\item<2> \alert{Loss of interpretability with respect to single decision trees}
-\end{itemize}
-
-\uncover<2>{
-\begin{figure}
-    \includegraphics[scale=0.5]{./figures/blackbox.jpg}
-\end{figure}
-}
-
-\end{frame}
 
 
 % Bias-variance ===============================================================
@@ -439,6 +401,10 @@ Combining several randomized trees indeed works better!
 
 
 \begin{frame}{Variable importances}
+
+\begin{figure}
+    \includegraphics[scale=0.3]{./figures/blackbox.jpg}
+\end{figure}
 
 \begin{itemize}
 \item Interpretability can be recovered through {\color{blue}variable importances}
@@ -461,7 +427,7 @@ Combining several randomized trees indeed works better!
 \item It is faster to compute;
 \item It does not require to use bootstrap sampling;
 \item In practice, it correlates well with the MDA
-  measure (except in specific conditions).
+  measure.
 \end{itemize}
 
 \end{itemize}
@@ -629,12 +595,6 @@ accounting for all interaction terms in a fair and exhaustive way.
 
 \vspace{1cm}
 
-\textbf{Definition} {\scriptsize (Kohavi \& John, 1997)}. A variable $X$ is
-{\it irrelevant} (to $Y$ with respect to $V$) if, for all $B\subseteq V$,
-$I(X;Y|B)=0$. A variable is {\it relevant} if it is not irrelevant.
-
-\vspace{1cm}
-
 {\bf Theorem.} A variable $X_j$ is irrelevant if and only if $\text{Imp}(X_j)= 0$.
 
 \vspace{1cm}
@@ -642,78 +602,46 @@ $I(X;Y|B)=0$. A variable is {\it relevant} if it is not irrelevant.
 {\color{blue} $\Rightarrow$ The importance of a relevant variable is
 insensitive  to the addition or the removal of irrelevant variables.}
 
+\vspace{1cm}
+
+
+{\scriptsize \textbf{Definition} {\scriptsize (Kohavi \& John, 1997)}. A variable $X$ is
+{\it irrelevant} (to $Y$ with respect to $V$) if, for all $B\subseteq V$,
+$I(X;Y|B)=0$. A variable is {\it relevant} if it is not irrelevant.}
+
 \end{frame}
 
-\begin{frame}{Bias due to masking effects}
+\begin{frame}{Relaxing assumptions}
 
-Most properties are lost as soon as $K>1$.
+\begin{block}{When trees are not totally random...}
 
-\bigskip
-
-{\color{red}$\Rightarrow$ There can be relevant variables with zero
-importances (due to masking effects).}
-
-\medskip
-
-{\footnotesize
-Example:\\
-$I(X_1;Y)=H(Y)$, $I(X_1;Y) \approx I(X_2;Y)$, $I(X_1;Y|X_2)=\epsilon$ and $I(X_2;Y|X_1)=0$
 \begin{itemize}
-\item $K=1 \rightarrow \text{Imp}_{K=1}(X_1) \approx \frac{1}{2} I(X_1;Y)+\epsilon$ and $\text{Imp}_{K=1}(X_2)\approx \frac{1}{2} I(X_1;Y)$
-\item $K=2 \rightarrow \text{Imp}_{K=2}(X_1)=I(X_1;Y)$ and $\text{Imp}_{K=2}(X_2)=0$
-\end{itemize}}
+\item  There can be {\color{red} relevant variables with zero
+importances} (due to masking effects).
+\item   The importance of relevant variables can be
+{\color{red} influenced by the number of irrelevant variables}.
+\end{itemize}
 
-\bigskip
+\end{block}
 
-{\color{red}$\Rightarrow$ The importance of relevant variables can be
-influenced by the number of irrelevant variables.}
-
-\medskip
-
-{\footnotesize
+\begin{block}{When the learning set is finite...}
 \begin{itemize}
-\item $K=2$ and we add a new irrelevant variable $X_3$ $\rightarrow$ $\text{Imp}_{K=2}(X_2)>0$
-\end{itemize}}
+\item  Importances are {\color{red} biased towards variables of  high
+cardinality}.
+
+\item This effect can be minimized by collecting impurity
+terms measured from large enough sample only.
+\end{itemize}
+\end{block}
+
+\begin{block}{When splits are not multiway...}
+\begin{itemize}
+\item $i(t)$ does not actually measure the mutual information.
+\end{itemize}
+\end{block}
 
 \end{frame}
 
-\begin{frame}{Bias due to empirical impurity misestimations}
-
-For a finite learning set ${\cal L}_t$ of size $N_t$, node impurity terms $i(t)$
-suffer from an empirical misestimation bias.
-
-\bigskip
-
-If $X_j$ and $Y$ are independent random variables, then the expected value of
-the finite sample size estimates   is:
-
-\begin{equation*}
-\mathbb{E}\{ \widehat{I}(X_j; Y) \} = \frac{(|{\cal X}_j|-1)(|{\cal Y}|-1)}{2 N_t \log 2}.
-\end{equation*}
-
-{\color{red}$\Rightarrow$ Importances are biased towards variables of  high
-cardinality.}
-
-\medskip
-
-{\color{blue}$\Rightarrow$ This effect can be minimized by collecting impurity
-terms measured from large enough sample only} (e.g., by stopping the
-construction of the tree early).
-
-\end{frame}
-
-\begin{frame}{Bias due to binary trees}
-
-Random forests usually make use of binary splits instead of multiway exhaustive
-splits.
-
-\bigskip
-
-{\color{red}$\Rightarrow$ $i(t)$ does not actually measure the mutual
-information.}
-
-
-\end{frame}
 
 \begin{frame}{Back to our example}
 
@@ -734,27 +662,7 @@ results in {\color{red} quite a different story}!
 
 % Computational performance ===================================================
 
-\section{Inplementing and accelerating random forests}
-
-\begin{frame}{Computational complexity {\scriptsize (Louppe, 2014)}}
-
-\begin{table}
-    \centering
-    \begin{tabular}{| c | c |}
-    \hline
-         & \textit{Average case}  \\
-    \hline
-    \hline
-    CART & $\Theta(pN\log^2 N)$ \\
-    Random Forest & $\Theta(MK\widetilde{N}\log^2 \widetilde{N})$  \\
-    Extra-Trees & $\Theta(MKN\log N)$  \\
-    \hline
-    \end{tabular}
-    \caption{Time complexity for building forests of $M$ randomized trees. $N$ denotes the number of samples in ${\cal L}$, $p$ the number of input variables and $K$ the number of variables randomly drawn at each node. $\widetilde{N} = 0.632 N$.}
-    \label{table:complexity-fit}
-\end{table}
-
-\end{frame}
+\section{Implementing and accelerating random forests}
 
 \begin{frame}{Implementation {\scriptsize (Buitinck et al., 2013)}}
 
@@ -822,6 +730,35 @@ Scikit-Learn implementation proves to be {\bf one of the fastest} among all libr
   \includegraphics[scale=0.5]{./figures/bench.pdf}
   \end{figure}
 \end{frame}
+
+
+\begin{frame}{Computational complexity {\scriptsize (Louppe, 2014)}}
+
+\begin{table}
+    \centering
+    \begin{tabular}{| c | c |}
+    \hline
+         & \textit{Average time complexity}  \\
+    \hline
+    \hline
+    CART & $\Theta(pN\log^2 N)$ \\
+    Random Forest & $\Theta(MK\widetilde{N}\log^2 \widetilde{N})$  \\
+    Extra-Trees & $\Theta(MKN\log N)$  \\
+    \hline
+    \end{tabular}
+\end{table}
+
+\begin{center}
+    \begin{itemize}
+    \item $N$: number of samples in ${\cal L}$
+    \item $p$: number of input variables
+    \item $K$: the number of variables randomly drawn at each node
+    \item $\widetilde{N} = 0.632 N$.
+    \end{itemize}
+\end{center}
+
+\end{frame}
+
 
 \begin{frame}{Improving scalability through randomization}
 
@@ -929,7 +866,7 @@ effective} machine learning algorithms for many problems.
 \item While simple in design and easy to use, random forests remain however
   \begin{itemize}
     {\color{red}
-    \item hard to analyze statistically,
+    \item hard to analyze theoretically,
     \item non-trivial to interpret,
     \item difficult to implement properly.}
   \end{itemize}
@@ -964,6 +901,75 @@ of the results and conclusions of the thesis.
 \item Smart sampling.
 \end{itemize}
 \end{block}
+
+\end{frame}
+
+
+\appendix
+
+\begin{frame}
+\begin{center}
+{\Huge  Questions?}
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+
+\begin{center}
+{\it Backup slides}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Condorcet's jury theorem}
+
+\begin{columns}
+\begin{column}{0.65\textwidth}
+Let consider a group of $M$ voters.
+
+\vspace{1cm}
+
+If each voter has an independent  probability $p > \tfrac{1}{2}$ of voting for
+the correct decision, then adding more voters increases the probability of the
+majority decision to be correct.
+
+\vspace{1cm}
+
+When $M \to \infty$, the probability that the
+decision taken by the group is correct approaches $1$.
+
+\end{column}
+
+\begin{column}{0.35\textwidth}
+\begin{figure}
+    \includegraphics[scale=1.0]{./figures/condorcet.png}
+\end{figure}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+
+\begin{frame}{Interpretation of $\rho(\mathbf{x})$ {\scriptsize (Louppe, 2014)}}
+
+{\bf Theorem.} $\rho(\mathbf{x}) = \frac{\mathbb{V}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}}{\mathbb{V}_{\cal L} \{ \mathbb{E}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \} + \mathbb{E}_{\cal L} \{ \mathbb{V}_{\theta|{\cal L}} \{ \varphi_{{\cal L},\theta}(\mathbf{x}) \} \}}$
+
+\vspace{1cm}
+
+In other words, it is the ratio between
+\begin{itemize}
+\item the variance due to the learning set and
+\item the total variance, accounting for random effects due to both the
+  learning set and the random perburbations.
+\end{itemize}
+
+\bigskip
+
+$\rho(\mathbf{x}) \to 1$ when variance is mostly due to the learning set; \\
+$\rho(\mathbf{x}) \to 0$ when variance is mostly due to the random perturbations;\\
+$\rho(\mathbf{x}) \geq 0$.
+
 
 \end{frame}
 
