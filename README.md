@@ -1,7 +1,7 @@
 Understanding Random Forests
 ============================
 
-PhD dissertation, Gilles Louppe, July 2014.
+PhD dissertation, Gilles Louppe, July 2014. Defended on October 9, 2014. 
 
 _arXiv:_ http://arxiv.org/abs/1407.7502
 
@@ -12,11 +12,6 @@ _Mirrors:_
 _License:_ BSD 3 clause
 
 _Contact:_ Gilles Louppe (@glouppe, <g.louppe@gmail.com>)
-
-_Disclaimer:_ This dissertation has been submitted in partial fulfillment of
-the requirements for the Degree of Doctor of Philosophy (Ph.D.) in 
-Computer Science. This version of the manuscript is pending the approval
-of the jury.
 
 ---
 
