@@ -5,7 +5,9 @@ PhD dissertation, Gilles Louppe, July 2014.
 
 _arXiv:_ http://arxiv.org/abs/1407.7502
 
-_Mirrors:_ http://hdl.handle.net/2268/170309, http://www.montefiore.ulg.ac.be/~glouppe/pdf/phd-thesis.pdf
+_Mirrors:_ 
+- http://hdl.handle.net/2268/170309
+- http://www.montefiore.ulg.ac.be/~glouppe/pdf/phd-thesis.pdf
 
 _License:_ BSD 3 clause
 
