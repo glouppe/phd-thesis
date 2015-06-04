@@ -3,9 +3,9 @@ Understanding Random Forests
 
 PhD dissertation, Gilles Louppe, July 2014.
 
-_Permanent URL (PDF):_ http://hdl.handle.net/2268/170309
+_arXiv:_ http://arxiv.org/abs/1407.7502
 
-_Mirror (PDF):_ http://www.montefiore.ulg.ac.be/~glouppe/pdf/phd-thesis.pdf
+_Mirrors:_ http://hdl.handle.net/2268/170309, http://www.montefiore.ulg.ac.be/~glouppe/pdf/phd-thesis.pdf
 
 _License:_ BSD 3 clause
 
