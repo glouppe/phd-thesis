@@ -1,0 +1,88 @@
+\documentclass[oneside,openright,titlepage,numbers=noenddot,headinclude,%
+               footinclude=true,cleardoublepage=empty,abstractoff,BCOR=5mm,%
+               paper=a4,fontsize=11pt,ngerman,american]{scrreprt}
+
+% Custom config ===============================================================
+
+% Classic thesis
+\usepackage{amssymb}
+\input{classicthesis-config}
+
+% Theorems and definitions
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}{Definition}
+
+\newtheorem{algorithm}{Algorithm}
+\usepackage{algpseudocode}
+
+% Counters
+\renewcommand{\labelenumi}{{\color{halfgray}(\alph{enumi})}}
+\renewcommand{\labelenumii}{\color{halfgray}{\roman{enumii}.}}
+\renewcommand{\labelitemi}{{\color{halfgray}-}}%\raisebox{0.3ex}{\tiny$\blacksquare$}}}
+
+\numberwithin{theorem}{chapter}
+\numberwithin{definition}{chapter}
+\numberwithin{algorithm}{chapter}
+\numberwithin{figure}{chapter}
+\numberwithin{table}{chapter}
+
+% Maths
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\numberwithin{equation}{chapter}
+\allowdisplaybreaks
+
+% Shaded boxes
+\usepackage{framed}
+\newenvironment{remark}[1]{%
+  \definecolor{shadecolor}{gray}{0.9}%
+  \begin{shaded}{\color{Maroon}\noindent\textsc{#1}}\\%
+}{%
+  \end{shaded}%
+}
+
+% Code snippets
+\usepackage{minted}
+\definecolor{rulecolor}{rgb}{0.80,0.80,0.80}
+\definecolor{bgcolor}{rgb}{1.0,1.0,1.0}
+\newminted{python}{bgcolor=bgcolor}
+
+% Todo
+\newcommand{\todo}[1]{\textcolor{red}{[TODO] #1}}
+
+% PS pictures
+\usepackage{pstricks,auto-pst-pdf}
+
+% Landscape tables
+\usepackage{rotating}
+
+% Checkmarks
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+% Wide tables
+\usepackage{ltablex}
+
+
+% -----------------------------------------------------------------------------
+
+\begin{document}
+\frenchspacing
+\raggedbottom
+\selectlanguage{american}
+\pagenumbering{roman}
+\pagestyle{plain}
+
+
+\pagenumbering{arabic}
+
+\include{summary/summary}
+
+
+\end{document}

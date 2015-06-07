@@ -1,0 +1,260 @@
+\chapter{Thesis summary}
+
+\vspace{-3.5em}
+\hfill (\textit{Gilles Louppe})
+\vspace{2.5em}
+
+Data analysis and machine learning have become an integrative part of the
+modern scientific methodology, offering automated procedures for the prediction
+of a phenomenon based on past observations, unraveling patterns in big data and
+providing insights about problems. By and large however, machine learning
+remains an open field of research for which many questions are still left
+unanswered, even regarding well-known methods. In this dissertation, we have
+chosen to revisit decision trees and random forests, a long-established family
+of algorithms that have proven to yield accurate, fast and interpretable results
+on many scientific problems. In particular, our objective is to call into
+question each and every part of these algorithms, in order to shed new light on
+their learning capabilities, inner workings and interpretability.
+
+In Part~\textsc{I} of this work, we laid out the decision trees and
+random forests methodology in the context of classification and regression
+tasks. Our treatment first considered the induction of individual decision
+trees and put them into a unified and composable framework. In particular, our
+analysis reviewed assignment rules, stopping criteria and splitting rules,
+theoretically motivating their design and purpose whenever possible. We then
+proceeded with a systematic study of randomized ensemble methods within the
+bias-variance framework. We established that variance depends on the
+correlation between individual tree predictions, thereby showing why
+randomization acts as a mechanism for reducing the generalization error of an
+ensemble.  Random forest and its variants were then presented within the
+framework previously introduced, and their properties and features discussed
+and reviewed. Our contributions followed with an original time and space
+complexity analysis of random forests, hence showing their good computational
+performance and scalability to larger problems. Finally, the first part of this
+work concluded with an in-depth discussion of implementation details of random
+forests, highlighting and discussing considerations that are critical, yet
+easily overlooked, for guaranteeing good computational performance. While not
+directly apparent within this manuscript, this discussion also underlined our
+contributions in terms of software, within the open source Scikit-Learn library.
+As open science and reproducibility concerns are gaining momentum, we indeed
+believe that good quality software should be an integrative part, acknowledged
+for its own value and impact, of any modern scientific research activity.
+
+Part~\textsc{II} of this dissertation analyzed and discussed the
+interpretability of random forests in the eyes of variable importance measures.
+The core of our contributions rests in the theoretical characterization of the
+Mean Decrease of Impurity variable importance measure, from which we have then
+proved and derived some of its properties in the case of multiway totally
+randomized trees and in asymptotic conditions. In particular, we have shown
+that variable importances offer a three-level decomposition of the information
+jointly provided by the input variables about the output, accounting for all
+possible interaction terms in a fair and exhaustive way. More interestingly, we
+have also shown that variable importances only depend on relevant variables and
+that the importance of irrelevant variables is strictly equal to zero, thereby
+making importances a sound and appropriate criterion for assessing the
+usefulness of variables. In consequence of this work, our analysis then
+demonstrated that variable importances as computed from non-totally randomized
+trees (e.g., standard Random Forest or Extremely Randomized Trees) suffer from
+a combination of defects, due to masking effects, misestimations of node
+impurity or due to the binary structure of decision trees. Overall, we believe
+that our analysis should bring helpful insights in a wide range of
+applications, by shedding new light on variable importances. In particular, we
+advise to complement their interpretation and analysis with a systematic
+decomposition of their terms, in order to better understand why variables are
+(or are not) important.
+
+This preliminary work unveils various directions of future work, both from a
+theoretical and practical point of view. To our belief, the most interesting
+theoretical open question would be the characterization of the distribution of
+variable importances in the finite setting. Such a characterization would
+indeed allow to more reliably distinguish irrelevant variables (whose
+importances are positive in the finite case) from relevant variables. Another
+interesting direction of future work would be to derive a proper
+characterization of variable importances in the case of binary trees -- even if we
+believe, as pointed out earlier, that variable importances derived from such
+ensembles may in fact not be as appropriate as desired. From a more practical
+point of view, this study also calls for a re-analysis of previous empirical
+studies. We indeed believe that variable importances along with their
+decomposition should yield new insights in many cases, providing a better
+understanding of the interactions between the input variables and the output,
+but also between the input variables themselves. Again, we recommend multiway
+totally randomized trees to mitigate sources of bias as much as possible.
+
+Finally, Part~\textsc{III} addressed limitations of random forests in
+the context of large datasets. Through extensive experiments, we have shown
+that subsampling either samples, features or both simultaneously provides on
+par performance while lowering at the same time the memory requirements.
+Overall this paradigm highlights an intriguing practical fact: there is often
+no need to build single models over immensely large datasets. Good performance
+can often more simply be achieved by building models on small random parts of the
+data and then combining them all in an ensemble, thereby avoiding all practical and
+computational burdens of making large data fit into memory. Again, this work
+raises interesting questions of further work. From a theoretical point of view,
+one would be to identify the statistical properties in the learning problem
+that are necessary for guaranteeing subsampling strategies to work. In
+particular, in which cases is it better to subsample examples rather than
+features? From a more practical point of view, other directions of research
+also include the study of smarter sampling strategies or the empirical
+verification that conclusions extend to non tree-based methods.
+
+Overall, this thesis calls for a permanent re-assessment of machine learning
+methods and algorithms. It is only through a better understanding of their
+mechanisms that algorithms will advance in a consistent and reliable way.
+Always seek for the what and why. In conclusion, machine learning should not be
+considered as a black-box tool, but as a methodology, with a rational thought
+process that is entirely dependent on the problem we are trying to solve.
+
+
+\chapter{Societal and industrial impact}
+
+\vspace{-3.5em}
+\hfill (\textit{Gilles Louppe})
+\vspace{2.5em}
+
+
+% recherche fondamentale, impact indirects mais nombreux
+% aspect applicatif direct, scikit)learn
+
+Within the past decades, data analysis and machine learning have had an
+unforeseen impact on almost all human activities. In scientific disciplines,
+the steady increase of data has triggered a change of paradigm in which
+statistics and computer science have become integrative and essential parts
+of the modern scientific methodology. They have become tools offering automated
+procedures for the prediction and understanding of a phenomenon, unraveling
+patterns in big data and providing insights about problems. Without them,
+advances in fields like systems biology, genetics or particle physics would
+simply not be possible.
+
+In our day-to-day life, machine learning and artificial intelligence algorithms
+are also becoming more and more predominant. Without most of us knowing, these
+are now serving us on a daily basis: deep within our smart-phones, watches,
+TVs, alarm clocks or even our cars, machine learning algorithms can be  found
+running, providing always smarter, better or personalized experience.
+
+In this context, this thesis contributes to the larger societal impact of
+machine learning, at both fundamental and applied levels. First, we believe
+that our contributions on random forests, and in particular regarding the
+variable importance measures that can be derived from them, will help the scientific
+community to use this algorithm in a more effective way. Despite a very large
+adoption\footnote{The original papers describing decision trees and random
+forests have together been cited more than 40000 times.}, too often random
+forests are indeed considered as a black box from which no insights can be
+gained. We believe instead that this algorithm should be seen as a
+methodology with a rational thought process, that can be exploited at its full
+potential only through a better understanding of its inner mechanisms.
+Hopefully, this work will have shed new light on some of these aspects, thereby
+allowing its use in a more educated way.
+
+Second, on a more immediate and applied perspective, work carried within this
+thesis also includes our contributions in terms of software, as part of the Scikit-Learn
+open source machine learning library.  As open science and reproducibility concerns
+are gaining momentum, we indeed believe that good quality software should be an
+integrative part, acknowledged for its own value, of any modern scientific
+research activity. We also believe that the impact that software may have
+should not be neglected, as it may be as important, if not more, as
+fundamental contributions. In the case of Scikit-Learn, the value and benefits
+of our work have indeed already been recognized by many. As of June 2015, the
+Scikit-Learn project has been cited on its own by nearly 1500 research
+works\footnote{\url{https://scholar.google.ch/citations?view_op=view_citation&citation_for_view=738O_yMBCRsC}} across various fields of science,
+and is used by countless of researchers,
+institutes and
+companies\footnote{\url{http://scikit-learn.org/stable/testimonials/testimonials.html}} worldwide.
+Such a large recognition is the best proof of the immediate and concrete societal and industrial impact of the work carried within this dissertation.
+
+
+\chapter{Publications}
+
+\vspace{-3.5em}
+\hfill (\textit{Gilles Louppe})
+\vspace{1em}
+
+
+\section{Selected publications}
+
+\begin{itemize}
+
+\item \citep{louppe:2013} \textit{Understanding variable importances in forests of randomized trees},
+Louppe Gilles, Wehenkel Louis, Sutera Antonio and Geurts Pierre.
+In Advances in Neural Information Processing Systems, pages 431--439, 2013.
+
+Despite growing interest and practical use in various scientific areas, variable importances derived from tree-based ensemble methods are not well understood from a theoretical point of view. In this work we characterize the Mean Decrease Impurity (MDI) variable importances as measured by an ensemble of totally randomized trees in asymptotic sample and ensemble size conditions. We derive a three-level decomposition of the information jointly provided by all input variables about the output in terms of i) the MDI importance of each input variable, ii) the degree of interaction of a given input variable with the other input variables, iii) the different interaction terms of a given degree. We then show that this MDI importance of a variable is equal to zero if and only if the variable is irrelevant and that the MDI importance of a relevant variable is invariant with respect to the removal or the addition of irrelevant variables. We illustrate these properties on a simple example and discuss how they may change in the case of non-totally randomized trees such as Random Forests and Extra-Trees.
+
+\item \citep{louppe:2012} \textit{Ensembles on random patches},
+Louppe Gilles and Geurts Pierre.
+In Machine Learning and Knowledge Discovery in Databases, pages 346--361. Springer, 2012.
+
+In this paper, we consider supervised learning under the assumption that the available memory is small compared to the dataset size. This general framework is relevant in the context of big data, distributed databases and embedded systems. We investigate a very simple, yet effective, ensemble framework that builds each individual model of the ensemble from a random patch of data obtained by drawing random subsets of both instances and features from the whole dataset. We carry out an extensive and systematic evaluation of this method on 29 datasets, using decision tree-based estimators. With respect to popular ensemble methods, these experiments show that the proposed method provides on par performance in terms of accuracy while simultaneously lowering the memory needs, and attains significantly better performance when memory is severely constrained.
+
+\item \citep{buitinck:2013} \textit{API design for machine learning software: experiences from the scikit-learn project},
+Buitinck Lars, Louppe Gilles, Blondel Mathieu et al..
+In ECML-PKDD 2013 Workshop: Languages for Data Mining and Machine Learning, 2013.
+
+Scikit-learn is an increasingly popular machine learning library. Written in Python, it is designed to be simple and efficient, accessible to non-experts, and reusable in various contexts. In this paper, we present and discuss our design choices for the application programming interface (API) of the project. In particular, we describe the simple and elegant interface shared by all learning and processing units in the library and then discuss its advantages in terms of composition and reusability. The paper also comments on implementation details specific to the Python ecosystem and analyzes obstacles faced by users and developers of the library.
+
+
+\end{itemize}
+
+\section{Full publication list}
+
+\begin{itemize}
+
+\item \citep{louppe:2010b} \textit{Collaborative filtering: Scalable approaches using restricted Boltzmann machines},
+Louppe Gilles. Master's Thesis, University of Li{\`e}ge, 2010.
+
+\item \citep{louppe:2010} \textit{A zealous parallel gradient descent algorithm},
+Louppe Gilles and Geurts Pierre.
+In Learning on Cores, Clusters and Clouds workshop, NIPS, 2010.
+
+\item \citep{geurts:2011} \textit{Learning to rank with extremely randomized trees},
+Geurts Pierre and Louppe Gilles.
+In JMLR: Workshop and Conference Proceedings, volume 14, 2011.
+
+\item \citep{louppe:2012} \textit{Ensembles on random patches},
+Louppe Gilles and Geurts Pierre.
+In Machine Learning and Knowledge Discovery in Databases, pages 346--361. Springer, 2012.
+
+\item \citep{louppe:2013} \textit{Understanding variable importances in forests of randomized trees},
+Louppe Gilles, Wehenkel Louis, Sutera Antonio and Geurts Pierre.
+In Advances in Neural Information Processing Systems, pages 431--439, 2013.
+
+\item \citep{buitinck:2013} \textit{API design for machine learning software: experiences from the scikit-learn project},
+Buitinck Lars, Louppe Gilles, Blondel Mathieu et al..
+In ECML-PKDD 2013 Workshop: Languages for Data Mining and Machine Learning, 2013.
+
+\item \citep{botta:2014} \textit{Exploiting SNP Correlations within Random Forest for Genome-Wide Association Studies},
+Botta Vincent, Louppe Gilles, Geurts Pierre and Wehenkel Louis.
+PloS one, 9(4):e93379, 2014.
+
+\item \citep{maree:2014} \textit{A hybrid human-computer approach for large-scale image-based measurements using web services and machine learning},
+Mar{\'e}e Rapha{\"e}l, Rollus Loic, Stevens Benjamin et al.
+Proceedings IEEE International Symposium on Biomedical Imaging, 2014.
+
+\item \citep{amy:2014} \textit{Solar Energy Prediction: An International Contest to Initiate Interdisciplinary Research on Compelling Meteorological Problems},
+Amy McGovern, David John Gagne II, Lucas Eustaquio et al., 2014.
+
+\item \citep{sutera:2014} \textit{Simple connectome inference from partial correlation statistics in calcium imaging},
+Antonio Sutera, Arnaud Joly, Vincent Francois-Lavet et al., 2014.
+
+\item \citep{louppe:2014phd} \textit{Understanding Random Forests: From Theory to Practice},
+Louppe Gilles. PhD Thesis, University of Li{\`e}ge, 2014.
+
+\section{Contributions}
+
+For a full list of contributions, including publications, talks, posters or software,
+see:
+
+\begin{itemize}
+\item Google Scholar: \url{http://scholar.google.com/citations?user=F_77d4QAAAAJ}
+\item ORBI: \url{http://orbi.ulg.ac.be/ph-search?uid=s050137}
+\item GitHub: \url{https://github.com/glouppe}
+\end{itemize}
+
+\pagebreak
+\begingroup
+    \bibliographystyle{abbrvnat}
+    \renewcommand{\bibname}{}
+    \label{app:bibliography}
+    \bibliography{bibliography}
+\endgroup
+
+\end{itemize}
