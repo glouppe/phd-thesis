@@ -13,6 +13,17 @@ _License:_ BSD 3 clause
 
 _Contact:_ Gilles Louppe (@glouppe, <g.louppe@gmail.com>)
 
+Please cite using the following BibTex entry:
+
+```
+@article{louppe2014understanding,
+  title={Understanding Random Forests: From Theory to Practice},
+  author={Louppe, Gilles},
+  journal={arXiv preprint arXiv:1407.7502},
+  year={2014}
+}
+```
+
 ---
 
 Data analysis and machine learning have become an integrative part of the
