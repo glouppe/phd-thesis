@@ -16,11 +16,13 @@ _Contact:_ Gilles Louppe (@glouppe, <g.louppe@gmail.com>)
 Please cite using the following BibTex entry:
 
 ```
-@article{louppe2014understanding,
+@phdthesis{louppe2014understanding,
   title={Understanding Random Forests: From Theory to Practice},
   author={Louppe, Gilles},
-  journal={arXiv preprint arXiv:1407.7502},
-  year={2014}
+  school={University of Liege, Belgium},
+  year={2014},
+  month={10},
+  note={arXiv:1407.7502}
 }
 ```
 
