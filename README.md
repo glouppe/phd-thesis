@@ -20,8 +20,8 @@ Please cite using the following BibTex entry:
   title={Understanding Random Forests: From Theory to Practice},
   author={Louppe, Gilles},
   school={University of Liege, Belgium},
-  year={2014},
-  month={10},
+  year=2014,
+  month=10,
   note={arXiv:1407.7502}
 }
 ```
