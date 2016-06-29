@@ -11,7 +11,7 @@ _Mirrors:_
 
 _License:_ BSD 3 clause
 
-_Contact:_ Gilles Louppe (@glouppe, <g.louppe@gmail.com>)
+_Contact:_ Gilles Louppe ([@glouppe](https://twitter.com/glouppe/), <g.louppe@gmail.com>)
 
 Please cite using the following BibTex entry:
 
